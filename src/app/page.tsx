@@ -4,22 +4,14 @@ import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { Navbar } from '@/components/common/Navbar';
 import { ClickSpark } from '@/components/common/ClickSpark';
-import { LoadingScreen } from '@/components/common/LoadingScreen';
 import { HeroSection } from '@/components/sections/HeroSection';
-import { StatsSection } from '@/components/sections/StatsSection';
 import { ChallengeArena } from '@/components/sections/ChallengeArena';
-import { MicrosoftEcosystemSection } from '@/components/sections/MicrosoftEcosystemSection';
-import { PhasesSection } from '@/components/sections/PhasesSection';
-import { SubmissionSection } from '@/components/sections/SubmissionSection';
-import { JudgingCriteriaSection } from '@/components/sections/JudgingCriteriaSection';
 import { PrizeSection } from '@/components/sections/PrizeSection';
-import { HospitalitySection } from '@/components/sections/HospitalitySection';
+import { GuidelinesSection } from '@/components/sections/GuidelinesSection';
 import { TimelineSection } from '@/components/sections/TimelineSection';
-import { LeadershipSection } from '@/components/sections/LeadershipSection';
-import { MissionCommandSection } from '@/components/sections/MissionCommandSection';
-import { VenueSection } from '@/components/sections/VenueSection';
+import { VenuePerksSection } from '@/components/sections/VenuePerksSection';
+import { OrganizersSection } from '@/components/sections/OrganizersSection';
 import { FAQSection } from '@/components/sections/FAQSection';
-import { FinalLaunchSection } from '@/components/sections/FinalLaunchSection';
 import { Footer } from '@/components/sections/Footer';
 import { RegisterModal } from '@/components/modals/RegisterModal';
 import { TeamStatusModal } from '@/components/modals/TeamStatusModal';
@@ -34,16 +26,31 @@ const SpaceBackground = dynamic(
 );
 
 export default function Home() {
-  const [isLoading, setIsLoading] = useState(true);
-
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [selectedProblem, setSelectedProblem] = useState<ProblemStatement | null>(null);
 
   const [teams, setTeams] = useState<RegisteredTeam[]>(INITIAL_REGISTERED_TEAMS);
+  const [registeredCount, setRegisteredCount] = useState<number>(0);
+
+  const fetchLiveCount = () => {
+    fetch('/api/registrations/count')
+      .then((res) => res.json())
+      .then((data) => {
+        if (typeof data.registeredTeams === 'number') {
+          setRegisteredCount(data.registeredTeams);
+        }
+      })
+      .catch(() => {});
+  };
+
+  useEffect(() => {
+    fetchLiveCount();
+  }, []);
 
   const handleRegisterSuccess = (newTeam: RegisteredTeam) => {
     setTeams((prev) => [newTeam, ...prev]);
+    setRegisteredCount((prev) => prev + 1);
   };
 
   const handleSelectTrackFromModal = () => {
@@ -78,11 +85,6 @@ export default function Home() {
     <ClickSpark sparkColor="#00BCF2" sparkSize={14} sparkRadius={26} sparkCount={10} duration={420}>
       <div className="relative min-h-screen bg-[#020617] text-slate-100 selection:bg-[#00BCF2]/30 selection:text-[#BAE6FD]">
         
-        {/* Animated Aerospace Loading Screen */}
-        {isLoading && (
-          <LoadingScreen onComplete={() => setIsLoading(false)} />
-        )}
-
         <SpaceBackground />
 
         <Navbar 
@@ -99,25 +101,15 @@ export default function Home() {
             }}
           />
 
-          <StatsSection />
           <ChallengeArena 
             onOpenProblemModal={(prob) => setSelectedProblem(prob)}
           />
-          <MicrosoftEcosystemSection />
-          <PhasesSection />
-          <SubmissionSection />
-          <JudgingCriteriaSection />
           <PrizeSection />
-          <HospitalitySection />
+          <GuidelinesSection />
           <TimelineSection />
-          <LeadershipSection />
-          <MissionCommandSection />
-          <VenueSection />
+          <OrganizersSection />
           <FAQSection />
-          <FinalLaunchSection 
-            onOpenRegister={() => setIsRegisterOpen(true)}
-            onOpenStatus={() => setIsStatusOpen(true)}
-          />
+          <VenuePerksSection />
         </main>
 
         <Footer 
@@ -129,6 +121,7 @@ export default function Home() {
           isOpen={isRegisterOpen}
           onClose={() => setIsRegisterOpen(false)}
           onSuccessRegister={handleRegisterSuccess}
+          totalTeamsCount={registeredCount}
         />
 
         <TeamStatusModal 

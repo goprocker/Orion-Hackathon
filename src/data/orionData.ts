@@ -14,7 +14,7 @@ export const EVENT_METRICS = {
   prizePool: "₹1,00,000",
   round1Fee: "₹100",
   round1FeeLabel: "Flat per team",
-  finalistFee: "₹200",
+  finalistFee: "₹250",
   finalistFeeLabel: "Per head (Top 70 finalists)",
   teamSize: "2–6",
   teamSizeLabel: "Members per team",
@@ -208,7 +208,7 @@ export const PROBLEM_STATEMENTS: ProblemStatement[] = [
     deliverables: [
       "Working prototype demo repository and live inference link",
       "System architecture diagram and technical specifications",
-      "Standardized 5-slide blueprint defense",
+      "Standardized 8-slide blueprint defense",
       "Quantifiable impact and deployment viability analysis"
     ],
     datasetSources: ["Open Source Public Datasets", "Synthetic Test Benches", "Domain-Specific Telemetry APIs"],
@@ -216,6 +216,8 @@ export const PROBLEM_STATEMENTS: ProblemStatement[] = [
     classificationLevel: "OPEN TRACK — ELIGIBLE FOR ₹1,00,000 PRIZE POOL"
   }
 ];
+
+export const OFFICIAL_PPT_TEMPLATE_URL = '/ORION_1.0_Template.pptx';
 
 export const PPT_TEMPLATE_RULES = [
   {
@@ -259,15 +261,9 @@ export const HOSPITALITY_SYSTEMS = [
   },
   {
     icon: "Utensils",
-    title: "2 LUNCHES",
+    title: "2 LUNCHES & DINNER",
     subtitle: "Both hack days covered",
-    detail: "Full multi-cuisine meals provided inside the air-conditioned campus arena."
-  },
-  {
-    icon: "Moon",
-    title: "1 GRAND DINNER",
-    subtitle: "Plus midnight energy packs",
-    detail: "Hot dinner served along with midnight caffeine, snacks, and booster kits."
+    detail: "Full multi-cuisine lunches and dinner provided inside the air-conditioned campus arena."
   },
   {
     icon: "Shirt",
@@ -339,8 +335,8 @@ export const TIMELINE_PHASES: TimelinePhase[] = [
     date: "September 14 – September 16, 2026",
     status: "upcoming",
     highlights: [
-      "₹200 per head finalist confirmation fee",
-      "Locks in 2 Breakfasts, 2 Lunches, 1 Dinner, Swag Kits & Arena access",
+      "₹250 per head finalist confirmation fee",
+      "Locks in 2 Breakfasts, 2 Lunches, Dinner, Swag Kits & Arena access",
       "Free campus hostel accommodation booking for outstation teams"
     ]
   },
@@ -490,9 +486,9 @@ export const JUDGING_CRITERIA: JudgingCriterion[] = [
     name: "Presentation, Pitch & Live Defense",
     weight: 20,
     weightLabel: "20%",
-    description: "Adherence to the mandatory standardized 5-slide template, clarity of technical explanation, demo effectiveness, and live jury defense.",
+    description: "Adherence to the mandatory standardized 8-slide template, clarity of technical explanation, demo effectiveness, and live jury defense.",
     keyFactors: [
-      "Strict adherence to official 5-slide structure",
+      "Strict adherence to official 8-slide structure",
       "Crisp articulation of architecture & sprint roadmap",
       "Convincing responses during technical Q&A"
     ],
@@ -501,45 +497,82 @@ export const JUDGING_CRITERIA: JudgingCriterion[] = [
 ];
 
 export const FAQ_DATA: FAQItem[] = [
+  // 1. Eligibility & Squads
   {
-    category: "General",
+    category: "Eligibility & Squads",
     question: "Who is eligible to participate in ORION 1.0?",
-    answer: "ORION 1.0 is open to all college students (undergraduate, postgraduate, PhD) and early-career working professionals across India. Cross-institutional teams are enthusiastically welcome!"
+    answer: "ORION 1.0 is open to all college students (undergraduate, postgraduate, PhD) and early-career working professionals across India. Cross-institutional and multidisciplinary teams are enthusiastically welcome!"
   },
   {
-    category: "Fees & Teams",
-    question: "How does the two-tier fee structure work?",
-    answer: "Round 1 is a low-barrier online qualifier with a flat registration fee of ₹100 per team (regardless of 2 or 6 members). Only teams shortlisted in the Top 70 for the offline Grand Finale pay the ₹200 per head finalist confirmation fee, which covers 2 days of meals, official swag kits, 24/7 venue access, and free accommodation for outstation teams."
+    category: "Eligibility & Squads",
+    question: "What are the exact squad size rules?",
+    answer: "Teams must consist of a minimum of 2 members and a maximum of 6 members (1 Team Leader + 1 to 5 Team Members). Individual solo participation is not permitted to encourage an collaborative engineering mindset."
   },
   {
-    category: "Fees & Teams",
-    question: "What are the exact team size rules?",
-    answer: "Teams must consist of a minimum of 2 members and a maximum of 6 members. Individual solo participation is not permitted to encourage collaborative aerospace engineering mindset."
+    category: "Eligibility & Squads",
+    question: "Can team members be from different colleges or departments?",
+    answer: "Yes! Cross-college, cross-department, and cross-year teams are fully permitted. All participants will receive individual certificates of participation."
   },
+
+  // 2. Round 1 & PPT Template
   {
-    category: "Submissions",
+    category: "Round 1 & Submissions",
     question: "What do we build and submit in Round 1?",
-    answer: "In Round 1, teams must submit their problem analysis, system architecture, tech stack justification, and project roadmap using the official mandatory ORION 1.0 PPT template (exported as PPTX or PDF). Demo videos or prototype repository links can be included within the designated slide placeholders."
+    answer: "In Round 1, teams must choose a Problem Statement track and submit their problem analysis, system architecture, tech stack justification, and project roadmap using the official mandatory ORION 1.0 PPT template (exported as PPTX or PDF). Working prototype links or demo videos can be included within the designated slide placeholders."
   },
   {
-    category: "Submissions",
-    question: "Can we modify the slide count of the PPT template?",
-    answer: "No. Strict rule: No slides may be added, removed, or reordered. Branding, headers, and footers must remain intact. Only fill the provided content placeholders. File name must be: TeamName_ORION1.0."
+    category: "Round 1 & Submissions",
+    question: "Can we modify the slide count or format of the PPT template?",
+    answer: "No. Strict rule: No slides may be added, removed, or reordered. Branding, headers, and footers must remain intact. Only fill the provided content placeholders. File name must be formatted as: TeamName_ORION1.0 (PPTX or PDF)."
   },
   {
-    category: "Finale & Logistics",
-    question: "How are the Grand Finale problem statements distributed?",
-    answer: "While teams can continue building their Round 1 solution, live problem twists and dynamic constraints will be revealed on-the-spot at the start of the 24-hour offline sprint at SIST Chennai."
+    category: "Round 1 & Submissions",
+    question: "What is the deadline for Round 1 submission?",
+    answer: "Round 1 online submissions close on September 08, 2026 at 23:59 IST. Teams can submit and revise their presentation via the Team Portal until the deadline."
+  },
+
+  // 3. Finale & Fees
+  {
+    category: "Finale & Fees",
+    question: "How does the two-tier fee structure work?",
+    answer: "Round 1 is a low-barrier online qualifier with a flat registration fee of ₹100 per team (regardless of 2 or 6 members). Only teams shortlisted in the Top 70 for the offline Grand Finale pay the ₹250 per head finalist confirmation fee, which covers 2 days of meals (Breakfasts, Lunches & Dinner), official swag kits, 24/7 venue access, and free hostel accommodation."
   },
   {
-    category: "Finale & Logistics",
-    question: "How and when are the prizes distributed?",
+    category: "Finale & Fees",
+    question: "How are the prizes distributed?",
     answer: "The total prize pool of ₹1,00,000 (including ₹25k 1st Place, ₹15k 1st Runner-Up, ₹10k 2nd Runner-Up, and Special Track Bounties) along with Certificates of Merit and trophies will be awarded physically during the Valedictory Ceremony immediately concluding the 24-hour sprint."
   },
   {
-    category: "Finale & Logistics",
-    question: "What about meals, accommodation, and travel logistics?",
-    answer: "All confirmed finalist teams receive 2 Breakfasts, 2 Lunches, 1 Dinner, and midnight booster packs. Free hostel accommodation on the Sathyabama campus is provided for teams traveling from outside Chennai. Participants manage their own travel to Chennai."
+    category: "Finale & Fees",
+    question: "How are the Grand Finale problem statements distributed?",
+    answer: "While teams can continue building upon their Round 1 architectural solution, live problem twists and dynamic constraints will be revealed on-the-spot at the start of the 24-hour offline sprint at SIST Chennai."
+  },
+
+  // 4. Hospitality & Venue
+  {
+    category: "Hospitality & Venue",
+    question: "What meals and refreshments are provided during the Grand Finale?",
+    answer: "All confirmed finalist teams receive full event catering across the 24-hour offline hackathon at SIST Chennai, including 2 Breakfasts, 2 Lunches, Dinner, and midnight booster packs (coffee, tea, snacks, and energy boosters). Multi-cuisine options are catered inside the air-conditioned hack arena."
+  },
+  {
+    category: "Hospitality & Venue",
+    question: "Is free accommodation provided for outstation teams?",
+    answer: "Yes! Free on-campus hostel accommodation at Sathyabama Institute of Science and Technology (SIST) is provided for all confirmed out-of-Chennai finalist teams. Clean hostel rooms with bedding, round-the-clock security, and washroom facilities are arranged."
+  },
+  {
+    category: "Hospitality & Venue",
+    question: "Where is the offline Grand Finale venue and how do we reach it?",
+    answer: "The 24-hour offline sprint takes place at the School of Computing Complex, Sathyabama Institute of Science and Technology, Jeppiaar Nagar, Rajiv Gandhi Salai (OMR), Chennai - 600119. The campus is ~22 km from Chennai International Airport (MAA) and ~25 km from Chennai Central (MAS) / Tambaram Railway Station with direct bus and cab connectivity."
+  },
+  {
+    category: "Hospitality & Venue",
+    question: "What hardware and connectivity amenities are available at the arena?",
+    answer: "Participants have access to 24/7 uninterrupted power backup, dedicated power sockets at every team station, high-speed dual-band Wi-Fi and LAN mesh networks, mentor breakout zones, and round-the-clock medical & technical support."
+  },
+  {
+    category: "Hospitality & Venue",
+    question: "What documents do participants need to carry for campus entry?",
+    answer: "Every participant must carry their official College/University ID card (or valid government photo ID) along with their digital ORION 1.0 Finalist Invitation Dossier for security check-in at the main campus gate."
   }
 ];
 
@@ -586,12 +619,12 @@ export const CHIEF_PATRONS: PatronProfile[] = [
   }
 ];
 
-export const CONVENORS: PatronProfile[] = [
+export const ACADEMIC_PATRONS: PatronProfile[] = [
   {
     name: "Dr. L. Lakshmanan",
     title: "Dean",
     organization: "School of Computing, SIST",
-    roleType: "Convenor",
+    roleType: "Academic Patron",
     initials: "LL",
     avatarColor: "from-blue-600 to-cyan-800",
     bio: "Visionary academic leader driving cutting-edge computing initiatives and student research excellence."
@@ -600,7 +633,7 @@ export const CONVENORS: PatronProfile[] = [
     name: "Dr. P. Ajitha",
     title: "Head of Department",
     organization: "CSE - AI, BCT, CS, CSBS, IoT",
-    roleType: "Convenor",
+    roleType: "Academic Patron",
     initials: "PA",
     avatarColor: "from-indigo-600 to-purple-800",
     bio: "Pioneering curriculum innovation across emerging computing domains and hackathon ecosystems."
@@ -609,12 +642,14 @@ export const CONVENORS: PatronProfile[] = [
     name: "Dr. Senduru Srinivasulu",
     title: "Head of Department",
     organization: "CSE - AIML, DS, AIR",
-    roleType: "Convenor",
+    roleType: "Academic Patron",
     initials: "SS",
     avatarColor: "from-violet-600 to-blue-900",
     bio: "Leading advanced research in Artificial Intelligence, Machine Learning, Data Science, and Robotics."
   }
 ];
+
+export const CONVENORS: PatronProfile[] = ACADEMIC_PATRONS;
 
 export const CLUB_LEADERSHIP: PatronProfile[] = [
   {
@@ -646,11 +681,11 @@ export const CLUB_LEADERSHIP: PatronProfile[] = [
   }
 ];
 
-export const MICROSOFT_OFFICE_BEARERS: OfficeBearer[] = [
+export const EVENT_ORGANIZERS: OfficeBearer[] = [
   {
     name: "Nihitha Juliet A",
     title: "President",
-    department: "IInd Yr CSE CSBS",
+    department: "IInd Yr BE CSBS",
     phone: "8870227906",
     initials: "NJ",
     organization: "Microsoft Club SIST"
@@ -658,7 +693,7 @@ export const MICROSOFT_OFFICE_BEARERS: OfficeBearer[] = [
   {
     name: "Harshini M",
     title: "Vice - President",
-    department: "IIIrd Yr IT",
+    department: "IIIrd Yr BTech IT",
     phone: "7200524207",
     initials: "HM",
     organization: "Microsoft Club SIST"
@@ -666,59 +701,16 @@ export const MICROSOFT_OFFICE_BEARERS: OfficeBearer[] = [
   {
     name: "Praveen Kumar S",
     title: "Cluster Co-ordinator",
-    department: "IIIrd Yr CSE",
+    department: "IIIrd Yr BE CSE",
     phone: "9176594860",
     initials: "PK",
     organization: "Microsoft Club SIST"
   }
 ];
 
-export const INITIAL_REGISTERED_TEAMS: RegisteredTeam[] = [
-  {
-    teamId: "ORION-9012",
-    teamName: "Aether Dynamics",
-    leaderName: "Kavya Ramesh",
-    leaderEmail: "kavya.ramesh@sathyabama.ac.in",
-    institution: "Sathyabama Institute of Science and Technology",
-    track: "FloatChat (ARGO 4D)",
-    membersCount: 4,
-    status: "Qualified - Top 70 Finalist",
-    registrationDate: "2026-08-10"
-  },
-  {
-    teamId: "ORION-8421",
-    teamName: "CipherNova",
-    leaderName: "Aditya Verma",
-    leaderEmail: "aditya.v@iitm.ac.in",
-    institution: "IIT Madras",
-    track: "LexVault (ZK eVault)",
-    membersCount: 5,
-    status: "Qualified - Top 70 Finalist",
-    registrationDate: "2026-08-12"
-  },
-  {
-    teamId: "ORION-7733",
-    teamName: "BioCanopy Labs",
-    leaderName: "Sneha Mukherjee",
-    leaderEmail: "sneha.m@bits-pilani.ac.in",
-    institution: "BITS Pilani",
-    track: "SylvaSense (SAR Forestry)",
-    membersCount: 4,
-    status: "Qualified - Top 70 Finalist",
-    registrationDate: "2026-08-14"
-  },
-  {
-    teamId: "ORION-6590",
-    teamName: "QuantumVortex",
-    leaderName: "Rohit Nambiar",
-    leaderEmail: "rohit.n@nitc.ac.in",
-    institution: "NIT Calicut",
-    track: "Open Innovation - AI & Systems",
-    membersCount: 3,
-    status: "Round 1 Pending Review",
-    registrationDate: "2026-08-16"
-  }
-];
+export const MICROSOFT_OFFICE_BEARERS: OfficeBearer[] = EVENT_ORGANIZERS;
+
+export const INITIAL_REGISTERED_TEAMS: RegisteredTeam[] = [];
 
 export const ORION_STARS: StarNodeData[] = [
   {

@@ -17,8 +17,28 @@ interface GooeyNavProps {
   timeVariance?: number;
   colors?: number[];
   initialActiveIndex?: number;
+  activeIndex?: number;
   onItemSelect?: (item: GooeyNavItem, index: number) => void;
 }
+
+const noise = (n = 1) => n / 2 - Math.random() * n;
+
+const getXY = (distance: number, pointIndex: number, totalPoints: number) => {
+  const angle = ((360 + noise(8)) / totalPoints) * pointIndex * (Math.PI / 180);
+  return [distance * Math.cos(angle), distance * Math.sin(angle)];
+};
+
+const createParticle = (i: number, t: number, d: [number, number], r: number, count: number, colors: number[]) => {
+  const rotate = noise(r / 10);
+  return {
+    start: getXY(d[0], count - i, count),
+    end: getXY(d[1] + noise(7), count - i, count),
+    time: t,
+    scale: 1 + noise(0.2),
+    color: colors[Math.floor(Math.random() * colors.length)],
+    rotate: rotate > 0 ? (rotate + r / 20) * 10 : (rotate - r / 20) * 10
+  };
+};
 
 export const GooeyNav: React.FC<GooeyNavProps> = ({
   items,
@@ -29,32 +49,16 @@ export const GooeyNav: React.FC<GooeyNavProps> = ({
   timeVariance = 200,
   colors = [1, 2, 3, 4],
   initialActiveIndex = 0,
+  activeIndex,
   onItemSelect
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const navRef = useRef<HTMLUListElement | null>(null);
   const filterRef = useRef<HTMLSpanElement | null>(null);
   const textRef = useRef<HTMLSpanElement | null>(null);
-  const [activeIndex, setActiveIndex] = useState(initialActiveIndex);
+  const [internalActiveIndex, setInternalActiveIndex] = useState(initialActiveIndex);
 
-  const noise = (n = 1) => n / 2 - Math.random() * n;
-
-  const getXY = (distance: number, pointIndex: number, totalPoints: number) => {
-    const angle = ((360 + noise(8)) / totalPoints) * pointIndex * (Math.PI / 180);
-    return [distance * Math.cos(angle), distance * Math.sin(angle)];
-  };
-
-  const createParticle = (i: number, t: number, d: [number, number], r: number) => {
-    const rotate = noise(r / 10);
-    return {
-      start: getXY(d[0], particleCount - i, particleCount),
-      end: getXY(d[1] + noise(7), particleCount - i, particleCount),
-      time: t,
-      scale: 1 + noise(0.2),
-      color: colors[Math.floor(Math.random() * colors.length)],
-      rotate: rotate > 0 ? (rotate + r / 20) * 10 : (rotate - r / 20) * 10
-    };
-  };
+  const currentActiveIndex = activeIndex !== undefined ? activeIndex : internalActiveIndex;
 
   const makeParticles = (element: HTMLElement) => {
     const d = particleDistances;
@@ -64,7 +68,7 @@ export const GooeyNav: React.FC<GooeyNavProps> = ({
 
     for (let i = 0; i < particleCount; i++) {
       const t = animationTime * 2 + noise(timeVariance * 2);
-      const p = createParticle(i, t, d, r);
+      const p = createParticle(i, t, d, r, particleCount, colors);
       element.classList.remove('active');
 
       setTimeout(() => {
@@ -106,18 +110,25 @@ export const GooeyNav: React.FC<GooeyNavProps> = ({
       left: `${pos.x - containerRect.x}px`,
       top: `${pos.y - containerRect.y}px`,
       width: `${pos.width}px`,
-      height: `${pos.height}px`
+      height: `${pos.height}px`,
+      opacity: '1'
     };
     Object.assign(filterRef.current.style, styles);
     Object.assign(textRef.current.style, styles);
     textRef.current.innerText = element.innerText;
   };
 
+  const hideEffect = () => {
+    if (!filterRef.current || !textRef.current) return;
+    filterRef.current.style.opacity = '0';
+    textRef.current.style.opacity = '0';
+  };
+
   const handleClick = (e: React.MouseEvent<HTMLElement> | { currentTarget: HTMLElement }, index: number) => {
     const liEl = e.currentTarget;
-    if (activeIndex === index) return;
+    if (currentActiveIndex === index) return;
 
-    setActiveIndex(index);
+    setInternalActiveIndex(index);
     updateEffectPosition(liEl);
 
     if (onItemSelect && items[index]) {
@@ -153,29 +164,37 @@ export const GooeyNav: React.FC<GooeyNavProps> = ({
 
   useEffect(() => {
     if (!navRef.current || !containerRef.current) return;
-    const activeLi = navRef.current.querySelectorAll('li')[activeIndex];
+
+    if (currentActiveIndex < 0 || currentActiveIndex >= items.length) {
+      hideEffect();
+      return;
+    }
+
+    const activeLi = navRef.current.querySelectorAll('li')[currentActiveIndex];
     if (activeLi) {
       updateEffectPosition(activeLi);
       textRef.current?.classList.add('active');
     }
 
     const resizeObserver = new ResizeObserver(() => {
-      const currentActiveLi = navRef.current?.querySelectorAll('li')[activeIndex];
-      if (currentActiveLi) {
-        updateEffectPosition(currentActiveLi);
+      if (currentActiveIndex >= 0 && currentActiveIndex < items.length) {
+        const currentActiveLi = navRef.current?.querySelectorAll('li')[currentActiveIndex];
+        if (currentActiveLi) {
+          updateEffectPosition(currentActiveLi);
+        }
       }
     });
 
     resizeObserver.observe(containerRef.current);
     return () => resizeObserver.disconnect();
-  }, [activeIndex]);
+  }, [currentActiveIndex, items.length]);
 
   return (
     <div className="gooey-nav-container" ref={containerRef}>
       <nav>
         <ul ref={navRef}>
           {items.map((item, index) => (
-            <li key={index} className={activeIndex === index ? 'active' : ''}>
+            <li key={index} className={currentActiveIndex === index ? 'active' : ''}>
               <a 
                 href={item.href} 
                 onClick={e => {
@@ -185,7 +204,8 @@ export const GooeyNav: React.FC<GooeyNavProps> = ({
                     e.preventDefault();
                     const targetEl = document.querySelector(item.href);
                     if (targetEl) {
-                      targetEl.scrollIntoView({ behavior: 'smooth' });
+                      const offsetTop = targetEl.getBoundingClientRect().top + window.scrollY - 80;
+                      window.scrollTo({ top: offsetTop, behavior: 'smooth' });
                     }
                   }
                 }} 
