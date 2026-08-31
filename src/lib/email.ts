@@ -1052,7 +1052,7 @@ export function generateRegistrationReceivedHtml(team: TeamRecord): string {
               </table>
 
               <!-- Payment Action if not verified -->
-              ${team.payment_status !== 'VERIFIED' && team.payment_status !== 'SUCCESS' ? `
+              ${team.payment_status !== 'VERIFIED' ? `
               <div style="margin: 20px 0; padding: 18px; background: rgba(245, 158, 11, 0.08); border-left: 3px solid #F59E0B;">
                 <div style="font-size: 13px; font-weight: bold; color: #F59E0B; margin-bottom: 6px;">
                   💳 Round 1 Entry Fee: ₹100 Flat per Squad
