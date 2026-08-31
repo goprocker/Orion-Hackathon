@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { serverStore, safeEqualCI, toTeamFacingRecord } from '@/lib/serverStore';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
+import { withSignedSubmissionUrls } from '@/lib/storage';
 
 export async function GET(request: Request) {
   try {
@@ -35,9 +36,14 @@ export async function GET(request: Request) {
 
     const config = await serverStore.getConfig();
 
+    const teamFacing = toTeamFacingRecord(team);
+    // The bucket is private: mint a signed link for this authenticated read
+    // instead of storing a permanent public URL.
+    teamFacing.submissions = await withSignedSubmissionUrls(teamFacing.submissions || []);
+
     return NextResponse.json({
       success: true,
-      team: toTeamFacingRecord(team),
+      team: teamFacing,
       config
     });
   } catch (err: unknown) {

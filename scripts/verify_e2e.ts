@@ -41,7 +41,7 @@ async function runE2ETests() {
     const regAlpha = await serverStore.registerTeam(alphaPayload);
     const teamAlpha = regAlpha.team;
     assert(!!teamAlpha.registration_id && teamAlpha.registration_id.startsWith('ORION-2026-'), 'Generated valid Team ID format: ' + teamAlpha.registration_id);
-    assert(!!teamAlpha.access_token && teamAlpha.access_token.startsWith('PASS-'), 'Generated secure access passcode: ' + teamAlpha.access_token);
+    assert(!!teamAlpha.access_token && /^ORN-[0-9A-Z]{4}-[0-9A-Z]{4}$/.test(teamAlpha.access_token), 'Generated secure access passcode: ' + teamAlpha.access_token);
     assert(teamAlpha.payment_status === 'NOT_SUBMITTED', 'Payment status is NOT_SUBMITTED before UTR');
     assert(teamAlpha.round_1_status === 'NOT_STARTED', 'Round 1 status initialized as NOT_STARTED');
     assert(teamAlpha.round_2_status === 'LOCKED', 'Round 2 status initialized as LOCKED');

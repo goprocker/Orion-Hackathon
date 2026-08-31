@@ -1,7 +1,14 @@
 import { NextResponse } from 'next/server';
-import crypto from 'crypto';
 import { serverStore } from '@/lib/serverStore';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
+import {
+  buildAdminSessionCookie,
+  isAdminRequest,
+  isAdminSecretUsable,
+  issueAdminSessionToken,
+  verifyAdminPasscode
+} from '@/lib/adminAuth';
+import { withSignedTeamUrls } from '@/lib/storage';
 
 import {
   sendPaymentVerifiedEmail,
@@ -12,21 +19,6 @@ import {
   verifySmtp
 } from '@/lib/email';
 
-function safeCompare(a: string, b: string): boolean {
-  if (!a || !b) return false;
-  const bufA = Buffer.from(a);
-  const bufB = Buffer.from(b);
-  if (bufA.length !== bufB.length) return false;
-  return crypto.timingSafeEqual(bufA, bufB);
-}
-
-function validateAdminKey(request: Request): boolean {
-  const authKey = (request.headers.get('x-admin-key') || '').trim();
-  const adminSecret = (process.env.ADMIN_SECRET_KEY || '').trim();
-  if (!adminSecret || adminSecret.length < 8) return false;
-  return safeCompare(authKey, adminSecret);
-}
-
 export async function GET(request: Request) {
   try {
     const clientIp = getClientIp(request);
@@ -35,7 +27,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Too many requests. Please slow down.' }, { status: 429 });
     }
 
-    if (!validateAdminKey(request)) {
+    if (!isAdminRequest(request)) {
       return NextResponse.json({ error: 'Unauthorized. Invalid admin security key.' }, { status: 401 });
     }
 
@@ -59,7 +51,9 @@ export async function GET(request: Request) {
     return NextResponse.json({
       success: true,
       stats: result.stats,
-      teams: result.teams,
+      // Decks live in a private bucket now; hand the console short-lived
+      // signed links rather than permanent public URLs.
+      teams: await withSignedTeamUrls(result.teams),
       auditLogs: result.auditLogs,
       config
     });
@@ -83,17 +77,23 @@ export async function POST(request: Request) {
         return NextResponse.json({ success: false, error: 'Too many login attempts. Please wait a minute.' }, { status: 429 });
       }
 
-      const cleanPasscode = String(passcode).trim();
-      const adminSecret = (process.env.ADMIN_SECRET_KEY || '').trim();
+      if (!isAdminSecretUsable()) {
+        console.error('[Admin] ADMIN_SECRET_KEY is unset or shorter than 8 characters — admin login is disabled.');
+        return NextResponse.json({ success: false, error: 'Admin access is not configured on this deployment.' }, { status: 503 });
+      }
 
-      if (adminSecret && adminSecret.length >= 8 && safeCompare(cleanPasscode, adminSecret)) {
-        return NextResponse.json({ success: true, authorized: true });
+      if (verifyAdminPasscode(String(passcode))) {
+        // Set the session cookie here too, so this legacy login path does not
+        // leave the console with nothing but the raw secret to hold onto.
+        const ok = NextResponse.json({ success: true, authorized: true });
+        ok.headers.append('Set-Cookie', buildAdminSessionCookie(issueAdminSessionToken()));
+        return ok;
       }
       return NextResponse.json({ success: false, error: 'Incorrect Admin Passcode' }, { status: 401 });
     }
 
     // Ensure Admin Key is present for operational actions
-    if (!validateAdminKey(request)) {
+    if (!isAdminRequest(request)) {
       return NextResponse.json({ error: 'Unauthorized admin operation' }, { status: 401 });
     }
 

@@ -1,22 +1,7 @@
 import { NextResponse } from 'next/server';
-import crypto from 'crypto';
 import { serverStore } from '@/lib/serverStore';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
-
-function safeCompare(a: string, b: string): boolean {
-  if (!a || !b) return false;
-  const bufA = Buffer.from(a);
-  const bufB = Buffer.from(b);
-  if (bufA.length !== bufB.length) return false;
-  return crypto.timingSafeEqual(bufA, bufB);
-}
-
-function validateAdminKey(request: Request): boolean {
-  const authKey = (request.headers.get('x-admin-key') || '').trim();
-  const adminSecret = (process.env.ADMIN_SECRET_KEY || '').trim();
-  if (!adminSecret || adminSecret.length < 8) return false;
-  return safeCompare(authKey, adminSecret);
-}
+import { isAdminRequest } from '@/lib/adminAuth';
 
 export async function GET() {
   try {
@@ -36,7 +21,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Too many configuration requests' }, { status: 429 });
     }
 
-    if (!validateAdminKey(request)) {
+    if (!isAdminRequest(request)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
