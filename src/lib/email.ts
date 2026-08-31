@@ -4,10 +4,10 @@ import type { TeamRecord } from '@/types/orion';
 // Initialize SMTP Transporter
 function getTransporter() {
   const host = process.env.SMTP_HOST || 'smtp.gmail.com';
-  const port = Number(process.env.SMTP_PORT) || 465;
-  const user = (process.env.SMTP_USER || '').trim();
-  const pass = (process.env.SMTP_PASS || '').trim();
-  const secure = process.env.SMTP_SECURE !== 'false'; // Default to true for 465
+  const port = Number(process.env.SMTP_PORT) || 587;
+  const user = (process.env.SMTP_USER || process.env.EMAIL_USER || '').trim();
+  const pass = (process.env.SMTP_PASS || process.env.EMAIL_PASS || '').trim();
+  const secure = process.env.SMTP_SECURE === 'true'; // false for Port 587
 
   if (!user || !pass) {
     return null;
@@ -907,3 +907,269 @@ export async function sendPaymentReminderEmail(
     return { success: false, error: errorMsg };
   }
 }
+
+/**
+ * Generate Registration Received Email Template
+ */
+export function generateRegistrationReceivedHtml(team: TeamRecord): string {
+  const whatsappUrl =
+    process.env.NEXT_PUBLIC_WHATSAPP_GROUP_URL ||
+    'https://chat.whatsapp.com/C76LZLzWkOh3FPC99iXw8f';
+  
+  const portalUrl = `https://orion-10-nine.vercel.app/portal?regId=${team.registration_id}`;
+
+  return `
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ORION 1.0 - Registration Received</title>
+  <!--[if mso]>
+  <style type="text/css">
+    body, table, td, h1, h2, h3, p, a, span { font-family: 'Segoe UI', Helvetica, Arial, sans-serif !important; }
+  </style>
+  <![endif]-->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap');
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #020617;
+      color: #F8FAFC;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -ms-text-size-adjust: 100%;
+      -webkit-text-size-adjust: 100%;
+    }
+    table { border-collapse: collapse; }
+    img { border: 0; outline: none; text-decoration: none; }
+    @media only screen and (max-width: 620px) {
+      .container-table { width: 100% !important; padding: 8px !important; }
+      .content-padding { padding: 22px 16px !important; }
+      .mobile-stack { display: block !important; width: 100% !important; }
+    }
+  </style>
+</head>
+<body style="margin: 0; padding: 28px 10px; background-color: #020617; background-image: radial-gradient(circle at 50% 0%, #071426 0%, #020617 80%); color: #F8FAFC;">
+
+  <!-- Outer Wrapper Table -->
+  <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: transparent;">
+    <tr>
+      <td align="center">
+        
+        <!-- Main Email Container -->
+        <table role="presentation" class="container-table" width="620" border="0" cellspacing="0" cellpadding="0" style="max-width: 620px; width: 100%; background: #07101E; border: 1px solid rgba(0, 188, 242, 0.35); box-shadow: 0 0 35px rgba(0, 188, 242, 0.12);">
+          
+          <!-- Microsoft 4-Color Energy Accent Bar -->
+          <tr>
+            <td style="padding: 0;">
+              <table role="presentation" width="100%" height="4" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="25%" bgcolor="#F25022" style="font-size: 1px; line-height: 4px;">&nbsp;</td>
+                  <td width="25%" bgcolor="#7FBA00" style="font-size: 1px; line-height: 4px;">&nbsp;</td>
+                  <td width="25%" bgcolor="#00A4EF" style="font-size: 1px; line-height: 4px;">&nbsp;</td>
+                  <td width="25%" bgcolor="#FFB900" style="font-size: 1px; line-height: 4px;">&nbsp;</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Header Section -->
+          <tr>
+            <td style="padding: 32px 30px 24px; background: linear-gradient(180deg, #0A192F 0%, #07101E 100%); border-bottom: 1px solid rgba(255, 255, 255, 0.08); text-align: center;">
+              
+              <!-- Brand Title -->
+              <h1 style="margin: 0 0 8px; font-family: 'Space Grotesk', 'Segoe UI', sans-serif; font-size: 26px; font-weight: 800; letter-spacing: 2px; color: #FFFFFF; text-transform: uppercase;">
+                ORION <span style="color: #00BCF2;">1.0</span>
+              </h1>
+              <p style="margin: 0 0 16px; font-size: 11.5px; font-weight: 600; letter-spacing: 1.5px; color: #00BCF2; text-transform: uppercase;">
+                24-Hour National Hackathon • Microsoft Club SIST
+              </p>
+
+              <!-- Status Badge -->
+              <div style="display: inline-block; padding: 6px 14px; background: rgba(0, 188, 242, 0.12); border: 1px solid #00BCF2; color: #00BCF2; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;">
+                ⚡ REGISTRATION DOSSIER CREATED
+              </div>
+            </td>
+          </tr>
+
+          <!-- Content Section -->
+          <tr>
+            <td class="content-padding" style="padding: 30px 32px; background: #07101E;">
+              
+              <p style="margin: 0 0 16px; font-size: 14.5px; line-height: 1.6; color: #E2E8F0;">
+                Greetings <strong style="color: #FFFFFF;">${escapeHtml(team.leader_name)}</strong>,
+              </p>
+              
+              <p style="margin: 0 0 20px; font-size: 13.5px; line-height: 1.6; color: #94A3B8;">
+                Your squad <strong style="color: #38BDF8;">${escapeHtml(team.team_name)}</strong> has been successfully registered for <strong style="color: #FFFFFF;">ORION 1.0</strong>. Here are your official squad credentials and access portal details.
+              </p>
+
+              <!-- Credentials Box -->
+              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin: 20px 0; background: #0A1628; border: 1px solid rgba(0, 188, 242, 0.35);">
+                <tr>
+                  <td style="padding: 20px;">
+                    
+                    <div style="margin-bottom: 12px;">
+                      <div style="font-size: 10.5px; font-weight: 700; color: #00BCF2; text-transform: uppercase; letter-spacing: 1px;">
+                        Registration ID
+                      </div>
+                      <div style="font-family: 'JetBrains Mono', monospace; font-size: 17px; font-weight: 800; color: #FFFFFF; letter-spacing: 1px;">
+                        ${escapeHtml(team.registration_id)}
+                      </div>
+                    </div>
+
+                    <div style="margin-bottom: 12px;">
+                      <div style="font-size: 10.5px; font-weight: 700; color: #00BCF2; text-transform: uppercase; letter-spacing: 1px;">
+                        Access Token (Secret Key)
+                      </div>
+                      <div style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; color: #38BDF8; letter-spacing: 1px;">
+                        ${escapeHtml(team.access_token)}
+                      </div>
+                    </div>
+
+                    <div style="margin-bottom: 12px;">
+                      <div style="font-size: 10.5px; font-weight: 700; color: #00BCF2; text-transform: uppercase; letter-spacing: 1px;">
+                        Problem Statement Track
+                      </div>
+                      <div style="font-size: 13.5px; font-weight: 600; color: #F1F5F9;">
+                        ${escapeHtml(team.problem_statement)}
+                      </div>
+                    </div>
+
+                    <div>
+                      <div style="font-size: 10.5px; font-weight: 700; color: #00BCF2; text-transform: uppercase; letter-spacing: 1px;">
+                        Institution
+                      </div>
+                      <div style="font-size: 13px; color: #CBD5E1;">
+                        ${escapeHtml(team.institution)}
+                      </div>
+                    </div>
+
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Payment Action if not verified -->
+              ${team.payment_status !== 'VERIFIED' && team.payment_status !== 'SUCCESS' ? `
+              <div style="margin: 20px 0; padding: 18px; background: rgba(245, 158, 11, 0.08); border-left: 3px solid #F59E0B;">
+                <div style="font-size: 13px; font-weight: bold; color: #F59E0B; margin-bottom: 6px;">
+                  💳 Round 1 Entry Fee: ₹100 Flat per Squad
+                </div>
+                <p style="margin: 0 0 10px; font-size: 12.5px; color: #CBD5E1; line-height: 1.5;">
+                  Please complete the ₹100 team entry fee via UPI or submit your 12-digit transaction UTR through the Team Portal.
+                </p>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #FFFFFF;">
+                  UPI ID: <strong style="color: #38BDF8;">8870227906@upi</strong> (MSNIHITHAJULIETA)
+                </div>
+              </div>
+              ` : ''}
+
+              <!-- Action CTA -->
+              <table role="presentation" border="0" cellspacing="0" cellpadding="0" style="margin: 24px 0;">
+                <tr>
+                  <td align="center" bgcolor="#00BCF2">
+                    <a href="${portalUrl}" target="_blank" style="font-family: 'Space Grotesk', 'Segoe UI', sans-serif; font-size: 13px; font-weight: 800; color: #020617 !important; text-decoration: none; padding: 13px 26px; display: inline-block; letter-spacing: 1px; text-transform: uppercase;">
+                      ACCESS TEAM PORTAL →
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- WhatsApp Community Box -->
+              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin: 20px 0; background: linear-gradient(135deg, rgba(37, 211, 102, 0.08) 0%, rgba(7, 16, 30, 0.95) 100%); border: 1px solid rgba(37, 211, 102, 0.35);">
+                <tr>
+                  <td style="padding: 16px 18px;">
+                    <div style="font-size: 13px; font-weight: bold; color: #25D366; margin-bottom: 6px;">
+                      💬 JOIN THE PARTICIPANT COMMUNITY
+                    </div>
+                    <p style="margin: 0 0 10px; font-size: 12.5px; color: #94A3B8; line-height: 1.5;">
+                      All hackathon announcements, round deadlines, and mentor updates will be shared in the Official WhatsApp Community.
+                    </p>
+                    <a href="${whatsappUrl}" target="_blank" style="font-size: 12px; font-weight: bold; color: #25D366; text-decoration: underline;">
+                      Join Official WhatsApp Community →
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Sign-off -->
+              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 18px; margin-top: 24px;">
+                <tr>
+                  <td style="font-size: 13px; line-height: 1.5; color: #94A3B8;">
+                    Regards,<br>
+                    <strong style="color: #FFFFFF; font-size: 13.5px;">Microsoft Club SIST</strong><br>
+                    Student Development Cell<br>
+                    Sathyabama Institute of Science and Technology<br>
+                    Chennai, Tamil Nadu
+                  </td>
+                </tr>
+              </table>
+
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="padding: 20px 24px; background: #030712; border-top: 1px solid rgba(0, 188, 242, 0.2); text-align: center;">
+              <p style="margin: 0 0 6px; font-size: 11px; color: #64748B; letter-spacing: 0.5px;">
+                This is an automated operational notification from the ORION 1.0 Secretariat.
+              </p>
+              <p style="margin: 0; font-size: 10.5px; color: #475569;">
+                © 2026 ORION 1.0 • Microsoft Club SIST. All rights reserved.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+        <!-- /Main Email Container -->
+
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>
+  `;
+}
+
+/**
+ * Dispatch Registration Received / Welcome email to Team Leader
+ */
+export async function sendRegistrationReceivedEmail(
+  team: TeamRecord
+): Promise<{ success: boolean; messageId?: string; error?: string }> {
+  if (!team.leader_email || !team.leader_email.includes('@')) {
+    console.warn(`[Mailer] Skipping registration email: Team ${team.registration_id} has invalid email (${team.leader_email})`);
+    return { success: false, error: 'Invalid or missing team leader email' };
+  }
+
+  const transporter = getTransporter();
+  if (!transporter) {
+    console.warn(
+      `[Mailer Simulator] SMTP not configured. Registration email to ${team.leader_email} logged to console.`
+    );
+    return { success: true, messageId: 'simulated-local-mode' };
+  }
+
+  const sender = process.env.EMAIL_FROM || `"ORION 1.0 Secretariat" <${process.env.SMTP_USER}>`;
+  const html = generateRegistrationReceivedHtml(team);
+
+  try {
+    const info = await transporter.sendMail({
+      from: sender,
+      to: team.leader_email.trim(),
+      subject: `[ORION 1.0] Registration Dossier Created — ${team.registration_id} (${team.team_name})`,
+      html,
+    });
+
+    console.log(`[Mailer] ✓ Successfully sent registration confirmation email to ${team.leader_email} [Message ID: ${info.messageId}]`);
+    return { success: true, messageId: info.messageId };
+  } catch (err: unknown) {
+    const errorMsg = err instanceof Error ? err.message : String(err);
+    console.error(`[Mailer] ✗ Error sending registration confirmation email to ${team.leader_email}:`, errorMsg);
+    return { success: false, error: errorMsg };
+  }
+}
+

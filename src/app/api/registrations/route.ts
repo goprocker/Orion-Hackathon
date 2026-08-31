@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { serverStore } from '@/lib/serverStore';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
+import { sendRegistrationReceivedEmail } from '@/lib/email';
 import type { TeamRegistrationPayload } from '@/types/orion';
 
 export async function POST(request: Request) {
@@ -93,6 +94,11 @@ export async function POST(request: Request) {
       year,
       problemStatement,
       members
+    });
+
+    // Dispatch Instant Registration Confirmation & Credentials Email to Team Leader
+    sendRegistrationReceivedEmail(team).catch((mailErr) => {
+      console.error('[Registration Mailer] Error dispatching registration confirmation email:', mailErr);
     });
 
     // Schedule 5-minute automated unpaid payment reminder check
