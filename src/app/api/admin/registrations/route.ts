@@ -49,11 +49,6 @@ export async function GET(request: Request) {
 
     const config = await serverStore.getConfig();
 
-    // Trigger automated 5-minute unpaid payment reminders in background
-    serverStore.checkAndSendUnpaidReminders().catch((remErr) => {
-      console.error('[Background] Unpaid reminders check error:', remErr);
-    });
-
     return NextResponse.json({
       success: true,
       stats: result.stats,

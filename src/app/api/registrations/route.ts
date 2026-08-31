@@ -96,18 +96,6 @@ export async function POST(request: Request) {
       members
     });
 
-    // Dispatch Instant Registration Confirmation & Credentials Email to Team Leader
-    sendRegistrationReceivedEmail(team).catch((mailErr) => {
-      console.error('[Registration Mailer] Error dispatching registration confirmation email:', mailErr);
-    });
-
-    // Schedule 5-minute automated unpaid payment reminder check
-    setTimeout(() => {
-      serverStore.checkAndSendUnpaidReminders().catch((err) => {
-        console.error('[Registration Timer] Unpaid reminder check error:', err);
-      });
-    }, 5 * 60 * 1000 + 5000);
-
     return NextResponse.json({
       success: true,
       message: 'Team successfully registered for ORION 1.0',
