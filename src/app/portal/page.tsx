@@ -24,7 +24,10 @@ import {
   RefreshCw,
   FileCheck,
   ExternalLink,
-  Globe
+  Globe,
+  Send,
+  ShieldCheck,
+  XCircle
 } from 'lucide-react';
 import { GlassCard } from '@/components/common/GlassCard';
 import { PaymentReceiptModal } from '@/components/modals/PaymentReceiptModal';
@@ -70,6 +73,11 @@ export default function TeamPortalPage() {
   const [isUploading, setIsUploading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [uploadMsg, setUploadMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  // Re-upload Request State — replacing an accepted deck needs organiser approval
+  const [reuploadReason, setReuploadReason] = useState('');
+  const [isRequestingReupload, setIsRequestingReupload] = useState(false);
+  const [reuploadMsg, setReuploadMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   const handleLoginDirect = useCallback(async (id: string, token: string) => {
     if (!id || !token) return;
@@ -244,7 +252,12 @@ export default function TeamPortalPage() {
       });
       sound.playSuccessCelebration();
 
-      setUploadMsg({ type: 'success', text: 'Round 1 presentation successfully uploaded and registered!' });
+      setUploadMsg({
+        type: 'success',
+        text: latestSubmission
+          ? 'Replacement presentation uploaded and accepted. This is now the version the jury will evaluate.'
+          : 'Round 1 presentation uploaded and accepted. Your payment is verified, so no further approval is needed.'
+      });
       setSelectedFile(null);
       handleRefresh();
     } catch (err: unknown) {
@@ -255,9 +268,55 @@ export default function TeamPortalPage() {
     }
   };
 
-  const latestSubmission = team?.submissions && team.submissions.length > 0 
-    ? team.submissions[team.submissions.length - 1] 
-    : null;
+  // Ask organisers for permission to replace an already-accepted deck.
+  const handleRequestReupload = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!team) return;
+
+    sound.playClick();
+    setIsRequestingReupload(true);
+    setReuploadMsg(null);
+
+    try {
+      const res = await fetch('/api/team/resubmission', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          teamId: team.registration_id,
+          accessToken: team.access_token,
+          reason: reuploadReason.trim()
+        })
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Could not send the request');
+
+      setReuploadMsg({ type: 'success', text: data.message || 'Request sent to the organisers.' });
+      setReuploadReason('');
+      handleRefresh();
+    } catch (err: unknown) {
+      setReuploadMsg({ type: 'error', text: err instanceof Error ? err.message : 'Could not send the request' });
+    } finally {
+      setIsRequestingReupload(false);
+    }
+  };
+
+  const roundOneSubmissions = (team?.submissions || []).filter(s => s.round_number === 1);
+
+  // The deck the jury sees: the ACCEPTED one, falling back to the newest for
+  // records created before submission statuses were introduced.
+  const latestSubmission =
+    roundOneSubmissions.find(s => s.submission_status === 'ACCEPTED') ||
+    (roundOneSubmissions.length > 0 ? roundOneSubmissions[roundOneSubmissions.length - 1] : null);
+
+  const reuploadRequests = (team?.resubmission_requests || []).filter(r => r.round_number === 1);
+  const pendingReuploadRequest = reuploadRequests.find(r => r.status === 'PENDING') || null;
+  const approvedReuploadRequest = reuploadRequests.find(r => r.status === 'APPROVED') || null;
+  // Most recent decision, shown once the request is no longer open.
+  const lastDecidedRequest = reuploadRequests.find(r => r.status === 'REJECTED' || r.status === 'USED') || null;
+
+  // First upload is free; replacing it needs an approval in hand.
+  const canUpload = !latestSubmission || !!approvedReuploadRequest;
 
   const deadlineStr = config?.round1SubmissionDeadline || '2026-09-08T23:59:59+05:30';
   const isPastDeadline = false; // Live deadline check enforced server-side on upload
@@ -825,7 +884,7 @@ export default function TeamPortalPage() {
                             <span>CURRENT ACTIVE SUBMISSION (v{latestSubmission.version})</span>
                           </div>
                           <span className="text-[10px] font-mono bg-emerald-950 text-emerald-300 px-2 py-0.5 border border-emerald-500/30 font-bold">
-                            SUBMITTED
+                            {latestSubmission.submission_status}
                           </span>
                         </div>
 
@@ -897,8 +956,8 @@ export default function TeamPortalPage() {
 
                     {uploadMsg && (
                       <div className={`p-3 text-xs font-mono border flex items-center gap-2 ${
-                        uploadMsg.type === 'success' 
-                          ? 'bg-emerald-950/80 border-emerald-400 text-emerald-200 shadow-[0_0_15px_rgba(52,211,153,0.3)] animate-in fade-in' 
+                        uploadMsg.type === 'success'
+                          ? 'bg-emerald-950/80 border-emerald-400 text-emerald-200 shadow-[0_0_15px_rgba(52,211,153,0.3)] animate-in fade-in'
                           : 'bg-rose-950/80 border-rose-400 text-rose-200'
                       }`}>
                         {uploadMsg.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" /> : <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0" />}
@@ -906,8 +965,122 @@ export default function TeamPortalPage() {
                       </div>
                     )}
 
-                    {/* Upload Form */}
-                    {!isPastDeadline ? (
+                    {/*
+                      Re-upload gate. The first deck uploads freely once payment
+                      is verified; replacing it costs one organiser approval.
+                    */}
+                    {latestSubmission && !isPastDeadline && (
+                      <div className="space-y-3">
+                        {approvedReuploadRequest ? (
+                          <div className="p-3.5 bg-emerald-950/40 border border-emerald-500/50 space-y-1.5">
+                            <div className="flex items-center gap-2 text-emerald-300 font-mono-hud text-xs font-bold">
+                              <ShieldCheck className="w-4 h-4 shrink-0" />
+                              <span>RE-UPLOAD APPROVED — ONE REPLACEMENT UNLOCKED</span>
+                            </div>
+                            <p className="text-[11px] text-emerald-200/80 font-sans leading-relaxed">
+                              Upload your replacement deck below. It becomes the version the jury evaluates,
+                              and this approval is spent once you do — replacing it again needs a new request.
+                            </p>
+                            {approvedReuploadRequest.review_notes && (
+                              <p className="text-[11px] text-slate-300 font-mono pt-1 border-t border-emerald-500/20 mt-2">
+                                <span className="text-emerald-400">Organiser note:</span> {approvedReuploadRequest.review_notes}
+                              </p>
+                            )}
+                          </div>
+                        ) : pendingReuploadRequest ? (
+                          <div className="p-3.5 bg-amber-950/30 border border-amber-500/40 space-y-1.5">
+                            <div className="flex items-center gap-2 text-amber-300 font-mono-hud text-xs font-bold">
+                              <Clock className="w-4 h-4 shrink-0" />
+                              <span>RE-UPLOAD REQUEST AWAITING REVIEW</span>
+                            </div>
+                            <p className="text-[11px] text-amber-200/80 font-sans leading-relaxed">
+                              Organisers are reviewing your request. You will be emailed with their decision —
+                              until then the presentation above stands as your submission.
+                            </p>
+                            <p className="text-[11px] text-slate-400 font-mono pt-1 border-t border-amber-500/20 mt-2">
+                              <span className="text-slate-500">Requested {new Date(pendingReuploadRequest.created_at).toLocaleString()}:</span>{' '}
+                              {pendingReuploadRequest.reason}
+                            </p>
+                          </div>
+                        ) : (
+                          <div className="p-3.5 bg-[#040E24] border border-white/10 space-y-3">
+                            <div className="flex items-center gap-2 text-slate-200 font-mono-hud text-xs font-bold">
+                              <Lock className="w-4 h-4 text-slate-400 shrink-0" />
+                              <span>NEED TO REPLACE THIS DECK?</span>
+                            </div>
+                            <p className="text-[11px] text-slate-400 font-sans leading-relaxed">
+                              Your presentation is locked in as your Round 1 submission. To swap it for a new
+                              file, request organiser approval and explain why. If approved you get exactly one
+                              replacement upload.
+                            </p>
+
+                            {lastDecidedRequest?.status === 'REJECTED' && (
+                              <div className="p-2.5 bg-rose-950/30 border border-rose-500/30 text-[11px] font-mono text-rose-200 flex items-start gap-2">
+                                <XCircle className="w-3.5 h-3.5 shrink-0 mt-0.5 text-rose-400" />
+                                <span>
+                                  <span className="font-bold">Previous request declined.</span>{' '}
+                                  {lastDecidedRequest.review_notes || 'No reason was recorded.'}
+                                </span>
+                              </div>
+                            )}
+
+                            {reuploadMsg && (
+                              <div className={`p-2.5 text-[11px] font-mono border flex items-start gap-2 ${
+                                reuploadMsg.type === 'success'
+                                  ? 'bg-emerald-950/60 border-emerald-500/40 text-emerald-200'
+                                  : 'bg-rose-950/60 border-rose-500/40 text-rose-200'
+                              }`}>
+                                {reuploadMsg.type === 'success'
+                                  ? <CheckCircle2 className="w-3.5 h-3.5 shrink-0 mt-0.5 text-emerald-400" />
+                                  : <AlertTriangle className="w-3.5 h-3.5 shrink-0 mt-0.5 text-rose-400" />}
+                                <span>{reuploadMsg.text}</span>
+                              </div>
+                            )}
+
+                            <form onSubmit={handleRequestReupload} className="space-y-2">
+                              <label className="block text-[11px] font-mono-hud text-[#BAE6FD]">
+                                WHY DO YOU NEED TO RE-UPLOAD?
+                              </label>
+                              <textarea
+                                value={reuploadReason}
+                                onChange={(e) => setReuploadReason(e.target.value)}
+                                rows={3}
+                                maxLength={1000}
+                                required
+                                minLength={15}
+                                placeholder="e.g. We uploaded an outdated draft by mistake — the final deck has the corrected architecture diagram and results."
+                                className="w-full px-3 py-2 bg-[#020817] border border-white/15 text-white text-xs font-mono focus:border-[#38BDF8] focus:outline-none resize-y"
+                              />
+                              <div className="flex items-center justify-between gap-3">
+                                <span className="text-[10px] text-slate-500 font-mono">
+                                  {reuploadReason.trim().length}/1000 · minimum 15 characters
+                                </span>
+                                <button
+                                  type="submit"
+                                  disabled={isRequestingReupload || reuploadReason.trim().length < 15}
+                                  className="px-4 py-2 bg-[#0B2556] border border-[#38BDF8]/40 text-[#38BDF8] hover:bg-[#38BDF8]/20 transition-colors text-[11px] font-mono font-bold flex items-center gap-2 cursor-pointer active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+                                >
+                                  {isRequestingReupload ? (
+                                    <>
+                                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                                      <span>SENDING...</span>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Send className="w-3.5 h-3.5" />
+                                      <span>REQUEST RE-UPLOAD</span>
+                                    </>
+                                  )}
+                                </button>
+                              </div>
+                            </form>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Upload Form — hidden while a replacement is not authorised */}
+                    {!isPastDeadline && canUpload ? (
                       <form onSubmit={handleFileUpload} className="space-y-3.5">
                         <div 
                           onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
@@ -1007,7 +1180,7 @@ export default function TeamPortalPage() {
                           ) : latestSubmission ? (
                             <>
                               <Upload className="w-4 h-4 text-[#040E24]" />
-                              <span>SUBMIT NEW VERSION (RESUBMIT)</span>
+                              <span>UPLOAD APPROVED REPLACEMENT</span>
                             </>
                           ) : (
                             <>
@@ -1017,11 +1190,11 @@ export default function TeamPortalPage() {
                           )}
                         </button>
                       </form>
-                    ) : (
+                    ) : isPastDeadline ? (
                       <div className="p-3.5 bg-rose-950/40 border border-rose-500/40 text-rose-300 text-xs font-mono text-center">
                         Round 1 submission window is now closed.
                       </div>
-                    )}
+                    ) : null}
 
                     {/* Template Rules & Download Quick Guide */}
                     <div className="pt-3 border-t border-white/10 space-y-2 text-[11px] text-slate-400">

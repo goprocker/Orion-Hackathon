@@ -1,30 +1,133 @@
 import nodemailer from 'nodemailer';
+import type { Transporter } from 'nodemailer';
+import crypto from 'crypto';
 import type { TeamRecord } from '@/types/orion';
 
-// Initialize SMTP Transporter
-function getTransporter() {
-  const host = process.env.SMTP_HOST || 'smtp.gmail.com';
-  const port = Number(process.env.SMTP_PORT) || 587;
-  const user = (process.env.SMTP_USER || process.env.EMAIL_USER || '').trim();
-  const pass = (process.env.SMTP_PASS || process.env.EMAIL_PASS || '').trim();
-  const secure = process.env.SMTP_SECURE === 'true'; // false for Port 587
+// ==============================================================================
+// Mail Core — deliverability-hardened SMTP dispatch
+// ==============================================================================
+//
+// Inbox placement depends on a handful of things that are easy to get wrong, so
+// they live here instead of being repeated in every send* function:
+//
+//   1. ONE pooled transporter per process. A fresh TCP + TLS + AUTH handshake
+//      per message looks like a spam cannon and gets the sender throttled.
+//   2. A real plain-text alternative on every message. HTML-only mail is the
+//      single largest controllable spam-score penalty.
+//   3. Envelope sender aligned with the authenticated SMTP account, so SPF and
+//      DKIM line up under DMARC. A From: on a domain the account cannot
+//      authenticate for is a near-guaranteed spam placement.
+//   4. List-Unsubscribe with one-click POST, required by Google and Yahoo bulk
+//      sender rules since Feb 2024.
+//   5. Distinct per-message identifiers so Gmail does not thread or collapse
+//      separate notices into one another.
 
-  if (!user || !pass) {
-    return null;
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://orion-10-nine.vercel.app').replace(/\/+$/, '');
+
+const SENDER_NAME = process.env.EMAIL_FROM_NAME || 'ORION 1.0 Secretariat';
+
+function smtpUser(): string {
+  return (process.env.SMTP_USER || process.env.EMAIL_USER || '').trim();
+}
+
+function smtpPass(): string {
+  return (process.env.SMTP_PASS || process.env.EMAIL_PASS || '').trim();
+}
+
+/**
+ * The address the receiving server can actually authenticate. Everything the
+ * recipient sees derives from this so SPF/DKIM/DMARC stay aligned.
+ */
+function senderAddress(): string {
+  const explicit = (process.env.EMAIL_FROM || '').trim();
+  const authUser = smtpUser();
+  if (!explicit) return authUser;
+
+  // EMAIL_FROM may be a bare address or a `"Name" <addr>` pair.
+  const match = explicit.match(/<([^>]+)>/);
+  const explicitAddr = (match ? match[1] : explicit).trim();
+
+  const explicitDomain = explicitAddr.split('@')[1]?.toLowerCase();
+  const authDomain = authUser.split('@')[1]?.toLowerCase();
+
+  // A From: domain the SMTP account cannot sign for fails DMARC alignment and
+  // lands in spam. Prefer the authenticated account and say so loudly.
+  if (explicitDomain && authDomain && explicitDomain !== authDomain) {
+    console.warn(
+      `[Mailer] EMAIL_FROM (${explicitAddr}) is on a different domain than SMTP_USER (${authUser}). ` +
+      `Sending as ${authUser} to keep SPF/DKIM aligned — otherwise mail lands in spam. ` +
+      `To send as ${explicitAddr}, authenticate SMTP with that domain.`
+    );
+    return authUser;
   }
 
-  return nodemailer.createTransport({
+  return explicitAddr;
+}
+
+function replyToAddress(): string {
+  return (process.env.EMAIL_REPLY_TO || '').trim() || senderAddress();
+}
+
+let cachedTransporter: Transporter | null = null;
+let cachedTransporterKey = '';
+
+/** Pooled, rate-limited singleton transporter. Rebuilt only if config changes. */
+function getTransporter(): Transporter | null {
+  const user = smtpUser();
+  const pass = smtpPass();
+  if (!user || !pass) return null;
+
+  const host = process.env.SMTP_HOST || 'smtp.gmail.com';
+  const port = Number(process.env.SMTP_PORT) || 587;
+  // 465 is implicit TLS; 587 upgrades via STARTTLS.
+  const secure = process.env.SMTP_SECURE ? process.env.SMTP_SECURE === 'true' : port === 465;
+
+  const key = `${host}:${port}:${secure}:${user}`;
+  if (cachedTransporter && cachedTransporterKey === key) {
+    return cachedTransporter;
+  }
+
+  cachedTransporter = nodemailer.createTransport({
     host,
     port,
     secure,
-    auth: {
-      user,
-      pass,
-    },
+    auth: { user, pass },
+    // Reuse connections — a handshake per message gets the sender throttled.
+    pool: true,
+    maxConnections: 3,
+    maxMessages: 50,
+    // Stay well under Gmail's throughput ceiling so bulk reminder runs are not
+    // deferred; deferrals themselves damage sender reputation.
+    rateDelta: 1000,
+    rateLimit: 5,
+    // Validate the server certificate. Disabling this never helps delivery and
+    // silently accepts a MITM.
+    requireTLS: !secure,
     tls: {
-      rejectUnauthorized: false,
-    },
+      minVersion: 'TLSv1.2',
+      servername: host
+    }
   });
+
+  cachedTransporterKey = key;
+  return cachedTransporter;
+}
+
+/**
+ * One-shot SMTP connection + credential check, surfaced by /api/status so a
+ * misconfigured mailer is visible before a live send fails silently.
+ */
+export async function verifySmtp(): Promise<{ configured: boolean; ok: boolean; error?: string }> {
+  const transporter = getTransporter();
+  if (!transporter) {
+    return { configured: false, ok: false, error: 'SMTP_USER / SMTP_PASS not configured' };
+  }
+  try {
+    await transporter.verify();
+    return { configured: true, ok: true };
+  } catch (err: unknown) {
+    return { configured: true, ok: false, error: err instanceof Error ? err.message : String(err) };
+  }
 }
 
 function escapeHtml(str?: string): string {
@@ -38,6 +141,100 @@ function escapeHtml(str?: string): string {
 }
 
 /**
+ * Hidden preview line shown beside the subject in Gmail and Apple Mail. Without
+ * one, clients scrape the first visible text — the boilerplate club header —
+ * which reads as templated bulk mail.
+ */
+function preheader(text: string): string {
+  const spacer = '&#847;&zwnj;&nbsp;'.repeat(60);
+  return (
+    `<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#07101E;opacity:0;">${escapeHtml(text)}</div>` +
+    `<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#07101E;opacity:0;">${spacer}</div>`
+  );
+}
+
+interface DispatchOptions {
+  to: string;
+  subject: string;
+  html: string;
+  /** Plain-text alternative. Required — HTML-only mail is scored as spam. */
+  text: string;
+  /** Short label used to build a stable, non-threading message reference. */
+  kind: string;
+  registrationId: string;
+}
+
+async function dispatchMail(
+  opts: DispatchOptions
+): Promise<{ success: boolean; messageId?: string; error?: string }> {
+  const transporter = getTransporter();
+  if (!transporter) {
+    console.warn(
+      `[Mailer Simulator] SMTP_USER / SMTP_PASS not configured. "${opts.subject}" to ${opts.to} was not sent.`
+    );
+    return { success: true, messageId: 'simulated-local-mode' };
+  }
+
+  const from = senderAddress();
+  const domain = from.split('@')[1] || 'orion.local';
+  const portalLink = `${SITE_URL}/portal?regId=${encodeURIComponent(opts.registrationId)}`;
+
+  try {
+    const info = await transporter.sendMail({
+      from: `"${SENDER_NAME}" <${from}>`,
+      // The envelope sender drives the SPF check — keep it on the auth account.
+      sender: from,
+      envelope: { from, to: opts.to },
+      replyTo: replyToAddress(),
+      to: opts.to,
+      subject: opts.subject,
+      text: opts.text,
+      html: opts.html,
+      messageId: `<${opts.kind}.${opts.registrationId}.${Date.now()}.${crypto.randomBytes(6).toString('hex')}@${domain}>`,
+      headers: {
+        // Google / Yahoo bulk sender requirement.
+        'List-Unsubscribe': `<mailto:${from}?subject=Unsubscribe%20${encodeURIComponent(opts.registrationId)}>, <${portalLink}>`,
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+        // Stops Gmail collapsing distinct notices into a single thread.
+        'X-Entity-Ref-ID': `${opts.kind}-${opts.registrationId}-${Date.now()}`,
+        'Auto-Submitted': 'auto-generated'
+      }
+    });
+
+    console.log(`[Mailer] Sent "${opts.kind}" to ${opts.to} [${info.messageId}]`);
+    return { success: true, messageId: info.messageId };
+  } catch (err: unknown) {
+    const errorMsg = err instanceof Error ? err.message : String(err);
+    console.error(`[Mailer] Failed "${opts.kind}" to ${opts.to}:`, errorMsg);
+    return { success: false, error: errorMsg };
+  }
+}
+
+/** Returns the leader email if usable, else null (and logs why). */
+function validRecipient(team: TeamRecord, kind: string): string | null {
+  const email = (team.leader_email || '').trim();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    console.warn(`[Mailer] Skipping ${kind}: team ${team.registration_id} has no valid leader email (${team.leader_email})`);
+    return null;
+  }
+  return email;
+}
+
+/** Shared plain-text footer. */
+function textFooter(): string {
+  return [
+    '',
+    '--',
+    'ORION 1.0 — 24-Hour National Hackathon',
+    'Microsoft Club SIST, Sathyabama Institute of Science and Technology, Chennai',
+    `Team portal: ${SITE_URL}/portal`,
+    '',
+    'You are receiving this because your team registered for ORION 1.0.',
+    'Reply to this email if you did not register or wish to withdraw.'
+  ].join('\n');
+}
+
+/**
  * Generate Cyber Futuristic HTML template for Orion 1.0 Registration & Payment Confirmation
  */
 export function generatePaymentVerifiedHtml(team: TeamRecord): string {
@@ -45,8 +242,7 @@ export function generatePaymentVerifiedHtml(team: TeamRecord): string {
     process.env.NEXT_PUBLIC_WHATSAPP_GROUP_URL ||
     'https://chat.whatsapp.com/C76LZLzWkOh3FPC99iXw8f';
 
-  return `
-<!DOCTYPE html>
+  return `<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8">
@@ -79,6 +275,8 @@ export function generatePaymentVerifiedHtml(team: TeamRecord): string {
   </style>
 </head>
 <body style="margin: 0; padding: 28px 10px; background-color: #020617; background-image: radial-gradient(circle at 50% 0%, #071426 0%, #020617 80%); color: #F8FAFC;">
+
+  ${preheader('Your entry fee is verified and your ORION 1.0 team portal access is ready.')}
 
   <!-- Outer Wrapper Table -->
   <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: transparent;">
@@ -326,8 +524,7 @@ export function generatePaymentVerifiedHtml(team: TeamRecord): string {
   </table>
 
 </body>
-</html>
-  `;
+</html>`;
 }
 
 /**
@@ -338,10 +535,9 @@ export function generateResubmissionRequiredHtml(team: TeamRecord, reason: strin
     process.env.NEXT_PUBLIC_WHATSAPP_GROUP_URL ||
     'https://chat.whatsapp.com/C76LZLzWkOh3FPC99iXw8f';
   
-  const portalUrl = `https://orion-10-nine.vercel.app/portal?regId=${team.registration_id}`;
+  const portalUrl = `${SITE_URL}/portal?regId=${encodeURIComponent(team.registration_id)}`;
 
-  return `
-<!DOCTYPE html>
+  return `<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8">
@@ -374,6 +570,8 @@ export function generateResubmissionRequiredHtml(team: TeamRecord, reason: strin
   </style>
 </head>
 <body style="margin: 0; padding: 28px 10px; background-color: #020617; background-image: radial-gradient(circle at 50% 0%, #071426 0%, #020617 80%); color: #F8FAFC;">
+
+  ${preheader('We could not verify your payment reference. Here is what to correct.')}
 
   <!-- Outer Wrapper Table -->
   <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: transparent;">
@@ -557,85 +755,87 @@ export function generateResubmissionRequiredHtml(team: TeamRecord, reason: strin
   </table>
 
 </body>
-</html>
-  `;
+</html>`;
 }
 
 /**
  * Dispatch confirmation email to Team Leader
  */
 export async function sendPaymentVerifiedEmail(team: TeamRecord): Promise<{ success: boolean; messageId?: string; error?: string }> {
-  if (!team.leader_email || !team.leader_email.includes('@')) {
-    console.warn(`[Mailer] Skipping email: Team ${team.registration_id} (${team.team_name}) has invalid or missing email (${team.leader_email})`);
-    return { success: false, error: 'Invalid or missing team leader email' };
-  }
+  const to = validRecipient(team, 'payment-verified');
+  if (!to) return { success: false, error: 'Invalid or missing team leader email' };
 
-  const transporter = getTransporter();
-  if (!transporter) {
-    console.warn(
-      `[Mailer Simulator] SMTP credentials (SMTP_USER / SMTP_PASS) not configured in .env.local. Email to ${team.leader_email} logged to console.`
-    );
-    return { success: true, messageId: 'simulated-local-mode' };
-  }
+  const portalUrl = `${SITE_URL}/portal?regId=${encodeURIComponent(team.registration_id)}`;
+  const text = [
+    `Hello ${team.leader_name},`,
+    '',
+    `Your ORION 1.0 registration fee has been received and verified. Team "${team.team_name}" is now confirmed for the Online Qualifier Round.`,
+    '',
+    'TEAM ACCESS CREDENTIALS',
+    `  Team name        : ${team.team_name}`,
+    `  Team leader      : ${team.leader_name}`,
+    `  Registration ID  : ${team.registration_id}`,
+    `  Access passcode  : ${team.access_token}`,
+    `  Problem statement: ${team.problem_statement || 'Assigned in Round 1'}`,
+    '',
+    'Keep the access passcode private — it is what unlocks your team portal.',
+    '',
+    'WHAT HAPPENS NEXT',
+    '  1. Sign in to the team portal with your Registration ID and passcode.',
+    '  2. Upload your Round 1 presentation (PDF, PPT or PPTX) before the deadline.',
+    '  3. Results of the Online Qualifier are announced on the portal.',
+    '',
+    `Team portal: ${portalUrl}`,
+    textFooter()
+  ].join('\n');
 
-  const sender = process.env.EMAIL_FROM || `"ORION 1.0 Secretariat" <${process.env.SMTP_USER}>`;
-  const html = generatePaymentVerifiedHtml(team);
-
-  try {
-    const info = await transporter.sendMail({
-      from: sender,
-      to: team.leader_email.trim(),
-      subject: `[ORION 1.0] Registration & Payment Confirmed — ${team.registration_id} (${team.team_name})`,
-      html,
-    });
-
-    console.log(`[Mailer] ✓ Successfully sent verification email to ${team.leader_email} [Message ID: ${info.messageId}]`);
-    return { success: true, messageId: info.messageId };
-  } catch (err: unknown) {
-    const errorMsg = err instanceof Error ? err.message : String(err);
-    console.error(`[Mailer] ✗ Error sending verification email to ${team.leader_email}:`, errorMsg);
-    return { success: false, error: errorMsg };
-  }
+  return dispatchMail({
+    to,
+    subject: `Payment verified — ${team.team_name} is confirmed for ORION 1.0 (${team.registration_id})`,
+    html: generatePaymentVerifiedHtml(team),
+    text,
+    kind: 'payment-verified',
+    registrationId: team.registration_id
+  });
 }
 
 /**
  * Dispatch Resubmission Required email to Team Leader
  */
 export async function sendResubmissionRequiredEmail(
-  team: TeamRecord, 
+  team: TeamRecord,
   reason: string
 ): Promise<{ success: boolean; messageId?: string; error?: string }> {
-  if (!team.leader_email || !team.leader_email.includes('@')) {
-    console.warn(`[Mailer] Skipping resubmission email: Team ${team.registration_id} has invalid email (${team.leader_email})`);
-    return { success: false, error: 'Invalid or missing team leader email' };
-  }
+  const to = validRecipient(team, 'payment-resubmission');
+  if (!to) return { success: false, error: 'Invalid or missing team leader email' };
 
-  const transporter = getTransporter();
-  if (!transporter) {
-    console.warn(
-      `[Mailer Simulator] SMTP not configured. Resubmission notice to ${team.leader_email} logged to console. Reason: ${reason}`
-    );
-    return { success: true, messageId: 'simulated-local-mode' };
-  }
+  const portalUrl = `${SITE_URL}/portal?regId=${encodeURIComponent(team.registration_id)}`;
+  const text = [
+    `Hello ${team.leader_name},`,
+    '',
+    `We could not verify the payment details submitted for team "${team.team_name}" (${team.registration_id}).`,
+    '',
+    'WHAT THE ORGANISERS NOTED',
+    `  ${reason}`,
+    '',
+    'Please sign in to the team portal and submit your payment reference again with the corrected details.',
+    '',
+    `Team portal: ${portalUrl}`,
+    `Registration ID: ${team.registration_id}`,
+    `Access passcode: ${team.access_token}`,
+    '',
+    'Reply to this email if you believe the payment was already made correctly, and include the transaction screenshot.',
+    textFooter()
+  ].join('\n');
 
-  const sender = process.env.EMAIL_FROM || `"ORION 1.0 Secretariat" <${process.env.SMTP_USER}>`;
-  const html = generateResubmissionRequiredHtml(team, reason);
-
-  try {
-    const info = await transporter.sendMail({
-      from: sender,
-      to: team.leader_email.trim(),
-      subject: `[ORION 1.0] Action Required: Resubmission Requested for ${team.registration_id} (${team.team_name})`,
-      html,
-    });
-
-    console.log(`[Mailer] ✓ Successfully sent resubmission email to ${team.leader_email} [Message ID: ${info.messageId}]`);
-    return { success: true, messageId: info.messageId };
-  } catch (err: unknown) {
-    const errorMsg = err instanceof Error ? err.message : String(err);
-    console.error(`[Mailer] ✗ Error sending resubmission email to ${team.leader_email}:`, errorMsg);
-    return { success: false, error: errorMsg };
-  }
+  return dispatchMail({
+    to,
+    subject: `Payment details need a correction — ${team.team_name} (${team.registration_id})`,
+    html: generateResubmissionRequiredHtml(team, reason),
+    text,
+    kind: 'payment-resubmission',
+    registrationId: team.registration_id
+  });
 }
 
 /**
@@ -646,10 +846,9 @@ export function generatePaymentReminderHtml(team: TeamRecord): string {
     process.env.NEXT_PUBLIC_WHATSAPP_GROUP_URL ||
     'https://chat.whatsapp.com/C76LZLzWkOh3FPC99iXw8f';
   
-  const portalUrl = `https://orion-10-nine.vercel.app/portal?regId=${team.registration_id}`;
+  const portalUrl = `${SITE_URL}/portal?regId=${encodeURIComponent(team.registration_id)}`;
 
-  return `
-<!DOCTYPE html>
+  return `<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8">
@@ -682,6 +881,8 @@ export function generatePaymentReminderHtml(team: TeamRecord): string {
   </style>
 </head>
 <body style="margin: 0; padding: 28px 10px; background-color: #020617; background-image: radial-gradient(circle at 50% 0%, #071426 0%, #020617 80%); color: #F8FAFC;">
+
+  ${preheader('Your ORION 1.0 place is not held until the Round 1 entry fee is paid.')}
 
   <!-- Outer Wrapper Table -->
   <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: transparent;">
@@ -865,8 +1066,7 @@ export function generatePaymentReminderHtml(team: TeamRecord): string {
   </table>
 
 </body>
-</html>
-  `;
+</html>`;
 }
 
 /**
@@ -875,37 +1075,38 @@ export function generatePaymentReminderHtml(team: TeamRecord): string {
 export async function sendPaymentReminderEmail(
   team: TeamRecord
 ): Promise<{ success: boolean; messageId?: string; error?: string }> {
-  if (!team.leader_email || !team.leader_email.includes('@')) {
-    console.warn(`[Mailer] Skipping payment reminder: Team ${team.registration_id} has invalid email (${team.leader_email})`);
-    return { success: false, error: 'Invalid or missing team leader email' };
-  }
+  const to = validRecipient(team, 'payment-reminder');
+  if (!to) return { success: false, error: 'Invalid or missing team leader email' };
 
-  const transporter = getTransporter();
-  if (!transporter) {
-    console.warn(
-      `[Mailer Simulator] SMTP not configured. Payment reminder to ${team.leader_email} logged to console.`
-    );
-    return { success: true, messageId: 'simulated-local-mode' };
-  }
+  const portalUrl = `${SITE_URL}/portal?regId=${encodeURIComponent(team.registration_id)}`;
+  const text = [
+    `Hello ${team.leader_name},`,
+    '',
+    `Team "${team.team_name}" (${team.registration_id}) is registered for ORION 1.0, but we have not yet received the Round 1 entry fee of Rs.${team.amount || 100} for the squad.`,
+    '',
+    'Your place in the Online Qualifier is held only once the fee is paid and verified.',
+    '',
+    'HOW TO COMPLETE IT',
+    '  1. Open the team portal using the link below.',
+    '  2. Pay the entry fee using the UPI details shown there.',
+    '  3. Enter the UTR / transaction reference so organisers can verify it.',
+    '',
+    `Team portal: ${portalUrl}`,
+    `Registration ID: ${team.registration_id}`,
+    `Access passcode: ${team.access_token}`,
+    '',
+    'If you have already paid, reply to this email with the transaction reference and we will reconcile it.',
+    textFooter()
+  ].join('\n');
 
-  const sender = process.env.EMAIL_FROM || `"ORION 1.0 Secretariat" <${process.env.SMTP_USER}>`;
-  const html = generatePaymentReminderHtml(team);
-
-  try {
-    const info = await transporter.sendMail({
-      from: sender,
-      to: team.leader_email.trim(),
-      subject: `[ORION 1.0] Action Required: Complete Your Registration Payment — ${team.registration_id} (${team.team_name})`,
-      html,
-    });
-
-    console.log(`[Mailer] ✓ Successfully sent payment reminder email to ${team.leader_email} [Message ID: ${info.messageId}]`);
-    return { success: true, messageId: info.messageId };
-  } catch (err: unknown) {
-    const errorMsg = err instanceof Error ? err.message : String(err);
-    console.error(`[Mailer] ✗ Error sending payment reminder email to ${team.leader_email}:`, errorMsg);
-    return { success: false, error: errorMsg };
-  }
+  return dispatchMail({
+    to,
+    subject: `Entry fee pending for ${team.team_name} — ORION 1.0 (${team.registration_id})`,
+    html: generatePaymentReminderHtml(team),
+    text,
+    kind: 'payment-reminder',
+    registrationId: team.registration_id
+  });
 }
 
 /**
@@ -916,10 +1117,9 @@ export function generateRegistrationReceivedHtml(team: TeamRecord): string {
     process.env.NEXT_PUBLIC_WHATSAPP_GROUP_URL ||
     'https://chat.whatsapp.com/C76LZLzWkOh3FPC99iXw8f';
   
-  const portalUrl = `https://orion-10-nine.vercel.app/portal?regId=${team.registration_id}`;
+  const portalUrl = `${SITE_URL}/portal?regId=${encodeURIComponent(team.registration_id)}`;
 
-  return `
-<!DOCTYPE html>
+  return `<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8">
@@ -952,6 +1152,8 @@ export function generateRegistrationReceivedHtml(team: TeamRecord): string {
   </style>
 </head>
 <body style="margin: 0; padding: 28px 10px; background-color: #020617; background-image: radial-gradient(circle at 50% 0%, #071426 0%, #020617 80%); color: #F8FAFC;">
+
+  ${preheader('Your team is registered. One step left: pay the Round 1 entry fee.')}
 
   <!-- Outer Wrapper Table -->
   <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: transparent;">
@@ -1130,8 +1332,7 @@ export function generateRegistrationReceivedHtml(team: TeamRecord): string {
   </table>
 
 </body>
-</html>
-  `;
+</html>`;
 }
 
 /**
@@ -1140,36 +1341,301 @@ export function generateRegistrationReceivedHtml(team: TeamRecord): string {
 export async function sendRegistrationReceivedEmail(
   team: TeamRecord
 ): Promise<{ success: boolean; messageId?: string; error?: string }> {
-  if (!team.leader_email || !team.leader_email.includes('@')) {
-    console.warn(`[Mailer] Skipping registration email: Team ${team.registration_id} has invalid email (${team.leader_email})`);
-    return { success: false, error: 'Invalid or missing team leader email' };
-  }
+  const to = validRecipient(team, 'registration-received');
+  if (!to) return { success: false, error: 'Invalid or missing team leader email' };
 
-  const transporter = getTransporter();
-  if (!transporter) {
-    console.warn(
-      `[Mailer Simulator] SMTP not configured. Registration email to ${team.leader_email} logged to console.`
-    );
-    return { success: true, messageId: 'simulated-local-mode' };
-  }
+  const portalUrl = `${SITE_URL}/portal?regId=${encodeURIComponent(team.registration_id)}`;
+  const roster = team.members
+    .map((m, i) => `  ${i + 1}. ${m.member_name} (${m.member_phone})`)
+    .join('\n');
 
-  const sender = process.env.EMAIL_FROM || `"ORION 1.0 Secretariat" <${process.env.SMTP_USER}>`;
-  const html = generateRegistrationReceivedHtml(team);
+  const text = [
+    `Hello ${team.leader_name},`,
+    '',
+    `Thank you for registering team "${team.team_name}" for ORION 1.0, the 24-hour national hackathon hosted by Microsoft Club SIST at Sathyabama Institute of Science and Technology, Chennai.`,
+    '',
+    'YOUR TEAM RECORD',
+    `  Registration ID  : ${team.registration_id}`,
+    `  Access passcode  : ${team.access_token}`,
+    `  Team leader      : ${team.leader_name} (${team.leader_email})`,
+    `  Institution      : ${team.institution}`,
+    `  Problem statement: ${team.problem_statement}`,
+    '',
+    `SQUAD MEMBERS (${team.members.length} in addition to the leader)`,
+    roster || '  (none recorded)',
+    '',
+    'Keep the access passcode private — it is what unlocks your team portal.',
+    '',
+    'NEXT STEP: PAY THE ROUND 1 ENTRY FEE',
+    `Your registration is not confirmed until the Rs.${team.amount || 100} entry fee for the squad is paid and verified. Open the portal, pay via the UPI details shown there, and enter the UTR / transaction reference.`,
+    '',
+    `Team portal: ${portalUrl}`,
+    textFooter()
+  ].join('\n');
 
-  try {
-    const info = await transporter.sendMail({
-      from: sender,
-      to: team.leader_email.trim(),
-      subject: `[ORION 1.0] Registration Dossier Created — ${team.registration_id} (${team.team_name})`,
-      html,
-    });
-
-    console.log(`[Mailer] ✓ Successfully sent registration confirmation email to ${team.leader_email} [Message ID: ${info.messageId}]`);
-    return { success: true, messageId: info.messageId };
-  } catch (err: unknown) {
-    const errorMsg = err instanceof Error ? err.message : String(err);
-    console.error(`[Mailer] ✗ Error sending registration confirmation email to ${team.leader_email}:`, errorMsg);
-    return { success: false, error: errorMsg };
-  }
+  return dispatchMail({
+    to,
+    subject: `Registration received — ${team.team_name} (${team.registration_id})`,
+    html: generateRegistrationReceivedHtml(team),
+    text,
+    kind: 'registration-received',
+    registrationId: team.registration_id
+  });
 }
 
+
+// ==============================================================================
+// Round 1 Re-upload Request Decision Notices
+// ==============================================================================
+
+/**
+ * Compact shared shell for the short transactional notices. The registration and
+ * payment templates above are full marketing-weight layouts; these are decision
+ * receipts, so they stay small and fast to render.
+ */
+function decisionShell(opts: {
+  title: string;
+  preview: string;
+  accent: string;
+  badge: string;
+  bodyRows: string;
+  ctaLabel: string;
+  ctaUrl: string;
+}): string {
+  return `<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${escapeHtml(opts.title)}</title>
+</head>
+<body style="margin:0;padding:28px 10px;background-color:#020617;color:#F8FAFC;font-family:'Segoe UI',Helvetica,Arial,sans-serif;">
+
+  ${preheader(opts.preview)}
+
+  <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="600" border="0" cellspacing="0" cellpadding="0" style="max-width:600px;width:100%;background:#07101E;border:1px solid rgba(0,188,242,0.35);">
+
+          <tr>
+            <td style="padding:0;">
+              <table role="presentation" width="100%" height="4" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="25%" bgcolor="#F25022" style="font-size:1px;line-height:4px;">&nbsp;</td>
+                  <td width="25%" bgcolor="#7FBA00" style="font-size:1px;line-height:4px;">&nbsp;</td>
+                  <td width="25%" bgcolor="#00A4EF" style="font-size:1px;line-height:4px;">&nbsp;</td>
+                  <td width="25%" bgcolor="#FFB900" style="font-size:1px;line-height:4px;">&nbsp;</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:28px 26px 18px;background:#0B192C;border-bottom:1px solid rgba(0,188,242,0.2);text-align:center;">
+              <div style="font-size:11px;font-weight:700;color:#00A4EF;letter-spacing:1.5px;text-transform:uppercase;">
+                MICROSOFT CLUB SIST
+              </div>
+              <h1 style="margin:8px 0 0;font-size:26px;font-weight:800;letter-spacing:2px;color:#FFFFFF;text-transform:uppercase;">
+                ORION <span style="color:#22D3EE;">1.0</span>
+              </h1>
+              <div style="margin-top:10px;display:inline-block;padding:5px 14px;background:${opts.accent}1F;border:1px solid ${opts.accent};font-size:11px;font-weight:700;color:${opts.accent};letter-spacing:1.2px;text-transform:uppercase;">
+                ${escapeHtml(opts.badge)}
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:26px 26px 20px;color:#E2E8F0;font-size:14.5px;line-height:1.65;">
+              ${opts.bodyRows}
+
+              <table role="presentation" border="0" cellspacing="0" cellpadding="0" style="margin:26px auto 6px;">
+                <tr>
+                  <td bgcolor="${opts.accent}" style="text-align:center;">
+                    <a href="${opts.ctaUrl}" target="_blank" style="font-size:13px;font-weight:800;color:#020617 !important;text-decoration:none;padding:13px 26px;display:inline-block;letter-spacing:1px;text-transform:uppercase;">
+                      ${escapeHtml(opts.ctaLabel)}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+              <p style="margin:14px 0 0;font-size:11.5px;color:#64748B;text-align:center;">
+                Direct link: <a href="${opts.ctaUrl}" style="color:#38BDF8;">${opts.ctaUrl}</a>
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:16px 26px 22px;background:#050C18;border-top:1px solid rgba(255,255,255,0.08);text-align:center;font-size:11px;color:#64748B;line-height:1.6;">
+              ORION 1.0 &mdash; 24-Hour National Hackathon<br>
+              Microsoft Club SIST, Sathyabama Institute of Science and Technology, Chennai<br>
+              <span style="color:#475569;">You are receiving this because your team registered for ORION 1.0.</span>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>`;
+}
+
+export function generateReuploadApprovedHtml(team: TeamRecord, note?: string | null): string {
+  const portalUrl = `${SITE_URL}/portal?regId=${encodeURIComponent(team.registration_id)}`;
+
+  const noteBlock = note
+    ? `<table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin:18px 0;background:#030712;border-left:3px solid #10B981;">
+        <tr><td style="padding:12px 16px;">
+          <div style="font-size:11px;font-weight:700;color:#10B981;letter-spacing:1.2px;text-transform:uppercase;">Note from the organisers</div>
+          <div style="margin-top:6px;color:#E2E8F0;font-size:13.5px;">${escapeHtml(note)}</div>
+        </td></tr>
+      </table>`
+    : '';
+
+  return decisionShell({
+    title: 'ORION 1.0 — Re-upload Approved',
+    preview: `You may now upload one replacement deck for ${team.team_name}.`,
+    accent: '#10B981',
+    badge: 'Re-upload Approved',
+    ctaLabel: 'Upload Replacement Deck',
+    ctaUrl: portalUrl,
+    bodyRows: `
+      <p style="margin:0 0 14px;font-size:16px;font-weight:600;color:#FFFFFF;">Hello ${escapeHtml(team.leader_name)},</p>
+
+      <p style="margin:0 0 14px;">
+        Your request to replace the Round 1 presentation for
+        <strong style="color:#FFFFFF;">${escapeHtml(team.team_name)}</strong>
+        (<span style="color:#22D3EE;font-weight:700;">${escapeHtml(team.registration_id)}</span>) has been approved.
+      </p>
+
+      ${noteBlock}
+
+      <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin:18px 0;background:#030712;border:1px solid rgba(16,185,129,0.4);">
+        <tr><td style="padding:14px 16px;">
+          <div style="font-size:11px;font-weight:700;color:#10B981;letter-spacing:1.2px;text-transform:uppercase;">This approval covers one upload</div>
+          <div style="margin-top:6px;color:#CBD5E1;font-size:13.5px;line-height:1.6;">
+            The next deck you upload replaces your current one and becomes the version the jury evaluates.
+            Replacing it again needs a fresh request, so upload the final file.
+          </div>
+        </td></tr>
+      </table>
+
+      <p style="margin:0;color:#94A3B8;font-size:13px;">
+        Sign in with Registration ID <strong style="color:#E2E8F0;">${escapeHtml(team.registration_id)}</strong>
+        and your team access passcode.
+      </p>
+    `
+  });
+}
+
+export function generateReuploadRejectedHtml(team: TeamRecord, note?: string | null): string {
+  const portalUrl = `${SITE_URL}/portal?regId=${encodeURIComponent(team.registration_id)}`;
+
+  const noteBlock = note
+    ? `<table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin:18px 0;background:#030712;border-left:3px solid #F59E0B;">
+        <tr><td style="padding:12px 16px;">
+          <div style="font-size:11px;font-weight:700;color:#F59E0B;letter-spacing:1.2px;text-transform:uppercase;">Reason given</div>
+          <div style="margin-top:6px;color:#E2E8F0;font-size:13.5px;">${escapeHtml(note)}</div>
+        </td></tr>
+      </table>`
+    : '';
+
+  return decisionShell({
+    title: 'ORION 1.0 — Re-upload Request Declined',
+    preview: `Your existing deck for ${team.team_name} stands as the final submission.`,
+    accent: '#F59E0B',
+    badge: 'Request Declined',
+    ctaLabel: 'View Team Portal',
+    ctaUrl: portalUrl,
+    bodyRows: `
+      <p style="margin:0 0 14px;font-size:16px;font-weight:600;color:#FFFFFF;">Hello ${escapeHtml(team.leader_name)},</p>
+
+      <p style="margin:0 0 14px;">
+        Your request to replace the Round 1 presentation for
+        <strong style="color:#FFFFFF;">${escapeHtml(team.team_name)}</strong>
+        (<span style="color:#22D3EE;font-weight:700;">${escapeHtml(team.registration_id)}</span>) was not approved.
+      </p>
+
+      ${noteBlock}
+
+      <p style="margin:0 0 14px;color:#CBD5E1;">
+        The presentation already on file stands as your final Round 1 submission and will be evaluated as-is.
+      </p>
+
+      <p style="margin:0;color:#94A3B8;font-size:13px;">
+        If you believe this was decided in error, reply to this email with the details before the Round 1 deadline.
+      </p>
+    `
+  });
+}
+
+export async function sendReuploadApprovedEmail(
+  team: TeamRecord,
+  note?: string | null
+): Promise<{ success: boolean; messageId?: string; error?: string }> {
+  const to = validRecipient(team, 'reupload-approved');
+  if (!to) return { success: false, error: 'Invalid or missing team leader email' };
+
+  const portalUrl = `${SITE_URL}/portal?regId=${encodeURIComponent(team.registration_id)}`;
+  const text = [
+    `Hello ${team.leader_name},`,
+    '',
+    `Your request to replace the Round 1 presentation for team "${team.team_name}" (${team.registration_id}) has been approved.`,
+    ...(note ? ['', 'NOTE FROM THE ORGANISERS', `  ${note}`] : []),
+    '',
+    'THIS APPROVAL COVERS ONE UPLOAD',
+    '  The next deck you upload replaces your current one and becomes the version',
+    '  the jury evaluates. Replacing it again needs a fresh request, so upload the',
+    '  final file.',
+    '',
+    `Upload it here: ${portalUrl}`,
+    `Registration ID: ${team.registration_id}`,
+    `Access passcode: ${team.access_token}`,
+    textFooter()
+  ].join('\n');
+
+  return dispatchMail({
+    to,
+    subject: `Re-upload approved — ${team.team_name} may replace its Round 1 deck (${team.registration_id})`,
+    html: generateReuploadApprovedHtml(team, note),
+    text,
+    kind: 'reupload-approved',
+    registrationId: team.registration_id
+  });
+}
+
+export async function sendReuploadRejectedEmail(
+  team: TeamRecord,
+  note?: string | null
+): Promise<{ success: boolean; messageId?: string; error?: string }> {
+  const to = validRecipient(team, 'reupload-rejected');
+  if (!to) return { success: false, error: 'Invalid or missing team leader email' };
+
+  const portalUrl = `${SITE_URL}/portal?regId=${encodeURIComponent(team.registration_id)}`;
+  const text = [
+    `Hello ${team.leader_name},`,
+    '',
+    `Your request to replace the Round 1 presentation for team "${team.team_name}" (${team.registration_id}) was not approved.`,
+    ...(note ? ['', 'REASON GIVEN', `  ${note}`] : []),
+    '',
+    'The presentation already on file stands as your final Round 1 submission and',
+    'will be evaluated as-is.',
+    '',
+    `Team portal: ${portalUrl}`,
+    '',
+    'If you believe this was decided in error, reply to this email with the details',
+    'before the Round 1 deadline.',
+    textFooter()
+  ].join('\n');
+
+  return dispatchMail({
+    to,
+    subject: `Re-upload request declined — ${team.team_name} (${team.registration_id})`,
+    html: generateReuploadRejectedHtml(team, note),
+    text,
+    kind: 'reupload-rejected',
+    registrationId: team.registration_id
+  });
+}

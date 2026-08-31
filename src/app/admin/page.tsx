@@ -43,6 +43,16 @@ export interface AdminToast {
   message: string;
 }
 
+/**
+ * The deck the jury evaluates: the ACCEPTED one, falling back to the newest for
+ * records created before submission statuses existed.
+ */
+function activeSubmission(team: TeamRecord) {
+  const round1 = (team.submissions || []).filter(s => s.round_number === 1);
+  return round1.find(s => s.submission_status === 'ACCEPTED')
+    || (round1.length > 0 ? round1[round1.length - 1] : null);
+}
+
 const RUBRIC_CATEGORIES = [
   {
     key: 'innovation' as const,
@@ -109,6 +119,7 @@ export default function AdminDashboard() {
     round1PendingReview: 0,
     round1Selected: 0,
     round1NotSelected: 0,
+    reuploadRequestsPending: 0,
     totalRevenue: 0,
     countByTrack: {} as Record<string, number>
   });
@@ -164,6 +175,8 @@ export default function AdminDashboard() {
 
   // Action Form States inside Modal
   const [adminNoteInput, setAdminNoteInput] = useState('');
+  // Note attached to a re-upload approve/reject decision; emailed to the team.
+  const [reuploadDecisionNote, setReuploadDecisionNote] = useState('');
   const [actionSuccessMsg, setActionSuccessMsg] = useState('');
   const [copiedUrl, setCopiedUrl] = useState<string | null>(null);
 
@@ -331,13 +344,14 @@ export default function AdminDashboard() {
 
   // Perform Admin Action: Payment or Round 1 Evaluation
   const handleAdminAction = async (payload: {
-    action: 'VERIFY_PAYMENT' | 'REJECT_PAYMENT' | 'REQUEST_PAYMENT_RESUBMISSION' | 'EVALUATE_ROUND_1' | 'ADD_NOTE' | 'RESEND_VERIFICATION_EMAIL' | 'DELETE_TEAM' | 'DISPATCH_PAYMENT_REMINDERS';
+    action: 'VERIFY_PAYMENT' | 'REJECT_PAYMENT' | 'REQUEST_PAYMENT_RESUBMISSION' | 'EVALUATE_ROUND_1' | 'ADD_NOTE' | 'RESEND_VERIFICATION_EMAIL' | 'SEND_REGISTRATION_EMAIL' | 'DELETE_TEAM' | 'DISPATCH_PAYMENT_REMINDERS' | 'APPROVE_REUPLOAD_REQUEST' | 'REJECT_REUPLOAD_REQUEST';
     teamId: string;
     decision?: 'SELECT' | 'NOT_SELECTED' | 'UNDER_REVIEW' | 'SAVE_SCORES';
     score?: number;
     evaluationScores?: EvaluationScores;
     reason?: string;
     note?: string;
+    requestId?: string;
   }) => {
     const key = sessionStorage.getItem('orion_admin_key') || '';
     const actionKey = `${payload.teamId}-${payload.action}-${payload.decision || ''}`;
@@ -372,6 +386,14 @@ export default function AdminDashboard() {
         } else if (payload.action === 'RESEND_VERIFICATION_EMAIL') {
           sound.playClick();
           showToast('info', 'Confirmation Email Sent', `Verification email re-dispatched to squad ${payload.teamId}.`);
+        } else if (payload.action === 'SEND_REGISTRATION_EMAIL') {
+          sound.playClick();
+          showToast('info', 'Registration Email Sent', `Registration confirmation dispatched to squad ${payload.teamId}.`);
+        } else if (payload.action === 'APPROVE_REUPLOAD_REQUEST') {
+          sound.playSuccessCelebration();
+          showToast('success', 'Re-upload Approved', `Squad ${payload.teamId} may now upload one replacement deck. Notification email sent.`);
+        } else if (payload.action === 'REJECT_REUPLOAD_REQUEST') {
+          showToast('warning', 'Re-upload Declined', `Squad ${payload.teamId} keeps its existing submission. Notification email sent.`);
         } else if (payload.action === 'REJECT_PAYMENT') {
           showToast('error', 'Payment Rejected', `Payment marked as rejected for squad ${payload.teamId}.`);
         } else if (payload.action === 'REQUEST_PAYMENT_RESUBMISSION') {
@@ -481,7 +503,7 @@ export default function AdminDashboard() {
     ];
 
     const rows = teams.map((t) => {
-      const latestSub = t.submissions && t.submissions.length > 0 ? t.submissions[t.submissions.length - 1] : null;
+      const latestSub = activeSubmission(t);
       const scores = t.evaluation_scores;
       const totalScore = t.round_1_score !== null && t.round_1_score !== undefined ? Number(t.round_1_score) : '';
       const pct = totalScore !== '' ? `${Math.round((Number(totalScore) / 50) * 100)}%` : '';
@@ -693,7 +715,7 @@ export default function AdminDashboard() {
           <div className="space-y-6">
             
             {/* LIVE METRICS HUD */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5">
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-9 gap-2.5">
               <div className="p-3 bg-[#07193D] border border-white/10">
                 <div className="text-[9px] font-mono-hud text-slate-400">TOTAL SQUADS</div>
                 <div className="text-xl font-mono-hud font-black text-white">{stats.totalRegistrations}</div>
@@ -725,6 +747,18 @@ export default function AdminDashboard() {
               <div className="p-3 bg-[#07193D] border border-slate-500/40">
                 <div className="text-[9px] font-mono-hud text-slate-400">NOT SELECTED</div>
                 <div className="text-xl font-mono-hud font-black text-slate-400">{stats.round1NotSelected}</div>
+              </div>
+              <div className={`p-3 bg-[#07193D] border ${
+                stats.reuploadRequestsPending > 0
+                  ? 'border-amber-400/70 shadow-[0_0_10px_rgba(245,158,11,0.25)]'
+                  : 'border-white/10'
+              }`}>
+                <div className="text-[9px] font-mono-hud text-amber-300">RE-UPLOAD REQ</div>
+                <div className={`text-xl font-mono-hud font-black ${
+                  stats.reuploadRequestsPending > 0 ? 'text-amber-300 animate-pulse' : 'text-slate-500'
+                }`}>
+                  {stats.reuploadRequestsPending}
+                </div>
               </div>
             </div>
 
@@ -875,7 +909,7 @@ export default function AdminDashboard() {
                     </div>
                   ) : (
                     filteredTeams.map((team) => {
-                      const latestSub = team.submissions && team.submissions.length > 0 ? team.submissions[team.submissions.length - 1] : null;
+                      const latestSub = activeSubmission(team);
                       return (
                         <div 
                           key={team.id}
@@ -977,6 +1011,20 @@ export default function AdminDashboard() {
                             }`}>
                               R1: {team.round_1_status}
                             </span>
+
+                            {/* Pending re-upload request — surfaced in the roster
+                                so organisers do not have to open every drawer. */}
+                            {(team.resubmission_requests || []).some(r => r.status === 'PENDING') && (
+                              <span className="text-[10px] font-mono px-2 py-0.5 font-bold bg-amber-400 text-[#040E24] animate-pulse">
+                                RE-UPLOAD REQ
+                              </span>
+                            )}
+
+                            {(team.resubmission_requests || []).some(r => r.status === 'APPROVED') && (
+                              <span className="text-[10px] font-mono px-2 py-0.5 font-bold bg-emerald-950 text-emerald-300 border border-emerald-500/30">
+                                RE-UPLOAD OK
+                              </span>
+                            )}
 
                             <button
                               type="button"
@@ -1262,7 +1310,7 @@ export default function AdminDashboard() {
 
                   {selectedTeam.submissions && selectedTeam.submissions.length > 0 ? (
                     (() => {
-                      const latestSub = selectedTeam.submissions[selectedTeam.submissions.length - 1];
+                      const latestSub = activeSubmission(selectedTeam) ?? selectedTeam.submissions[selectedTeam.submissions.length - 1];
                       return (
                         <div className="space-y-2.5 mt-2">
                           {/* Presentation File Card */}
@@ -1377,8 +1425,19 @@ export default function AdminDashboard() {
                               <div className="text-slate-400 font-mono-hud text-[10px]">ALL SUBMISSION VERSIONS ({selectedTeam.submissions.length}):</div>
                               <div className="space-y-1 max-h-28 overflow-y-auto">
                                 {selectedTeam.submissions.map((sub, sIdx) => (
-                                  <div key={sub.id || sIdx} className="flex items-center justify-between text-slate-300 bg-[#040E24] px-2 py-1 border border-white/5">
-                                    <span>v{sub.version}: {sub.original_filename}</span>
+                                  <div key={sub.id || sIdx} className="flex items-center justify-between gap-2 text-slate-300 bg-[#040E24] px-2 py-1 border border-white/5">
+                                    <span className="truncate">
+                                      <span className={`font-mono text-[9px] px-1 py-0.5 mr-1.5 font-bold ${
+                                        sub.submission_status === 'ACCEPTED'
+                                          ? 'bg-emerald-950 text-emerald-300 border border-emerald-500/30'
+                                          : sub.submission_status === 'SUPERSEDED'
+                                          ? 'bg-slate-900 text-slate-500 border border-white/10'
+                                          : 'bg-[#0B2556] text-[#38BDF8] border border-[#38BDF8]/30'
+                                      }`}>
+                                        {sub.submission_status}
+                                      </span>
+                                      v{sub.version}: {sub.original_filename}
+                                    </span>
                                     <a href={sub.file_url} target="_blank" rel="noreferrer" className="text-[#38BDF8] hover:underline flex items-center gap-1 text-[10px]">
                                       <Download className="w-2.5 h-2.5" />
                                       <span>Download</span>
@@ -1407,6 +1466,147 @@ export default function AdminDashboard() {
                   </span>
                 </div>
               </div>
+
+              {/*
+                RE-UPLOAD REQUEST REVIEW
+                A team's first deck is auto-accepted on payment verification.
+                Replacing it needs approval here, and each approval is worth
+                exactly one replacement upload.
+              */}
+              {(() => {
+                const requests = (selectedTeam.resubmission_requests || []).filter(r => r.round_number === 1);
+                const pending = requests.find(r => r.status === 'PENDING');
+                const approved = requests.find(r => r.status === 'APPROVED');
+                const history = requests.filter(r => r.status === 'REJECTED' || r.status === 'USED');
+
+                if (requests.length === 0) return null;
+
+                return (
+                  <div className={`p-4 space-y-3 border ${
+                    pending
+                      ? 'bg-amber-950/20 border-amber-500/50 shadow-[0_0_20px_rgba(245,158,11,0.12)]'
+                      : 'bg-[#040E24] border-white/10'
+                  }`}>
+                    <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                      <div className="text-[11px] font-mono-hud text-[#38BDF8] font-bold flex items-center gap-1.5">
+                        <RefreshCw className="w-3.5 h-3.5" />
+                        <span>PPT RE-UPLOAD REQUESTS</span>
+                      </div>
+                      {pending && (
+                        <span className="text-[10px] font-mono px-2 py-0.5 font-bold bg-amber-400 text-[#040E24] animate-pulse">
+                          ACTION NEEDED
+                        </span>
+                      )}
+                    </div>
+
+                    {pending && (
+                      <div className="space-y-3">
+                        <div className="p-3 bg-[#020817] border border-amber-500/30 space-y-1.5">
+                          <div className="text-[10px] font-mono-hud text-amber-400">
+                            REQUESTED {new Date(pending.created_at).toLocaleString()}
+                          </div>
+                          <p className="text-xs text-slate-200 font-sans leading-relaxed whitespace-pre-wrap break-words">
+                            {pending.reason}
+                          </p>
+                        </div>
+
+                        <div>
+                          <label className="block text-[10px] font-mono-hud text-[#BAE6FD] mb-1">
+                            NOTE TO THE TEAM (OPTIONAL — INCLUDED IN THE EMAIL)
+                          </label>
+                          <textarea
+                            value={reuploadDecisionNote}
+                            onChange={(e) => setReuploadDecisionNote(e.target.value)}
+                            rows={2}
+                            placeholder="e.g. Approved — upload the corrected deck before the deadline."
+                            className="w-full px-3 py-2 bg-[#020817] border border-white/15 text-white text-xs font-mono focus:border-[#38BDF8] focus:outline-none resize-y"
+                          />
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          <button
+                            onClick={() => {
+                              handleAdminAction({
+                                action: 'APPROVE_REUPLOAD_REQUEST',
+                                teamId: selectedTeam.registration_id,
+                                requestId: pending.id,
+                                note: reuploadDecisionNote.trim() || undefined
+                              });
+                              setReuploadDecisionNote('');
+                            }}
+                            disabled={activeActionKey === `${selectedTeam.registration_id}-APPROVE_REUPLOAD_REQUEST-`}
+                            className="py-2.5 bg-emerald-500 text-[#040E24] text-[11px] font-mono-hud font-bold flex items-center justify-center gap-2 cursor-pointer active:scale-95 hover:bg-emerald-400 transition-colors disabled:opacity-50"
+                          >
+                            {activeActionKey === `${selectedTeam.registration_id}-APPROVE_REUPLOAD_REQUEST-` ? (
+                              <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                            ) : (
+                              <CheckCircle2 className="w-3.5 h-3.5" />
+                            )}
+                            <span>APPROVE ONE RE-UPLOAD</span>
+                          </button>
+
+                          <button
+                            onClick={() => {
+                              handleAdminAction({
+                                action: 'REJECT_REUPLOAD_REQUEST',
+                                teamId: selectedTeam.registration_id,
+                                requestId: pending.id,
+                                note: reuploadDecisionNote.trim() || undefined
+                              });
+                              setReuploadDecisionNote('');
+                            }}
+                            disabled={activeActionKey === `${selectedTeam.registration_id}-REJECT_REUPLOAD_REQUEST-`}
+                            className="py-2.5 bg-transparent border border-rose-500/50 text-rose-300 text-[11px] font-mono-hud font-bold flex items-center justify-center gap-2 cursor-pointer active:scale-95 hover:bg-rose-500/15 transition-colors disabled:opacity-50"
+                          >
+                            {activeActionKey === `${selectedTeam.registration_id}-REJECT_REUPLOAD_REQUEST-` ? (
+                              <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                            ) : (
+                              <XCircle className="w-3.5 h-3.5" />
+                            )}
+                            <span>DECLINE REQUEST</span>
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {approved && (
+                      <div className="p-3 bg-emerald-950/30 border border-emerald-500/40 text-xs space-y-1">
+                        <div className="text-emerald-300 font-mono-hud text-[10px] font-bold">
+                          APPROVED — AWAITING THE TEAM&apos;S REPLACEMENT UPLOAD
+                        </div>
+                        <div className="text-slate-400 font-mono text-[11px]">
+                          Approved by {approved.reviewed_by || 'Admin'} on{' '}
+                          {approved.reviewed_at ? new Date(approved.reviewed_at).toLocaleString() : '—'}
+                        </div>
+                      </div>
+                    )}
+
+                    {history.length > 0 && (
+                      <div className="pt-2 border-t border-white/10 space-y-1.5">
+                        <div className="text-slate-400 font-mono-hud text-[10px]">REQUEST HISTORY ({history.length}):</div>
+                        <div className="space-y-1 max-h-32 overflow-y-auto">
+                          {history.map((r) => (
+                            <div key={r.id} className="px-2 py-1.5 bg-[#020817] border border-white/5 text-[11px] space-y-0.5">
+                              <div className="flex items-center justify-between gap-2">
+                                <span className={`font-mono font-bold ${r.status === 'USED' ? 'text-emerald-400' : 'text-rose-400'}`}>
+                                  {r.status === 'USED' ? 'APPROVED & USED' : 'DECLINED'}
+                                </span>
+                                <span className="text-slate-500 font-mono text-[10px]">
+                                  {r.reviewed_at ? new Date(r.reviewed_at).toLocaleDateString() : ''}
+                                </span>
+                              </div>
+                              <div className="text-slate-400 break-words">{r.reason}</div>
+                              {r.review_notes && (
+                                <div className="text-slate-500 italic break-words">Note: {r.review_notes}</div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
 
             </div>
 

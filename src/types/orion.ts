@@ -115,6 +115,20 @@ export interface PaymentRecord {
   verified_by?: string | null;
 }
 
+/**
+ * ACCEPTED    — the live deck the jury will evaluate. A team's first upload is
+ *               auto-accepted once payment is VERIFIED; an approved re-upload
+ *               replaces it.
+ * SUPERSEDED  — an earlier deck replaced by an approved re-upload. Kept for the
+ *               audit trail, never evaluated.
+ */
+export type SubmissionStatus =
+  | 'SUBMITTED'
+  | 'ACCEPTED'
+  | 'SUPERSEDED'
+  | 'UNDER_REVIEW'
+  | 'EVALUATED';
+
 export interface SubmissionRecord {
   id: string;
   team_id: string;
@@ -124,12 +138,37 @@ export interface SubmissionRecord {
   file_size: number;
   file_type: string;
   version: number;
-  submission_status: 'SUBMITTED' | 'UNDER_REVIEW' | 'EVALUATED';
+  submission_status: SubmissionStatus;
   submitted_at: string;
   review_notes?: string;
   project_url?: string | null;
   repo_url?: string | null;
   demo_url?: string | null;
+}
+
+/**
+ * PENDING  — team has asked to replace their deck; awaiting an organiser.
+ * APPROVED — organiser said yes; unlocks exactly ONE re-upload.
+ * REJECTED — organiser said no; the existing deck stands.
+ * USED     — the approved re-upload has been spent.
+ */
+export type ResubmissionRequestStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'USED';
+
+export interface ResubmissionRequest {
+  id: string;
+  team_id: string;
+  round_number: number;
+  /** Why the team wants to replace their deck. */
+  reason: string;
+  status: ResubmissionRequestStatus;
+  /** Organiser's note attached on approve or reject. */
+  review_notes?: string | null;
+  reviewed_by?: string | null;
+  reviewed_at?: string | null;
+  /** Set when the team spends the approval on an actual upload. */
+  consumed_at?: string | null;
+  consumed_submission_id?: string | null;
+  created_at: string;
 }
 
 export interface AuditLogRecord {
@@ -177,6 +216,7 @@ export interface TeamRecord {
   suspicion_flags?: SuspicionFlag[];
   members: TeamMember[];
   submissions?: SubmissionRecord[];
+  resubmission_requests?: ResubmissionRequest[];
   audit_logs?: AuditLogRecord[];
   created_at: string;
   updated_at?: string;

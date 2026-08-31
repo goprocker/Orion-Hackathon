@@ -3,7 +3,14 @@ import crypto from 'crypto';
 import { serverStore } from '@/lib/serverStore';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
 
-import { sendPaymentVerifiedEmail, sendResubmissionRequiredEmail } from '@/lib/email';
+import {
+  sendPaymentVerifiedEmail,
+  sendResubmissionRequiredEmail,
+  sendRegistrationReceivedEmail,
+  sendReuploadApprovedEmail,
+  sendReuploadRejectedEmail,
+  verifySmtp
+} from '@/lib/email';
 
 function safeCompare(a: string, b: string): boolean {
   if (!a || !b) return false;
@@ -67,7 +74,7 @@ export async function POST(request: Request) {
   try {
     const clientIp = getClientIp(request);
     const body = await request.json();
-    const { action, passcode, teamId, decision, score, reason, note, actor = 'Admin Secretariat' } = body;
+    const { action, passcode, teamId, decision, score, reason, note, requestId, actor = 'Admin Secretariat' } = body;
 
     // 1. Passcode Authentication Check
     if (passcode !== undefined) {
@@ -137,6 +144,57 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: true, message: 'Payment resubmission requested and notice email dispatched', data: res });
     }
 
+    // 2b. Manual registration-confirmation email (auto-dispatch on signup is off
+    //     by design; organisers send this explicitly).
+    if (action === 'SEND_REGISTRATION_EMAIL') {
+      if (!teamId) return NextResponse.json({ error: 'teamId is required' }, { status: 400 });
+      const team = await serverStore.getTeam(teamId);
+      if (!team) return NextResponse.json({ error: 'Team not found' }, { status: 404 });
+
+      const mailRes = await sendRegistrationReceivedEmail(team);
+      if (!mailRes.success) {
+        return NextResponse.json({ error: mailRes.error || 'Failed to dispatch email' }, { status: 500 });
+      }
+      return NextResponse.json({ success: true, message: `Registration email sent to ${team.leader_email}` });
+    }
+
+    // 2c. Round 1 Re-upload Request Review: APPROVE / REJECT
+    //     Approving unlocks exactly one replacement upload for that team.
+    if (action === 'APPROVE_REUPLOAD_REQUEST' || action === 'REJECT_REUPLOAD_REQUEST') {
+      if (!teamId) return NextResponse.json({ error: 'teamId is required' }, { status: 400 });
+
+      const isApprove = action === 'APPROVE_REUPLOAD_REQUEST';
+      const res = await serverStore.reviewReuploadRequest(
+        teamId,
+        isApprove ? 'APPROVE' : 'REJECT',
+        actor,
+        note || reason,
+        requestId
+      );
+
+      if (!res.success || !res.team) {
+        return NextResponse.json({ error: res.error || 'Could not review the request' }, { status: 400 });
+      }
+
+      // Notify the team out of band; a mail failure must not undo the decision.
+      const decisionNote = res.request?.review_notes || null;
+      const notify = isApprove
+        ? sendReuploadApprovedEmail(res.team, decisionNote)
+        : sendReuploadRejectedEmail(res.team, decisionNote);
+
+      notify.catch((mailErr) => {
+        console.error('[Admin API] Re-upload decision email error:', mailErr);
+      });
+
+      return NextResponse.json({
+        success: true,
+        message: isApprove
+          ? 'Re-upload approved — the team may now upload one replacement deck.'
+          : 'Re-upload request declined — the existing submission stands.',
+        data: res
+      });
+    }
+
     // 3. Round 1 Evaluation Action: SELECT, NOT_SELECTED, UNDER_REVIEW, SAVE_SCORES
     if (action === 'EVALUATE_ROUND_1') {
       if (!teamId || !decision) return NextResponse.json({ error: 'teamId and decision are required' }, { status: 400 });
@@ -171,6 +229,21 @@ export async function POST(request: Request) {
         message: `Scanned ${result.checked} squads: Dispatched ${result.sent} payment reminder emails (${result.notifiedTeams.join(', ') || 'no squads pending >5m'})`,
         data: result
       });
+    }
+
+    // 7. Mailer Health Check — confirms SMTP credentials and TLS actually work,
+    //    so a broken mailer is visible before a live dispatch fails silently.
+    if (action === 'CHECK_MAILER') {
+      const health = await verifySmtp();
+      return NextResponse.json({
+        success: health.ok,
+        message: health.ok
+          ? 'SMTP connection and credentials verified.'
+          : health.configured
+            ? `SMTP configured but the connection failed: ${health.error}`
+            : 'SMTP is not configured — set SMTP_USER and SMTP_PASS.',
+        data: health
+      }, { status: health.ok ? 200 : 503 });
     }
 
     return NextResponse.json({ error: 'Unknown admin action' }, { status: 400 });

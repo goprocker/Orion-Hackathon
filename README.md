@@ -112,6 +112,87 @@ The database schema ([schema.sql](file:///c:/orion-1.0/src/db/schema.sql)) uses 
 
 ---
 
+## 4b. Round 1 Presentation Submission & Re-upload Approval
+
+The Round 1 deck follows a **submit once, replace only with approval** rule.
+
+```
+Payment VERIFIED by organiser
+          │
+          ▼
+  First PPT upload  ──────────►  status: ACCEPTED   (auto-accepted, no sign-off)
+          │
+          │  team wants to change it
+          ▼
+  POST /api/team/resubmission  ──►  request status: PENDING
+          │
+          ▼
+  Organiser reviews in /admin  ──►  APPROVED  ──►  team uploads once
+          │                              │              │
+          │                              │              ▼
+          └──► REJECTED                  │        new deck ACCEPTED
+               existing deck stands      │        old deck SUPERSEDED
+                                         │        request  USED
+                                         ▼
+                              a further change needs a NEW request
+```
+
+* **First upload is free** once payment is `VERIFIED` — it is auto-accepted and is
+  the version the jury evaluates.
+* **Each approval is worth exactly one re-upload.** Spending it flips the request
+  to `USED`; another change needs a fresh request.
+* **One request in flight per team**, enforced by a partial unique index so a
+  double-submit cannot open two.
+* Approve/reject decisions email the team leader, with the organiser's note.
+* `allowRound1Resubmission: false` in Settings remains a global kill switch that
+  blocks all replacements regardless of approvals.
+
+### Applying the database migration
+
+The workflow adds a table and some columns. Run this once in the Supabase SQL
+Editor against an existing project (it is idempotent):
+
+```
+src/db/migrations/001_resubmission_requests.sql
+```
+
+Fresh installs get everything from `src/db/schema.sql` and can skip the migration.
+
+> The migration also adds `submissions.project_url / repo_url / demo_url` and
+> `teams.evaluation_scores` — columns the application already wrote but that were
+> missing from `schema.sql`.
+
+---
+
+## 4c. Transactional Email Deliverability
+
+All mail goes through one hardened dispatcher in `src/lib/email.ts`:
+
+| Measure | Why |
+| :--- | :--- |
+| Plain-text alternative on every message | HTML-only mail is the largest controllable spam-score penalty |
+| Single pooled, rate-limited transporter | A TCP+TLS+AUTH handshake per message gets the sender throttled |
+| Envelope sender pinned to `SMTP_USER` | Keeps SPF/DKIM aligned under DMARC; a mismatched `EMAIL_FROM` is warned about and overridden |
+| `List-Unsubscribe` + one-click POST | Required by Google and Yahoo bulk sender rules since Feb 2024 |
+| Hidden preheader per template | Stops clients scraping boilerplate as the preview line |
+| Distinct `Message-ID` / `X-Entity-Ref-ID` | Stops Gmail threading separate notices together |
+| Certificate validation enforced | `rejectUnauthorized: false` never helped delivery and accepted MITM |
+| Subject lines de-spammed | Dropped `[ORION 1.0]` prefixes and "Action Required" |
+
+Verify SMTP credentials from the admin API without sending anything:
+
+```bash
+curl -X POST https://your-host/api/admin/registrations \
+  -H "x-admin-key: $ADMIN_SECRET_KEY" \
+  -H 'Content-Type: application/json' \
+  -d '{"action":"CHECK_MAILER"}'
+```
+
+> Automatic dispatch on signup stays **off** by design. Organisers send the
+> registration email explicitly with the `SEND_REGISTRATION_EMAIL` admin action.
+
+---
+
 ## 5. Organizer Admin Command Center (`/admin`)
 
 Access the organizer dashboard at `/admin`:
@@ -121,6 +202,7 @@ Access the organizer dashboard at `/admin`:
 * **Search & Filter**: Search by Registration ID (`ORN-R1-...`), team name, leader, or college; filter by track and payment status.
 * **5-Member Squad Drawer**: Expand any team to view leader contacts and all 4 crew members.
 * **Live Auto-Polling**: Automatically syncs incoming registrations in the background every 6 seconds.
+* **Re-upload Request Queue**: A `RE-UPLOAD REQ` metric tile and per-squad roster badge surface teams waiting on a PPT replacement decision; approve or decline from the squad drawer with a note that is emailed to the team.
 * **1-Click CSV Export**: Downloads complete `ORION_1.0_Registrations.csv` file.
 
 ---
