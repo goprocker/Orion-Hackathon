@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
-import { serverStore } from '@/lib/serverStore';
+import { serverStore, safeEqualCI } from '@/lib/serverStore';
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
 
@@ -61,8 +61,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Team not found' }, { status: 404 });
     }
 
-    const cleanToken = accessToken.toLowerCase();
-    if (cleanToken !== team.access_token.toLowerCase() && cleanToken !== team.leader_email.toLowerCase()) {
+    // Passcode only. Accepting the leader's email here let anyone who read it
+    // from /api/status replace another team's Round 1 deck.
+    if (!team.access_token || !safeEqualCI(team.access_token, accessToken)) {
       return NextResponse.json({ error: 'Unauthorized. Invalid Team Passcode.' }, { status: 401 });
     }
 

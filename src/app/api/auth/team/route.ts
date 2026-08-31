@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { serverStore } from '@/lib/serverStore';
+import { serverStore, toTeamFacingRecord } from '@/lib/serverStore';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
 
 export async function POST(request: Request) {
@@ -15,14 +15,14 @@ export async function POST(request: Request) {
     const { teamId, secret } = await request.json();
 
     if (!teamId?.trim() || !secret?.trim()) {
-      return NextResponse.json({ error: 'Team ID and Access Passcode / Email are required' }, { status: 400 });
+      return NextResponse.json({ error: 'Team ID and access passcode are required' }, { status: 400 });
     }
 
     const team = await serverStore.authenticateTeam(teamId, secret);
 
     if (!team) {
       return NextResponse.json({ 
-        error: 'Invalid Credentials. Please enter your valid Team ID (e.g. ORION-2026-0147) and your Passcode or Leader Email.' 
+        error: 'Invalid credentials. Enter your Team ID (e.g. ORION-2026-0147) and your team access passcode.' 
       }, { status: 401 });
     }
 
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
-      team,
+      team: toTeamFacingRecord(team),
       config
     });
   } catch (err: unknown) {

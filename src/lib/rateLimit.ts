@@ -5,7 +5,15 @@ interface RateLimitRecord {
   resetTime: number;
 }
 
+// NOTE ON SCOPE: this is per-process, in-memory state. On Vercel each Lambda
+// instance has its own Map and cold starts reset it, so these limits bound a
+// single warm instance, not the deployment. They are a speed bump against
+// casual abuse, NOT a defence against a determined distributed brute force.
+// For that, move this to Upstash/@vercel/kv — the call sites need no change.
 const ipMap = new Map<string, RateLimitRecord>();
+
+// Hard cap so a flood of distinct keys cannot grow the heap without bound.
+const MAX_TRACKED_KEYS = 10_000;
 
 // Clean up stale IP records every 5 minutes
 if (typeof setInterval !== 'undefined') {
@@ -28,6 +36,17 @@ export function checkRateLimit(
   const record = ipMap.get(identifier);
 
   if (!record || record.resetTime <= now) {
+    // Evict expired entries before admitting a new key, and refuse to grow past
+    // the cap rather than letting a spoofed-key flood exhaust memory.
+    if (ipMap.size >= MAX_TRACKED_KEYS) {
+      for (const [key, rec] of ipMap.entries()) {
+        if (rec.resetTime <= now) ipMap.delete(key);
+      }
+      if (ipMap.size >= MAX_TRACKED_KEYS) {
+        return { allowed: false, remaining: 0, resetInSec: Math.ceil(windowMs / 1000) };
+      }
+    }
+
     ipMap.set(identifier, {
       count: 1,
       resetTime: now + windowMs
@@ -55,14 +74,28 @@ export function checkRateLimit(
   };
 }
 
+/**
+ * Best-effort client IP for rate limiting.
+ *
+ * `X-Forwarded-For` is a client-appendable list: the LEFTMOST entry is whatever
+ * the caller chose to send. Reading it meant an attacker got a fresh rate-limit
+ * budget per request just by varying a header, which made every limit here
+ * decorative. Prefer headers the platform sets and cannot be spoofed past, and
+ * fall back to the RIGHTMOST XFF entry (the hop appended by the closest proxy).
+ */
 export function getClientIp(request: Request): string {
+  // Set by Vercel's edge and not overridable by the client.
+  const vercelIp = request.headers.get('x-vercel-forwarded-for');
+  if (vercelIp) return vercelIp.split(',').pop()!.trim();
+
+  const realIp = request.headers.get('x-real-ip');
+  if (realIp) return realIp.trim();
+
   const forwarded = request.headers.get('x-forwarded-for');
   if (forwarded) {
-    return forwarded.split(',')[0].trim();
+    const parts = forwarded.split(',').map(p => p.trim()).filter(Boolean);
+    if (parts.length > 0) return parts[parts.length - 1];
   }
-  const realIp = request.headers.get('x-real-ip');
-  if (realIp) {
-    return realIp.trim();
-  }
+
   return '127.0.0.1';
 }

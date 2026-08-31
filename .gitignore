@@ -49,3 +49,6 @@ next-env.d.ts
 # root temporary files
 /*.pptx
 
+
+# uploaded participant submissions (local fallback storage)
+/public/uploads/
