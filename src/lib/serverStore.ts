@@ -6,6 +6,7 @@ import type {
   TeamMember, 
   PaymentRecord, 
   SubmissionRecord, 
+  ResubmissionRequest,
   AuditLogRecord, 
   SuspicionFlag, 
   SystemConfig,
@@ -26,6 +27,7 @@ interface StoreSchema {
   teams: TeamRecord[];
   payments: PaymentRecord[];
   submissions: SubmissionRecord[];
+  resubmissionRequests: ResubmissionRequest[];
   suspicionFlags: SuspicionFlag[];
   auditLogs: AuditLogRecord[];
   config: SystemConfig;
@@ -56,6 +58,7 @@ function loadLocalStore(): StoreSchema {
       parsed.teams = parsed.teams || [];
       parsed.payments = parsed.payments || [];
       parsed.submissions = parsed.submissions || [];
+      parsed.resubmissionRequests = parsed.resubmissionRequests || [];
       parsed.suspicionFlags = parsed.suspicionFlags || [];
       parsed.auditLogs = parsed.auditLogs || [];
       return parsed;
@@ -68,6 +71,7 @@ function loadLocalStore(): StoreSchema {
     teams: [],
     payments: [],
     submissions: [],
+    resubmissionRequests: [],
     suspicionFlags: [],
     auditLogs: [],
     config: DEFAULT_CONFIG
@@ -505,10 +509,11 @@ export const serverStore = {
         }
 
         if (!error && team) {
-          const [memRes, payRes, subRes, flagRes, logRes] = await Promise.all([
+          const [memRes, payRes, subRes, resubRes, flagRes, logRes] = await Promise.all([
             supabase.from('team_members').select('*').eq('team_id', team.id).order('member_number', { ascending: true }),
             supabase.from('payments').select('*').eq('team_id', team.id).maybeSingle(),
             supabase.from('submissions').select('*').eq('team_id', team.id).order('version', { ascending: true }),
+            supabase.from('resubmission_requests').select('*').eq('team_id', team.id).order('created_at', { ascending: false }),
             supabase.from('suspicion_flags').select('*').eq('team_id', team.id),
             supabase.from('audit_logs').select('*').eq('team_id', team.id).order('created_at', { ascending: false })
           ]);
@@ -572,6 +577,19 @@ export const serverStore = {
               repo_url: s.repo_url || undefined,
               demo_url: s.demo_url || undefined
             })),
+            resubmission_requests: (resubRes.data || []).map(r => ({
+              id: r.id,
+              team_id: r.team_id,
+              round_number: r.round_number ?? 1,
+              reason: r.reason,
+              status: r.status,
+              review_notes: r.review_notes || null,
+              reviewed_by: r.reviewed_by || null,
+              reviewed_at: r.reviewed_at || null,
+              consumed_at: r.consumed_at || null,
+              consumed_submission_id: r.consumed_submission_id || null,
+              created_at: r.created_at
+            })),
             suspicion_flags: (flagRes.data || []).map(f => ({
               id: f.id,
               team_id: f.team_id,
@@ -614,6 +632,9 @@ export const serverStore = {
       ...team,
       payment: store.payments.find(p => p.team_id === team.id || p.team_id === team.registration_id) || null,
       submissions: store.submissions.filter(s => s.team_id === team.id || s.team_id === team.registration_id) || [],
+      resubmission_requests: (store.resubmissionRequests || [])
+        .filter(r => r.team_id === team.id || r.team_id === team.registration_id)
+        .sort((a, b) => b.created_at.localeCompare(a.created_at)),
       suspicion_flags: store.suspicionFlags.filter(f => f.team_id === team.id || f.team_id === team.registration_id) || [],
       audit_logs: store.auditLogs.filter(l => l.team_id === team.id || l.team_id === team.registration_id) || []
     };
@@ -877,6 +898,8 @@ export const serverStore = {
     const team = await this.getTeam(teamId);
     if (!team) return { success: false, error: 'Team record not found.' };
 
+    // Gate 1 — payment. Verification is also what auto-accepts the first deck,
+    // so nothing beyond this point needs organiser sign-off for an original.
     if (team.payment_status !== 'VERIFIED') {
       return { success: false, error: 'Payment must be verified by organizers before Round 1 submission.' };
     }
@@ -887,16 +910,58 @@ export const serverStore = {
       return { success: false, error: `Round 1 Submission Deadline has passed (${config.round1SubmissionDeadline}). Submissions are locked.` };
     }
 
-    const existingSubmissions = team.submissions?.filter(s => s.round_number === 1) || [];
-    if (existingSubmissions.length > 0 && !config.allowRound1Resubmission) {
-      return { success: false, error: 'Organizers have disabled presentation resubmission.' };
+    const existingSubmissions = (team.submissions || []).filter(s => s.round_number === 1);
+    const isFirstSubmission = existingSubmissions.length === 0;
+
+    // Gate 2 — replacing an existing deck costs one organiser-approved request.
+    let approvedRequest: ResubmissionRequest | undefined;
+    if (!isFirstSubmission) {
+      if (!config.allowRound1Resubmission) {
+        return { success: false, error: 'Organizers have closed Round 1 re-uploads entirely.' };
+      }
+
+      const openRequests = team.resubmission_requests || [];
+      approvedRequest = openRequests.find(r => r.status === 'APPROVED' && r.round_number === 1);
+
+      if (!approvedRequest) {
+        const pending = openRequests.find(r => r.status === 'PENDING' && r.round_number === 1);
+        return {
+          success: false,
+          error: pending
+            ? 'Your re-upload request is still awaiting organiser review. You will be emailed as soon as it is decided.'
+            : 'Your presentation is already submitted. Request organiser approval before uploading a replacement.'
+        };
+      }
     }
 
     const version = existingSubmissions.length + 1;
     const now = new Date().toISOString();
+    // Only decks still in play get superseded; anything already evaluated stays put.
+    const supersededIds = existingSubmissions
+      .filter(s => s.submission_status === 'ACCEPTED' || s.submission_status === 'SUBMITTED')
+      .map(s => s.id);
 
     if (isSupabaseConfigured() && supabase) {
       try {
+        // Spend the approval FIRST, conditional on it still being APPROVED. This
+        // is the compare-and-swap that stops two concurrent uploads from both
+        // cashing in the same approval; supabase-js gives us no transaction.
+        if (approvedRequest) {
+          const { data: claimed, error: claimErr } = await supabase
+            .from('resubmission_requests')
+            .update({ status: 'USED', consumed_at: now })
+            .eq('id', approvedRequest.id)
+            .eq('status', 'APPROVED')
+            .select('id');
+
+          if (claimErr || !claimed || claimed.length === 0) {
+            return {
+              success: false,
+              error: 'This re-upload approval has already been used. Request organiser approval again to replace your deck.'
+            };
+          }
+        }
+
         const { data: subData, error: subErr } = await supabase
           .from('submissions')
           .insert([{
@@ -910,46 +975,73 @@ export const serverStore = {
             repo_url: fileInfo.repoUrl || null,
             demo_url: fileInfo.demoUrl || null,
             version,
-            submission_status: 'SUBMITTED',
+            // The live deck for the jury, whether it is the original or an
+            // approved replacement.
+            submission_status: 'ACCEPTED',
             submitted_at: now
           }])
           .select('*')
           .single();
 
-        if (!subErr && subData) {
-          await supabase
-            .from('teams')
-            .update({ round_1_status: 'SUBMITTED', updated_at: now })
-            .eq('id', team.id);
-
-          await supabase.from('audit_logs').insert([{
-            team_id: team.id,
-            team_name: team.team_name,
-            action: `Round 1 PPT Submitted (v${version})`,
-            actor: 'Participant Portal',
-            details: `Uploaded ${fileInfo.originalFilename} (${(fileInfo.fileSize / (1024 * 1024)).toFixed(2)} MB)${fileInfo.projectUrl ? ` • Project: ${fileInfo.projectUrl}` : ''}`,
-            created_at: now
-          }]);
-
-          return {
-            success: true,
-            submission: {
-              id: subData.id,
-              team_id: subData.team_id,
-              round_number: subData.round_number as (1 | 2),
-              file_url: subData.file_url,
-              original_filename: subData.original_filename,
-              file_size: Number(subData.file_size),
-              file_type: subData.file_type,
-              version: subData.version,
-              submission_status: subData.submission_status,
-              submitted_at: subData.submitted_at,
-              project_url: subData.project_url || undefined,
-              repo_url: subData.repo_url || undefined,
-              demo_url: subData.demo_url || undefined
-            }
-          };
+        if (subErr || !subData) {
+          // Hand the approval back rather than burning it on a failed insert.
+          if (approvedRequest) {
+            await supabase
+              .from('resubmission_requests')
+              .update({ status: 'APPROVED', consumed_at: null })
+              .eq('id', approvedRequest.id);
+          }
+          throw subErr || new Error('Submission insert returned no row');
         }
+
+        if (supersededIds.length > 0) {
+          await supabase
+            .from('submissions')
+            .update({ submission_status: 'SUPERSEDED' })
+            .in('id', supersededIds);
+        }
+
+        if (approvedRequest) {
+          await supabase
+            .from('resubmission_requests')
+            .update({ consumed_submission_id: subData.id })
+            .eq('id', approvedRequest.id);
+        }
+
+        await supabase
+          .from('teams')
+          .update({ round_1_status: 'SUBMITTED', updated_at: now })
+          .eq('id', team.id);
+
+        await supabase.from('audit_logs').insert([{
+          team_id: team.id,
+          team_name: team.team_name,
+          action: isFirstSubmission
+            ? 'Round 1 PPT Submitted & Auto-Accepted (v1)'
+            : `Round 1 PPT Replaced via Approved Request (v${version})`,
+          actor: 'Participant Portal',
+          details: `Uploaded ${fileInfo.originalFilename} (${(fileInfo.fileSize / (1024 * 1024)).toFixed(2)} MB)${fileInfo.projectUrl ? ` • Project: ${fileInfo.projectUrl}` : ''}`,
+          created_at: now
+        }]);
+
+        return {
+          success: true,
+          submission: {
+            id: subData.id,
+            team_id: subData.team_id,
+            round_number: subData.round_number as (1 | 2),
+            file_url: subData.file_url,
+            original_filename: subData.original_filename,
+            file_size: Number(subData.file_size),
+            file_type: subData.file_type,
+            version: subData.version,
+            submission_status: subData.submission_status,
+            submitted_at: subData.submitted_at,
+            project_url: subData.project_url || undefined,
+            repo_url: subData.repo_url || undefined,
+            demo_url: subData.demo_url || undefined
+          }
+        };
       } catch (sbErr) {
         console.error('Supabase submitRound1File error:', sbErr);
       }
@@ -957,6 +1049,21 @@ export const serverStore = {
 
     // Local fallback
     const store = loadLocalStore();
+
+    if (approvedRequest) {
+      const localReq = (store.resubmissionRequests || []).find(r => r.id === approvedRequest!.id);
+      if (localReq) {
+        if (localReq.status !== 'APPROVED') {
+          return {
+            success: false,
+            error: 'This re-upload approval has already been used. Request organiser approval again to replace your deck.'
+          };
+        }
+        localReq.status = 'USED';
+        localReq.consumed_at = now;
+      }
+    }
+
     const newSubmission: SubmissionRecord = {
       id: `sub-${Date.now()}-${version}`,
       team_id: team.id,
@@ -966,12 +1073,23 @@ export const serverStore = {
       file_size: fileInfo.fileSize,
       file_type: fileInfo.fileType,
       version,
-      submission_status: 'SUBMITTED',
+      submission_status: 'ACCEPTED',
       submitted_at: now,
       project_url: fileInfo.projectUrl || undefined,
       repo_url: fileInfo.repoUrl || undefined,
       demo_url: fileInfo.demoUrl || undefined
     };
+
+    for (const prior of store.submissions) {
+      if (supersededIds.includes(prior.id)) {
+        prior.submission_status = 'SUPERSEDED';
+      }
+    }
+
+    if (approvedRequest) {
+      const localReq = (store.resubmissionRequests || []).find(r => r.id === approvedRequest!.id);
+      if (localReq) localReq.consumed_submission_id = newSubmission.id;
+    }
 
     store.submissions.push(newSubmission);
     const localTeam = store.teams.find(t => t.id === team.id);
@@ -979,9 +1097,227 @@ export const serverStore = {
       localTeam.round_1_status = 'SUBMITTED';
       localTeam.updated_at = now;
     }
+
+    store.auditLogs.unshift({
+      id: `audit-${Date.now()}`,
+      team_id: team.id,
+      team_name: team.team_name,
+      action: isFirstSubmission
+        ? 'Round 1 PPT Submitted & Auto-Accepted (v1)'
+        : `Round 1 PPT Replaced via Approved Request (v${version})`,
+      actor: 'Participant Portal',
+      details: `Uploaded ${fileInfo.originalFilename} (${(fileInfo.fileSize / (1024 * 1024)).toFixed(2)} MB)`,
+      created_at: now
+    });
+
     saveLocalStore(store);
 
     return { success: true, submission: newSubmission };
+  },
+
+  // ----------------------------------------------------------------------------
+  // Round 1 Re-upload Request Workflow
+  //
+  // A team's first deck is auto-accepted the moment payment is VERIFIED.
+  // Replacing it takes a request an organiser approves, and each approval buys
+  // exactly one re-upload.
+  // ----------------------------------------------------------------------------
+
+  /** Participant-side: ask organisers for permission to replace the Round 1 deck. */
+  async requestRoundOneReupload(
+    teamId: string,
+    reason: string
+  ): Promise<{ success: boolean; error?: string; request?: ResubmissionRequest }> {
+    const cleanReason = (reason || '').trim();
+    if (cleanReason.length < 15) {
+      return { success: false, error: 'Please describe why you need to re-upload, in at least 15 characters.' };
+    }
+    if (cleanReason.length > 1000) {
+      return { success: false, error: 'Reason is too long (1000 character maximum).' };
+    }
+
+    const team = await this.getTeam(teamId);
+    if (!team) return { success: false, error: 'Team record not found.' };
+
+    if (team.payment_status !== 'VERIFIED') {
+      return { success: false, error: 'Payment must be verified before you can request a re-upload.' };
+    }
+
+    const config = await this.getConfig();
+    if (!config.allowRound1Resubmission) {
+      return { success: false, error: 'Organizers have closed Round 1 re-uploads entirely.' };
+    }
+    if (Date.now() > new Date(config.round1SubmissionDeadline).getTime()) {
+      return { success: false, error: 'The Round 1 submission window has closed. Re-uploads are no longer possible.' };
+    }
+
+    const existing = (team.submissions || []).filter(s => s.round_number === 1);
+    if (existing.length === 0) {
+      return { success: false, error: 'You have no submission to replace yet — upload your first presentation directly.' };
+    }
+
+    const requests = team.resubmission_requests || [];
+    if (requests.some(r => r.status === 'APPROVED' && r.round_number === 1)) {
+      return { success: false, error: 'You already have an approved re-upload. Upload your new presentation now.' };
+    }
+    if (requests.some(r => r.status === 'PENDING' && r.round_number === 1)) {
+      return { success: false, error: 'You already have a re-upload request awaiting review.' };
+    }
+
+    const now = new Date().toISOString();
+
+    if (isSupabaseConfigured() && supabase) {
+      try {
+        const { data, error } = await supabase
+          .from('resubmission_requests')
+          .insert([{
+            team_id: team.id,
+            round_number: 1,
+            reason: cleanReason,
+            status: 'PENDING',
+            created_at: now
+          }])
+          .select('*')
+          .single();
+
+        if (error) {
+          // The partial unique index rejects a second open request; that is the
+          // database catching a double-submit, not a server fault.
+          if (error.code === '23505') {
+            return { success: false, error: 'You already have a re-upload request awaiting review.' };
+          }
+          throw error;
+        }
+
+        await supabase.from('audit_logs').insert([{
+          team_id: team.id,
+          team_name: team.team_name,
+          action: 'Round 1 Re-upload Requested',
+          actor: 'Participant Portal',
+          details: cleanReason,
+          created_at: now
+        }]);
+
+        return { success: true, request: data as ResubmissionRequest };
+      } catch (sbErr) {
+        console.error('Supabase requestRoundOneReupload error:', sbErr);
+      }
+    }
+
+    const store = loadLocalStore();
+    store.resubmissionRequests = store.resubmissionRequests || [];
+    const request: ResubmissionRequest = {
+      id: `resub-${Date.now()}`,
+      team_id: team.id,
+      round_number: 1,
+      reason: cleanReason,
+      status: 'PENDING',
+      created_at: now
+    };
+    store.resubmissionRequests.push(request);
+    store.auditLogs.unshift({
+      id: `audit-${Date.now()}`,
+      team_id: team.id,
+      team_name: team.team_name,
+      action: 'Round 1 Re-upload Requested',
+      actor: 'Participant Portal',
+      details: cleanReason,
+      created_at: now
+    });
+    saveLocalStore(store);
+
+    return { success: true, request };
+  },
+
+  /** Organiser-side: approve or reject a pending re-upload request. */
+  async reviewReuploadRequest(
+    teamId: string,
+    action: 'APPROVE' | 'REJECT',
+    actor = 'Admin Secretariat',
+    note?: string,
+    requestId?: string
+  ): Promise<{ success: boolean; error?: string; team?: TeamRecord; request?: ResubmissionRequest }> {
+    const team = await this.getTeam(teamId);
+    if (!team) return { success: false, error: 'Team record not found.' };
+
+    const requests = team.resubmission_requests || [];
+    const target = requestId
+      ? requests.find(r => r.id === requestId)
+      : requests.find(r => r.status === 'PENDING' && r.round_number === 1);
+
+    if (!target) {
+      return { success: false, error: 'No pending re-upload request found for this team.' };
+    }
+    if (target.status !== 'PENDING') {
+      return { success: false, error: `This request was already ${target.status.toLowerCase()}.` };
+    }
+
+    const now = new Date().toISOString();
+    const nextStatus = action === 'APPROVE' ? 'APPROVED' : 'REJECTED';
+    const cleanNote = (note || '').trim() || null;
+
+    if (isSupabaseConfigured() && supabase) {
+      try {
+        // Conditional on PENDING so two organisers clicking at once cannot both win.
+        const { data: updated, error } = await supabase
+          .from('resubmission_requests')
+          .update({
+            status: nextStatus,
+            review_notes: cleanNote,
+            reviewed_by: actor,
+            reviewed_at: now
+          })
+          .eq('id', target.id)
+          .eq('status', 'PENDING')
+          .select('*');
+
+        if (error) throw error;
+        if (!updated || updated.length === 0) {
+          return { success: false, error: 'This request was already reviewed by another organiser.' };
+        }
+
+        await supabase.from('audit_logs').insert([{
+          team_id: team.id,
+          team_name: team.team_name,
+          action: action === 'APPROVE' ? 'Round 1 Re-upload Approved' : 'Round 1 Re-upload Rejected',
+          actor,
+          details: cleanNote || (action === 'APPROVE' ? 'One replacement upload unlocked' : 'Existing submission stands'),
+          created_at: now
+        }]);
+
+        const refreshed = await this.getTeam(team.id);
+        return { success: true, team: refreshed || team, request: updated[0] as ResubmissionRequest };
+      } catch (sbErr) {
+        console.error('Supabase reviewReuploadRequest error:', sbErr);
+      }
+    }
+
+    const store = loadLocalStore();
+    store.resubmissionRequests = store.resubmissionRequests || [];
+    const localReq = store.resubmissionRequests.find(r => r.id === target.id);
+    if (!localReq) return { success: false, error: 'Request not found.' };
+    if (localReq.status !== 'PENDING') {
+      return { success: false, error: 'This request was already reviewed by another organiser.' };
+    }
+
+    localReq.status = nextStatus;
+    localReq.review_notes = cleanNote;
+    localReq.reviewed_by = actor;
+    localReq.reviewed_at = now;
+
+    store.auditLogs.unshift({
+      id: `audit-${Date.now()}`,
+      team_id: team.id,
+      team_name: team.team_name,
+      action: action === 'APPROVE' ? 'Round 1 Re-upload Approved' : 'Round 1 Re-upload Rejected',
+      actor,
+      details: cleanNote || (action === 'APPROVE' ? 'One replacement upload unlocked' : 'Existing submission stands'),
+      created_at: now
+    });
+    saveLocalStore(store);
+
+    const refreshed = await this.getTeam(team.id);
+    return { success: true, team: refreshed || team, request: localReq };
   },
 
   // Admin Round 1 Evaluation & Round 2 Access Gate
@@ -1125,6 +1461,7 @@ export const serverStore = {
       round1PendingReview: number;
       round1Selected: number;
       round1NotSelected: number;
+      reuploadRequestsPending: number;
       totalRevenue: number;
       countByTrack: Record<string, number>;
     };
@@ -1136,11 +1473,12 @@ export const serverStore = {
 
     if (isSupabaseConfigured() && supabase) {
       try {
-        const [teamsRes, memRes, payRes, subRes, flagRes, logRes] = await Promise.all([
+        const [teamsRes, memRes, payRes, subRes, resubRes, flagRes, logRes] = await Promise.all([
           supabase.from('teams').select('*').order('created_at', { ascending: false }),
           supabase.from('team_members').select('*').order('member_number', { ascending: true }),
           supabase.from('payments').select('*'),
           supabase.from('submissions').select('*').order('version', { ascending: false }),
+          supabase.from('resubmission_requests').select('*').order('created_at', { ascending: false }),
           supabase.from('suspicion_flags').select('*').order('created_at', { ascending: false }),
           supabase.from('audit_logs').select('*').order('created_at', { ascending: false }).limit(50)
         ]);
@@ -1201,6 +1539,25 @@ export const serverStore = {
             subsByTeam.set(s.team_id, list);
           });
 
+          const resubByTeam = new Map<string, ResubmissionRequest[]>();
+          (resubRes.data || []).forEach(r => {
+            const list = resubByTeam.get(r.team_id) || [];
+            list.push({
+              id: r.id,
+              team_id: r.team_id,
+              round_number: r.round_number ?? 1,
+              reason: r.reason,
+              status: r.status,
+              review_notes: r.review_notes || null,
+              reviewed_by: r.reviewed_by || null,
+              reviewed_at: r.reviewed_at || null,
+              consumed_at: r.consumed_at || null,
+              consumed_submission_id: r.consumed_submission_id || null,
+              created_at: r.created_at
+            });
+            resubByTeam.set(r.team_id, list);
+          });
+
           const flagsByTeam = new Map<string, SuspicionFlag[]>();
           (flagRes.data || []).forEach(f => {
             const list = flagsByTeam.get(f.team_id) || [];
@@ -1240,6 +1597,7 @@ export const serverStore = {
             admin_notes: t.admin_notes || null,
             members: membersByTeam.get(t.id) || [],
             submissions: subsByTeam.get(t.id) || [],
+            resubmission_requests: resubByTeam.get(t.id) || [],
             suspicion_flags: flagsByTeam.get(t.id) || [],
             created_at: t.created_at,
             updated_at: t.updated_at
@@ -1266,6 +1624,7 @@ export const serverStore = {
         ...t,
         payment: store.payments.find(p => p.team_id === t.id || p.team_id === t.registration_id) || null,
         submissions: store.submissions.filter(s => s.team_id === t.id || s.team_id === t.registration_id) || [],
+        resubmission_requests: (store.resubmissionRequests || []).filter(r => r.team_id === t.id || r.team_id === t.registration_id),
         suspicion_flags: store.suspicionFlags.filter(f => f.team_id === t.id || f.team_id === t.registration_id) || []
       }));
       auditLogs = store.auditLogs.slice(0, 50);
@@ -1282,6 +1641,9 @@ export const serverStore = {
     const round1PendingReview = teams.filter(t => ['SUBMITTED', 'UNDER_REVIEW'].includes(t.round_1_status)).length;
     const round1Selected = teams.filter(t => t.round_1_status === 'SELECTED').length;
     const round1NotSelected = teams.filter(t => t.round_1_status === 'NOT_SELECTED').length;
+    const reuploadRequestsPending = teams.filter(t =>
+      (t.resubmission_requests || []).some(r => r.status === 'PENDING')
+    ).length;
 
     const countByTrack: Record<string, number> = {
       'ORION-PS-01': 0,
@@ -1343,6 +1705,7 @@ export const serverStore = {
         round1PendingReview,
         round1Selected,
         round1NotSelected,
+        reuploadRequestsPending,
         totalRevenue: paymentVerified * 100,
         countByTrack
       },
@@ -1369,6 +1732,8 @@ export const serverStore = {
         await supabase.from('audit_logs').update({ team_id: null }).eq('team_id', teamUuid);
 
         // 2. Delete related child records
+        await supabase.from('resubmission_requests').delete().eq('team_id', teamUuid);
+
         await Promise.allSettled([
           supabase.from('suspicion_flags').delete().eq('team_id', teamUuid),
           supabase.from('team_members').delete().eq('team_id', teamUuid),
@@ -1398,6 +1763,7 @@ export const serverStore = {
         store.teams = (store.teams || []).filter(t => t.id !== teamUuid && t.registration_id !== regId);
         store.payments = (store.payments || []).filter(p => p.team_id !== teamUuid);
         store.submissions = (store.submissions || []).filter(s => s.team_id !== teamUuid);
+        store.resubmissionRequests = (store.resubmissionRequests || []).filter(r => r.team_id !== teamUuid);
         store.suspicionFlags = (store.suspicionFlags || []).filter(f => f.team_id !== teamUuid);
         saveLocalStore(store);
 
@@ -1413,6 +1779,7 @@ export const serverStore = {
     store.teams = (store.teams || []).filter(t => t.id !== teamUuid && t.registration_id !== regId);
     store.payments = (store.payments || []).filter(p => p.team_id !== teamUuid);
     store.submissions = (store.submissions || []).filter(s => s.team_id !== teamUuid);
+    store.resubmissionRequests = (store.resubmissionRequests || []).filter(r => r.team_id !== teamUuid);
     store.suspicionFlags = (store.suspicionFlags || []).filter(f => f.team_id !== teamUuid);
 
     store.auditLogs.unshift({

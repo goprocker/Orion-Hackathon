@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { serverStore } from '@/lib/serverStore';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
-import { sendRegistrationReceivedEmail } from '@/lib/email';
 import type { TeamRegistrationPayload } from '@/types/orion';
 
 export async function POST(request: Request) {
