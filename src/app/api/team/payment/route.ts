@@ -108,13 +108,19 @@ export async function POST(request: Request) {
       }
 
       if (!uploadedToCloud) {
-        const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'payments');
-        if (!fs.existsSync(uploadDir)) {
-          fs.mkdirSync(uploadDir, { recursive: true });
+        try {
+          const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'payments');
+          if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true });
+          }
+          const filePath = path.join(uploadDir, safeSavedName);
+          fs.writeFileSync(filePath, buffer);
+          screenshotUrl = `/uploads/payments/${safeSavedName}`;
+        } catch (fsErr) {
+          console.warn('Serverless filesystem write failed, encoding screenshot as Data URL:', fsErr);
+          const mime = screenshotFile.type || (fileExt === '.pdf' ? 'application/pdf' : 'image/png');
+          screenshotUrl = `data:${mime};base64,${buffer.toString('base64')}`;
         }
-        const filePath = path.join(uploadDir, safeSavedName);
-        fs.writeFileSync(filePath, buffer);
-        screenshotUrl = `/uploads/payments/${safeSavedName}`;
       }
     }
 
