@@ -1639,3 +1639,170 @@ export async function sendReuploadRejectedEmail(
     registrationId: team.registration_id
   });
 }
+
+// ==============================================================================
+// Passcode reset
+// ==============================================================================
+//
+// Neither template below contains a passcode — not the old one, not the new
+// one. Every other mail in this file prints `team.access_token` because it is
+// a convenience reminder sent to a team that already has it. These two are
+// different: the reset mail is the thing an attacker would be trying to
+// provoke, and the confirmation is sent AFTER a change that may not have been
+// authorised. Putting a working credential in either would hand it straight to
+// whoever triggered the flow.
+
+export function generatePasscodeResetHtml(team: TeamRecord, resetUrl: string, ttlMinutes: number): string {
+  return decisionShell({
+    title: 'ORION 1.0 — Reset Your Portal Passcode',
+    preview: `Set a new portal passcode for ${team.team_name}. This link expires in ${ttlMinutes} minutes.`,
+    accent: '#F59E0B',
+    badge: 'Passcode Reset',
+    ctaLabel: 'Set a New Passcode',
+    ctaUrl: resetUrl,
+    bodyRows: `
+      <p style="margin:0 0 14px;font-size:16px;font-weight:600;color:#FFFFFF;">Hello ${escapeHtml(team.leader_name)},</p>
+
+      <p style="margin:0 0 14px;">
+        Someone asked to reset the portal passcode for
+        <strong style="color:#FFFFFF;">${escapeHtml(team.team_name)}</strong>
+        (<span style="color:#22D3EE;font-weight:700;">${escapeHtml(team.registration_id)}</span>).
+        Use the button above to choose a new one.
+      </p>
+
+      <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin:18px 0;background:#030712;border:1px solid rgba(245,158,11,0.4);">
+        <tr><td style="padding:14px 16px;">
+          <div style="font-size:11px;font-weight:700;color:#F59E0B;letter-spacing:1.2px;text-transform:uppercase;">This link expires in ${ttlMinutes} minutes</div>
+          <div style="margin-top:6px;color:#CBD5E1;font-size:13.5px;line-height:1.6;">
+            It also works only once. If it expires before you get to it, start again
+            from the portal sign-in page and request a fresh link.
+          </div>
+        </td></tr>
+      </table>
+
+      <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin:18px 0;background:#030712;border-left:3px solid #64748B;">
+        <tr><td style="padding:12px 16px;">
+          <div style="font-size:11px;font-weight:700;color:#94A3B8;letter-spacing:1.2px;text-transform:uppercase;">Did not request this?</div>
+          <div style="margin-top:6px;color:#CBD5E1;font-size:13.5px;line-height:1.6;">
+            Ignore this email and nothing changes — your current passcode keeps working
+            and the link above stops being usable on its own. Reply to this message if
+            you keep receiving reset mail you did not ask for.
+          </div>
+        </td></tr>
+      </table>
+
+      <p style="margin:0;color:#94A3B8;font-size:13px;word-break:break-all;">
+        Button not working? Paste this into your browser:<br>
+        <span style="color:#BAE6FD;">${escapeHtml(resetUrl)}</span>
+      </p>
+    `
+  });
+}
+
+export async function sendPasscodeResetEmail(
+  team: TeamRecord,
+  resetUrl: string,
+  ttlMinutes: number
+): Promise<{ success: boolean; messageId?: string; error?: string }> {
+  const to = validRecipient(team, 'passcode-reset');
+  if (!to) return { success: false, error: 'Invalid or missing team leader email' };
+
+  const text = [
+    `Hello ${team.leader_name},`,
+    '',
+    `Someone asked to reset the portal passcode for team "${team.team_name}" (${team.registration_id}).`,
+    '',
+    'Set a new passcode here:',
+    `  ${resetUrl}`,
+    '',
+    `THIS LINK EXPIRES IN ${ttlMinutes} MINUTES`,
+    '  It also works only once. If it expires before you get to it, request a fresh',
+    '  link from the portal sign-in page.',
+    '',
+    'DID NOT REQUEST THIS?',
+    '  Ignore this email and nothing changes — your current passcode keeps working.',
+    '  Reply to this message if you keep receiving reset mail you did not ask for.',
+    textFooter()
+  ].join('\n');
+
+  return dispatchMail({
+    to,
+    subject: `Reset your ORION 1.0 portal passcode — ${team.team_name} (${team.registration_id})`,
+    html: generatePasscodeResetHtml(team, resetUrl, ttlMinutes),
+    text,
+    kind: 'passcode-reset',
+    registrationId: team.registration_id
+  });
+}
+
+export function generatePasscodeChangedHtml(team: TeamRecord): string {
+  const portalUrl = `${SITE_URL}/portal?regId=${encodeURIComponent(team.registration_id)}`;
+
+  return decisionShell({
+    title: 'ORION 1.0 — Portal Passcode Changed',
+    preview: `The portal passcode for ${team.team_name} was just changed.`,
+    accent: '#10B981',
+    badge: 'Passcode Changed',
+    ctaLabel: 'Sign In to the Portal',
+    ctaUrl: portalUrl,
+    bodyRows: `
+      <p style="margin:0 0 14px;font-size:16px;font-weight:600;color:#FFFFFF;">Hello ${escapeHtml(team.leader_name)},</p>
+
+      <p style="margin:0 0 14px;">
+        The portal passcode for
+        <strong style="color:#FFFFFF;">${escapeHtml(team.team_name)}</strong>
+        (<span style="color:#22D3EE;font-weight:700;">${escapeHtml(team.registration_id)}</span>)
+        was just changed. Sign in with your Team ID and the passcode you chose.
+      </p>
+
+      <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin:18px 0;background:#030712;border:1px solid rgba(244,63,94,0.4);">
+        <tr><td style="padding:14px 16px;">
+          <div style="font-size:11px;font-weight:700;color:#FB7185;letter-spacing:1.2px;text-transform:uppercase;">If this was not you</div>
+          <div style="margin-top:6px;color:#CBD5E1;font-size:13.5px;line-height:1.6;">
+            Reply to this email straight away. Someone with access to this inbox changed
+            your team's portal credentials, and the organisers need to know.
+          </div>
+        </td></tr>
+      </table>
+
+      <p style="margin:0;color:#94A3B8;font-size:13px;">
+        For your own security this message does not contain the new passcode.
+        If you have already forgotten it, request another reset from the sign-in page.
+      </p>
+    `
+  });
+}
+
+export async function sendPasscodeChangedEmail(
+  team: TeamRecord
+): Promise<{ success: boolean; messageId?: string; error?: string }> {
+  const to = validRecipient(team, 'passcode-changed');
+  if (!to) return { success: false, error: 'Invalid or missing team leader email' };
+
+  const portalUrl = `${SITE_URL}/portal?regId=${encodeURIComponent(team.registration_id)}`;
+  const text = [
+    `Hello ${team.leader_name},`,
+    '',
+    `The portal passcode for team "${team.team_name}" (${team.registration_id}) was just changed.`,
+    'Sign in with your Team ID and the passcode you chose.',
+    '',
+    `Portal: ${portalUrl}`,
+    '',
+    'IF THIS WAS NOT YOU',
+    '  Reply to this email straight away. Someone with access to this inbox changed',
+    "  your team's portal credentials, and the organisers need to know.",
+    '',
+    'For your own security this message does not contain the new passcode. If you',
+    'have already forgotten it, request another reset from the sign-in page.',
+    textFooter()
+  ].join('\n');
+
+  return dispatchMail({
+    to,
+    subject: `Portal passcode changed — ${team.team_name} (${team.registration_id})`,
+    html: generatePasscodeChangedHtml(team),
+    text,
+    kind: 'passcode-changed',
+    registrationId: team.registration_id
+  });
+}
