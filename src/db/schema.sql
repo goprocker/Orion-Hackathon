@@ -45,7 +45,10 @@ create table if not exists public.team_members (
 -- 3. Create Payments Table (Strict Database Unique Constraint on UTR)
 create table if not exists public.payments (
   id uuid default gen_random_uuid() primary key,
-  team_id uuid references public.teams(id) on delete cascade not null,
+  -- UNIQUE: submitPayment() upserts with onConflict: 'team_id', which Postgres
+  -- rejects (42P10) unless a matching unique constraint exists. See
+  -- migrations/005_payments_one_per_team.sql.
+  team_id uuid references public.teams(id) on delete cascade unique not null, -- One payment row per team
   utr_number text unique not null, -- Enforced Database Level Uniqueness
   payer_name text not null,
   amount integer not null default 100,
