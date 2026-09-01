@@ -1866,6 +1866,8 @@ export const serverStore = {
         return { success: true, request: data as ResubmissionRequest };
       } catch (sbErr) {
         console.error('Supabase requestRoundOneReupload error:', sbErr);
+        const errMsg = sbErr instanceof Error ? sbErr.message : 'Database error while submitting re-upload request';
+        return { success: false, error: errMsg };
       }
     }
 
@@ -2019,7 +2021,7 @@ export const serverStore = {
 
     if (isSupabaseConfigured() && supabase) {
       try {
-        await supabase
+        const { error: updateErr } = await supabase
           .from('teams')
           .update({
             round_1_status: targetRound1Status,
@@ -2030,6 +2032,10 @@ export const serverStore = {
             updated_at: now
           })
           .eq('id', team.id);
+
+        if (updateErr) {
+          throw updateErr;
+        }
 
         const breakdownStr = evaluationScores 
           ? `[Scores: Innov=${evaluationScores.innovation}/10, Arch=${evaluationScores.architecture}/10, Impact=${evaluationScores.impact}/10, Exec=${evaluationScores.execution}/10, Feas=${evaluationScores.feasibility}/10 => Total=${evaluationScores.total}/50]`
@@ -2046,8 +2052,10 @@ export const serverStore = {
 
         const updated = await this.getTeam(team.id);
         if (updated) return { success: true, team: updated };
+        throw new Error('Failed to retrieve updated team record');
       } catch (sbErr) {
         console.error('Supabase evaluateRound1 error:', sbErr);
+        throw sbErr;
       }
     }
 
@@ -2074,10 +2082,14 @@ export const serverStore = {
 
     if (isSupabaseConfigured() && supabase) {
       try {
-        await supabase
+        const { error: updateErr } = await supabase
           .from('teams')
           .update({ admin_notes: note.trim(), updated_at: now })
           .eq('id', team.id);
+
+        if (updateErr) {
+          throw updateErr;
+        }
 
         await supabase.from('audit_logs').insert([{
           team_id: team.id,
@@ -2090,8 +2102,10 @@ export const serverStore = {
 
         const updated = await this.getTeam(team.id);
         if (updated) return updated;
+        throw new Error('Failed to retrieve updated team record');
       } catch (sbErr) {
         console.error('Supabase addAdminNote error:', sbErr);
+        throw sbErr;
       }
     }
 
@@ -2187,12 +2201,12 @@ export const serverStore = {
     if (isSupabaseConfigured() && supabase) {
       try {
         const [teamsRes, memRes, payRes, subRes, resubRes, flagRes, logRes] = await Promise.all([
-          supabase.from('teams').select('*').order('created_at', { ascending: false }),
-          supabase.from('team_members').select('*').order('member_number', { ascending: true }),
-          supabase.from('payments').select('*'),
-          supabase.from('submissions').select('*').order('version', { ascending: false }),
-          supabase.from('resubmission_requests').select('*').order('created_at', { ascending: false }),
-          supabase.from('suspicion_flags').select('*').order('created_at', { ascending: false }),
+          supabase.from('teams').select('*').order('created_at', { ascending: false }).limit(10000),
+          supabase.from('team_members').select('*').order('member_number', { ascending: true }).limit(50000),
+          supabase.from('payments').select('*').limit(10000),
+          supabase.from('submissions').select('*').order('version', { ascending: false }).limit(10000),
+          supabase.from('resubmission_requests').select('*').order('created_at', { ascending: false }).limit(10000),
+          supabase.from('suspicion_flags').select('*').order('created_at', { ascending: false }).limit(10000),
           supabase.from('audit_logs').select('*').order('created_at', { ascending: false }).limit(50)
         ]);
 
@@ -2491,6 +2505,7 @@ export const serverStore = {
         store.submissions = (store.submissions || []).filter(s => s.team_id !== teamUuid);
         store.resubmissionRequests = (store.resubmissionRequests || []).filter(r => r.team_id !== teamUuid);
         store.suspicionFlags = (store.suspicionFlags || []).filter(f => f.team_id !== teamUuid);
+        store.passwordResets = (store.passwordResets || []).filter(r => r.team_id !== teamUuid);
         saveLocalStore(store);
 
         return { success: true, deletedRegistrationId: regId };
@@ -2507,6 +2522,7 @@ export const serverStore = {
     store.submissions = (store.submissions || []).filter(s => s.team_id !== teamUuid);
     store.resubmissionRequests = (store.resubmissionRequests || []).filter(r => r.team_id !== teamUuid);
     store.suspicionFlags = (store.suspicionFlags || []).filter(f => f.team_id !== teamUuid);
+    store.passwordResets = (store.passwordResets || []).filter(r => r.team_id !== teamUuid);
 
     store.auditLogs.unshift({
       id: `audit-${Date.now()}`,

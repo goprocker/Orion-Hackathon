@@ -118,10 +118,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenRegister }) => {
 
             {/* Primary CTA */}
             <button
+              id="nav-register-btn"
               onClick={() => {
                 onOpenRegister();
               }}
-              className="btn-glow-cyan px-5 py-2.5 rounded-none font-sans font-bold text-xs tracking-wide text-[#020617] bg-gradient-to-r from-[#FFFFFF] via-[#BAE6FD] to-[#00BCF2] hover:opacity-95 transition-all shadow-md flex items-center gap-2 active:scale-98 cursor-pointer"
+              className="btn-glow-cyan px-5 py-2.5 rounded-none font-sans font-bold text-xs tracking-wide text-[#020617] bg-gradient-to-r from-[#FFFFFF] via-[#BAE6FD] to-[#00BCF2] hover:opacity-95 transition-all shadow-md flex items-center gap-2 active:scale-98 cursor-pointer pointer-events-auto relative z-10"
             >
               <Rocket className="w-3.5 h-3.5 text-[#020617]" />
               <span>Register Team — ₹100</span>
@@ -137,10 +138,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenRegister }) => {
               Portal
             </Link>
             <button
+              id="mobile-nav-register-btn"
               onClick={() => {
                 onOpenRegister();
               }}
-              className="px-3.5 py-2 rounded-none font-sans font-bold text-xs text-[#020617] bg-gradient-to-r from-[#FFFFFF] via-[#BAE6FD] to-[#00BCF2] active:scale-95 transition-transform shadow-sm"
+              className="px-3.5 py-2 rounded-none font-sans font-bold text-xs text-[#020617] bg-gradient-to-r from-[#FFFFFF] via-[#BAE6FD] to-[#00BCF2] active:scale-95 transition-transform shadow-sm cursor-pointer pointer-events-auto"
             >
               Register ₹100
             </button>
@@ -207,6 +209,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenRegister }) => {
       >
         <div className="p-2 bg-[#0B1220]/95 backdrop-blur-2xl border border-white/15 rounded-none shadow-2xl flex items-center">
           <button
+            id="mobile-bottom-register-btn"
             onClick={() => {
               onOpenRegister();
             }}

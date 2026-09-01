@@ -213,6 +213,11 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
         teamName: data.team.teamName
       });
 
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('orion_portal_team_id', data.team.teamId);
+        sessionStorage.setItem('orion_portal_token', data.team.accessToken);
+      }
+
       setPayerName(leaderName.trim());
       setCurrentStep(5); // Proceed to Payment instructions & UTR submission
 
@@ -311,7 +316,7 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
       <div className="relative w-full max-w-3xl max-h-[92vh] overflow-y-auto">
         <GlassCard
           glowColor="cyan"

@@ -63,13 +63,18 @@ const nextConfig: NextConfig = {
         headers: securityHeaders,
       },
       {
-        // Uploaded participant decks are attacker-supplied bytes served from
-        // our own origin. Force a download rather than inline rendering, and
-        // sandbox them out of the origin's script context.
+        // Force download for uploaded presentation decks so attacker-supplied
+        // files are not executed or rendered inline.
+        source: "/uploads/submissions/:path*",
+        headers: [
+          { key: "Content-Disposition", value: "attachment" },
+        ],
+      },
+      {
+        // Sandboxing CSP applied to all uploads served from origin.
         source: "/uploads/:path*",
         headers: [
           ...securityHeaders.filter(h => h.key !== "Content-Security-Policy"),
-          { key: "Content-Disposition", value: "attachment" },
           { key: "Content-Security-Policy", value: "sandbox; default-src 'none'" },
         ],
       },

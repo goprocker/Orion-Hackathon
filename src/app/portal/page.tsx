@@ -41,7 +41,7 @@ export default function TeamPortalPage() {
   const [teamIdInput, setTeamIdInput] = useState(() => {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
-      return params.get('teamId') || sessionStorage.getItem('orion_portal_team_id') || '';
+      return params.get('teamId') || params.get('regId') || sessionStorage.getItem('orion_portal_team_id') || '';
     }
     return '';
   });
@@ -121,7 +121,7 @@ export default function TeamPortalPage() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
-      const qTeamId = params.get('teamId');
+      const qTeamId = params.get('teamId') || params.get('regId');
       const qToken = params.get('token');
 
       const savedId = sessionStorage.getItem('orion_portal_team_id');
@@ -391,7 +391,11 @@ export default function TeamPortalPage() {
   const canUpload = !latestSubmission || !!approvedReuploadRequest;
 
   const deadlineStr = config?.round1SubmissionDeadline || '2026-09-08T23:59:59+05:30';
-  const isPastDeadline = false; // Live deadline check enforced server-side on upload
+  const isPastDeadline = Boolean(
+    deadlineStr &&
+    !isNaN(new Date(deadlineStr).getTime()) &&
+    new Date(deadlineStr).getTime() < Date.now()
+  );
 
   return (
     <div className="min-h-screen bg-[#020617] text-slate-100 selection:bg-[#00BCF2]/30 selection:text-[#BAE6FD] relative pb-20">
