@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, after } from 'next/server';
 import { serverStore } from '@/lib/serverStore';
 import { sendPasscodeResetEmail, SITE_URL } from '@/lib/email';
 import { RESET_TOKEN_TTL_MINUTES } from '@/lib/passcodePolicy';
@@ -90,18 +90,24 @@ export async function POST(request: Request) {
     if (issued) {
       const resetUrl = `${SITE_URL}/portal/reset?token=${encodeURIComponent(issued.rawToken)}`;
 
-      // Not awaited. Waiting on SMTP would make a successful request visibly
-      // slower than a rejected one, which is the timing leak the generic
-      // response exists to close. Delivery failures are logged by the mailer.
-      void sendPasscodeResetEmail(issued.team, resetUrl, RESET_TOKEN_TTL_MINUTES)
-        .then(res => {
+      // Not awaited in the handler: waiting on SMTP would make a successful
+      // request visibly slower than a rejected one, which is the timing leak
+      // the generic response exists to close. But a bare un-awaited promise
+      // dies with the serverless invocation as soon as the response returns and
+      // the mail never leaves — after() runs once the response is flushed and
+      // keeps the function alive until the send settles.
+      after(async () => {
+        try {
+          const res = await sendPasscodeResetEmail(issued.team, resetUrl, RESET_TOKEN_TTL_MINUTES);
           if (!res.success) {
             console.error(
               `[Reset] Could not deliver reset mail for ${issued.team.registration_id}: ${res.error}`
             );
           }
-        })
-        .catch(err => console.error('[Reset] Reset mail dispatch threw:', err));
+        } catch (err) {
+          console.error('[Reset] Reset mail dispatch threw:', err);
+        }
+      });
     }
 
     await settleAfter(startedAt);

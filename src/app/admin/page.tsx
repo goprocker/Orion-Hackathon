@@ -519,88 +519,108 @@ export default function AdminDashboard() {
   };
 
   // Export to CSV
+  //
+  // Every failure in here used to be invisible: an empty roster returned
+  // without a word, an exception died in the console, and even success gave
+  // no signal. "The export button does nothing" is the reported symptom of
+  // all three. The page already has a toast system — use it for each outcome.
   const handleExportCSV = () => {
-    if (!teams.length) return;
+    if (!teams.length) {
+      showToast('warning', 'Nothing to Export', 'No team records are loaded yet. Hit SYNC and try again.');
+      return;
+    }
 
-    const headers = [
-      'Team ID',
-      'Team Name',
-      'Track',
-      'Leader Name',
-      'Leader Phone',
-      'Leader Email',
-      'Institution',
-      'Department',
-      'Year',
-      'Payment Status',
-      'UTR Number',
-      'Round 1 Status',
-      'Round 2 Status',
-      'Score Total (/50)',
-      'Score Percentage',
-      'Innovation (/10)',
-      'Architecture (/10)',
-      'Impact (/10)',
-      'Execution (/10)',
-      'Feasibility (/10)',
-      'Members Count',
-      'Passcode',
-      'Submission PPT URL',
-      'Project / Demo Link',
-      'Repo URL',
-      'Registration Date'
-    ];
+    try {
+      const headers = [
+        'Team ID',
+        'Team Name',
+        'Track',
+        'Leader Name',
+        'Leader Phone',
+        'Leader Email',
+        'Institution',
+        'Department',
+        'Year',
+        'Payment Status',
+        'UTR Number',
+        'Round 1 Status',
+        'Round 2 Status',
+        'Score Total (/50)',
+        'Score Percentage',
+        'Innovation (/10)',
+        'Architecture (/10)',
+        'Impact (/10)',
+        'Execution (/10)',
+        'Feasibility (/10)',
+        'Members Count',
+        'Passcode',
+        'Submission PPT URL',
+        'Project / Demo Link',
+        'Repo URL',
+        'Registration Date'
+      ];
 
-    const rows = teams.map((t) => {
-      const latestSub = activeSubmission(t);
-      const scores = t.evaluation_scores;
-      const totalScore = t.round_1_score !== null && t.round_1_score !== undefined ? Number(t.round_1_score) : '';
-      const pct = totalScore !== '' ? `${Math.round((Number(totalScore) / 50) * 100)}%` : '';
+      const rows = teams.map((t) => {
+        const latestSub = activeSubmission(t);
+        const scores = t.evaluation_scores;
+        const totalScore = t.round_1_score !== null && t.round_1_score !== undefined ? Number(t.round_1_score) : '';
+        const pct = totalScore !== '' ? `${Math.round((Number(totalScore) / 50) * 100)}%` : '';
 
-      return [
-        t.registration_id,
-        t.team_name,
-        t.problem_statement,
-        t.leader_name,
-        t.leader_phone,
-        t.leader_email,
-        t.institution,
-        t.department || '',
-        t.year || '',
-        t.payment_status,
-        t.payment?.utr_number || '',
-        t.round_1_status,
-        t.round_2_status,
-        totalScore,
-        pct,
-        scores?.innovation ?? '',
-        scores?.architecture ?? '',
-        scores?.impact ?? '',
-        scores?.execution ?? '',
-        scores?.feasibility ?? '',
-        t.members.length + 1,
-        t.access_token,
-        latestSub?.file_url || '',
-        latestSub?.project_url || '',
-        latestSub?.repo_url || '',
-        t.created_at ? t.created_at.split('T')[0] : ''
-      ].map(csvCell);
-    });
+        return [
+          t.registration_id,
+          t.team_name,
+          t.problem_statement,
+          t.leader_name,
+          t.leader_phone,
+          t.leader_email,
+          t.institution,
+          t.department || '',
+          t.year || '',
+          t.payment_status,
+          t.payment?.utr_number || '',
+          t.round_1_status,
+          t.round_2_status,
+          totalScore,
+          pct,
+          scores?.innovation ?? '',
+          scores?.architecture ?? '',
+          scores?.impact ?? '',
+          scores?.execution ?? '',
+          scores?.feasibility ?? '',
+          (t.members?.length || 0) + 1,
+          t.access_token,
+          latestSub?.file_url || '',
+          latestSub?.project_url || '',
+          latestSub?.repo_url || '',
+          t.created_at ? t.created_at.split('T')[0] : ''
+        ].map(csvCell);
+      });
 
-    const csvContent = [headers.map(csvCell).join(','), ...rows.map(e => e.join(','))].join('\r\n');
+      const csvContent = [headers.map(csvCell).join(','), ...rows.map(e => e.join(','))].join('\r\n');
 
-    // A Blob, not a data: URI. `encodeURI` leaves '#' unescaped, so a team named
-    // "Team #1" silently truncated the download at that row; data: URIs also cap
-    // out around 2 MB.
-    const blob = new Blob(['﻿' + csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', `ORION_Hackathon_Roster_${new Date().toISOString().split('T')[0]}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+      // A Blob, not a data: URI. `encodeURI` leaves '#' unescaped, so a team named
+      // "Team #1" silently truncated the download at that row; data: URIs also cap
+      // out around 2 MB.
+      const blob = new Blob(['﻿' + csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `ORION_Hackathon_Roster_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // Revoke LATER, never synchronously. click() only queues the download;
+      // the browser may not have started reading the blob yet, and revoking
+      // the URL at that point aborts it with no error — the button just
+      // "does nothing". A minute is comfortably past any download start.
+      setTimeout(() => URL.revokeObjectURL(url), 60_000);
+
+      showToast('success', 'Roster Exported', `Downloaded ${teams.length} team record${teams.length === 1 ? '' : 's'} as CSV.`);
+    } catch (err) {
+      console.error('[Admin] CSV export failed:', err);
+      showToast('error', 'Export Failed', err instanceof Error ? err.message : 'Could not build the CSV file.');
+    }
   };
 
   // Filtered Teams
@@ -1260,6 +1280,7 @@ export default function AdminDashboard() {
                   <div>Status: <strong className="text-white">{selectedTeam.payment_status}</strong></div>
                   <div>UTR / Ref: <strong className="text-[#38BDF8] font-mono">{selectedTeam.payment?.utr_number || 'NOT_SUBMITTED'}</strong></div>
                   <div>Payer Name: <span className="text-slate-300">{selectedTeam.payment?.payer_name || 'N/A'}</span></div>
+                  <div>Payer UPI ID: <span className="text-[#38BDF8] font-mono">{selectedTeam.payment?.payer_upi || 'NOT_SUBMITTED'}</span></div>
                   <div>Submitted: <span className="text-slate-400">{selectedTeam.payment?.submitted_at ? new Date(selectedTeam.payment.submitted_at).toLocaleString() : 'N/A'}</span></div>
                   {selectedTeam.payment?.screenshot_url ? (
                     <div className="pt-1.5 pb-0.5">

@@ -51,6 +51,7 @@ create table if not exists public.payments (
   team_id uuid references public.teams(id) on delete cascade unique not null, -- One payment row per team
   utr_number text unique not null, -- Enforced Database Level Uniqueness
   payer_name text not null,
+  payer_upi text, -- UPI ID the fee was paid FROM; app-mandatory since migration 007
   amount integer not null default 100,
   payment_status text not null default 'PENDING', -- 'PENDING', 'VERIFIED', 'REJECTED', 'RESUBMISSION_REQUIRED'
   screenshot_url text, -- Mandatory Payment Screenshot Proof URL

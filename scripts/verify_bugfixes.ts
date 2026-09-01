@@ -309,6 +309,7 @@ async function main() {
   const payRes = await serverStore.submitPayment(payTeam.id, {
     utrNumber: utr,
     payerName: 'Pay Leader',
+    payerUpi: 'payleader@okaxis',
     amount: 100
   });
   assert(payRes.success === true, 'A registered team can submit its payment reference', payRes.error || '');
@@ -320,6 +321,7 @@ async function main() {
   const payRes2 = await serverStore.submitPayment(payTeam.id, {
     utrNumber: utr2,
     payerName: 'Pay Leader',
+    payerUpi: 'payleader@okaxis',
     amount: 100
   });
   assert(payRes2.success === true, 'A team can correct its UTR', payRes2.error || '');
@@ -342,6 +344,7 @@ async function main() {
   const stolen = await serverStore.submitPayment(otherTeam.id, {
     utrNumber: utr2,
     payerName: 'Other Leader',
+    payerUpi: 'otherleader@ybl',
     amount: 100
   });
   assert(stolen.success === false, 'A UTR already used by another team is rejected');
