@@ -147,16 +147,23 @@ Payment VERIFIED by organiser
 * `allowRound1Resubmission: false` in Settings remains a global kill switch that
   blocks all replacements regardless of approvals.
 
-### Applying the database migration
+### Applying the database migrations
 
-The workflow adds a table and some columns. Run this once in the Supabase SQL
-Editor against an existing project (it is idempotent):
+Run these once each in the Supabase SQL Editor against an existing project, in
+order (each is idempotent):
 
 ```
-src/db/migrations/001_resubmission_requests.sql
+src/db/migrations/001_resubmission_requests.sql      re-upload workflow table + columns
+src/db/migrations/002_lock_down_rls.sql              drop the public read/write RLS policies
+src/db/migrations/003_private_submissions_bucket.sql make the submissions bucket private
 ```
 
-Fresh installs get everything from `src/db/schema.sql` and can skip the migration.
+Order matters for the two security migrations: deploy the application code
+first, then apply them. 002 needs `SUPABASE_SERVICE_ROLE_KEY` set or every query
+starts failing; 003 makes existing public deck URLs stop resolving, and only the
+deployed code knows how to mint signed ones.
+
+Fresh installs get everything from `src/db/schema.sql` and can skip 001.
 
 > The migration also adds `submissions.project_url / repo_url / demo_url` and
 > `teams.evaluation_scores` — columns the application already wrote but that were

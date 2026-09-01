@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
-import { serverStore } from '@/lib/serverStore';
+import { serverStore, safeEqualCI, toTeamFacingRecord } from '@/lib/serverStore';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
+import { withSignedSubmissionUrls } from '@/lib/storage';
 
 export async function GET(request: Request) {
   try {
@@ -27,20 +28,22 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Team dossier not found' }, { status: 404 });
     }
 
-    // Verify token against access token or leader email
-    const cleanToken = token.toLowerCase();
-    const cleanAccessToken = (team.access_token || '').toLowerCase();
-    const cleanLeaderEmail = (team.leader_email || '').toLowerCase();
-
-    if (cleanToken !== cleanAccessToken && cleanToken !== cleanLeaderEmail) {
+    // Passcode only. The leader's email used to be accepted as the token,
+    // which turned a semi-public address into a full portal credential.
+    if (!team.access_token || !safeEqualCI(team.access_token, token)) {
       return NextResponse.json({ error: 'Unauthorized access. Invalid team security credentials.' }, { status: 401 });
     }
 
     const config = await serverStore.getConfig();
 
+    const teamFacing = toTeamFacingRecord(team);
+    // The bucket is private: mint a signed link for this authenticated read
+    // instead of storing a permanent public URL.
+    teamFacing.submissions = await withSignedSubmissionUrls(teamFacing.submissions || []);
+
     return NextResponse.json({
       success: true,
-      team,
+      team: teamFacing,
       config
     });
   } catch (err: unknown) {

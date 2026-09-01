@@ -119,6 +119,12 @@ export default function TeamPortalPage() {
       const targetToken = qToken || savedToken;
 
       if (targetId && targetToken) {
+        // Remove ?teamId=&token= from the URL once consumed. Leaving them there
+        // put the passcode in browser history, bookmarks, any screenshot of the
+        // address bar, and the Referer of every cross-origin subresource.
+        if (qTeamId || qToken) {
+          window.history.replaceState({}, '', window.location.pathname);
+        }
         const timer = setTimeout(() => {
           handleLoginDirect(targetId, targetToken);
         }, 0);
@@ -136,7 +142,10 @@ export default function TeamPortalPage() {
   const handleRefresh = useCallback(async () => {
     if (!team) return;
     try {
-      const res = await fetch(`/api/team/portal?teamId=${team.registration_id}&token=${team.access_token}`);
+      const res = await fetch(
+        `/api/team/portal?teamId=${encodeURIComponent(team.registration_id)}`,
+        { headers: { 'x-team-token': team.access_token } }
+      );
       const data = await res.json();
       if (res.ok && data.team) {
         setTeam(data.team);

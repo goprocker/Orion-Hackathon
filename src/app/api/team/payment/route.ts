@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { serverStore } from '@/lib/serverStore';
+import { serverStore, safeEqualCI } from '@/lib/serverStore';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
 
 export async function POST(request: Request) {
@@ -11,7 +11,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { teamId, accessToken, utrNumber, payerName, amount } = body;
+    const { teamId, accessToken, utrNumber, payerName } = body;
 
     if (!teamId?.trim()) {
       return NextResponse.json({ error: 'Team ID is required' }, { status: 400 });
@@ -33,20 +33,28 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Team not found' }, { status: 404 });
     }
 
-    // If access token is passed, verify it
-    if (accessToken) {
-      const cleanToken = String(accessToken).trim().toLowerCase();
-      const storedToken = (team.access_token || '').trim().toLowerCase();
-      const storedEmail = (team.leader_email || '').trim().toLowerCase();
-      if (storedToken && cleanToken !== storedToken && cleanToken !== storedEmail) {
-        return NextResponse.json({ error: 'Unauthorized. Invalid Team Passcode.' }, { status: 401 });
-      }
+    // Authentication is mandatory. It used to be skipped entirely when the
+    // caller simply omitted `accessToken`, and the leader's email was accepted
+    // in place of the passcode — so anyone who knew an (enumerable) team ID
+    // could overwrite that team's payment reference.
+    const cleanToken = String(accessToken || '').trim();
+    if (!cleanToken) {
+      return NextResponse.json({ error: 'Team Access Passcode is required.' }, { status: 401 });
     }
+
+    const storedToken = (team.access_token || '').trim();
+    if (!storedToken || !safeEqualCI(storedToken, cleanToken)) {
+      return NextResponse.json({ error: 'Unauthorized. Invalid Team Passcode.' }, { status: 401 });
+    }
+
+    // The fee is set by the organisers, never by the caller. An unvalidated
+    // client `amount` was being persisted verbatim into the payments ledger.
+    const config = await serverStore.getConfig();
 
     const result = await serverStore.submitPayment(team.id, {
       utrNumber: cleanUTR,
       payerName: payerName.trim(),
-      amount: amount || 100
+      amount: config.round1FeeInr || 100
     });
 
     if (!result.success) {

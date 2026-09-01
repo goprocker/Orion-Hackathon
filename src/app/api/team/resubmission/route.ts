@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { serverStore } from '@/lib/serverStore';
+import { serverStore, safeEqualCI } from '@/lib/serverStore';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
 
 /**
@@ -41,8 +41,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Team not found' }, { status: 404 });
     }
 
-    const cleanToken = accessToken.toLowerCase();
-    if (cleanToken !== team.access_token.toLowerCase() && cleanToken !== team.leader_email.toLowerCase()) {
+    // Passcode only. The leader's email used to be accepted here too, which
+    // made a semi-public address a valid credential.
+    if (!team.access_token || !safeEqualCI(team.access_token, accessToken)) {
       return NextResponse.json({ error: 'Unauthorized. Invalid Team Passcode.' }, { status: 401 });
     }
 
