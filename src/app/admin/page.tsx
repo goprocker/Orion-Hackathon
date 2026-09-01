@@ -424,7 +424,9 @@ export default function AdminDashboard() {
         // Visual Feedback Toast & Sound
         if (payload.action === 'DELETE_TEAM') {
           sound.playClick();
-          showToast('error', 'Team Entry Purged', `Team ${payload.teamId} was permanently deleted from the database.`);
+          // teamId may be a UUID now — the server message names the human
+          // registration ID of the row it actually deleted.
+          showToast('error', 'Team Entry Purged', json.message || `Team ${payload.teamId} was permanently deleted from the database.`);
           setSelectedTeam(null);
           setTeams(prev => prev.filter(t => t.registration_id !== payload.teamId && t.id !== payload.teamId));
         } else if (payload.action === 'VERIFY_PAYMENT') {
@@ -2242,7 +2244,11 @@ export default function AdminDashboard() {
                   activeActionKey !== null
                 }
                 onClick={async () => {
-                  const targetId = teamToDelete.registration_id;
+                  // Delete by the row's UUID, not the registration ID: a
+                  // duplicated registration ID matches two rows and made the
+                  // lookup fail with "Team not found" — the UUID is always
+                  // unique, so each duplicate can be purged individually.
+                  const targetId = teamToDelete.id || teamToDelete.registration_id;
                   setIsDeleteModalOpen(false);
                   setTeamToDelete(null);
                   await handleAdminAction({

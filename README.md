@@ -244,6 +244,7 @@ src/db/migrations/004_password_resets.sql            self-service passcode reset
 src/db/migrations/005_payments_one_per_team.sql      unique payments.team_id (payment upsert fails without it)
 src/db/migrations/006_payment_screenshot_column.sql  add payments.screenshot_url (payment submission fails without it)
 src/db/migrations/007_payer_upi_column.sql           add payments.payer_upi (payment submission fails without it)
+src/db/migrations/008_unique_registration_id.sql     dedupe + unique teams.registration_id (duplicate teams were undeletable)
 ```
 
 Order matters for the two security migrations: deploy the application code
@@ -256,8 +257,8 @@ Unlike 002/003, the payment-column migrations (005, 006, 007) must be applied
 a column the table does not have, which fails every payment submission.
 
 Fresh installs get everything from `src/db/schema.sql` and can skip 001, 004,
-005, 006 and 007 (002 and 003 change RLS policies and the storage bucket, which
-`schema.sql` does not manage, so they still apply).
+005, 006, 007 and 008 (002 and 003 change RLS policies and the storage bucket,
+which `schema.sql` does not manage, so they still apply).
 
 > The migration also adds `submissions.project_url / repo_url / demo_url` and
 > `teams.evaluation_scores` — columns the application already wrote but that were

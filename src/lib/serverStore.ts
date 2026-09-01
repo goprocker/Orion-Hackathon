@@ -942,10 +942,26 @@ export const serverStore = {
           query = query.ilike('registration_id', escapeLikeValue(clean));
         }
 
-        const { data: team, error } = await query.maybeSingle();
+        // limit(2), NOT maybeSingle(): maybeSingle() errors out when more than
+        // one row matches, which made EVERY action on a duplicated
+        // registration ID — delete, verify, resend, the team's own portal
+        // login — fail with "Team not found". Oldest row wins deterministically;
+        // a duplicate is loudly logged so organisers can purge it (each row is
+        // individually deletable by its UUID).
+        const { data: rows, error } = await query
+          .order('created_at', { ascending: true })
+          .limit(2);
 
         if (error) {
           console.warn('Supabase getTeam error:', error.message);
+        }
+
+        const team = rows?.[0] ?? null;
+        if (rows && rows.length > 1) {
+          console.warn(
+            `[getTeam] Multiple team rows match "${clean}" — using the oldest (${team.id}). ` +
+            'Purge the duplicate from the admin console and apply migration 008 so this cannot recur.'
+          );
         }
 
         if (!error && team) {
