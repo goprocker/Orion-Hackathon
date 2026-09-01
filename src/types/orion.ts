@@ -108,6 +108,7 @@ export interface PaymentRecord {
   payer_name: string;
   amount: number;
   payment_status: PaymentStatus;
+  screenshot_url?: string | null;
   notes?: string;
   rejection_reason?: string;
   submitted_at: string;

@@ -53,6 +53,7 @@ create table if not exists public.payments (
   payer_name text not null,
   amount integer not null default 100,
   payment_status text not null default 'PENDING', -- 'PENDING', 'VERIFIED', 'REJECTED', 'RESUBMISSION_REQUIRED'
+  screenshot_url text, -- Mandatory Payment Screenshot Proof URL
   notes text,
   rejection_reason text,
   submitted_at timestamp with time zone default timezone('utc'::text, now()) not null,

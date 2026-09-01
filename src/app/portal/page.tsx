@@ -62,9 +62,10 @@ export default function TeamPortalPage() {
   const [copiedPass, setCopiedPass] = useState(false);
   const [isReceiptOpen, setIsReceiptOpen] = useState(false);
 
-  // Payment Form State
+  // Payment state
   const [utrInput, setUtrInput] = useState('');
   const [payerInput, setPayerInput] = useState('');
+  const [paymentScreenshotFile, setPaymentScreenshotFile] = useState<File | null>(null);
   const [isSubmittingPayment, setIsSubmittingPayment] = useState(false);
   const [paymentMsg, setPaymentMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
@@ -233,22 +234,29 @@ export default function TeamPortalPage() {
       setPaymentMsg({ type: 'error', text: 'Please enter a valid UPI UTR reference (min 6 chars).' });
       return;
     }
+    if (!paymentScreenshotFile && !team.payment?.screenshot_url) {
+      setPaymentMsg({ type: 'error', text: 'Payment screenshot proof is COMPULSORY. Please select and upload your payment receipt screenshot image.' });
+      return;
+    }
 
     sound.playClick();
     setIsSubmittingPayment(true);
     setPaymentMsg(null);
 
     try {
+      const formData = new FormData();
+      formData.append('teamId', team.registration_id);
+      formData.append('accessToken', team.access_token);
+      formData.append('utrNumber', utrInput.trim().toUpperCase());
+      formData.append('payerName', (payerInput || team.leader_name).trim());
+      formData.append('amount', String(config?.round1FeeInr || 100));
+      if (paymentScreenshotFile) {
+        formData.append('screenshot', paymentScreenshotFile);
+      }
+
       const res = await fetch('/api/team/payment', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          teamId: team.registration_id,
-          accessToken: team.access_token,
-          utrNumber: utrInput.trim().toUpperCase(),
-          payerName: (payerInput || team.leader_name).trim(),
-          amount: config?.round1FeeInr || 100
-        })
+        body: formData
       });
 
       const data = await res.json();
@@ -256,8 +264,9 @@ export default function TeamPortalPage() {
         throw new Error(data.error || 'Failed to submit payment reference');
       }
 
-      setPaymentMsg({ type: 'success', text: 'Payment reference submitted! Awaiting organizer verification.' });
+      setPaymentMsg({ type: 'success', text: 'Payment reference & screenshot proof submitted! Awaiting organizer verification.' });
       setUtrInput('');
+      setPaymentScreenshotFile(null);
       handleRefresh();
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Submission failed';
@@ -866,6 +875,19 @@ export default function TeamPortalPage() {
                     <p className="text-slate-200">
                       We have logged your UTR reference <strong>{team.payment?.utr_number || 'Under Review'}</strong>. Organizers verify transactions periodically. Once verified, Round 1 PPT submission unlocks automatically.
                     </p>
+                    {team.payment?.screenshot_url && (
+                      <div className="pt-1">
+                        <a
+                          href={team.payment.screenshot_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#040E24] border border-[#38BDF8]/40 text-[#38BDF8] hover:bg-[#0B2556] text-xs font-mono transition-colors"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" />
+                          <span>VIEW UPLOADED PAYMENT RECEIPT SCREENSHOT</span>
+                        </a>
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -959,6 +981,38 @@ export default function TeamPortalPage() {
                           placeholder={team.leader_name}
                           className="w-full px-3.5 py-2.5 bg-[#040E24] border border-white/15 text-white text-xs font-mono focus:outline-none"
                         />
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] font-mono-hud text-slate-300 mb-1 uppercase">
+                          PAYMENT RECEIPT SCREENSHOT (COMPULSORY) <span className="text-rose-400">*</span>
+                        </label>
+                        <div className="p-3 bg-[#040E24] border border-dashed border-[#38BDF8]/50 hover:border-[#38BDF8] transition-colors relative text-center cursor-pointer">
+                          <input
+                            type="file"
+                            accept="image/*,.pdf"
+                            onChange={(e) => {
+                              if (e.target.files && e.target.files[0]) {
+                                setPaymentScreenshotFile(e.target.files[0]);
+                              }
+                            }}
+                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                          />
+                          {paymentScreenshotFile ? (
+                            <div className="flex items-center justify-between text-xs font-mono text-emerald-400">
+                              <span className="truncate font-bold">✓ {paymentScreenshotFile.name} ({(paymentScreenshotFile.size / 1024).toFixed(1)} KB)</span>
+                              <span className="text-[10px] text-[#38BDF8] underline ml-2 shrink-0">CHANGE FILE</span>
+                            </div>
+                          ) : (
+                            <div className="space-y-1 text-slate-300">
+                              <Upload className="w-5 h-5 text-[#38BDF8] mx-auto" />
+                              <div className="text-xs font-mono">
+                                {team.payment?.screenshot_url ? 'Upload new payment screenshot (PNG, JPG, WEBP, PDF)' : 'Click to select transaction screenshot image'}
+                              </div>
+                              <div className="text-[10px] text-rose-400 font-mono font-bold">* MANDATORY FOR ORGANIZER VERIFICATION</div>
+                            </div>
+                          )}
+                        </div>
                       </div>
 
                       <button

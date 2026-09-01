@@ -17,7 +17,8 @@ import {
   QrCode,
   ArrowRight,
   Layers,
-  UserCheck
+  UserCheck,
+  Upload
 } from 'lucide-react';
 import { GlassCard } from '../common/GlassCard';
 import { PROBLEM_STATEMENTS } from '../../data/orionData';
@@ -73,6 +74,7 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
   // Payment State (Step 5)
   const [utrNumber, setUtrNumber] = useState('');
   const [payerName, setPayerName] = useState('');
+  const [paymentScreenshot, setPaymentScreenshot] = useState<File | null>(null);
 
   // Processing & Confirmation State
   const [isProcessing, setIsProcessing] = useState(false);
@@ -246,22 +248,27 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
       setErrorMessage('Please enter the payer name as in your bank / UPI account.');
       return;
     }
+    if (!paymentScreenshot) {
+      setErrorMessage('Payment screenshot proof is COMPULSORY. Please upload your payment receipt screenshot before submitting.');
+      return;
+    }
 
     sound.playClick();
     setIsProcessing(true);
     setErrorMessage('');
 
     try {
+      const formData = new FormData();
+      formData.append('teamId', registeredTeamData.teamId);
+      formData.append('accessToken', registeredTeamData.accessToken);
+      formData.append('utrNumber', utrNumber.trim().toUpperCase());
+      formData.append('payerName', payerName.trim());
+      formData.append('amount', '100');
+      formData.append('screenshot', paymentScreenshot);
+
       const res = await fetch('/api/team/payment', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          teamId: registeredTeamData.teamId,
-          accessToken: registeredTeamData.accessToken,
-          utrNumber: utrNumber.trim().toUpperCase(),
-          payerName: payerName.trim(),
-          amount: 100
-        })
+        body: formData
       });
 
       const data = await res.json();
@@ -823,6 +830,37 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
                         placeholder="Name on UPI / Bank Account"
                         className="w-full px-3.5 py-2.5 bg-[#020817] border border-white/15 text-white text-base sm:text-xs font-mono-hud focus:outline-none"
                       />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-mono-hud text-[#BAE6FD] mb-1 uppercase">
+                      PAYMENT TRANSACTION SCREENSHOT (COMPULSORY) <span className="text-rose-400">*</span>
+                    </label>
+                    <div className="p-3.5 bg-[#020817] border border-dashed border-[#38BDF8]/60 hover:border-[#38BDF8] transition-colors relative text-center cursor-pointer">
+                      <input
+                        type="file"
+                        required
+                        accept="image/*,.pdf"
+                        onChange={(e) => {
+                          if (e.target.files && e.target.files[0]) {
+                            setPaymentScreenshot(e.target.files[0]);
+                          }
+                        }}
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                      />
+                      {paymentScreenshot ? (
+                        <div className="flex items-center justify-between text-xs font-mono text-emerald-400">
+                          <span className="truncate font-bold">✓ {paymentScreenshot.name} ({(paymentScreenshot.size / 1024).toFixed(1)} KB)</span>
+                          <span className="text-[10px] text-[#38BDF8] underline ml-2 shrink-0">CHANGE FILE</span>
+                        </div>
+                      ) : (
+                        <div className="space-y-1 text-slate-300">
+                          <Upload className="w-5 h-5 text-[#38BDF8] mx-auto" />
+                          <div className="text-xs font-mono">Click or Drag & Drop Payment Screenshot / Receipt (PNG, JPG, WEBP, PDF)</div>
+                          <div className="text-[10px] text-rose-400 font-mono font-bold">* MANDATORY PROOF FOR ORGANIZER VERIFICATION</div>
+                        </div>
+                      )}
                     </div>
                   </div>
 

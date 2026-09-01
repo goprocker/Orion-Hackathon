@@ -1261,6 +1261,23 @@ export default function AdminDashboard() {
                   <div>UTR / Ref: <strong className="text-[#38BDF8] font-mono">{selectedTeam.payment?.utr_number || 'NOT_SUBMITTED'}</strong></div>
                   <div>Payer Name: <span className="text-slate-300">{selectedTeam.payment?.payer_name || 'N/A'}</span></div>
                   <div>Submitted: <span className="text-slate-400">{selectedTeam.payment?.submitted_at ? new Date(selectedTeam.payment.submitted_at).toLocaleString() : 'N/A'}</span></div>
+                  {selectedTeam.payment?.screenshot_url ? (
+                    <div className="pt-1.5 pb-0.5">
+                      <a
+                        href={selectedTeam.payment.screenshot_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0B2556] border border-[#38BDF8]/50 text-[#38BDF8] hover:bg-[#133A80] text-xs font-mono transition-colors"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                        <span>INSPECT RECEIPT SCREENSHOT</span>
+                      </a>
+                    </div>
+                  ) : (
+                    <div className="text-[11px] text-amber-400 font-mono italic pt-1">
+                      ⚠️ No screenshot proof attached
+                    </div>
+                  )}
                 </div>
 
                 {/* Payment Action Buttons */}
