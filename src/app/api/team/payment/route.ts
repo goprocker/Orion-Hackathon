@@ -18,6 +18,8 @@ export async function POST(request: Request) {
     let accessToken = '';
     let utrNumber = '';
     let payerName = '';
+    let payerUpi = '';
+    let teamNameInNote = '';
     let amount = 100;
     let screenshotFile: File | null = null;
     let screenshotUrl = '';
@@ -28,6 +30,8 @@ export async function POST(request: Request) {
       accessToken = String(formData.get('accessToken') || '');
       utrNumber = String(formData.get('utrNumber') || '');
       payerName = String(formData.get('payerName') || '');
+      payerUpi = String(formData.get('payerUpi') || '');
+      teamNameInNote = String(formData.get('teamNameInNote') || '');
       amount = Number(formData.get('amount')) || 100;
       
       const fileEntry = formData.get('screenshot');
@@ -41,6 +45,8 @@ export async function POST(request: Request) {
       accessToken = body.accessToken || '';
       utrNumber = body.utrNumber || '';
       payerName = body.payerName || '';
+      payerUpi = body.payerUpi || '';
+      teamNameInNote = String(body.teamNameInNote || '');
       amount = Number(body.amount) || 100;
       screenshotUrl = body.screenshotUrl || '';
     }
@@ -53,6 +59,21 @@ export async function POST(request: Request) {
     }
     if (!payerName?.trim()) {
       return NextResponse.json({ error: 'Payer Name is required' }, { status: 400 });
+    }
+
+    const cleanPayerUpi = payerUpi.trim().toLowerCase();
+    if (!/^[a-z0-9][a-z0-9._-]{1,49}@[a-z][a-z0-9]{1,40}$/.test(cleanPayerUpi)) {
+      return NextResponse.json({
+        error: 'Payer UPI ID is COMPULSORY. Enter the UPI ID you paid from (e.g. name@okhdfcbank).'
+      }, { status: 400 });
+    }
+
+    // The payment note is the organisers' handle for matching a bank credit to
+    // a squad; the submitter must attest the team name went into it.
+    if (teamNameInNote !== 'true') {
+      return NextResponse.json({
+        error: 'Please confirm that you mentioned your team name in the UPI payment note while paying.'
+      }, { status: 400 });
     }
 
     const cleanUTR = utrNumber.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
@@ -156,6 +177,7 @@ export async function POST(request: Request) {
     const result = await serverStore.submitPayment(team.id, {
       utrNumber: cleanUTR,
       payerName: payerName.trim(),
+      payerUpi: cleanPayerUpi,
       amount: config.round1FeeInr || amount || 100,
       screenshotUrl
     });

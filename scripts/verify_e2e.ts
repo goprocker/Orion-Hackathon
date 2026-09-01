@@ -52,6 +52,7 @@ async function runE2ETests() {
     const paymentResult = await serverStore.submitPayment(teamAlpha.id, {
       utrNumber: uniqueUtr,
       payerName: 'Arjun Sharma',
+      payerUpi: 'arjunsharma@oksbi',
       amount: 400
     });
     assert(paymentResult.success === true, 'Payment submission succeeded');
@@ -79,6 +80,7 @@ async function runE2ETests() {
     const duplicateRes = await serverStore.submitPayment(regBeta.team.id, {
       utrNumber: uniqueUtr,
       payerName: 'Vikram Patel',
+      payerUpi: 'vikrampatel@okicici',
       amount: 400
     });
     assert(duplicateRes.success === false, 'Duplicate UTR was rejected: ' + duplicateRes.error);

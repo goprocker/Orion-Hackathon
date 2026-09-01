@@ -65,6 +65,8 @@ export default function TeamPortalPage() {
   // Payment state
   const [utrInput, setUtrInput] = useState('');
   const [payerInput, setPayerInput] = useState('');
+  const [payerUpiInput, setPayerUpiInput] = useState('');
+  const [noteConfirmed, setNoteConfirmed] = useState(false);
   const [paymentScreenshotFile, setPaymentScreenshotFile] = useState<File | null>(null);
   const [isSubmittingPayment, setIsSubmittingPayment] = useState(false);
   const [paymentMsg, setPaymentMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -234,8 +236,18 @@ export default function TeamPortalPage() {
       setPaymentMsg({ type: 'error', text: 'Please enter a valid UPI UTR reference (min 6 chars).' });
       return;
     }
-    if (!paymentScreenshotFile && !team.payment?.screenshot_url) {
+    if (!/^[a-zA-Z0-9][a-zA-Z0-9._-]{1,49}@[a-zA-Z][a-zA-Z0-9]{1,40}$/.test(payerUpiInput.trim())) {
+      setPaymentMsg({ type: 'error', text: 'Payer UPI ID is COMPULSORY. Enter the UPI ID you paid from (e.g. name@okhdfcbank).' });
+      return;
+    }
+    // A fresh screenshot every submission: the server refuses a payment record
+    // without proof, and a resubmission needs proof of the corrected payment.
+    if (!paymentScreenshotFile) {
       setPaymentMsg({ type: 'error', text: 'Payment screenshot proof is COMPULSORY. Please select and upload your payment receipt screenshot image.' });
+      return;
+    }
+    if (!noteConfirmed) {
+      setPaymentMsg({ type: 'error', text: `Please confirm that you mentioned your team name "${team.team_name}" in the UPI payment note before submitting.` });
       return;
     }
 
@@ -249,10 +261,10 @@ export default function TeamPortalPage() {
       formData.append('accessToken', team.access_token);
       formData.append('utrNumber', utrInput.trim().toUpperCase());
       formData.append('payerName', (payerInput || team.leader_name).trim());
+      formData.append('payerUpi', payerUpiInput.trim().toLowerCase());
+      formData.append('teamNameInNote', 'true');
       formData.append('amount', String(config?.round1FeeInr || 100));
-      if (paymentScreenshotFile) {
-        formData.append('screenshot', paymentScreenshotFile);
-      }
+      formData.append('screenshot', paymentScreenshotFile);
 
       const res = await fetch('/api/team/payment', {
         method: 'POST',
@@ -266,6 +278,8 @@ export default function TeamPortalPage() {
 
       setPaymentMsg({ type: 'success', text: 'Payment reference & screenshot proof submitted! Awaiting organizer verification.' });
       setUtrInput('');
+      setPayerUpiInput('');
+      setNoteConfirmed(false);
       setPaymentScreenshotFile(null);
       handleRefresh();
     } catch (err: unknown) {
@@ -941,6 +955,10 @@ export default function TeamPortalPage() {
                           <div className="text-[11px] text-slate-300 leading-relaxed">
                             Scan the QR code above or pay via UPI ID, then enter your 12-digit transaction UTR below.
                           </div>
+                          <div className="p-2.5 bg-amber-950/40 border border-amber-400/50 text-[11px] text-amber-200 leading-relaxed">
+                            <strong className="font-mono-hud text-amber-300 uppercase">Important:</strong>{' '}
+                            While paying, type your team name <strong className="text-white">&quot;{team.team_name}&quot;</strong> in the payment note / message field (GPay: &quot;Add a note&quot;). Payments without the team name are slower to verify.
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -984,6 +1002,20 @@ export default function TeamPortalPage() {
                       </div>
 
                       <div>
+                        <label className="block text-[11px] font-mono-hud text-slate-300 mb-1">
+                          YOUR UPI ID (PAID FROM) <span className="text-[#38BDF8]">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={payerUpiInput}
+                          onChange={(e) => setPayerUpiInput(e.target.value)}
+                          placeholder="e.g. yourname@okhdfcbank / yourname@ybl"
+                          className="w-full px-3.5 py-2.5 bg-[#040E24] border border-[#38BDF8]/50 text-white text-xs font-mono focus:outline-none lowercase"
+                        />
+                      </div>
+
+                      <div>
                         <label className="block text-[11px] font-mono-hud text-slate-300 mb-1 uppercase">
                           PAYMENT RECEIPT SCREENSHOT (COMPULSORY) <span className="text-rose-400">*</span>
                         </label>
@@ -1014,6 +1046,19 @@ export default function TeamPortalPage() {
                           )}
                         </div>
                       </div>
+
+                      <label className="flex items-start gap-2.5 p-3 bg-amber-950/30 border border-amber-400/40 cursor-pointer select-none">
+                        <input
+                          type="checkbox"
+                          required
+                          checked={noteConfirmed}
+                          onChange={(e) => setNoteConfirmed(e.target.checked)}
+                          className="mt-0.5 accent-amber-400 shrink-0"
+                        />
+                        <span className="text-[11px] text-amber-200 leading-relaxed">
+                          I confirm I mentioned my team name <strong className="text-white">&quot;{team.team_name}&quot;</strong> in the UPI payment note while paying. <span className="text-amber-300">(Mandatory)</span>
+                        </span>
+                      </label>
 
                       <button
                         type="submit"
