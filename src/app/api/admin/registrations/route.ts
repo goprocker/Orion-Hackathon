@@ -18,6 +18,25 @@ import {
   sendReuploadRejectedEmail,
   verifySmtp
 } from '@/lib/email';
+import type { MailResult } from '@/lib/email';
+
+/**
+ * Await a notification mail and say what actually happened. A fire-and-forget
+ * send dies with the serverless invocation the moment the response returns, so
+ * every dispatch is awaited and its real outcome shown to the console operator.
+ * A mail failure never rolls back the admin action it accompanies.
+ */
+async function describeMailOutcome(send: Promise<MailResult>, to: string): Promise<string> {
+  try {
+    const res = await send;
+    if (res.simulated) return 'email NOT sent — SMTP_USER / SMTP_PASS are unset on this deployment';
+    if (!res.success) return `email FAILED to send: ${res.error}`;
+    return `email sent to ${to}`;
+  } catch (err) {
+    console.error('[Admin API] Mail dispatch threw:', err);
+    return 'email FAILED to send — see server logs';
+  }
+}
 
 export async function GET(request: Request) {
   try {
@@ -102,14 +121,12 @@ export async function POST(request: Request) {
       if (!teamId) return NextResponse.json({ error: 'teamId is required' }, { status: 400 });
       const res = await serverStore.updatePaymentVerification(teamId, 'VERIFY', actor, note);
 
-      // Trigger verification confirmation email asynchronously
+      let mailNote = 'no leader email on record, nothing sent';
       if (res.team) {
-        sendPaymentVerifiedEmail(res.team).catch((mailErr) => {
-          console.error('[Admin API] Verification email trigger error:', mailErr);
-        });
+        mailNote = await describeMailOutcome(sendPaymentVerifiedEmail(res.team), res.team.leader_email);
       }
 
-      return NextResponse.json({ success: true, message: 'Payment verified, Round 1 unlocked, and confirmation email dispatched', data: res });
+      return NextResponse.json({ success: true, message: `Payment verified and Round 1 unlocked — confirmation ${mailNote}`, data: res });
     }
 
     if (action === 'RESEND_VERIFICATION_EMAIL') {
@@ -140,14 +157,15 @@ export async function POST(request: Request) {
       if (!teamId) return NextResponse.json({ error: 'teamId is required' }, { status: 400 });
       const res = await serverStore.updatePaymentVerification(teamId, 'REQUEST_RESUBMISSION', actor, reason);
 
-      // Trigger resubmission notification email with admin comments
+      let mailNote = 'no leader email on record, nothing sent';
       if (res.team) {
-        sendResubmissionRequiredEmail(res.team, reason || 'Please resubmit your verification details / 12-digit payment reference.').catch((mailErr) => {
-          console.error('[Admin API] Resubmission email trigger error:', mailErr);
-        });
+        mailNote = await describeMailOutcome(
+          sendResubmissionRequiredEmail(res.team, reason || 'Please resubmit your verification details / 12-digit payment reference.'),
+          res.team.leader_email
+        );
       }
 
-      return NextResponse.json({ success: true, message: 'Payment resubmission requested and notice email dispatched', data: res });
+      return NextResponse.json({ success: true, message: `Payment resubmission requested — notice ${mailNote}`, data: res });
     }
 
     // 2b. Manual registration-confirmation email (auto-dispatch on signup is off
@@ -188,21 +206,20 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: res.error || 'Could not review the request' }, { status: 400 });
       }
 
-      // Notify the team out of band; a mail failure must not undo the decision.
+      // Notify the team; a mail failure must not undo the decision.
       const decisionNote = res.request?.review_notes || null;
-      const notify = isApprove
-        ? sendReuploadApprovedEmail(res.team, decisionNote)
-        : sendReuploadRejectedEmail(res.team, decisionNote);
-
-      notify.catch((mailErr) => {
-        console.error('[Admin API] Re-upload decision email error:', mailErr);
-      });
+      const mailNote = await describeMailOutcome(
+        isApprove
+          ? sendReuploadApprovedEmail(res.team, decisionNote)
+          : sendReuploadRejectedEmail(res.team, decisionNote),
+        res.team.leader_email
+      );
 
       return NextResponse.json({
         success: true,
-        message: isApprove
+        message: `${isApprove
           ? 'Re-upload approved — the team may now upload one replacement deck.'
-          : 'Re-upload request declined — the existing submission stands.',
+          : 'Re-upload request declined — the existing submission stands.'} Decision ${mailNote}`,
         data: res
       });
     }

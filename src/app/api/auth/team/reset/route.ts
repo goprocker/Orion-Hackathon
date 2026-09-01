@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, after } from 'next/server';
 import { serverStore } from '@/lib/serverStore';
 import { sendPasscodeChangedEmail } from '@/lib/email';
 import { PASSCODE_MIN_LENGTH, PASSCODE_MAX_LENGTH } from '@/lib/passcodePolicy';
@@ -58,15 +58,21 @@ export async function POST(request: Request) {
     // this mail is the only way they find out — so it is sent even though the
     // request has already succeeded, and its failure does not fail the reset.
     if (result.team) {
-      void sendPasscodeChangedEmail(result.team)
-        .then(res => {
+      // after() rather than a bare promise: an un-awaited send is frozen with
+      // the serverless function once the response returns and never delivers.
+      const team = result.team;
+      after(async () => {
+        try {
+          const res = await sendPasscodeChangedEmail(team);
           if (!res.success) {
             console.error(
-              `[Reset] Could not deliver change notice for ${result.team?.registration_id}: ${res.error}`
+              `[Reset] Could not deliver change notice for ${team.registration_id}: ${res.error}`
             );
           }
-        })
-        .catch(err => console.error('[Reset] Change-notice dispatch threw:', err));
+        } catch (err) {
+          console.error('[Reset] Change-notice dispatch threw:', err);
+        }
+      });
     }
 
     // The registration ID goes back so the sign-in form can be prefilled. The
