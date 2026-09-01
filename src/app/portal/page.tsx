@@ -941,6 +941,10 @@ export default function TeamPortalPage() {
                           <div className="text-[11px] text-slate-300 leading-relaxed">
                             Scan the QR code above or pay via UPI ID, then enter your 12-digit transaction UTR below.
                           </div>
+                          <div className="p-2.5 bg-amber-950/40 border border-amber-400/50 text-[11px] text-amber-200 leading-relaxed">
+                            <strong className="font-mono-hud text-amber-300 uppercase">Important:</strong>{' '}
+                            While paying, type your team name <strong className="text-white">&quot;{team.team_name}&quot;</strong> in the payment note / message field (GPay: &quot;Add a note&quot;). Payments without the team name are slower to verify.
+                          </div>
                         </div>
                       </div>
                     </div>

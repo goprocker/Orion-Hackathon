@@ -783,9 +783,16 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
                         </button>
                       </div>
 
+                      {/* Team name must ride along in the payment note so the
+                          secretariat can match the bank credit to the squad. */}
+                      <div className="p-2.5 bg-amber-950/40 border border-amber-400/50 text-[11px] text-amber-200 leading-relaxed">
+                        <strong className="font-mono-hud text-amber-300 uppercase">Important:</strong>{' '}
+                        While paying, type your team name <strong className="text-white">&quot;{registeredTeamData.teamName}&quot;</strong> in the payment note / message field (GPay: &quot;Add a note&quot;). Payments without the team name are slower to verify.
+                      </div>
+
                       {/* 1-Tap Mobile UPI Intent Launcher */}
                       <a
-                        href="upi://pay?pa=8870227906@upi&pn=MSNIHITHAJULIETA&am=100&cu=INR&tn=ORION_1.0_Team_Registration"
+                        href={`upi://pay?pa=8870227906@upi&pn=MSNIHITHAJULIETA&am=100&cu=INR&tn=${encodeURIComponent(`ORION 1.0 ${registeredTeamData.teamName}`)}`}
                         className="sm:hidden w-full py-2.5 px-3 bg-gradient-to-r from-emerald-500/20 via-cyan-500/20 to-blue-500/20 border border-emerald-400/50 text-emerald-300 font-mono-hud text-xs flex items-center justify-center gap-2 hover:bg-emerald-500/30 active:scale-95 transition-all text-center"
                       >
                         <CreditCard className="w-4 h-4 text-emerald-400 shrink-0" />
@@ -794,8 +801,9 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
 
                       <p className="text-[11px] text-slate-300 leading-relaxed font-sans">
                         1. Scan QR code or tap the button above to pay flat <strong>₹100</strong> to <code>8870227906@upi</code>.<br />
-                        2. Copy the <strong>12-digit UPI Reference / UTR Number</strong> from your payment receipt.<br />
-                        3. Enter the UTR and Payer Name below to lock your registration.
+                        2. Add your <strong>team name</strong> in the payment note before confirming the payment.<br />
+                        3. Copy the <strong>12-digit UPI Reference / UTR Number</strong> from your payment receipt.<br />
+                        4. Enter the UTR and Payer Name below to lock your registration.
                       </p>
                     </div>
                   </div>
