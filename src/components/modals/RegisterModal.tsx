@@ -74,6 +74,8 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
   // Payment State (Step 5)
   const [utrNumber, setUtrNumber] = useState('');
   const [payerName, setPayerName] = useState('');
+  const [payerUpi, setPayerUpi] = useState('');
+  const [noteConfirmed, setNoteConfirmed] = useState(false);
   const [paymentScreenshot, setPaymentScreenshot] = useState<File | null>(null);
 
   // Processing & Confirmation State
@@ -248,8 +250,16 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
       setErrorMessage('Please enter the payer name as in your bank / UPI account.');
       return;
     }
+    if (!/^[a-zA-Z0-9][a-zA-Z0-9._-]{1,49}@[a-zA-Z][a-zA-Z0-9]{1,40}$/.test(payerUpi.trim())) {
+      setErrorMessage('Payer UPI ID is COMPULSORY. Enter the UPI ID you paid from (e.g. name@okhdfcbank).');
+      return;
+    }
     if (!paymentScreenshot) {
       setErrorMessage('Payment screenshot proof is COMPULSORY. Please upload your payment receipt screenshot before submitting.');
+      return;
+    }
+    if (!noteConfirmed) {
+      setErrorMessage(`Please confirm that you mentioned your team name "${registeredTeamData.teamName}" in the UPI payment note before submitting.`);
       return;
     }
 
@@ -263,6 +273,8 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
       formData.append('accessToken', registeredTeamData.accessToken);
       formData.append('utrNumber', utrNumber.trim().toUpperCase());
       formData.append('payerName', payerName.trim());
+      formData.append('payerUpi', payerUpi.trim().toLowerCase());
+      formData.append('teamNameInNote', 'true');
       formData.append('amount', '100');
       formData.append('screenshot', paymentScreenshot);
 
@@ -735,6 +747,8 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
                   <div>
                     <span className="text-[10px] font-mono-hud text-[#BAE6FD] block">REGISTERED SQUAD ID</span>
                     <strong className="text-white font-mono text-base">{registeredTeamData.teamId}</strong>
+                    <span className="text-[10px] font-mono-hud text-[#BAE6FD] block mt-1.5">TEAM NAME</span>
+                    <strong className="text-[#22D3EE] font-mono text-sm">{registeredTeamData.teamName}</strong>
                   </div>
                   <div className="text-right">
                     <span className="text-[10px] font-mono-hud text-emerald-300 block">FEE PAYABLE</span>
@@ -839,6 +853,20 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
                         className="w-full px-3.5 py-2.5 bg-[#020817] border border-white/15 text-white text-base sm:text-xs font-mono-hud focus:outline-none"
                       />
                     </div>
+
+                    <div className="sm:col-span-2">
+                      <label className="block text-[11px] font-mono-hud text-[#BAE6FD] mb-1">
+                        YOUR UPI ID (PAID FROM) <span className="text-[#38BDF8]">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={payerUpi}
+                        onChange={(e) => setPayerUpi(e.target.value)}
+                        placeholder="e.g. yourname@okhdfcbank / yourname@ybl"
+                        className="w-full px-3.5 py-2.5 bg-[#020817] border border-[#38BDF8]/60 text-white text-base sm:text-xs font-mono-hud focus:outline-none lowercase"
+                      />
+                    </div>
                   </div>
 
                   <div>
@@ -871,6 +899,19 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
                       )}
                     </div>
                   </div>
+
+                  <label className="flex items-start gap-2.5 p-3 bg-amber-950/30 border border-amber-400/40 cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      required
+                      checked={noteConfirmed}
+                      onChange={(e) => setNoteConfirmed(e.target.checked)}
+                      className="mt-0.5 accent-amber-400 shrink-0"
+                    />
+                    <span className="text-[11px] text-amber-200 leading-relaxed">
+                      I confirm I mentioned my team name <strong className="text-white">&quot;{registeredTeamData.teamName}&quot;</strong> in the UPI payment note while paying. <span className="text-amber-300">(Mandatory)</span>
+                    </span>
+                  </label>
 
                   <button
                     type="submit"
