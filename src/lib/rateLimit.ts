@@ -15,16 +15,27 @@ const ipMap = new Map<string, RateLimitRecord>();
 // Hard cap so a flood of distinct keys cannot grow the heap without bound.
 const MAX_TRACKED_KEYS = 10_000;
 
-// Clean up stale IP records every 5 minutes
-if (typeof setInterval !== 'undefined') {
-  setInterval(() => {
-    const now = Date.now();
-    for (const [key, record] of ipMap.entries()) {
-      if (record.resetTime <= now) {
-        ipMap.delete(key);
+// Clean up stale IP records every 5 minutes.
+//
+// unref() so this timer never by itself keeps the Node event loop alive. It is
+// a housekeeping sweep over an in-memory Map: there is nothing to finish and
+// nothing to lose by exiting mid-cycle. Without it, any process that imports a
+// route (a CLI check, a test script, a one-off migration) hangs forever after
+// its work is done, with buffered stdout never flushed.
+const cleanupTimer = typeof setInterval !== 'undefined'
+  ? setInterval(() => {
+      const now = Date.now();
+      for (const [key, record] of ipMap.entries()) {
+        if (record.resetTime <= now) {
+          ipMap.delete(key);
+        }
       }
-    }
-  }, 5 * 60 * 1000);
+    }, 5 * 60 * 1000)
+  : null;
+
+// Node exposes unref(); the browser/edge timer type does not.
+if (cleanupTimer && typeof (cleanupTimer as { unref?: () => void }).unref === 'function') {
+  (cleanupTimer as { unref: () => void }).unref();
 }
 
 export function checkRateLimit(

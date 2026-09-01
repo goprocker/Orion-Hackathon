@@ -75,11 +75,26 @@ export async function POST(request: Request) {
     }
 
     // 3. Declarations
-    if (declarations) {
-      const { accurateInfo, membersBelong, rulesAgreed, feeUnderstood, qualifierUnderstood } = declarations;
-      if (!accurateInfo || !membersBelong || !rulesAgreed || !feeUnderstood || !qualifierUnderstood) {
-        return NextResponse.json({ error: 'You must accept all required declaration checkboxes to proceed' }, { status: 400 });
-      }
+    //
+    // Declarations are REQUIRED, and the object itself has to be present.
+    // This used to read `if (declarations) { ...check... }`, so a request that
+    // simply omitted the field skipped every consent check and registered
+    // successfully. The browser form always sends it, so the only callers that
+    // benefited were the ones bypassing the form — and the result was a team
+    // recorded as having agreed to nothing: not the rules, not the entry fee,
+    // not the eligibility terms. That record is exactly what the organisers
+    // would need to produce if a participant later disputed any of them.
+    const consent = declarations;
+    if (!consent || typeof consent !== 'object') {
+      return NextResponse.json(
+        { error: 'You must accept all required declaration checkboxes to proceed' },
+        { status: 400 }
+      );
+    }
+
+    const { accurateInfo, membersBelong, rulesAgreed, feeUnderstood, qualifierUnderstood } = consent;
+    if (!accurateInfo || !membersBelong || !rulesAgreed || !feeUnderstood || !qualifierUnderstood) {
+      return NextResponse.json({ error: 'You must accept all required declaration checkboxes to proceed' }, { status: 400 });
     }
 
     // 4. Register Team via Store Layer (With Duplicate & Suspicion Analysis)
