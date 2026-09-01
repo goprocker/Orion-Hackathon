@@ -82,6 +82,12 @@ function getTransporter(): Transporter | null {
   // 465 is implicit TLS; 587 upgrades via STARTTLS.
   const secure = process.env.SMTP_SECURE ? process.env.SMTP_SECURE === 'true' : port === 465;
 
+  // Gmail only accepts 16-char app passwords over SMTP, and Google displays
+  // them grouped as "abcd efgh ijkl mnop" — pasting one with the spaces intact
+  // is the most common cause of "535-5.7.8 BadCredentials". Gmail passwords
+  // never legitimately contain whitespace, so strip it for Gmail hosts only.
+  const cleanPass = /gmail|googlemail/i.test(host) ? pass.replace(/\s+/g, '') : pass;
+
   const key = `${host}:${port}:${secure}:${user}`;
   if (cachedTransporter && cachedTransporterKey === key) {
     return cachedTransporter;
@@ -91,7 +97,7 @@ function getTransporter(): Transporter | null {
     host,
     port,
     secure,
-    auth: { user, pass },
+    auth: { user, pass: cleanPass },
     // Reuse connections — a handshake per message gets the sender throttled.
     pool: true,
     maxConnections: 3,
@@ -223,7 +229,13 @@ async function dispatchMail(
     console.log(`[Mailer] Sent "${opts.kind}" to ${opts.to} [${info.messageId}]`);
     return { success: true, messageId: info.messageId };
   } catch (err: unknown) {
-    const errorMsg = err instanceof Error ? err.message : String(err);
+    let errorMsg = err instanceof Error ? err.message : String(err);
+    // Translate Gmail's auth rejection into the action that actually fixes it.
+    if (/535[- ]5\.7\.8|BadCredentials/i.test(errorMsg)) {
+      errorMsg +=
+        ' → Gmail rejected the SMTP login. Set SMTP_PASS to a 16-character Google App Password ' +
+        '(myaccount.google.com/apppasswords, requires 2-Step Verification), then redeploy.';
+    }
     console.error(`[Mailer] Failed "${opts.kind}" to ${opts.to}:`, errorMsg);
     return { success: false, error: errorMsg };
   }
