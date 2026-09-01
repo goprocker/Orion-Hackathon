@@ -144,11 +144,22 @@ The registration system ([RegisterModal.tsx](file:///c:/orion-1.0/src/components
    - 5 mandatory checkboxes confirming accuracy, membership, rules agreement, fee structure, and qualifier terms.
 4. **Step 4 — Review Before Payment**:
    - Comprehensive review dossier with quick `[ EDIT DETAILS ]` and `[ PROCEED TO CHECKOUT — ₹100 ]`.
-5. **Step 5 — Payment Gateway**:
-   - Razorpay payment modal with server-side order creation.
-   - Includes Sandbox Simulation mode when testing locally before entering live API keys.
-6. **Step 6 — Registration Confirmed**:
-   - Unique `ORN-R1-XXXX` registration ID, confirmed team parameters, `[ JOIN WHATSAPP GROUP ]`, `[ VIEW RULES ]`, and `[ DOWNLOAD RECEIPT ]` (downloadable formatted receipt).
+5. **Step 5 — UPI Payment & UTR Submission**:
+   - Flat **₹100 per team**, paid by UPI: QR code, copyable UPI ID, or a one-tap
+     `upi://` intent on mobile that pre-fills the payment note with
+     `ORION 1.0 <team name>`.
+   - The payer must type the **team name into the UPI payment note** — it is how
+     organisers match the bank credit to the squad, and the page says so.
+   - A submission is refused (client **and** server) unless it carries all five:
+     1. the 12-digit **UTR / transaction reference**,
+     2. the **payer name** as in the bank account,
+     3. the **UPI ID the fee was paid from** (`payments.payer_upi`),
+     4. a **receipt screenshot** (image or PDF, ≤10 MB), and
+     5. a checked confirmation that the **team name went into the payment note**.
+6. **Step 6 — Submitted, Pending Verification**:
+   - Registration ID and access passcode issued; organisers verify the payment in
+     the admin console, which unlocks the Round 1 upload and emails the
+     confirmation to the team leader.
 
 ---
 
@@ -229,6 +240,10 @@ order (each is idempotent):
 src/db/migrations/001_resubmission_requests.sql      re-upload workflow table + columns
 src/db/migrations/002_lock_down_rls.sql              drop the public read/write RLS policies
 src/db/migrations/003_private_submissions_bucket.sql make the submissions bucket private
+src/db/migrations/004_password_resets.sql            self-service passcode reset table
+src/db/migrations/005_payments_one_per_team.sql      unique payments.team_id (payment upsert fails without it)
+src/db/migrations/006_payment_screenshot_column.sql  add payments.screenshot_url (payment submission fails without it)
+src/db/migrations/007_payer_upi_column.sql           add payments.payer_upi (payment submission fails without it)
 ```
 
 Order matters for the two security migrations: deploy the application code
@@ -236,7 +251,13 @@ first, then apply them. 002 needs `SUPABASE_SERVICE_ROLE_KEY` set or every query
 starts failing; 003 makes existing public deck URLs stop resolving, and only the
 deployed code knows how to mint signed ones.
 
-Fresh installs get everything from `src/db/schema.sql` and can skip 001.
+Unlike 002/003, the payment-column migrations (005, 006, 007) must be applied
+**before** the code that writes them deploys — PostgREST rejects a write naming
+a column the table does not have, which fails every payment submission.
+
+Fresh installs get everything from `src/db/schema.sql` and can skip 001, 004,
+005, 006 and 007 (002 and 003 change RLS policies and the storage bucket, which
+`schema.sql` does not manage, so they still apply).
 
 > The migration also adds `submissions.project_url / repo_url / demo_url` and
 > `teams.evaluation_scores` — columns the application already wrote but that were
@@ -258,6 +279,7 @@ All mail goes through one hardened dispatcher in `src/lib/email.ts`:
 | Distinct `Message-ID` / `X-Entity-Ref-ID` | Stops Gmail threading separate notices together |
 | Certificate validation enforced | `rejectUnauthorized: false` never helped delivery and accepted MITM |
 | Subject lines de-spammed | Dropped `[ORION 1.0]` prefixes and "Action Required" |
+| Every send awaited (or handed to `after()`) | A fire-and-forget send dies with the serverless invocation the moment the response returns — mail silently never left while the UI claimed "dispatched". Admin actions await the send and report its true outcome; the passcode-reset routes use `next/server`'s `after()` to keep their constant-time responses |
 
 Verify SMTP credentials from the admin API without sending anything:
 
@@ -280,7 +302,7 @@ Access the organizer dashboard at `/admin`:
 * **Telemetry Overview**: Total Squads, Payment Confirmed, Payment Pending, Payment Failed, and Revenue.
 * **Track Breakdown**: Real-time distribution across all 4 problem statements.
 * **Search & Filter**: Search by Registration ID (`ORN-R1-...`), team name, leader, or college; filter by track and payment status.
-* **5-Member Squad Drawer**: Expand any team to view leader contacts and all 4 crew members.
+* **5-Member Squad Drawer**: Expand any team to view leader contacts, all 4 crew members, and the payment dossier (UTR, payer name, payer UPI ID, receipt screenshot).
 * **Live Auto-Polling**: Automatically syncs incoming registrations in the background every 6 seconds.
 * **Re-upload Request Queue**: A `RE-UPLOAD REQ` metric tile and per-squad roster badge surface teams waiting on a PPT replacement decision; approve or decline from the squad drawer with a note that is emailed to the team.
 * **1-Click CSV Export**: Downloads complete `ORION_1.0_Registrations.csv` file.
