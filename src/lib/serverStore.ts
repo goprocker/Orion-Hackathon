@@ -993,6 +993,7 @@ export const serverStore = {
               team_id: payRes.data.team_id,
               utr_number: payRes.data.utr_number,
               payer_name: payRes.data.payer_name,
+              payer_upi: payRes.data.payer_upi || null,
               amount: payRes.data.amount || 100,
               payment_status: payRes.data.payment_status,
               screenshot_url: payRes.data.screenshot_url || undefined,
@@ -1112,9 +1113,10 @@ export const serverStore = {
    *      file when the real database is configured is never the right answer in
    *      production — it turns a database error into a baffling one.
    */
-  async submitPayment(teamId: string, payload: { utrNumber: string; payerName: string; amount?: number; screenshotUrl?: string }): Promise<{ success: boolean; error?: string; payment?: PaymentRecord }> {
+  async submitPayment(teamId: string, payload: { utrNumber: string; payerName: string; payerUpi: string; amount?: number; screenshotUrl?: string }): Promise<{ success: boolean; error?: string; payment?: PaymentRecord }> {
     const cleanUTR = payload.utrNumber.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
     const cleanPayer = payload.payerName.trim();
+    const cleanPayerUpi = (payload.payerUpi || '').trim().toLowerCase();
     const now = new Date().toISOString();
 
     if (!cleanUTR || cleanUTR.length < 6) {
@@ -1122,6 +1124,9 @@ export const serverStore = {
     }
     if (!cleanPayer) {
       return { success: false, error: 'Payer name is required.' };
+    }
+    if (!/^[a-z0-9][a-z0-9._-]{1,49}@[a-z][a-z0-9]{1,40}$/.test(cleanPayerUpi)) {
+      return { success: false, error: 'A valid payer UPI ID is required (e.g. name@okhdfcbank — the UPI ID you paid from).' };
     }
 
     const team = await this.getTeam(teamId);
@@ -1172,6 +1177,9 @@ export const serverStore = {
             team_id: team.id,
             utr_number: cleanUTR,
             payer_name: cleanPayer,
+            // Requires migration 007 — a missing column fails the whole upsert
+            // with PGRST204, exactly like the screenshot column did.
+            payer_upi: cleanPayerUpi,
             amount: payload.amount || 100,
             payment_status: 'PENDING',
             screenshot_url: payload.screenshotUrl || null,
@@ -1214,7 +1222,7 @@ export const serverStore = {
           team_name: team.team_name,
           action: 'Payment UTR Submitted',
           actor: 'Participant Portal',
-          details: `Submitted UTR: ${cleanUTR} (₹${payload.amount || 100}) by ${cleanPayer}${payload.screenshotUrl ? ' with screenshot proof' : ''}`,
+          details: `Submitted UTR: ${cleanUTR} (₹${payload.amount || 100}) by ${cleanPayer} from ${cleanPayerUpi}${payload.screenshotUrl ? ' with screenshot proof' : ''}`,
           created_at: now
         }]);
 
@@ -1225,6 +1233,7 @@ export const serverStore = {
             team_id: payData.team_id,
             utr_number: payData.utr_number,
             payer_name: payData.payer_name,
+            payer_upi: payData.payer_upi || null,
             amount: payData.amount,
             payment_status: payData.payment_status,
             screenshot_url: payData.screenshot_url,
@@ -1272,6 +1281,7 @@ export const serverStore = {
     if (payment) {
       payment.utr_number = cleanUTR;
       payment.payer_name = cleanPayer;
+      payment.payer_upi = cleanPayerUpi;
       payment.amount = payload.amount || 100;
       payment.payment_status = 'PENDING';
       if (payload.screenshotUrl) payment.screenshot_url = payload.screenshotUrl;
@@ -1282,6 +1292,7 @@ export const serverStore = {
         team_id: localTeam.id,
         utr_number: cleanUTR,
         payer_name: cleanPayer,
+        payer_upi: cleanPayerUpi,
         amount: payload.amount || 100,
         payment_status: 'PENDING',
         screenshot_url: payload.screenshotUrl || undefined,
@@ -2067,6 +2078,7 @@ export const serverStore = {
               team_id: p.team_id,
               utr_number: p.utr_number,
               payer_name: p.payer_name,
+              payer_upi: p.payer_upi || null,
               amount: p.amount || 100,
               payment_status: p.payment_status,
               screenshot_url: p.screenshot_url || undefined,

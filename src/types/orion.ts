@@ -106,6 +106,8 @@ export interface PaymentRecord {
   team_id: string;
   utr_number: string;
   payer_name: string;
+  /** UPI ID the fee was paid from. Mandatory on new submissions; null on rows predating migration 007. */
+  payer_upi?: string | null;
   amount: number;
   payment_status: PaymentStatus;
   screenshot_url?: string | null;

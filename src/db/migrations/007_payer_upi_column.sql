@@ -1,0 +1,35 @@
+-- ==============================================================================
+-- ORION 1.0 — Migration 007: MANDATORY PAYER UPI ID
+-- ==============================================================================
+--
+--  ####  APPLY THIS BEFORE DEPLOYING THE CODE THAT COLLECTS payer_upi.  ####
+--
+-- WHY
+--
+-- Payment verification needs to match a bank credit to a squad. The UTR alone
+-- is fiddly to cross-check, so the payment form now also collects the UPI ID
+-- the fee was paid FROM (e.g. name@okhdfcbank) and requires it.
+--
+-- The payment upsert includes `payer_upi` in its payload. As migrations 005 and
+-- 006 both proved the hard way: PostgREST rejects a write that names a column
+-- the table does not have (PGRST204), which would make EVERY payment
+-- submission fail. Schema.sql edits change nothing on a live database — this
+-- migration is what actually adds the column.
+--
+-- ------------------------------------------------------------------------------
+-- 1. Add the column. Additive and idempotent — safe to run on live data.
+--    Nullable, because rows submitted before this feature have no UPI ID;
+--    the application layer enforces it for every new submission.
+-- ------------------------------------------------------------------------------
+alter table public.payments
+  add column if not exists payer_upi text;
+
+-- ------------------------------------------------------------------------------
+-- 2. Verify: this should list the column.
+-- ------------------------------------------------------------------------------
+-- select column_name, data_type
+--   from information_schema.columns
+--  where table_schema = 'public'
+--    and table_name   = 'payments'
+--    and column_name  = 'payer_upi';
+-- ==============================================================================

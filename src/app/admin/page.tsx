@@ -1280,6 +1280,7 @@ export default function AdminDashboard() {
                   <div>Status: <strong className="text-white">{selectedTeam.payment_status}</strong></div>
                   <div>UTR / Ref: <strong className="text-[#38BDF8] font-mono">{selectedTeam.payment?.utr_number || 'NOT_SUBMITTED'}</strong></div>
                   <div>Payer Name: <span className="text-slate-300">{selectedTeam.payment?.payer_name || 'N/A'}</span></div>
+                  <div>Payer UPI ID: <span className="text-[#38BDF8] font-mono">{selectedTeam.payment?.payer_upi || 'NOT_SUBMITTED'}</span></div>
                   <div>Submitted: <span className="text-slate-400">{selectedTeam.payment?.submitted_at ? new Date(selectedTeam.payment.submitted_at).toLocaleString() : 'N/A'}</span></div>
                   {selectedTeam.payment?.screenshot_url ? (
                     <div className="pt-1.5 pb-0.5">
