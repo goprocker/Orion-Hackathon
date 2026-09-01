@@ -208,6 +208,28 @@ function saveLocalStore(store: StoreSchema): void {
 // Exported Core Server Store Services (Supabase PostgreSQL Primary)
 // ==============================================================================
 
+/**
+ * Fetch EVERY row of a table, paging past PostgREST's silent 1000-row cap.
+ * Unpaginated selects truncate quietly at 1000 rows — at ~5 members per team
+ * the admin roster started losing members 4-5 from most teams once ~200 teams
+ * had registered, and registration's duplicate detection went blind.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function fetchAllRows(table: string, order?: { column: string; ascending: boolean }): Promise<any[]> {
+  if (!supabase) return [];
+  const PAGE = 1000;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const all: any[] = [];
+  for (let offset = 0; ; offset += PAGE) {
+    let q = supabase.from(table).select('*').range(offset, offset + PAGE - 1);
+    if (order) q = q.order(order.column, { ascending: order.ascending });
+    const { data, error } = await q;
+    if (error) throw new Error(`Could not load ${table}: ${error.message}`);
+    all.push(...(data || []));
+    if (!data || data.length < PAGE) return all;
+  }
+}
+
 export const serverStore = {
   // System Configuration
   async getConfig(): Promise<SystemConfig> {
@@ -302,13 +324,13 @@ export const serverStore = {
     // Check if Supabase is active
     if (isSupabaseConfigured() && supabase) {
       try {
-        const { data: allTeams } = await supabase
-          .from('teams')
-          .select('id, registration_id, team_name, leader_email, leader_phone');
-        
-        const { data: allMembers } = await supabase
-          .from('team_members')
-          .select('id, team_id, member_name, member_email, member_phone');
+        // Paged: unpaginated selects cap at 1000 rows, which silently blinded
+        // duplicate detection (and the leader re-registration block) once the
+        // roster grew past ~200 teams.
+        const [allTeams, allMembers] = await Promise.all([
+          fetchAllRows('teams'),
+          fetchAllRows('team_members')
+        ]);
 
         if (allTeams && allTeams.length > 0) {
           existingTeamsForDupCheck = allTeams.map(t => ({
@@ -1865,7 +1887,14 @@ export const serverStore = {
 
         return { success: true, request: data as ResubmissionRequest };
       } catch (sbErr) {
+        // Return the failure — the old fall-through pushed the request into
+        // the ephemeral local store and told the participant 'submitted'
+        // while nothing was persisted.
         console.error('Supabase requestRoundOneReupload error:', sbErr);
+        return {
+          success: false,
+          error: 'Could not record your re-upload request just now. Please try again in a moment.'
+        };
       }
     }
 
@@ -2018,37 +2047,55 @@ export const serverStore = {
     } : team.evaluation_scores || null;
 
     if (isSupabaseConfigured() && supabase) {
-      try {
-        await supabase
-          .from('teams')
-          .update({
-            round_1_status: targetRound1Status,
-            round_2_status: targetRound2Status,
-            round_1_score: calculatedScore !== undefined ? calculatedScore : null,
-            evaluation_scores: scoresPayload,
-            admin_notes: notes || team.admin_notes || null,
-            updated_at: now
-          })
-          .eq('id', team.id);
-
-        const breakdownStr = evaluationScores 
-          ? `[Scores: Innov=${evaluationScores.innovation}/10, Arch=${evaluationScores.architecture}/10, Impact=${evaluationScores.impact}/10, Exec=${evaluationScores.execution}/10, Feas=${evaluationScores.feasibility}/10 => Total=${evaluationScores.total}/50]`
-          : `Score: ${calculatedScore !== undefined ? calculatedScore : 'N/A'}`;
-
-        await supabase.from('audit_logs').insert([{
-          team_id: team.id,
-          team_name: team.team_name,
-          action: decision === 'SELECT' ? 'Team Selected for Round 2' : decision === 'NOT_SELECTED' ? 'Round 1 Decision: Not Selected' : decision === 'SAVE_SCORES' ? 'Rubric Evaluation Saved' : 'Round 1 Under Review',
-          actor,
-          details: `${breakdownStr}. ${notes || ''}`.trim(),
-          created_at: now
-        }]);
-
-        const updated = await this.getTeam(team.id);
-        if (updated) return { success: true, team: updated };
-      } catch (sbErr) {
-        console.error('Supabase evaluateRound1 error:', sbErr);
+      // Every path in this branch returns or throws with the REAL error.
+      // Falling through to the (empty, read-only on serverless) local store
+      // turned database failures into silent no-ops behind a success toast,
+      // or bogus 'Team not found' 500s — same shape updatePaymentVerification
+      // was already cured of.
+      const { data: updRows, error: updErr } = await supabase
+        .from('teams')
+        .update({
+          round_1_status: targetRound1Status,
+          round_2_status: targetRound2Status,
+          round_1_score: calculatedScore !== undefined ? calculatedScore : null,
+          evaluation_scores: scoresPayload,
+          admin_notes: notes || team.admin_notes || null,
+          updated_at: now
+        })
+        .eq('id', team.id)
+        .select('id');
+      if (updErr || !updRows || updRows.length === 0) {
+        throw new Error(`Evaluation did not save: ${updErr?.message || 'update matched no team row'}`);
       }
+
+      const breakdownStr = evaluationScores
+        ? `[Scores: Innov=${evaluationScores.innovation}/10, Arch=${evaluationScores.architecture}/10, Impact=${evaluationScores.impact}/10, Exec=${evaluationScores.execution}/10, Feas=${evaluationScores.feasibility}/10 => Total=${evaluationScores.total}/50]`
+        : `Score: ${calculatedScore !== undefined ? calculatedScore : 'N/A'}`;
+
+      const { error: logErr } = await supabase.from('audit_logs').insert([{
+        team_id: team.id,
+        team_name: team.team_name,
+        action: decision === 'SELECT' ? 'Team Selected for Round 2' : decision === 'NOT_SELECTED' ? 'Round 1 Decision: Not Selected' : decision === 'SAVE_SCORES' ? 'Rubric Evaluation Saved' : 'Round 1 Under Review',
+        actor,
+        details: `${breakdownStr}. ${notes || ''}`.trim(),
+        created_at: now
+      }]);
+      if (logErr) console.error('[Evaluate] audit log insert failed:', logErr.message);
+
+      const updated = await this.getTeam(team.id);
+      // The write landed; a failed re-read must not report as failure — compose locally.
+      return {
+        success: true,
+        team: updated ?? {
+          ...team,
+          round_1_status: targetRound1Status,
+          round_2_status: targetRound2Status,
+          round_1_score: calculatedScore !== undefined && calculatedScore !== null ? calculatedScore : team.round_1_score,
+          evaluation_scores: scoresPayload || team.evaluation_scores,
+          admin_notes: notes || team.admin_notes,
+          updated_at: now
+        }
+      };
     }
 
     const store = loadLocalStore();
@@ -2073,26 +2120,29 @@ export const serverStore = {
     const now = new Date().toISOString();
 
     if (isSupabaseConfigured() && supabase) {
-      try {
-        await supabase
-          .from('teams')
-          .update({ admin_notes: note.trim(), updated_at: now })
-          .eq('id', team.id);
-
-        await supabase.from('audit_logs').insert([{
-          team_id: team.id,
-          team_name: team.team_name,
-          action: 'Admin Note Updated',
-          actor,
-          details: note.trim(),
-          created_at: now
-        }]);
-
-        const updated = await this.getTeam(team.id);
-        if (updated) return updated;
-      } catch (sbErr) {
-        console.error('Supabase addAdminNote error:', sbErr);
+      // Return or throw with the real error — never fall through to the local
+      // store, which on serverless is empty and reports 'Team not found'.
+      const { data: updRows, error: updErr } = await supabase
+        .from('teams')
+        .update({ admin_notes: note.trim(), updated_at: now })
+        .eq('id', team.id)
+        .select('id');
+      if (updErr || !updRows || updRows.length === 0) {
+        throw new Error(`Note did not save: ${updErr?.message || 'update matched no team row'}`);
       }
+
+      const { error: logErr } = await supabase.from('audit_logs').insert([{
+        team_id: team.id,
+        team_name: team.team_name,
+        action: 'Admin Note Updated',
+        actor,
+        details: note.trim(),
+        created_at: now
+      }]);
+      if (logErr) console.error('[AdminNote] audit log insert failed:', logErr.message);
+
+      const updated = await this.getTeam(team.id);
+      return updated ?? { ...team, admin_notes: note.trim(), updated_at: now };
     }
 
     const store = loadLocalStore();
@@ -2186,19 +2236,21 @@ export const serverStore = {
 
     if (isSupabaseConfigured() && supabase) {
       try {
-        const [teamsRes, memRes, payRes, subRes, resubRes, flagRes, logRes] = await Promise.all([
-          supabase.from('teams').select('*').order('created_at', { ascending: false }),
-          supabase.from('team_members').select('*').order('member_number', { ascending: true }),
-          supabase.from('payments').select('*'),
-          supabase.from('submissions').select('*').order('version', { ascending: false }),
-          supabase.from('resubmission_requests').select('*').order('created_at', { ascending: false }),
-          supabase.from('suspicion_flags').select('*').order('created_at', { ascending: false }),
+        // fetchAllRows pages past the 1000-row cap; audit_logs stays capped
+        // at the 50 most recent on purpose.
+        const [teamsData, memData, payData, subData, resubData, flagData, logRes] = await Promise.all([
+          fetchAllRows('teams', { column: 'created_at', ascending: false }),
+          fetchAllRows('team_members', { column: 'member_number', ascending: true }),
+          fetchAllRows('payments'),
+          fetchAllRows('submissions', { column: 'version', ascending: false }),
+          fetchAllRows('resubmission_requests', { column: 'created_at', ascending: false }),
+          fetchAllRows('suspicion_flags', { column: 'created_at', ascending: false }),
           supabase.from('audit_logs').select('*').order('created_at', { ascending: false }).limit(50)
         ]);
 
-        if (teamsRes.data) {
+        if (teamsData) {
           const membersByTeam = new Map<string, TeamMember[]>();
-          (memRes.data || []).forEach(m => {
+          memData.forEach(m => {
             const list = membersByTeam.get(m.team_id) || [];
             list.push({
               id: m.id,
@@ -2214,7 +2266,7 @@ export const serverStore = {
           });
 
           const paymentsByTeam = new Map<string, PaymentRecord>();
-          (payRes.data || []).forEach(p => {
+          payData.forEach(p => {
             paymentsByTeam.set(p.team_id, {
               id: p.id,
               team_id: p.team_id,
@@ -2233,7 +2285,7 @@ export const serverStore = {
           });
 
           const subsByTeam = new Map<string, SubmissionRecord[]>();
-          (subRes.data || []).forEach(s => {
+          subData.forEach(s => {
             const list = subsByTeam.get(s.team_id) || [];
             list.push({
               id: s.id,
@@ -2255,7 +2307,7 @@ export const serverStore = {
           });
 
           const resubByTeam = new Map<string, ResubmissionRequest[]>();
-          (resubRes.data || []).forEach(r => {
+          resubData.forEach(r => {
             const list = resubByTeam.get(r.team_id) || [];
             list.push({
               id: r.id,
@@ -2274,7 +2326,7 @@ export const serverStore = {
           });
 
           const flagsByTeam = new Map<string, SuspicionFlag[]>();
-          (flagRes.data || []).forEach(f => {
+          flagData.forEach(f => {
             const list = flagsByTeam.get(f.team_id) || [];
             list.push({
               id: f.id,
@@ -2289,7 +2341,7 @@ export const serverStore = {
             flagsByTeam.set(f.team_id, list);
           });
 
-          teams = teamsRes.data.map(t => ({
+          teams = teamsData.map(t => ({
             id: t.id,
             registration_id: t.registration_id,
             team_name: t.team_name,
@@ -2491,6 +2543,7 @@ export const serverStore = {
         store.submissions = (store.submissions || []).filter(s => s.team_id !== teamUuid);
         store.resubmissionRequests = (store.resubmissionRequests || []).filter(r => r.team_id !== teamUuid);
         store.suspicionFlags = (store.suspicionFlags || []).filter(f => f.team_id !== teamUuid);
+    store.passwordResets = (store.passwordResets || []).filter(r => r.team_id !== teamUuid);
         saveLocalStore(store);
 
         return { success: true, deletedRegistrationId: regId };
@@ -2507,6 +2560,7 @@ export const serverStore = {
     store.submissions = (store.submissions || []).filter(s => s.team_id !== teamUuid);
     store.resubmissionRequests = (store.resubmissionRequests || []).filter(r => r.team_id !== teamUuid);
     store.suspicionFlags = (store.suspicionFlags || []).filter(f => f.team_id !== teamUuid);
+    store.passwordResets = (store.passwordResets || []).filter(r => r.team_id !== teamUuid);
 
     store.auditLogs.unshift({
       id: `audit-${Date.now()}`,

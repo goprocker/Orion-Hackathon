@@ -41,7 +41,9 @@ export default function TeamPortalPage() {
   const [teamIdInput, setTeamIdInput] = useState(() => {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
-      return params.get('teamId') || sessionStorage.getItem('orion_portal_team_id') || '';
+      // regId kept as a fallback: emails sent before the param rename link
+      // /portal?regId=... and should still prefill the Team ID field.
+      return params.get('teamId') || params.get('regId') || sessionStorage.getItem('orion_portal_team_id') || '';
     }
     return '';
   });
@@ -67,6 +69,9 @@ export default function TeamPortalPage() {
   const [payerInput, setPayerInput] = useState('');
   const [payerUpiInput, setPayerUpiInput] = useState('');
   const [noteConfirmed, setNoteConfirmed] = useState(false);
+  // Wall-clock for the deadline banner; 0 until mounted so SSR and first
+  // client render agree, then refreshed each minute.
+  const [nowMs, setNowMs] = useState(0);
   const [paymentScreenshotFile, setPaymentScreenshotFile] = useState<File | null>(null);
   const [isSubmittingPayment, setIsSubmittingPayment] = useState(false);
   const [paymentMsg, setPaymentMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -119,9 +124,20 @@ export default function TeamPortalPage() {
 
   // Check URL params on initial load
   useEffect(() => {
+    const tick = () => setNowMs(Date.now());
+    // First tick async so the effect itself does no synchronous setState.
+    const first = setTimeout(tick, 0);
+    const clock = setInterval(tick, 60_000);
+    return () => {
+      clearTimeout(first);
+      clearInterval(clock);
+    };
+  }, []);
+
+  useEffect(() => {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
-      const qTeamId = params.get('teamId');
+      const qTeamId = params.get('teamId') || params.get('regId');
       const qToken = params.get('token');
 
       const savedId = sessionStorage.getItem('orion_portal_team_id');
@@ -391,7 +407,11 @@ export default function TeamPortalPage() {
   const canUpload = !latestSubmission || !!approvedReuploadRequest;
 
   const deadlineStr = config?.round1SubmissionDeadline || '2026-09-08T23:59:59+05:30';
-  const isPastDeadline = false; // Live deadline check enforced server-side on upload
+  // UI courtesy only — the server independently enforces the deadline on
+  // upload. Without this, late participants filled in the whole form and
+  // uploaded their deck just to be refused at submit time.
+  const deadlineMs = new Date(deadlineStr).getTime();
+  const isPastDeadline = nowMs > 0 && Number.isFinite(deadlineMs) && nowMs > deadlineMs;
 
   return (
     <div className="min-h-screen bg-[#020617] text-slate-100 selection:bg-[#00BCF2]/30 selection:text-[#BAE6FD] relative pb-20">
