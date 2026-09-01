@@ -1082,6 +1082,36 @@ export const serverStore = {
   },
 
   // Payment Submission with Strict Uniqueness Check
+  /**
+   * Record a team's UPI payment reference and screenshot.
+   *
+   * THE BUG THIS REPLACES, because the shape of it matters:
+   *
+   * The Supabase branch upserted with `onConflict:'team_id'`, but
+   * payments.team_id only ever had a plain index — no unique constraint. ON
+   * CONFLICT requires a unique or exclusion constraint matching its target, so
+   * Postgres rejected every single one of these with 42P10. The error was
+   * logged and then ignored: the code carried on to mark the team PENDING,
+   * wrote an audit row saying the UTR had been submitted, and finally fell
+   * through to the local-file store — which does not exist on serverless.
+   *
+   * The participant, who really had paid, saw "Team record not found locally."
+   * The organiser saw a team sitting at PENDING with an audit trail claiming a
+   * submission and no payment row to verify. Both halves of that are wrong, and
+   * neither is recoverable from the UI.
+   *
+   * This also blocked the mandatory payment screenshot: the upsert that failed
+   * is the same one carrying screenshot_url, so no proof was ever stored.
+   *
+   * Three things changed:
+   *   1. Migration 005 adds the unique constraint the upsert always needed.
+   *   2. The payment row is written FIRST. Team status and the audit entry are
+   *      only touched once a payment actually exists, so a failure can no
+   *      longer leave the two disagreeing.
+   *   3. The Supabase branch always returns. Falling through to a local JSON
+   *      file when the real database is configured is never the right answer in
+   *      production — it turns a database error into a baffling one.
+   */
   async submitPayment(teamId: string, payload: { utrNumber: string; payerName: string; amount?: number; screenshotUrl?: string }): Promise<{ success: boolean; error?: string; payment?: PaymentRecord }> {
     const cleanUTR = payload.utrNumber.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
     const cleanPayer = payload.payerName.trim();
@@ -1098,6 +1128,14 @@ export const serverStore = {
     if (!team) {
       return { success: false, error: 'Squad record not found.' };
     }
+
+    // What a participant sees when the database write fails. They have already
+    // sent real money by UPI at this point, so the wording has to make clear
+    // that this step records a reference and does not move funds.
+    const WRITE_FAILED =
+      'We could not save your payment reference just now. Your payment itself is not affected — ' +
+      'this step only records the UTR. Please try again in a moment. If it keeps failing, ' +
+      'contact the organisers with your UTR and they will record it manually.';
 
     if (isSupabaseConfigured() && supabase) {
       try {
@@ -1119,13 +1157,15 @@ export const serverStore = {
             created_at: now
           }]);
 
-          return { 
-            success: false, 
-            error: `Database Integrity Error: Transaction ID / UTR "${cleanUTR}" has already been submitted by another team. Please ensure you enter your squad's unique payment reference.` 
+          return {
+            success: false,
+            error: `Database Integrity Error: Transaction ID / UTR "${cleanUTR}" has already been submitted by another team. Please ensure you enter your squad's unique payment reference.`
           };
         }
 
-        // Upsert payment in Supabase
+        // The payment row first. Nothing else may be recorded until this
+        // succeeds — a team marked PENDING with no payment row is worse than a
+        // clean failure the participant can retry.
         const { data: payData, error: payErr } = await supabase
           .from('payments')
           .upsert({
@@ -1140,48 +1180,75 @@ export const serverStore = {
           .select('*')
           .single();
 
-        if (payErr) {
-          console.error('Supabase submitPayment error:', payErr);
+        if (payErr || !payData) {
+          console.error(
+            `[Payment] Could not record UTR for ${team.registration_id}: ${payErr?.message || 'no row returned'}`
+          );
+          // A 42P10 here means migration 005 has not been applied.
+          if (payErr?.code === '42P10') {
+            console.error(
+              '[Payment] ON CONFLICT has no matching constraint — apply ' +
+              'src/db/migrations/005_payments_one_per_team.sql.'
+            );
+          }
+          return { success: false, error: WRITE_FAILED };
         }
 
-        await supabase
+        // Only now is it true that this team has a payment on record.
+        const { error: teamErr } = await supabase
           .from('teams')
           .update({ payment_status: 'PENDING', updated_at: now })
           .eq('id', team.id);
+
+        if (teamErr) {
+          // The payment IS saved, so this is not a failure the participant
+          // should retry — a retry would not fix the status either. Organisers
+          // can see the payment row; log loudly and report success.
+          console.error(
+            `[Payment] UTR saved for ${team.registration_id} but the team status did not update: ${teamErr.message}`
+          );
+        }
 
         await supabase.from('audit_logs').insert([{
           team_id: team.id,
           team_name: team.team_name,
           action: 'Payment UTR Submitted',
           actor: 'Participant Portal',
-          details: `Submitted UTR: ${cleanUTR} (₹100) by ${cleanPayer}${payload.screenshotUrl ? ' with screenshot proof' : ''}`,
+          details: `Submitted UTR: ${cleanUTR} (₹${payload.amount || 100}) by ${cleanPayer}${payload.screenshotUrl ? ' with screenshot proof' : ''}`,
           created_at: now
         }]);
 
-        if (payData) {
-          return {
-            success: true,
-            payment: {
-              id: payData.id,
-              team_id: payData.team_id,
-              utr_number: payData.utr_number,
-              payer_name: payData.payer_name,
-              amount: payData.amount,
-              payment_status: payData.payment_status,
-              screenshot_url: payData.screenshot_url,
-              submitted_at: payData.submitted_at
-            }
-          };
-        }
+        return {
+          success: true,
+          payment: {
+            id: payData.id,
+            team_id: payData.team_id,
+            utr_number: payData.utr_number,
+            payer_name: payData.payer_name,
+            amount: payData.amount,
+            payment_status: payData.payment_status,
+            screenshot_url: payData.screenshot_url,
+            submitted_at: payData.submitted_at
+          }
+        };
       } catch (sbErr) {
-        console.error('Supabase submitPayment error:', sbErr);
+        console.error('[Payment] Supabase submitPayment threw:', sbErr);
+        return { success: false, error: WRITE_FAILED };
       }
+      // Unreachable by design: every path above returns. Falling through to the
+      // local store while Supabase is configured is what produced
+      // "Team record not found locally." for a genuinely registered team.
     }
 
-    // Local fallback
+    // Local store. Reached only when Supabase is not configured at all, i.e.
+    // local development against the .data file.
     const store = loadLocalStore();
-    const localTeam = store.teams.find(t => t.id === team.id || t.registration_id === team.id);
-    if (!localTeam) return { success: false, error: 'Team record not found locally.' };
+    // Match on the team's own registration_id, not its id. The previous
+    // comparison read `t.registration_id === team.id`, which can never be true.
+    const localTeam = store.teams.find(
+      t => t.id === team.id || t.registration_id === team.registration_id
+    );
+    if (!localTeam) return { success: false, error: 'Squad record not found.' };
 
     const duplicateUTR = store.payments.find(p => p.utr_number.toUpperCase() === cleanUTR && p.team_id !== localTeam.id);
     if (duplicateUTR) {
@@ -1195,9 +1262,9 @@ export const serverStore = {
         created_at: now
       });
       saveLocalStore(store);
-      return { 
-        success: false, 
-        error: `Database Integrity Error: Transaction ID / UTR "${cleanUTR}" has already been submitted by another team.` 
+      return {
+        success: false,
+        error: `Database Integrity Error: Transaction ID / UTR "${cleanUTR}" has already been submitted by another team.`
       };
     }
 

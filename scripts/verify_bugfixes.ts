@@ -40,6 +40,9 @@ interface StoreShape {
 }
 
 const readStore = (): StoreShape => JSON.parse(fs.readFileSync(STORE_FILE, 'utf-8'));
+/** Loose reader for assertions that reach past StoreShape. */
+const readStore2 = (): { payments: { team_id: string; utr_number: string }[] } =>
+  JSON.parse(fs.readFileSync(STORE_FILE, 'utf-8'));
 const writeStore = (s: unknown) => fs.writeFileSync(STORE_FILE, JSON.stringify(s, null, 2), 'utf-8');
 
 function jsonRequest(body: unknown): Request {
@@ -211,6 +214,138 @@ async function main() {
     k => !['totalRegistrations', 'paymentVerified', 'paymentPending', 'round1Submissions', 'round1Selected'].includes(k)
   );
   assert(leaked.length === 0, 'Public counts expose only the five counters', leaked.join(', '));
+
+  // ---------------------------------------------------------------------------
+  // BUG 6 — every payment submission failed on Supabase, and the failure was
+  //         reported to the participant as "Team record not found locally."
+  // ---------------------------------------------------------------------------
+  console.log('\n--- BUG 6: payment submission ---');
+
+  // 6a. The structural check that would have caught this before it shipped.
+  //     An upsert with onConflict:'X' is a hard Postgres error (42P10) unless
+  //     column X carries a unique constraint. This asserts the code and the
+  //     schema agree, for every upsert in the store.
+  const storeRaw = fs.readFileSync(path.join(process.cwd(), 'src/lib/serverStore.ts'), 'utf-8');
+
+  // Scan CODE only. The doc comment on submitPayment quotes both the
+  // onConflict target and the old error string while explaining the bug, and
+  // a scanner that cannot tell prose from code would flag its own explanation.
+  function stripComments(src: string): string {
+    const withoutBlocks = src.replace(/\/\*[\s\S]*?\*\//g, '');
+    return withoutBlocks
+      .split('\n')
+      .filter(line => {
+        const t = line.trim();
+        return !t.startsWith('//') && !t.startsWith('*');
+      })
+      .join('\n');
+  }
+
+  const storeSrc = stripComments(storeRaw);
+  const schemaSrc = fs.readFileSync(path.join(process.cwd(), 'src/db/schema.sql'), 'utf-8');
+
+  function tableBlock(table: string): string {
+    const marker = `create table if not exists public.${table} (`;
+    const start = schemaSrc.indexOf(marker);
+    if (start < 0) return '';
+    const end = schemaSrc.indexOf('\n);', start);
+    return schemaSrc.slice(start, end < 0 ? undefined : end);
+  }
+
+  function columnIsUnique(table: string, column: string): boolean {
+    const block = tableBlock(table);
+    if (!block) return false;
+    for (const raw of block.split('\n')) {
+      const line = raw.trim();
+      if (!line.startsWith(column + ' ')) continue;
+      return /\bunique\b/i.test(line) || /\bprimary key\b/i.test(line);
+    }
+    // A table-level constraint counts too.
+    return new RegExp(`unique\\s*\\(\\s*${column}\\s*\\)`, 'i').test(block);
+  }
+
+  const upsertTargets: { table: string; column: string }[] = [];
+  const onConflictRe = /onConflict:\s*'([a-z_]+)'/g;
+  let m: RegExpExecArray | null;
+  while ((m = onConflictRe.exec(storeSrc)) !== null) {
+    // Walk back to the nearest .from('<table>') that precedes this upsert.
+    const before = storeSrc.slice(0, m.index);
+    const fromMatches = [...before.matchAll(/\.from\('([a-z_]+)'\)/g)];
+    const table = fromMatches.length ? fromMatches[fromMatches.length - 1][1] : '';
+    upsertTargets.push({ table, column: m[1] });
+  }
+
+  assert(upsertTargets.length > 0, 'Found at least one upsert with an onConflict target to check');
+
+  for (const t of upsertTargets) {
+    assert(
+      columnIsUnique(t.table, t.column),
+      `upsert onConflict '${t.column}' on ${t.table} has a matching UNIQUE constraint`,
+      'without it Postgres raises 42P10 and the write always fails'
+    );
+  }
+
+  // 6b. The Supabase branch must never fall through to the local file store.
+  //     That fallthrough is what surfaced a database error to the participant
+  //     as "Team record not found locally".
+  assert(
+    !storeSrc.includes('Team record not found locally.'),
+    'The "not found locally" error string is gone from submitPayment'
+  );
+
+  // 6c. The local path still works end to end for a registered team.
+  const payStamp = Date.now();
+  const { team: payTeam } = await serverStore.registerTeam({
+    teamName: `Payment Verify ${payStamp}`,
+    leaderName: 'Pay Leader',
+    leaderPhone: `96${String(payStamp).slice(-8)}`,
+    leaderEmail: `pay.verify.${payStamp}@example.com`,
+    institution: 'Verification Institute',
+    problemStatement: 'ORION-PS-01',
+    members: [{ name: 'M1', phone: `86${String(payStamp).slice(-8)}` }]
+  });
+
+  const utr = `UTR${String(payStamp).slice(-9)}`;
+  const payRes = await serverStore.submitPayment(payTeam.id, {
+    utrNumber: utr,
+    payerName: 'Pay Leader',
+    amount: 100
+  });
+  assert(payRes.success === true, 'A registered team can submit its payment reference', payRes.error || '');
+  assert(payRes.payment?.utr_number === utr, 'The stored UTR matches what was submitted');
+
+  // 6d. Resubmitting updates in place rather than creating a second row — the
+  //     one-payment-per-team invariant the new unique constraint enforces.
+  const utr2 = `UTR${String(payStamp + 1).slice(-9)}`;
+  const payRes2 = await serverStore.submitPayment(payTeam.id, {
+    utrNumber: utr2,
+    payerName: 'Pay Leader',
+    amount: 100
+  });
+  assert(payRes2.success === true, 'A team can correct its UTR', payRes2.error || '');
+
+  const payRows = readStore2().payments.filter(p => p.team_id === payTeam.id);
+  assert(payRows.length === 1, 'Resubmitting leaves exactly one payment row for the team', `got ${payRows.length}`);
+  assert(payRows[0]?.utr_number === utr2, 'That row holds the corrected UTR');
+
+  // 6e. A UTR already claimed by another team is still rejected.
+  const otherStamp = payStamp + 500;
+  const { team: otherTeam } = await serverStore.registerTeam({
+    teamName: `Payment Other ${otherStamp}`,
+    leaderName: 'Other Leader',
+    leaderPhone: `95${String(otherStamp).slice(-8)}`,
+    leaderEmail: `pay.other.${otherStamp}@example.com`,
+    institution: 'Verification Institute',
+    problemStatement: 'ORION-PS-01',
+    members: [{ name: 'M1', phone: `85${String(otherStamp).slice(-8)}` }]
+  });
+  const stolen = await serverStore.submitPayment(otherTeam.id, {
+    utrNumber: utr2,
+    payerName: 'Other Leader',
+    amount: 100
+  });
+  assert(stolen.success === false, 'A UTR already used by another team is rejected');
+
 }
 
 const hadBackup = fs.existsSync(STORE_FILE);
