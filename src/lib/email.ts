@@ -26,12 +26,41 @@ export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://orion-10-n
 
 const SENDER_NAME = process.env.EMAIL_FROM_NAME || 'ORION 1.0 Secretariat';
 
-function smtpUser(): string {
-  return (process.env.SMTP_USER || process.env.EMAIL_USER || '').trim();
+/**
+ * Resolve the credential PAIR from one env-var family, never mixed. The old
+ * per-field fallback (SMTP_USER||EMAIL_USER, SMTP_PASS||EMAIL_PASS) had two
+ * production traps: a deployment holding both families where the operator
+ * "fixed" the losing variable and the stale one kept winning the ||, and a
+ * mixed pair (account A's user with account B's password) that is guaranteed
+ * 535 BadCredentials even though each variable is individually correct.
+ */
+let loggedCredentialSource = false;
+function smtpCredentials(): { user: string; pass: string } {
+  const sUser = (process.env.SMTP_USER || '').trim();
+  const sPass = (process.env.SMTP_PASS || '').trim();
+  const eUser = (process.env.EMAIL_USER || '').trim();
+  const ePass = (process.env.EMAIL_PASS || '').trim();
+
+  const fromSmtp = Boolean(sUser || sPass);
+  const user = fromSmtp ? sUser : eUser;
+  const pass = fromSmtp ? sPass : ePass;
+
+  if (!loggedCredentialSource && (user || pass)) {
+    loggedCredentialSource = true;
+    const family = fromSmtp ? 'SMTP_USER/SMTP_PASS' : 'EMAIL_USER/EMAIL_PASS';
+    console.log(`[Mailer] Credentials resolved from ${family} (user: ${user || 'MISSING'})`);
+    if (fromSmtp && (!sUser || !sPass) && (eUser || ePass)) {
+      console.warn(
+        '[Mailer] SMTP_* is partially set, so EMAIL_* is IGNORED. ' +
+        `Missing: ${!sUser ? 'SMTP_USER' : 'SMTP_PASS'}. Complete the SMTP_* pair or remove it.`
+      );
+    }
+  }
+  return { user, pass };
 }
 
-function smtpPass(): string {
-  return (process.env.SMTP_PASS || process.env.EMAIL_PASS || '').trim();
+function smtpUser(): string {
+  return smtpCredentials().user;
 }
 
 /**
@@ -71,16 +100,28 @@ function replyToAddress(): string {
 let cachedTransporter: Transporter | null = null;
 let cachedTransporterKey = '';
 
-/** Pooled, rate-limited singleton transporter. Rebuilt only if config changes. */
+/** Evict the cached transporter so the next send rebuilds from current env. */
+function evictTransporter(): void {
+  try { cachedTransporter?.close(); } catch { /* already dead */ }
+  cachedTransporter = null;
+  cachedTransporterKey = '';
+}
+
+/** Singleton transporter. Rebuilt when any part of the config — password included — changes. */
 function getTransporter(): Transporter | null {
-  const user = smtpUser();
-  const pass = smtpPass();
+  const { user, pass } = smtpCredentials();
   if (!user || !pass) return null;
 
   const host = process.env.SMTP_HOST || 'smtp.gmail.com';
   const port = Number(process.env.SMTP_PORT) || 587;
-  // 465 is implicit TLS; 587 upgrades via STARTTLS.
-  const secure = process.env.SMTP_SECURE ? process.env.SMTP_SECURE === 'true' : port === 465;
+  // 465 is implicit TLS; 587 upgrades via STARTTLS. Accept the common truthy
+  // spellings — the exact-'true' check meant SMTP_SECURE=TRUE on port 465
+  // silently forced STARTTLS against an implicit-TLS listener and hung.
+  const rawSecure = (process.env.SMTP_SECURE || '').trim().toLowerCase();
+  const secure = rawSecure ? ['true', '1', 'yes'].includes(rawSecure) : port === 465;
+  if (rawSecure && !['true', '1', 'yes', 'false', '0', 'no'].includes(rawSecure)) {
+    console.warn(`[Mailer] SMTP_SECURE="${process.env.SMTP_SECURE}" not recognised — treating as false.`);
+  }
 
   // Gmail only accepts 16-char app passwords over SMTP, and Google displays
   // them grouped as "abcd efgh ijkl mnop" — pasting one with the spaces intact
@@ -88,24 +129,46 @@ function getTransporter(): Transporter | null {
   // never legitimately contain whitespace, so strip it for Gmail hosts only.
   const cleanPass = /gmail|googlemail/i.test(host) ? pass.replace(/\s+/g, '') : pass;
 
-  const key = `${host}:${port}:${secure}:${user}`;
+  // The password digest MUST be part of the key: without it, a warm process
+  // that once authenticated with a bad password kept replaying it forever,
+  // even after the env var was fixed.
+  const passDigest = crypto.createHash('sha256').update(cleanPass).digest('hex').slice(0, 12);
+  const key = `${host}:${port}:${secure}:${user}:${passDigest}`;
   if (cachedTransporter && cachedTransporterKey === key) {
     return cachedTransporter;
   }
+  evictTransporter();
+
+  // No connection pooling on serverless: pooled sockets are frozen with the
+  // function and are dead on thaw, so warm invocations inherit broken
+  // connections and fail with timeouts/resets even with correct credentials.
+  const serverless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
 
   cachedTransporter = nodemailer.createTransport({
     host,
     port,
     secure,
     auth: { user, pass: cleanPass },
-    // Reuse connections — a handshake per message gets the sender throttled.
-    pool: true,
-    maxConnections: 3,
-    maxMessages: 50,
-    // Stay well under Gmail's throughput ceiling so bulk reminder runs are not
-    // deferred; deferrals themselves damage sender reputation.
-    rateDelta: 1000,
-    rateLimit: 5,
+    ...(serverless
+      ? {
+          pool: false as const
+        }
+      : {
+          // Long-lived process: reuse connections — a handshake per message
+          // gets the sender throttled.
+          pool: true as const,
+          maxConnections: 3,
+          maxMessages: 50,
+          // Stay well under Gmail's throughput ceiling so bulk reminder runs
+          // are not deferred; deferrals damage sender reputation.
+          rateDelta: 1000,
+          rateLimit: 5
+        }),
+    // Fail fast instead of riding out nodemailer's 2-minute defaults, which
+    // exceed the serverless max duration and turn a dead SMTP path into a 504.
+    connectionTimeout: 10_000,
+    greetingTimeout: 10_000,
+    socketTimeout: 20_000,
     // Validate the server certificate. Disabling this never helps delivery and
     // silently accepts a MITM.
     requireTLS: !secure,
@@ -120,10 +183,13 @@ function getTransporter(): Transporter | null {
 }
 
 /**
- * One-shot SMTP connection + credential check, surfaced by /api/status so a
- * misconfigured mailer is visible before a live send fails silently.
+ * One-shot SMTP connection + credential check, surfaced by the admin
+ * CHECK_MAILER action so a misconfigured mailer is visible before a live send
+ * fails silently. Evicts the cached transporter first so it verifies the
+ * CURRENT env credentials, never a stale cached login.
  */
 export async function verifySmtp(): Promise<{ configured: boolean; ok: boolean; error?: string }> {
+  evictTransporter();
   const transporter = getTransporter();
   if (!transporter) {
     return { configured: false, ok: false, error: 'SMTP_USER / SMTP_PASS not configured' };
@@ -132,6 +198,7 @@ export async function verifySmtp(): Promise<{ configured: boolean; ok: boolean; 
     await transporter.verify();
     return { configured: true, ok: true };
   } catch (err: unknown) {
+    evictTransporter();
     return { configured: true, ok: false, error: err instanceof Error ? err.message : String(err) };
   }
 }
@@ -194,6 +261,16 @@ async function dispatchMail(
 ): Promise<MailResult> {
   const transporter = getTransporter();
   if (!transporter) {
+    // Local development simulates sends; production must NOT — a mis-named or
+    // wrongly-scoped env var would otherwise make every mail "succeed" while
+    // nothing leaves.
+    const production = process.env.NODE_ENV === 'production' || Boolean(process.env.VERCEL);
+    if (production) {
+      const error =
+        'SMTP credentials unresolved — set SMTP_USER and SMTP_PASS (exact names, Production scope) in the deployment env and redeploy.';
+      console.error(`[Mailer] "${opts.subject}" to ${opts.to} NOT sent: ${error}`);
+      return { success: false, simulated: true, error };
+    }
     console.warn(
       `[Mailer Simulator] SMTP_USER / SMTP_PASS not configured. "${opts.subject}" to ${opts.to} was not sent.`
     );
@@ -230,6 +307,14 @@ async function dispatchMail(
     return { success: true, messageId: info.messageId };
   } catch (err: unknown) {
     let errorMsg = err instanceof Error ? err.message : String(err);
+    const errCode = (err as { code?: string })?.code || '';
+    // An auth failure poisons the cached transporter — evict it so the next
+    // send authenticates fresh from the current env instead of replaying the
+    // rejected credential for the life of the warm process. Connection-level
+    // failures get the same treatment: the transport is cheap to rebuild.
+    if (/535|EAUTH|ECONNECTION|ETIMEDOUT|ECONNRESET|EPIPE|ESOCKET/i.test(`${errCode} ${errorMsg}`)) {
+      evictTransporter();
+    }
     // Translate Gmail's auth rejection into the action that actually fixes it.
     if (/535[- ]5\.7\.8|BadCredentials/i.test(errorMsg)) {
       errorMsg +=

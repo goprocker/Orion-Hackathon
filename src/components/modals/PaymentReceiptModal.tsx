@@ -25,7 +25,9 @@ export const PaymentReceiptModal: React.FC<PaymentReceiptModalProps> = ({
   if (!isOpen || !team) return null;
 
   const payment = team.payment;
-  const verifiedDate = payment?.verified_at 
+  // Never fabricate: a receipt reopened tomorrow must not carry tomorrow's
+  // date, and a missing UTR is a fact worth printing, not a blank to paper over.
+  const verifiedDate = payment?.verified_at
     ? new Date(payment.verified_at).toLocaleDateString('en-IN', {
         day: '2-digit',
         month: 'short',
@@ -33,13 +35,11 @@ export const PaymentReceiptModal: React.FC<PaymentReceiptModalProps> = ({
         hour: '2-digit',
         minute: '2-digit'
       })
-    : new Date().toLocaleDateString('en-IN', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric'
-      });
+    : 'Recorded off-platform';
 
-  const receiptNo = `REC-ORION-${team.registration_id.replace(/[^0-9]/g, '') || '2026'}-${(team.payment?.utr_number || '100').slice(-4)}`;
+  // Derive the suffix from stable identity, not the UTR — a placeholder UTR
+  // would stamp every off-platform receipt with the same digits.
+  const receiptNo = `REC-ORION-${team.registration_id.replace(/[^0-9]/g, '') || '2026'}-${(payment?.id || team.id || '0000').replace(/[^a-zA-Z0-9]/g, '').slice(-4).toUpperCase()}`;
 
   const handlePrint = () => {
     window.print();
@@ -153,7 +153,7 @@ export const PaymentReceiptModal: React.FC<PaymentReceiptModalProps> = ({
                 Payment Channel: <strong className="text-white print:text-black">Official UPI Gateway</strong>
               </div>
               <div className="text-slate-300 print:text-gray-700 font-mono">
-                UTR / Ref: <strong className="text-emerald-400 print:text-emerald-800">{payment?.utr_number || 'VERIFIED'}</strong>
+                UTR / Ref: <strong className="text-emerald-400 print:text-emerald-800">{payment?.utr_number || 'Recorded off-platform (WhatsApp proof)'}</strong>
               </div>
               <div className="text-slate-300 print:text-gray-700">
                 Payee: <strong>MSNIHITHAJULIETA (8870227906@upi)</strong>

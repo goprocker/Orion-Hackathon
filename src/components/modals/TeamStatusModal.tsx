@@ -25,6 +25,7 @@ export const TeamStatusModal: React.FC<TeamStatusModalProps> = ({ isOpen, onClos
   const [result, setResult] = useState<RegisteredTeam | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
+  const [lookupError, setLookupError] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
@@ -34,23 +35,35 @@ export const TeamStatusModal: React.FC<TeamStatusModalProps> = ({ isOpen, onClos
 
     setIsSearching(true);
     setHasSearched(false);
+    setLookupError(null);
 
     try {
       const response = await fetch(`/api/status?q=${encodeURIComponent(cleanQuery)}`);
-      if (response.ok) {
-        const json = await response.json();
-        if (json.found && json.data) {
-          setResult(json.data);
-          setHasSearched(true);
-          setIsSearching(false);
-          return;
-        }
+      const json = await response.json().catch(() => null);
+
+      if (response.ok && json) {
+        // Only an authoritative found:false means "no record". Anything else
+        // — a 429 from the shared campus NAT, a 500 — must NOT be reported as
+        // the team not existing.
+        setResult(json.found && json.data ? json.data : null);
+        setHasSearched(true);
+        setIsSearching(false);
+        return;
       }
+
+      setResult(null);
+      setLookupError(
+        response.status === 429
+          ? (json?.error || 'The lookup is busy right now — wait a minute and try again.')
+          : 'The status service hit a snag — please try again in a moment.'
+      );
+      setHasSearched(true);
+      setIsSearching(false);
+      return;
     } catch {
-      // Fallback to in-memory/passed teams array if API fails
+      // Network failure — fall through to the locally passed roster, if any.
     }
 
-    // Local fallback check
     const lower = cleanQuery.toLowerCase();
     const found = teams.find(
       (t) =>
@@ -60,6 +73,9 @@ export const TeamStatusModal: React.FC<TeamStatusModalProps> = ({ isOpen, onClos
     );
 
     setResult(found || null);
+    if (!found) {
+      setLookupError('Could not reach the status service — check your connection and try again.');
+    }
     setHasSearched(true);
     setIsSearching(false);
   };
@@ -196,6 +212,16 @@ export const TeamStatusModal: React.FC<TeamStatusModalProps> = ({ isOpen, onClos
                       <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>
+                </div>
+              ) : lookupError ? (
+                <div className="p-6 rounded-none bg-[#1B1904] border border-amber-500/40 text-center space-y-2">
+                  <AlertCircle className="w-6 h-6 text-amber-400 mx-auto" />
+                  <div className="text-xs font-mono-hud text-amber-300 font-bold">
+                    LOOKUP TEMPORARILY UNAVAILABLE
+                  </div>
+                  <p className="text-xs text-[#BAE6FD] font-sans">
+                    {lookupError} Your registration is unaffected.
+                  </p>
                 </div>
               ) : (
                 <div className="p-6 rounded-none bg-[#040E24] border border-[rgba(212,233,255,0.1)] text-center space-y-2">

@@ -119,8 +119,9 @@ async function runE2ETests() {
       'Finance Jury',
       'Bank statement confirmed by accounts team'
     );
-    assert(verifyResult.team.payment_status === 'VERIFIED', 'Payment status updated to VERIFIED');
-    assert(verifyResult.team.round_1_status === 'SUBMISSION_OPEN', 'Round 1 status automatically unlocked to SUBMISSION_OPEN');
+    assert(verifyResult.success && verifyResult.team !== null, 'Payment verification reported success with a team record');
+    assert(verifyResult.team?.payment_status === 'VERIFIED', 'Payment status updated to VERIFIED');
+    assert(verifyResult.team?.round_1_status === 'SUBMISSION_OPEN', 'Round 1 status automatically unlocked to SUBMISSION_OPEN');
 
     // 6. Round 1 Native Submission Upload
     console.log('\n--- TEST STEP 6: PPT / PDF Submission Upload ---');

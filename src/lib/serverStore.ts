@@ -1150,6 +1150,16 @@ export const serverStore = {
       return { success: false, error: 'Squad record not found.' };
     }
 
+    // A verified team resubmitting its UTR must not silently un-verify itself:
+    // the unconditional PENDING write here was reverting admin verifications
+    // whenever a participant replayed the payment form afterwards.
+    if (team.payment_status === 'VERIFIED') {
+      return {
+        success: false,
+        error: 'Your payment is already verified — no resubmission is needed. Contact the organisers if you believe this is wrong.'
+      };
+    }
+
     // What a participant sees when the database write fails. They have already
     // sent real money by UPI at this point, so the wording has to make clear
     // that this step records a reference and does not move funds.
@@ -1326,57 +1336,133 @@ export const serverStore = {
 
   // Admin Payment Actions: VERIFY, REJECT, REQUEST_RESUBMISSION
   async updatePaymentVerification(
-    teamId: string, 
-    action: 'VERIFY' | 'REJECT' | 'REQUEST_RESUBMISSION', 
-    actor = 'Admin Secretariat', 
-    reason?: string
-  ): Promise<{ success: boolean; team: TeamRecord; payment?: PaymentRecord }> {
+    teamId: string,
+    action: 'VERIFY' | 'REJECT' | 'REQUEST_RESUBMISSION',
+    actor = 'Admin Secretariat',
+    reason?: string,
+    // Off-platform evidence recorded by the organiser (WhatsApp screenshots
+    // etc.). Only the fields provided overwrite what a team submitted itself.
+    details?: { utrNumber?: string; payerName?: string; payerUpi?: string; screenshotUrl?: string; notes?: string; amount?: number }
+  ): Promise<{ success: boolean; error?: string; team: TeamRecord | null; payment?: PaymentRecord }> {
     const team = await this.getTeam(teamId);
     if (!team) throw new Error('Team not found');
     const now = new Date().toISOString();
+
+    // A payment record must exist for every decided payment — verified teams
+    // with no ledger row are unauditable. When the team never submitted
+    // through the portal, the organiser's manual evidence (or a per-team
+    // placeholder; utr_number is UNIQUE so it cannot be a shared constant)
+    // becomes the row.
+    const manualUtr = (details?.utrNumber || '').trim().toUpperCase() || `MANUAL-${team.registration_id}`;
+    const hasAcceptedR1 = (team.submissions || []).some(
+      s => s.round_number === 1 && s.submission_status === 'ACCEPTED'
+    );
 
     let targetPaymentStatus: 'VERIFIED' | 'REJECTED' | 'RESUBMISSION_REQUIRED' = 'VERIFIED';
     let targetRound1Status = team.round_1_status;
 
     if (action === 'VERIFY') {
       targetPaymentStatus = 'VERIFIED';
-      if (team.round_1_status === 'NOT_STARTED') {
-        targetRound1Status = 'SUBMISSION_OPEN';
+      if (team.round_1_status === 'NOT_STARTED' || team.round_1_status === 'SUBMISSION_OPEN') {
+        // A team re-verified after a mistaken reject must get its SUBMITTED
+        // standing back, not a reopened submission window.
+        targetRound1Status = hasAcceptedR1 ? 'SUBMITTED' : 'SUBMISSION_OPEN';
       }
     } else if (action === 'REJECT') {
       targetPaymentStatus = 'REJECTED';
-      targetRound1Status = 'NOT_STARTED';
+      // Do not rewind a team that already has an accepted deck out of the
+      // jury pipeline — the rejection is about the payment, not the work.
+      if (!hasAcceptedR1) targetRound1Status = 'NOT_STARTED';
     } else if (action === 'REQUEST_RESUBMISSION') {
       targetPaymentStatus = 'RESUBMISSION_REQUIRED';
     }
 
     if (isSupabaseConfigured() && supabase) {
+      // Every path in this branch returns — falling through to the local JSON
+      // file when the real database is configured turns a database error into
+      // a bogus 'Team not found' 500 for an action that may have succeeded.
       try {
-        await supabase
-          .from('payments')
-          .update({
-            payment_status: targetPaymentStatus,
-            verified_at: action === 'VERIFY' ? now : null,
-            verified_by: action === 'VERIFY' ? actor : null,
-            rejection_reason: (action === 'REJECT' || action === 'REQUEST_RESUBMISSION') ? (reason || 'Verification rejected') : null
-          })
-          .eq('team_id', team.id);
+        const decision = {
+          payment_status: targetPaymentStatus,
+          verified_at: action === 'VERIFY' ? now : null,
+          verified_by: action === 'VERIFY' ? actor : null,
+          rejection_reason: (action === 'REJECT' || action === 'REQUEST_RESUBMISSION') ? (reason || 'Verification rejected') : null
+        };
 
-        await supabase
+        // Merge-don't-clobber: overwrite team-submitted evidence only with
+        // fields the organiser explicitly provided.
+        const provided: Record<string, unknown> = {};
+        if (details?.utrNumber) provided.utr_number = manualUtr;
+        if (details?.payerName) provided.payer_name = details.payerName.trim();
+        if (details?.payerUpi) provided.payer_upi = details.payerUpi.trim().toLowerCase();
+        if (details?.screenshotUrl) provided.screenshot_url = details.screenshotUrl;
+        if (details?.notes) provided.notes = details.notes.trim();
+        if (details?.amount) provided.amount = details.amount;
+
+        const { data: existingPay, error: existErr } = await supabase
+          .from('payments')
+          .select('id')
+          .eq('team_id', team.id)
+          .maybeSingle();
+        if (existErr) {
+          console.error(`[Payment] Could not read payments row for ${team.registration_id}: ${existErr.message}`);
+          return { success: false, error: `Could not read the payment record: ${existErr.message}`, team };
+        }
+
+        let payErr: { message: string } | null = null;
+        if (existingPay) {
+          ({ error: payErr } = await supabase
+            .from('payments')
+            .update({ ...decision, ...provided })
+            .eq('team_id', team.id));
+        } else {
+          // No portal submission ever happened (the WhatsApp workflow) — the
+          // decision creates the ledger row instead of updating zero rows
+          // silently, which is what left VERIFIED teams with no payment record.
+          ({ error: payErr } = await supabase
+            .from('payments')
+            .insert([{
+              team_id: team.id,
+              utr_number: manualUtr,
+              payer_name: details?.payerName?.trim() || team.leader_name,
+              payer_upi: details?.payerUpi?.trim().toLowerCase() || null,
+              screenshot_url: details?.screenshotUrl || null,
+              notes: details?.notes?.trim() || `Recorded off-platform by ${actor} (no portal submission)`,
+              amount: details?.amount || 100,
+              submitted_at: now,
+              ...decision
+            }]));
+        }
+        if (payErr) {
+          console.error(`[Payment] payments write failed for ${team.registration_id}: ${payErr.message}`);
+          return { success: false, error: `Could not record the payment decision: ${payErr.message}`, team };
+        }
+
+        // The teams row is what every participant-facing surface reads — if
+        // this write does not land, the action did NOT happen, no matter what
+        // the toast would like to say.
+        const { data: teamRows, error: teamErr } = await supabase
           .from('teams')
           .update({
             payment_status: targetPaymentStatus,
             round_1_status: targetRound1Status,
             updated_at: now
           })
-          .eq('id', team.id);
+          .eq('id', team.id)
+          .select('id');
+        if (teamErr || !teamRows || teamRows.length === 0) {
+          const msg = teamErr?.message || 'update matched no team row';
+          console.error(`[Payment] teams status write failed for ${team.registration_id}: ${msg}`);
+          return { success: false, error: `Payment record saved but the team status did not update: ${msg}. Retry the action.`, team };
+        }
 
+        // Only now is the audit claim true.
         await supabase.from('audit_logs').insert([{
           team_id: team.id,
           team_name: team.team_name,
           action: action === 'VERIFY' ? 'Payment Verified' : action === 'REJECT' ? 'Payment Rejected' : 'Payment Resubmission Requested',
           actor,
-          details: reason || (action === 'VERIFY' ? 'Payment confirmed by Secretariat' : 'Status updated'),
+          details: reason || (action === 'VERIFY' ? `Payment confirmed by ${actor}${existingPay ? '' : ' (recorded off-platform)'}` : 'Status updated'),
           created_at: now
         }]);
 
@@ -1384,14 +1470,25 @@ export const serverStore = {
         if (updated) {
           return { success: true, team: updated, payment: updated.payment || undefined };
         }
+        // Writes landed but the re-read failed — report success with the
+        // locally-composed state rather than a bogus failure.
+        return {
+          success: true,
+          team: { ...team, payment_status: targetPaymentStatus, round_1_status: targetRound1Status, updated_at: now }
+        };
       } catch (sbErr) {
         console.error('Supabase updatePaymentVerification error:', sbErr);
+        return {
+          success: false,
+          error: sbErr instanceof Error ? sbErr.message : 'Database error while updating payment status',
+          team
+        };
       }
     }
 
-    // Local fallback update
+    // Local fallback update — reached only when Supabase is not configured.
     const store = loadLocalStore();
-    const localTeam = store.teams.find(t => t.id === team.id || t.registration_id === team.id);
+    const localTeam = store.teams.find(t => t.id === team.id || t.registration_id === team.registration_id);
     if (!localTeam) throw new Error('Team not found');
 
     let payment = store.payments.find(p => p.team_id === localTeam.id);
@@ -1399,13 +1496,23 @@ export const serverStore = {
       payment = {
         id: `pay-${Date.now()}`,
         team_id: localTeam.id,
-        utr_number: 'MANUAL_ENTRY',
-        payer_name: localTeam.leader_name,
-        amount: 100,
+        utr_number: manualUtr,
+        payer_name: details?.payerName?.trim() || localTeam.leader_name,
+        payer_upi: details?.payerUpi?.trim().toLowerCase() || null,
+        screenshot_url: details?.screenshotUrl || undefined,
+        notes: details?.notes?.trim() || undefined,
+        amount: details?.amount || 100,
         payment_status: targetPaymentStatus,
         submitted_at: now
       };
       store.payments.push(payment);
+    } else {
+      if (details?.utrNumber) payment.utr_number = manualUtr;
+      if (details?.payerName) payment.payer_name = details.payerName.trim();
+      if (details?.payerUpi) payment.payer_upi = details.payerUpi.trim().toLowerCase();
+      if (details?.screenshotUrl) payment.screenshot_url = details.screenshotUrl;
+      if (details?.notes) payment.notes = details.notes.trim();
+      if (details?.amount) payment.amount = details.amount;
     }
 
     payment.payment_status = targetPaymentStatus;
@@ -1926,7 +2033,7 @@ export const serverStore = {
     }
 
     const store = loadLocalStore();
-    const localTeam = store.teams.find(t => t.id === team.id || t.registration_id === team.id);
+    const localTeam = store.teams.find(t => t.id === team.id || t.registration_id === team.registration_id);
     if (!localTeam) throw new Error('Team not found');
 
     localTeam.round_1_status = targetRound1Status;
@@ -1970,7 +2077,7 @@ export const serverStore = {
     }
 
     const store = loadLocalStore();
-    const localTeam = store.teams.find(t => t.id === team.id || t.registration_id === team.id);
+    const localTeam = store.teams.find(t => t.id === team.id || t.registration_id === team.registration_id);
     if (!localTeam) throw new Error('Team not found');
 
     localTeam.admin_notes = note.trim();

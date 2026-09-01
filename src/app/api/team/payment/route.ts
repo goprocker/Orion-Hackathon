@@ -1,9 +1,7 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
 import { serverStore, safeEqualCI } from '@/lib/serverStore';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
-import { supabase, isSupabaseConfigured } from '@/lib/supabase';
+import { storePaymentScreenshot } from '@/lib/paymentProof';
 
 export async function POST(request: Request) {
   try {
@@ -83,66 +81,11 @@ export async function POST(request: Request) {
 
     // Process & Validate Mandatory Payment Screenshot Upload
     if (screenshotFile && screenshotFile.size > 0) {
-      const MAX_SIZE = 10 * 1024 * 1024; // 10MB
-      if (screenshotFile.size > MAX_SIZE) {
-        return NextResponse.json({ error: 'Payment screenshot image file size must be less than 10 MB' }, { status: 400 });
+      const stored = await storePaymentScreenshot(screenshotFile, teamId);
+      if (stored.error) {
+        return NextResponse.json({ error: stored.error }, { status: 400 });
       }
-
-      const originalFilename = screenshotFile.name || 'receipt.png';
-      const fileExt = path.extname(originalFilename).toLowerCase() || '.png';
-      const validExts = ['.png', '.jpg', '.jpeg', '.webp', '.heic', '.pdf'];
-      if (!validExts.includes(fileExt) && !screenshotFile.type.startsWith('image/')) {
-        return NextResponse.json({ error: 'Invalid screenshot file format. Please upload an image (PNG, JPG, WEBP) or PDF receipt.' }, { status: 400 });
-      }
-
-      const buffer = Buffer.from(await screenshotFile.arrayBuffer());
-      const cleanTeamSlug = teamId.replace(/[^a-zA-Z0-9_-]/g, '_');
-      const timestamp = Date.now();
-      const safeSavedName = `payment_${cleanTeamSlug}_${timestamp}${fileExt}`;
-
-      let uploadedToCloud = false;
-      if (isSupabaseConfigured() && supabase) {
-        try {
-          const mimeType = screenshotFile.type || 'image/png';
-          const { error: uploadErr } = await supabase.storage
-            .from('payments')
-            .upload(`receipts/${safeSavedName}`, buffer, {
-              contentType: mimeType,
-              upsert: true
-            });
-
-          if (!uploadErr) {
-            const { data: pubData } = supabase.storage
-              .from('payments')
-              .getPublicUrl(`receipts/${safeSavedName}`);
-            
-            if (pubData?.publicUrl) {
-              screenshotUrl = pubData.publicUrl;
-              uploadedToCloud = true;
-            }
-          } else {
-            console.warn('Supabase storage upload fallback to local:', uploadErr.message);
-          }
-        } catch (sbErr) {
-          console.warn('Supabase storage upload error, falling back to local:', sbErr);
-        }
-      }
-
-      if (!uploadedToCloud) {
-        try {
-          const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'payments');
-          if (!fs.existsSync(uploadDir)) {
-            fs.mkdirSync(uploadDir, { recursive: true });
-          }
-          const filePath = path.join(uploadDir, safeSavedName);
-          fs.writeFileSync(filePath, buffer);
-          screenshotUrl = `/uploads/payments/${safeSavedName}`;
-        } catch (fsErr) {
-          console.warn('Serverless filesystem write failed, encoding screenshot as Data URL:', fsErr);
-          const mime = screenshotFile.type || (fileExt === '.pdf' ? 'application/pdf' : 'image/png');
-          screenshotUrl = `data:${mime};base64,${buffer.toString('base64')}`;
-        }
-      }
+      if (stored.url) screenshotUrl = stored.url;
     }
 
     if (!screenshotUrl) {

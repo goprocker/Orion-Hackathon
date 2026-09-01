@@ -45,6 +45,10 @@ export async function GET(request: Request) {
       statusText = 'Top 70 Finalist — Selected for Round 2';
     } else if (team.round_1_status === 'SUBMITTED') {
       statusText = 'Round 1 Presentation Submitted (Under Review)';
+    } else if (team.round_1_status === 'UNDER_REVIEW') {
+      statusText = 'Round 1 Submission Under Review';
+    } else if (team.round_1_status === 'NOT_SELECTED') {
+      statusText = 'Round 1 Concluded — Not Selected for the Grand Finale';
     } else if (team.payment_status === 'VERIFIED') {
       statusText = 'Payment Verified • Round 1 Submission Open';
     } else if (team.payment_status === 'PENDING') {

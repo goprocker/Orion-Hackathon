@@ -19,22 +19,29 @@ import {
   verifySmtp
 } from '@/lib/email';
 import type { MailResult } from '@/lib/email';
+import { storePaymentScreenshot } from '@/lib/paymentProof';
 
 /**
  * Await a notification mail and say what actually happened. A fire-and-forget
  * send dies with the serverless invocation the moment the response returns, so
  * every dispatch is awaited and its real outcome shown to the console operator.
- * A mail failure never rolls back the admin action it accompanies.
+ * A mail failure never rolls back the admin action it accompanies. The result
+ * is structured so the client can style the toast by outcome instead of
+ * celebrating over a failure.
  */
-async function describeMailOutcome(send: Promise<MailResult>, to: string): Promise<string> {
+async function describeMailOutcome(
+  send: Promise<MailResult>,
+  to: string
+): Promise<{ sent: boolean; note: string }> {
   try {
     const res = await send;
-    if (res.simulated) return 'email NOT sent — SMTP_USER / SMTP_PASS are unset on this deployment';
-    if (!res.success) return `email FAILED to send: ${res.error}`;
-    return `email sent to ${to}`;
+    if (res.simulated && !res.success) return { sent: false, note: `email NOT sent — ${res.error}` };
+    if (res.simulated) return { sent: false, note: 'email NOT sent — SMTP_USER / SMTP_PASS are unset on this deployment' };
+    if (!res.success) return { sent: false, note: `email FAILED to send: ${res.error}` };
+    return { sent: true, note: `email sent to ${to}` };
   } catch (err) {
     console.error('[Admin API] Mail dispatch threw:', err);
-    return 'email FAILED to send — see server logs';
+    return { sent: false, note: 'email FAILED to send — see server logs' };
   }
 }
 
@@ -86,8 +93,36 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const clientIp = getClientIp(request);
-    const body = await request.json();
-    const { action, passcode, teamId, decision, score, reason, note, requestId, actor = 'Admin Secretariat' } = body;
+
+    // RECORD_PAYMENT carries a screenshot file, so the route accepts
+    // multipart/form-data alongside the JSON every other action uses.
+    let body: Record<string, unknown> = {};
+    let screenshotFile: File | null = null;
+    const contentType = request.headers.get('content-type') || '';
+    if (contentType.includes('multipart/form-data')) {
+      const formData = await request.formData();
+      formData.forEach((value, key) => {
+        if (typeof value === 'string') body[key] = value;
+      });
+      const fileEntry = formData.get('screenshot');
+      if (fileEntry && typeof fileEntry === 'object' && 'arrayBuffer' in fileEntry) {
+        screenshotFile = fileEntry as File;
+      }
+    } else {
+      body = await request.json();
+    }
+    const { action, passcode, teamId, decision, score, reason, note, requestId, actor = 'Admin Secretariat' } =
+      body as {
+        action?: string;
+        passcode?: unknown;
+        teamId?: string;
+        decision?: 'SELECT' | 'NOT_SELECTED' | 'UNDER_REVIEW' | 'SAVE_SCORES';
+        score?: number;
+        reason?: string;
+        note?: string;
+        requestId?: string;
+        actor?: string;
+      };
 
     // 1. Passcode Authentication Check
     if (passcode !== undefined) {
@@ -116,17 +151,47 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Unauthorized admin operation' }, { status: 401 });
     }
 
-    // 2. Payment Action: VERIFY, REJECT, REQUEST_RESUBMISSION, RESEND_EMAIL
-    if (action === 'VERIFY_PAYMENT') {
+    // 2. Payment Action: VERIFY, RECORD, REJECT, REQUEST_RESUBMISSION, RESEND_EMAIL
+    if (action === 'VERIFY_PAYMENT' || action === 'RECORD_PAYMENT') {
       if (!teamId) return NextResponse.json({ error: 'teamId is required' }, { status: 400 });
-      const res = await serverStore.updatePaymentVerification(teamId, 'VERIFY', actor, note);
 
-      let mailNote = 'no leader email on record, nothing sent';
-      if (res.team) {
-        mailNote = await describeMailOutcome(sendPaymentVerifiedEmail(res.team), res.team.leader_email);
+      // RECORD_PAYMENT = the WhatsApp workflow: the organiser cross-checked the
+      // proof off-platform and records the evidence (UTR / payer / UPI /
+      // screenshot) while verifying, so the payment ledger holds a real row.
+      let details: { utrNumber?: string; payerName?: string; payerUpi?: string; screenshotUrl?: string; notes?: string } | undefined;
+      if (action === 'RECORD_PAYMENT') {
+        const b = body as { utrNumber?: string; payerName?: string; payerUpi?: string; notes?: string };
+        let screenshotUrl: string | undefined;
+        if (screenshotFile && screenshotFile.size > 0) {
+          const stored = await storePaymentScreenshot(screenshotFile, teamId);
+          if (stored.error) return NextResponse.json({ error: stored.error }, { status: 400 });
+          screenshotUrl = stored.url;
+        }
+        details = {
+          utrNumber: b.utrNumber?.trim() || undefined,
+          payerName: b.payerName?.trim() || undefined,
+          payerUpi: b.payerUpi?.trim() || undefined,
+          screenshotUrl,
+          notes: b.notes?.trim() || `Payment evidence recorded off-platform (WhatsApp proof) by ${actor}`
+        };
       }
 
-      return NextResponse.json({ success: true, message: `Payment verified and Round 1 unlocked — confirmation ${mailNote}`, data: res });
+      const res = await serverStore.updatePaymentVerification(teamId, 'VERIFY', actor, note, details);
+      if (!res.success) {
+        return NextResponse.json({ error: res.error || 'Payment verification did not persist — retry.' }, { status: 500 });
+      }
+
+      let mail = { sent: false, note: 'no leader email on record, nothing sent' };
+      if (res.team) {
+        mail = await describeMailOutcome(sendPaymentVerifiedEmail(res.team), res.team.leader_email);
+      }
+
+      return NextResponse.json({
+        success: true,
+        message: `Payment ${action === 'RECORD_PAYMENT' ? 'recorded and ' : ''}verified, Round 1 unlocked — confirmation ${mail.note}`,
+        mail,
+        data: res
+      });
     }
 
     if (action === 'RESEND_VERIFICATION_EMAIL') {
@@ -150,22 +215,28 @@ export async function POST(request: Request) {
     if (action === 'REJECT_PAYMENT') {
       if (!teamId) return NextResponse.json({ error: 'teamId is required' }, { status: 400 });
       const res = await serverStore.updatePaymentVerification(teamId, 'REJECT', actor, reason);
+      if (!res.success) {
+        return NextResponse.json({ error: res.error || 'Rejection did not persist — retry.' }, { status: 500 });
+      }
       return NextResponse.json({ success: true, message: 'Payment marked as rejected', data: res });
     }
 
     if (action === 'REQUEST_PAYMENT_RESUBMISSION') {
       if (!teamId) return NextResponse.json({ error: 'teamId is required' }, { status: 400 });
       const res = await serverStore.updatePaymentVerification(teamId, 'REQUEST_RESUBMISSION', actor, reason);
+      if (!res.success) {
+        return NextResponse.json({ error: res.error || 'Resubmission request did not persist — retry.' }, { status: 500 });
+      }
 
-      let mailNote = 'no leader email on record, nothing sent';
+      let mail = { sent: false, note: 'no leader email on record, nothing sent' };
       if (res.team) {
-        mailNote = await describeMailOutcome(
+        mail = await describeMailOutcome(
           sendResubmissionRequiredEmail(res.team, reason || 'Please resubmit your verification details / 12-digit payment reference.'),
           res.team.leader_email
         );
       }
 
-      return NextResponse.json({ success: true, message: `Payment resubmission requested — notice ${mailNote}`, data: res });
+      return NextResponse.json({ success: true, message: `Payment resubmission requested — notice ${mail.note}`, mail, data: res });
     }
 
     // 2b. Manual registration-confirmation email (auto-dispatch on signup is off
@@ -208,7 +279,7 @@ export async function POST(request: Request) {
 
       // Notify the team; a mail failure must not undo the decision.
       const decisionNote = res.request?.review_notes || null;
-      const mailNote = await describeMailOutcome(
+      const mail = await describeMailOutcome(
         isApprove
           ? sendReuploadApprovedEmail(res.team, decisionNote)
           : sendReuploadRejectedEmail(res.team, decisionNote),
@@ -219,7 +290,8 @@ export async function POST(request: Request) {
         success: true,
         message: `${isApprove
           ? 'Re-upload approved — the team may now upload one replacement deck.'
-          : 'Re-upload request declined — the existing submission stands.'} Decision ${mailNote}`,
+          : 'Re-upload request declined — the existing submission stands.'} Decision ${mail.note}`,
+        mail,
         data: res
       });
     }
@@ -227,7 +299,7 @@ export async function POST(request: Request) {
     // 3. Round 1 Evaluation Action: SELECT, NOT_SELECTED, UNDER_REVIEW, SAVE_SCORES
     if (action === 'EVALUATE_ROUND_1') {
       if (!teamId || !decision) return NextResponse.json({ error: 'teamId and decision are required' }, { status: 400 });
-      const { evaluationScores } = body;
+      const evaluationScores = (body as { evaluationScores?: Parameters<typeof serverStore.evaluateRound1>[5] }).evaluationScores;
       const res = await serverStore.evaluateRound1(teamId, decision, actor, score, note, evaluationScores);
       return NextResponse.json({ success: true, message: `Round 1 evaluation saved: ${decision}`, data: res });
     }

@@ -28,7 +28,8 @@ import {
   Save,
   Info,
   Mail,
-  Trash2
+  Trash2,
+  CreditCard
 } from 'lucide-react';
 import Link from 'next/link';
 import type { TeamRecord, AuditLogRecord, SystemConfig, EvaluationScores } from '@/types/orion';
@@ -162,6 +163,13 @@ export default function AdminDashboard() {
 
   // Action Loading State & Toast System
   const [activeActionKey, setActiveActionKey] = useState<string | null>(null);
+  const [isCheckingMailer, setIsCheckingMailer] = useState(false);
+  const [isRecordFormOpen, setIsRecordFormOpen] = useState(false);
+  const [isRecordingPayment, setIsRecordingPayment] = useState(false);
+  const [recordUtr, setRecordUtr] = useState('');
+  const [recordPayerName, setRecordPayerName] = useState('');
+  const [recordPayerUpi, setRecordPayerUpi] = useState('');
+  const [recordScreenshotFile, setRecordScreenshotFile] = useState<File | null>(null);
   const [toasts, setToasts] = useState<AdminToast[]>([]);
 
   const showToast = useCallback((type: 'success' | 'error' | 'warning' | 'info', title: string, message: string) => {
@@ -430,8 +438,16 @@ export default function AdminDashboard() {
           setSelectedTeam(null);
           setTeams(prev => prev.filter(t => t.registration_id !== payload.teamId && t.id !== payload.teamId));
         } else if (payload.action === 'VERIFY_PAYMENT') {
-          sound.playSuccessCelebration();
-          showToast('success', 'Payment Reconciled & Verified', `Payment verified for squad ${payload.teamId}. Confirmation email dispatched to team lead.`);
+          // The server reports the true mail outcome — a green "email
+          // dispatched" toast over a 535 failure is how broken SMTP stayed
+          // invisible for days.
+          if (json.mail && !json.mail.sent) {
+            sound.playClick();
+            showToast('warning', 'Verified — Email NOT Sent', `Squad ${payload.teamId} is verified, but the confirmation ${json.mail.note}`);
+          } else {
+            sound.playSuccessCelebration();
+            showToast('success', 'Payment Reconciled & Verified', `Payment verified for squad ${payload.teamId}. ${json.mail?.note || 'Confirmation email dispatched to team lead.'}`);
+          }
         } else if (payload.action === 'RESEND_VERIFICATION_EMAIL') {
           sound.playClick();
           showToast('info', 'Confirmation Email Sent', `Verification email re-dispatched to squad ${payload.teamId}.`);
@@ -446,7 +462,11 @@ export default function AdminDashboard() {
         } else if (payload.action === 'REJECT_PAYMENT') {
           showToast('error', 'Payment Rejected', `Payment marked as rejected for squad ${payload.teamId}.`);
         } else if (payload.action === 'REQUEST_PAYMENT_RESUBMISSION') {
-          showToast('warning', 'Resubmission Requested', `Notification sent to squad ${payload.teamId} for 12-digit UTR reference.`);
+          if (json.mail && !json.mail.sent) {
+            showToast('warning', 'Resubmission Requested — Email NOT Sent', `Marked for resubmission, but the notice ${json.mail.note}`);
+          } else {
+            showToast('warning', 'Resubmission Requested', `Notification sent to squad ${payload.teamId} for 12-digit UTR reference.`);
+          }
         } else if (payload.action === 'EVALUATE_ROUND_1') {
           if (payload.decision === 'SELECT') {
             confetti({
@@ -494,6 +514,101 @@ export default function AdminDashboard() {
       alert('Error executing administrative command');
     } finally {
       setActiveActionKey(null);
+    }
+  };
+
+  // One-click SMTP health check — verifies connection + credentials against
+  // the CURRENT env without sending anything, so a broken mailer is visible
+  // before the next live dispatch fails.
+  const handleCheckMailer = async () => {
+    sound.playClick();
+    setIsCheckingMailer(true);
+    try {
+      const res = await fetch('/api/admin/registrations', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'CHECK_MAILER' })
+      });
+      const json = await res.json();
+      if (res.ok && json.success) {
+        showToast('success', 'Mailer Healthy', json.message || 'SMTP connection and credentials verified.');
+      } else {
+        showToast('error', 'Mailer Check Failed', json.message || json.error || 'SMTP verification failed.');
+      }
+    } catch {
+      showToast('error', 'Mailer Check Failed', 'Network error while testing SMTP.');
+    } finally {
+      setIsCheckingMailer(false);
+    }
+  };
+
+  // Record an off-platform payment (the WhatsApp workflow): attach whatever
+  // evidence the organiser has — UTR, payer, UPI, screenshot — and verify in
+  // one action, so the payments ledger gets a real row.
+  const handleRecordPayment = async () => {
+    if (!selectedTeam) return;
+    sound.playClick();
+    setIsRecordingPayment(true);
+    try {
+      const fd = new FormData();
+      fd.append('action', 'RECORD_PAYMENT');
+      fd.append('teamId', selectedTeam.registration_id);
+      if (recordUtr.trim()) fd.append('utrNumber', recordUtr.trim());
+      if (recordPayerName.trim()) fd.append('payerName', recordPayerName.trim());
+      if (recordPayerUpi.trim()) fd.append('payerUpi', recordPayerUpi.trim());
+      if (recordScreenshotFile) fd.append('screenshot', recordScreenshotFile);
+
+      const res = await fetch('/api/admin/registrations', {
+        method: 'POST',
+        credentials: 'same-origin',
+        body: fd
+      });
+      const json = await res.json();
+      if (!res.ok || !json.success) {
+        throw new Error(json.error || 'Failed to record the payment');
+      }
+
+      if (json.mail && !json.mail.sent) {
+        showToast('warning', 'Recorded & Verified — Email NOT Sent', `Evidence saved and squad verified, but the confirmation ${json.mail.note}`);
+      } else {
+        sound.playSuccessCelebration();
+        showToast('success', 'Payment Recorded & Verified', json.message || 'Evidence recorded and squad verified.');
+      }
+
+      setRecordUtr('');
+      setRecordPayerName('');
+      setRecordPayerUpi('');
+      setRecordScreenshotFile(null);
+      setIsRecordFormOpen(false);
+
+      const refreshed = await fetchAdminData(true);
+      if (refreshed) {
+        const updated = refreshed.find(t => t.id === selectedTeam.id || t.registration_id === selectedTeam.registration_id);
+        if (updated) handleSelectTeam(updated);
+      }
+    } catch (err) {
+      showToast('error', 'Record Failed', err instanceof Error ? err.message : 'Could not record the payment.');
+    } finally {
+      setIsRecordingPayment(false);
+    }
+  };
+
+  // data: receipt URLs cannot be opened via <a href> — browsers block
+  // top-frame navigation to data: — so decode to a Blob and open that.
+  const openReceiptScreenshot = async (url: string) => {
+    sound.playClick();
+    try {
+      if (url.startsWith('data:')) {
+        const blob = await (await fetch(url)).blob();
+        const objUrl = URL.createObjectURL(blob);
+        window.open(objUrl, '_blank', 'noopener');
+        setTimeout(() => URL.revokeObjectURL(objUrl), 60_000);
+      } else {
+        window.open(url, '_blank', 'noopener');
+      }
+    } catch {
+      showToast('error', 'Could Not Open Screenshot', 'The stored receipt could not be decoded.');
     }
   };
 
@@ -545,6 +660,13 @@ export default function AdminDashboard() {
         'Year',
         'Payment Status',
         'UTR Number',
+        'Payer Name',
+        'Payer UPI',
+        'Amount',
+        'Payment Submitted At',
+        'Verified By',
+        'Verified At',
+        'Screenshot Attached',
         'Round 1 Status',
         'Round 2 Status',
         'Score Total (/50)',
@@ -579,7 +701,16 @@ export default function AdminDashboard() {
           t.department || '',
           t.year || '',
           t.payment_status,
-          t.payment?.utr_number || '',
+          // A VERIFIED team with no payment row was decided off-platform —
+          // label it so blank evidence cells read as a known state, not a gap.
+          t.payment?.utr_number || (t.payment_status === 'VERIFIED' ? 'VERIFIED_OFF_PLATFORM' : ''),
+          t.payment?.payer_name || '',
+          t.payment?.payer_upi || '',
+          t.payment?.amount ?? '',
+          t.payment?.submitted_at ? t.payment.submitted_at.replace('T', ' ').slice(0, 16) : '',
+          t.payment?.verified_by || '',
+          t.payment?.verified_at ? t.payment.verified_at.replace('T', ' ').slice(0, 16) : '',
+          t.payment?.screenshot_url ? 'YES' : 'NO',
           t.round_1_status,
           t.round_2_status,
           totalScore,
@@ -709,6 +840,16 @@ export default function AdminDashboard() {
                 >
                   <Mail className="w-3.5 h-3.5 text-amber-400" />
                   <span className="hidden sm:inline">UNPAID REMINDERS (&gt;5m)</span>
+                </button>
+
+                <button
+                  onClick={handleCheckMailer}
+                  disabled={isCheckingMailer}
+                  className="px-3 py-1.5 bg-[#061838] border border-[#38BDF8]/40 text-[#38BDF8] hover:bg-[#0C2A5E] transition-colors text-xs font-mono-hud flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                  title="Verify SMTP connection & credentials without sending anything"
+                >
+                  {isCheckingMailer ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <CheckCircle2 className="w-3.5 h-3.5" />}
+                  <span className="hidden sm:inline">TEST MAILER</span>
                 </button>
 
                 <button
@@ -1286,15 +1427,16 @@ export default function AdminDashboard() {
                   <div>Submitted: <span className="text-slate-400">{selectedTeam.payment?.submitted_at ? new Date(selectedTeam.payment.submitted_at).toLocaleString() : 'N/A'}</span></div>
                   {selectedTeam.payment?.screenshot_url ? (
                     <div className="pt-1.5 pb-0.5">
-                      <a
-                        href={selectedTeam.payment.screenshot_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0B2556] border border-[#38BDF8]/50 text-[#38BDF8] hover:bg-[#133A80] text-xs font-mono transition-colors"
+                      {/* A button, not <a href> — receipts stored as data: URLs
+                          are blocked from top-frame navigation by browsers. */}
+                      <button
+                        type="button"
+                        onClick={() => openReceiptScreenshot(selectedTeam.payment!.screenshot_url!)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0B2556] border border-[#38BDF8]/50 text-[#38BDF8] hover:bg-[#133A80] text-xs font-mono transition-colors cursor-pointer"
                       >
                         <ExternalLink className="w-3.5 h-3.5" />
                         <span>INSPECT RECEIPT SCREENSHOT</span>
-                      </a>
+                      </button>
                     </div>
                   ) : (
                     <div className="text-[11px] text-amber-400 font-mono italic pt-1">
@@ -1346,6 +1488,74 @@ export default function AdminDashboard() {
                     <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
                     <span>REQUEST RESUBMISSION (WITH EMAIL)</span>
                   </button>
+
+                  {/* Off-platform payment recorder — for squads that paid over
+                      UPI and sent proof on WhatsApp instead of the portal. */}
+                  <button
+                    type="button"
+                    onClick={() => { sound.playClick(); setIsRecordFormOpen(v => !v); }}
+                    className="w-full py-2 bg-[#04160B] hover:bg-[#07240F] border border-emerald-500/40 text-emerald-300 font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer transition-colors"
+                  >
+                    <CreditCard className="w-3.5 h-3.5" />
+                    <span>{isRecordFormOpen ? 'HIDE OFF-PLATFORM RECORDER' : 'RECORD WHATSAPP / OFF-PLATFORM PAYMENT'}</span>
+                  </button>
+
+                  {isRecordFormOpen && (
+                    <div className="p-3 bg-[#020D06] border border-emerald-500/40 space-y-2">
+                      <div className="text-[10px] text-emerald-200/80 leading-relaxed">
+                        Attach the evidence from the WhatsApp proof, then record &amp; verify in one step. Every field is optional — a per-team placeholder UTR is used if left blank.
+                      </div>
+                      <input
+                        type="text"
+                        value={recordUtr}
+                        onChange={(e) => setRecordUtr(e.target.value)}
+                        placeholder="12-digit UTR from their screenshot (optional)"
+                        className="w-full px-2.5 py-2 bg-[#020817] border border-white/15 text-white text-[11px] font-mono focus:outline-none focus:border-emerald-400/60 uppercase"
+                      />
+                      <div className="grid grid-cols-2 gap-2">
+                        <input
+                          type="text"
+                          value={recordPayerName}
+                          onChange={(e) => setRecordPayerName(e.target.value)}
+                          placeholder="Payer name (optional)"
+                          className="px-2.5 py-2 bg-[#020817] border border-white/15 text-white text-[11px] font-mono focus:outline-none focus:border-emerald-400/60"
+                        />
+                        <input
+                          type="text"
+                          value={recordPayerUpi}
+                          onChange={(e) => setRecordPayerUpi(e.target.value)}
+                          placeholder="Payer UPI ID (optional)"
+                          className="px-2.5 py-2 bg-[#020817] border border-white/15 text-white text-[11px] font-mono focus:outline-none focus:border-emerald-400/60 lowercase"
+                        />
+                      </div>
+                      <label className="block p-2.5 bg-[#020817] border border-dashed border-emerald-500/40 text-[11px] text-slate-300 cursor-pointer text-center">
+                        <input
+                          type="file"
+                          accept="image/*,.pdf"
+                          onChange={(e) => {
+                            if (e.target.files && e.target.files[0]) setRecordScreenshotFile(e.target.files[0]);
+                          }}
+                          className="hidden"
+                        />
+                        {recordScreenshotFile
+                          ? `✓ ${recordScreenshotFile.name} (${(recordScreenshotFile.size / 1024).toFixed(1)} KB)`
+                          : 'Attach their payment screenshot (optional)'}
+                      </label>
+                      <button
+                        type="button"
+                        disabled={isRecordingPayment || activeActionKey !== null}
+                        onClick={handleRecordPayment}
+                        className="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-[#04160B] font-display font-black text-xs flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 transition-colors"
+                      >
+                        {isRecordingPayment ? (
+                          <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                        ) : (
+                          <Check className="w-3.5 h-3.5" />
+                        )}
+                        <span>RECORD EVIDENCE &amp; VERIFY PAYMENT</span>
+                      </button>
+                    </div>
+                  )}
 
                   {/* Official Receipt Quick Access & Email Dispatch */}
                   {selectedTeam.payment_status === 'VERIFIED' && (

@@ -891,15 +891,29 @@ export default function TeamPortalPage() {
                     </p>
                     {team.payment?.screenshot_url && (
                       <div className="pt-1">
-                        <a
-                          href={team.payment.screenshot_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#040E24] border border-[#38BDF8]/40 text-[#38BDF8] hover:bg-[#0B2556] text-xs font-mono transition-colors"
+                        {/* Button, not <a href>: browsers block top-frame
+                            navigation to data: URLs, which is how receipts are
+                            stored on serverless. */}
+                        <button
+                          type="button"
+                          onClick={async () => {
+                            const url = team.payment!.screenshot_url!;
+                            try {
+                              if (url.startsWith('data:')) {
+                                const blob = await (await fetch(url)).blob();
+                                const objUrl = URL.createObjectURL(blob);
+                                window.open(objUrl, '_blank', 'noopener');
+                                setTimeout(() => URL.revokeObjectURL(objUrl), 60_000);
+                              } else {
+                                window.open(url, '_blank', 'noopener');
+                              }
+                            } catch { /* nothing to show */ }
+                          }}
+                          className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#040E24] border border-[#38BDF8]/40 text-[#38BDF8] hover:bg-[#0B2556] text-xs font-mono transition-colors cursor-pointer"
                         >
                           <ExternalLink className="w-3.5 h-3.5" />
                           <span>VIEW UPLOADED PAYMENT RECEIPT SCREENSHOT</span>
-                        </a>
+                        </button>
                       </div>
                     )}
                   </div>
