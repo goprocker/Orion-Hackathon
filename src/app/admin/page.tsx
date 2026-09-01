@@ -283,6 +283,15 @@ export default function AdminDashboard() {
   const [hasCheckedDeleteWarning, setHasCheckedDeleteWarning] = useState(false);
   const [teamToDelete, setTeamToDelete] = useState<TeamRecord | null>(null);
 
+  // Forgiving on case and whitespace: the confirmation exists to prevent
+  // ACCIDENTAL deletion, not to fail people whose phone keyboard lowercased
+  // the ID — a strict === left the purge button permanently disabled with no
+  // explanation.
+  const deleteIdMatches =
+    teamToDelete !== null &&
+    deleteConfirmInput.replace(/\s+/g, '').toUpperCase() ===
+      teamToDelete.registration_id.replace(/\s+/g, '').toUpperCase();
+
   // Fetch admin data helper
   // Returns the freshly loaded teams so callers can re-sync the open drawer.
   // Auth rides on the HttpOnly session cookie set by /api/admin/session, so
@@ -2412,11 +2421,11 @@ export default function AdminDashboard() {
                   CONFIRMATION CHECKPOINT 2 (TYPE ID TO MATCH)
                 </label>
                 <span className={`text-[10px] font-mono font-bold px-2 py-0.5 ${
-                  deleteConfirmInput.trim() === teamToDelete.registration_id
+                  deleteIdMatches
                     ? 'bg-emerald-950 border border-emerald-500/60 text-emerald-300'
                     : 'bg-slate-900 border border-slate-700 text-slate-400'
                 }`}>
-                  {deleteConfirmInput.trim() === teamToDelete.registration_id ? '✓ ID MATCHED' : 'AWAITING MATCH'}
+                  {deleteIdMatches ? '✓ ID MATCHED' : 'AWAITING MATCH'}
                 </span>
               </div>
 
@@ -2429,6 +2438,9 @@ export default function AdminDashboard() {
                 value={deleteConfirmInput}
                 onChange={(e) => setDeleteConfirmInput(e.target.value)}
                 placeholder={teamToDelete.registration_id}
+                autoCapitalize="off"
+                autoCorrect="off"
+                spellCheck={false}
                 className="w-full p-2.5 bg-[#030712] border border-rose-500/50 text-rose-200 text-xs font-mono focus:border-rose-400 focus:outline-none tracking-wider"
               />
             </div>
@@ -2448,11 +2460,7 @@ export default function AdminDashboard() {
 
               <button
                 type="button"
-                disabled={
-                  !hasCheckedDeleteWarning || 
-                  deleteConfirmInput.trim() !== teamToDelete.registration_id || 
-                  activeActionKey !== null
-                }
+                disabled={!hasCheckedDeleteWarning || !deleteIdMatches || activeActionKey !== null}
                 onClick={async () => {
                   // Delete by the row's UUID, not the registration ID: a
                   // duplicated registration ID matches two rows and made the

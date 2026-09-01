@@ -2437,11 +2437,22 @@ export const serverStore = {
           supabase.from('payments').delete().eq('team_id', teamUuid)
         ]);
 
-        // 3. Delete main team record
-        const { error: delErr } = await supabase.from('teams').delete().eq('id', teamUuid);
+        // 3. Delete main team record. .select('id') so a zero-row delete —
+        //    an RLS-silenced write or an already-gone row — is visible instead
+        //    of reporting success while the roster still shows the team.
+        const { data: delRows, error: delErr } = await supabase
+          .from('teams')
+          .delete()
+          .eq('id', teamUuid)
+          .select('id');
         if (delErr) {
           console.error('Supabase delete team error:', delErr);
           throw new Error(delErr.message);
+        }
+        if (!delRows || delRows.length === 0) {
+          throw new Error(
+            `The database deleted zero rows for ${regId}. If this repeats, check that SUPABASE_SERVICE_ROLE_KEY is set on the deployment (the anon key cannot delete under RLS).`
+          );
         }
 
         // 4. Insert audit log with team_id: null (no FK dependency)
