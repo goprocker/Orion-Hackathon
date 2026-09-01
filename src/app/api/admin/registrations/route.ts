@@ -118,6 +118,12 @@ export async function POST(request: Request) {
       if (!team) return NextResponse.json({ error: 'Team not found' }, { status: 404 });
       
       const mailRes = await sendPaymentVerifiedEmail(team);
+      if (mailRes.simulated) {
+        return NextResponse.json({
+          error:
+            'Email is not configured on this deployment (SMTP_USER / SMTP_PASS are unset), so nothing was sent. Set them and try again.'
+        }, { status: 503 });
+      }
       if (!mailRes.success) {
         return NextResponse.json({ error: mailRes.error || 'Failed to dispatch email' }, { status: 500 });
       }
@@ -152,6 +158,12 @@ export async function POST(request: Request) {
       if (!team) return NextResponse.json({ error: 'Team not found' }, { status: 404 });
 
       const mailRes = await sendRegistrationReceivedEmail(team);
+      if (mailRes.simulated) {
+        return NextResponse.json({
+          error:
+            'Email is not configured on this deployment (SMTP_USER / SMTP_PASS are unset), so nothing was sent. Set them and try again.'
+        }, { status: 503 });
+      }
       if (!mailRes.success) {
         return NextResponse.json({ error: mailRes.error || 'Failed to dispatch email' }, { status: 500 });
       }

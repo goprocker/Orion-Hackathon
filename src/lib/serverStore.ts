@@ -1887,6 +1887,54 @@ export const serverStore = {
   },
 
   // Get Admin Dashboard Overview and Teams
+  /**
+   * Lightweight counters for the public landing page.
+   *
+   * The homepage counter used to call getAdminOverview(), which issues seven
+   * full-table SELECTs — every team, every member, every payment, every
+   * submission, every suspicion flag and the audit log — then assembles the
+   * complete admin dataset in memory, all to return five integers to an
+   * anonymous visitor. One page load pulled the entire database, and the
+   * endpoint had neither auth nor a rate limit, so the cost scaled with
+   * traffic and with the size of the event.
+   *
+   * This reads two columns from one table. The filters below are kept
+   * deliberately identical to the admin stats so the public number and the
+   * organiser number can never disagree.
+   */
+  async getPublicCounts(): Promise<{
+    totalRegistrations: number;
+    paymentVerified: number;
+    paymentPending: number;
+    round1Submissions: number;
+    round1Selected: number;
+  }> {
+    const ROUND1_SUBMITTED = ['SUBMITTED', 'UNDER_REVIEW', 'SELECTED', 'NOT_SELECTED'];
+
+    const tally = (rows: { payment_status?: string | null; round_1_status?: string | null }[]) => ({
+      totalRegistrations: rows.length,
+      paymentVerified: rows.filter(r => r.payment_status === 'VERIFIED').length,
+      paymentPending: rows.filter(r => r.payment_status === 'PENDING').length,
+      round1Submissions: rows.filter(r => ROUND1_SUBMITTED.includes(r.round_1_status || '')).length,
+      round1Selected: rows.filter(r => r.round_1_status === 'SELECTED').length
+    });
+
+    if (isSupabaseConfigured() && supabase) {
+      try {
+        const { data, error } = await supabase
+          .from('teams')
+          .select('payment_status, round_1_status');
+        if (error) throw error;
+        return tally(data || []);
+      } catch (err) {
+        console.error('[Counts] Supabase getPublicCounts failed:', err);
+        // Fall through to the local store rather than failing the landing page.
+      }
+    }
+
+    return tally(loadLocalStore().teams);
+  },
+
   async getAdminOverview(filters?: {
     search?: string;
     paymentStatus?: string;
@@ -2243,40 +2291,172 @@ export const serverStore = {
   },
 
   // Automated 5-Minute Unpaid Squad Reminder Scanner
-  async checkAndSendUnpaidReminders(): Promise<{ checked: number; sent: number; notifiedTeams: string[] }> {
+  /**
+   * Scheduled sweep that reminds unpaid teams to pay.
+   *
+   * Two things this has to get right, and previously did not:
+   *
+   * 1. "Already reminded" is recorded as an APPEND-ONLY audit row, not by
+   *    editing the team's `admin_notes`. The old approach read the notes from a
+   *    snapshot taken at the top of the sweep, concatenated a marker, and wrote
+   *    the whole string back through addAdminNote — which REPLACES the field.
+   *    Any note an organiser wrote while the sweep was running was silently
+   *    overwritten, and every run dumped the entire accumulated note into the
+   *    audit log as a "note updated" entry.
+   *
+   * 2. A reminder only counts as sent when it was actually sent. The mailer
+   *    returns success with `simulated: true` when SMTP is not configured, so
+   *    marking on `success` alone meant that a deployment missing SMTP
+   *    credentials would mark every unpaid team as reminded on its first cron
+   *    run — permanently suppressing the real reminder once SMTP was fixed.
+   *    Teams would simply never be told to pay.
+   */
+  async checkAndSendUnpaidReminders(): Promise<{
+    checked: number;
+    sent: number;
+    skippedAlreadyReminded: number;
+    skippedNotConfigured: number;
+    notifiedTeams: string[];
+  }> {
+    const REMINDER_ACTION = 'Payment Reminder Sent';
+    const LEGACY_MARKER = '[AUTO_PAYMENT_REMINDER_SENT]';
+
     const overview = await this.getAdminOverview();
     const now = Date.now();
     const FIVE_MINUTES_MS = 5 * 60 * 1000;
     const notifiedTeams: string[] = [];
 
+    // One query for the whole sweep. getAdminOverview only carries the newest
+    // 50 audit rows, which is nowhere near enough to answer "was this team
+    // reminded" once the event has any history.
+    const remindedTeamIds = new Set<string>();
+    if (isSupabaseConfigured() && supabase) {
+      try {
+        const { data } = await supabase
+          .from('audit_logs')
+          .select('team_id')
+          .eq('action', REMINDER_ACTION);
+        for (const row of data || []) {
+          if (row.team_id) remindedTeamIds.add(row.team_id);
+        }
+      } catch (err) {
+        // Fail SAFE: if the history cannot be read we cannot tell who has
+        // already been mailed, and re-mailing everyone is worse than skipping
+        // a cycle.
+        console.error('[Reminders] Could not read reminder history, skipping this sweep:', err);
+        return {
+          checked: 0,
+          sent: 0,
+          skippedAlreadyReminded: 0,
+          skippedNotConfigured: 0,
+          notifiedTeams: []
+        };
+      }
+    } else {
+      const store = loadLocalStore();
+      for (const log of store.auditLogs) {
+        if (log.action === REMINDER_ACTION && log.team_id) remindedTeamIds.add(log.team_id);
+      }
+    }
+
+    let skippedAlreadyReminded = 0;
+    let skippedNotConfigured = 0;
+
     const unpaidTeams = (overview.teams || []).filter(team => {
       if (team.payment_status !== 'NOT_SUBMITTED') return false;
+
       const createdTime = new Date(team.created_at).getTime();
-      const isOlderThan5Mins = (now - createdTime) >= FIVE_MINUTES_MS;
-      const alreadyNotified = (team.admin_notes || '').includes('[AUTO_PAYMENT_REMINDER_SENT]');
-      return isOlderThan5Mins && !alreadyNotified;
+      if (!Number.isFinite(createdTime) || (now - createdTime) < FIVE_MINUTES_MS) return false;
+
+      // The legacy marker is still honoured so teams reminded under the old
+      // scheme are not mailed a second time on the first run after this change.
+      const alreadyReminded =
+        remindedTeamIds.has(team.id) || (team.admin_notes || '').includes(LEGACY_MARKER);
+
+      if (alreadyReminded) {
+        skippedAlreadyReminded++;
+        return false;
+      }
+      return true;
     });
 
     for (const team of unpaidTeams) {
       try {
         const mailRes = await sendPaymentReminderEmail(team);
-        if (mailRes.success) {
-          notifiedTeams.push(team.registration_id);
-          const updatedNote = team.admin_notes 
-            ? `${team.admin_notes}\n[AUTO_PAYMENT_REMINDER_SENT: ${new Date().toISOString()}]`
-            : `[AUTO_PAYMENT_REMINDER_SENT: ${new Date().toISOString()}]`;
-          
-          await this.addAdminNote(team.registration_id, updatedNote, 'Automation System');
+
+        if (mailRes.simulated) {
+          // Nothing was delivered. Record nothing, so the reminder is still
+          // owed once SMTP is configured.
+          skippedNotConfigured++;
+          continue;
         }
+
+        if (!mailRes.success) {
+          console.error(`[Reminders] Delivery failed for ${team.registration_id}: ${mailRes.error}`);
+          continue;
+        }
+
+        notifiedTeams.push(team.registration_id);
+        await this.recordReminderSent(team, REMINDER_ACTION);
       } catch (err) {
-        console.error(`Failed to send 5-min payment reminder to ${team.registration_id}:`, err);
+        console.error(`Failed to send payment reminder to ${team.registration_id}:`, err);
       }
+    }
+
+    if (skippedNotConfigured > 0) {
+      console.error(
+        `[Reminders] ${skippedNotConfigured} reminder(s) were NOT sent because SMTP is not configured. ` +
+        'They remain owed and will be retried on the next sweep.'
+      );
     }
 
     return {
       checked: overview.teams.length,
       sent: notifiedTeams.length,
+      skippedAlreadyReminded,
+      skippedNotConfigured,
       notifiedTeams
     };
+  },
+
+  /**
+   * Append-only record that a reminder actually reached a team.
+   *
+   * Deliberately its own audit row rather than an edit to `admin_notes`: an
+   * insert cannot lose a concurrent organiser edit, and it keeps automation
+   * state out of a field humans write in.
+   */
+  async recordReminderSent(team: TeamRecord, action: string): Promise<void> {
+    const now = new Date().toISOString();
+    const details = 'Automated unpaid-payment reminder delivered to the registered leader email.';
+
+    if (isSupabaseConfigured() && supabase) {
+      try {
+        await supabase.from('audit_logs').insert([{
+          team_id: team.id,
+          team_name: team.team_name,
+          action,
+          actor: 'Automation System',
+          details,
+          created_at: now
+        }]);
+        return;
+      } catch (err) {
+        console.error('[Reminders] Could not record reminder audit row:', err);
+        return;
+      }
+    }
+
+    const store = loadLocalStore();
+    store.auditLogs.push({
+      id: 'log-' + Date.now() + '-reminder',
+      team_id: team.id,
+      team_name: team.team_name,
+      action,
+      actor: 'Automation System',
+      details,
+      created_at: now
+    });
+    saveLocalStore(store);
   }
 };

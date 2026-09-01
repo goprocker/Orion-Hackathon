@@ -153,6 +153,25 @@ function preheader(text: string): string {
   );
 }
 
+/**
+ * The outcome of a send attempt.
+ *
+ * `simulated` is the field that matters. When SMTP is not configured the
+ * mailer logs the message and returns success, which is the right behaviour
+ * for local development — but a caller that records durable state on the
+ * strength of "the mail went out" has to be able to tell the difference.
+ * Otherwise a deployment with missing SMTP credentials silently marks work as
+ * done that never happened, and the evidence that it did not is a console
+ * warning nobody reads.
+ */
+export interface MailResult {
+  success: boolean;
+  messageId?: string;
+  error?: string;
+  /** True when no SMTP transport existed and the message was only logged. */
+  simulated?: boolean;
+}
+
 interface DispatchOptions {
   to: string;
   subject: string;
@@ -166,13 +185,13 @@ interface DispatchOptions {
 
 async function dispatchMail(
   opts: DispatchOptions
-): Promise<{ success: boolean; messageId?: string; error?: string }> {
+): Promise<MailResult> {
   const transporter = getTransporter();
   if (!transporter) {
     console.warn(
       `[Mailer Simulator] SMTP_USER / SMTP_PASS not configured. "${opts.subject}" to ${opts.to} was not sent.`
     );
-    return { success: true, messageId: 'simulated-local-mode' };
+    return { success: true, simulated: true, messageId: 'simulated-local-mode' };
   }
 
   const from = senderAddress();
@@ -761,7 +780,7 @@ export function generateResubmissionRequiredHtml(team: TeamRecord, reason: strin
 /**
  * Dispatch confirmation email to Team Leader
  */
-export async function sendPaymentVerifiedEmail(team: TeamRecord): Promise<{ success: boolean; messageId?: string; error?: string }> {
+export async function sendPaymentVerifiedEmail(team: TeamRecord): Promise<MailResult> {
   const to = validRecipient(team, 'payment-verified');
   if (!to) return { success: false, error: 'Invalid or missing team leader email' };
 
@@ -805,7 +824,7 @@ export async function sendPaymentVerifiedEmail(team: TeamRecord): Promise<{ succ
 export async function sendResubmissionRequiredEmail(
   team: TeamRecord,
   reason: string
-): Promise<{ success: boolean; messageId?: string; error?: string }> {
+): Promise<MailResult> {
   const to = validRecipient(team, 'payment-resubmission');
   if (!to) return { success: false, error: 'Invalid or missing team leader email' };
 
@@ -1074,7 +1093,7 @@ export function generatePaymentReminderHtml(team: TeamRecord): string {
  */
 export async function sendPaymentReminderEmail(
   team: TeamRecord
-): Promise<{ success: boolean; messageId?: string; error?: string }> {
+): Promise<MailResult> {
   const to = validRecipient(team, 'payment-reminder');
   if (!to) return { success: false, error: 'Invalid or missing team leader email' };
 
@@ -1340,7 +1359,7 @@ export function generateRegistrationReceivedHtml(team: TeamRecord): string {
  */
 export async function sendRegistrationReceivedEmail(
   team: TeamRecord
-): Promise<{ success: boolean; messageId?: string; error?: string }> {
+): Promise<MailResult> {
   const to = validRecipient(team, 'registration-received');
   if (!to) return { success: false, error: 'Invalid or missing team leader email' };
 
@@ -1574,7 +1593,7 @@ export function generateReuploadRejectedHtml(team: TeamRecord, note?: string | n
 export async function sendReuploadApprovedEmail(
   team: TeamRecord,
   note?: string | null
-): Promise<{ success: boolean; messageId?: string; error?: string }> {
+): Promise<MailResult> {
   const to = validRecipient(team, 'reupload-approved');
   if (!to) return { success: false, error: 'Invalid or missing team leader email' };
 
@@ -1609,7 +1628,7 @@ export async function sendReuploadApprovedEmail(
 export async function sendReuploadRejectedEmail(
   team: TeamRecord,
   note?: string | null
-): Promise<{ success: boolean; messageId?: string; error?: string }> {
+): Promise<MailResult> {
   const to = validRecipient(team, 'reupload-rejected');
   if (!to) return { success: false, error: 'Invalid or missing team leader email' };
 
@@ -1703,7 +1722,7 @@ export async function sendPasscodeResetEmail(
   team: TeamRecord,
   resetUrl: string,
   ttlMinutes: number
-): Promise<{ success: boolean; messageId?: string; error?: string }> {
+): Promise<MailResult> {
   const to = validRecipient(team, 'passcode-reset');
   if (!to) return { success: false, error: 'Invalid or missing team leader email' };
 
@@ -1775,7 +1794,7 @@ export function generatePasscodeChangedHtml(team: TeamRecord): string {
 
 export async function sendPasscodeChangedEmail(
   team: TeamRecord
-): Promise<{ success: boolean; messageId?: string; error?: string }> {
+): Promise<MailResult> {
   const to = validRecipient(team, 'passcode-changed');
   if (!to) return { success: false, error: 'Invalid or missing team leader email' };
 
