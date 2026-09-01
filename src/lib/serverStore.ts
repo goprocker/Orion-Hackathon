@@ -657,6 +657,7 @@ export const serverStore = {
               payer_name: payRes.data.payer_name,
               amount: payRes.data.amount || 100,
               payment_status: payRes.data.payment_status,
+              screenshot_url: payRes.data.screenshot_url || undefined,
               notes: payRes.data.notes || undefined,
               rejection_reason: payRes.data.rejection_reason || undefined,
               submitted_at: payRes.data.submitted_at,
@@ -743,7 +744,7 @@ export const serverStore = {
   },
 
   // Payment Submission with Strict Uniqueness Check
-  async submitPayment(teamId: string, payload: { utrNumber: string; payerName: string; amount?: number }): Promise<{ success: boolean; error?: string; payment?: PaymentRecord }> {
+  async submitPayment(teamId: string, payload: { utrNumber: string; payerName: string; amount?: number; screenshotUrl?: string }): Promise<{ success: boolean; error?: string; payment?: PaymentRecord }> {
     const cleanUTR = payload.utrNumber.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
     const cleanPayer = payload.payerName.trim();
     const now = new Date().toISOString();
@@ -795,6 +796,7 @@ export const serverStore = {
             payer_name: cleanPayer,
             amount: payload.amount || 100,
             payment_status: 'PENDING',
+            screenshot_url: payload.screenshotUrl || null,
             submitted_at: now
           }, { onConflict: 'team_id' })
           .select('*')
@@ -814,7 +816,7 @@ export const serverStore = {
           team_name: team.team_name,
           action: 'Payment UTR Submitted',
           actor: 'Participant Portal',
-          details: `Submitted UTR: ${cleanUTR} (₹100) by ${cleanPayer}`,
+          details: `Submitted UTR: ${cleanUTR} (₹100) by ${cleanPayer}${payload.screenshotUrl ? ' with screenshot proof' : ''}`,
           created_at: now
         }]);
 
@@ -828,6 +830,7 @@ export const serverStore = {
               payer_name: payData.payer_name,
               amount: payData.amount,
               payment_status: payData.payment_status,
+              screenshot_url: payData.screenshot_url,
               submitted_at: payData.submitted_at
             }
           };
@@ -866,6 +869,7 @@ export const serverStore = {
       payment.payer_name = cleanPayer;
       payment.amount = payload.amount || 100;
       payment.payment_status = 'PENDING';
+      if (payload.screenshotUrl) payment.screenshot_url = payload.screenshotUrl;
       payment.submitted_at = now;
     } else {
       payment = {
@@ -875,6 +879,7 @@ export const serverStore = {
         payer_name: cleanPayer,
         amount: payload.amount || 100,
         payment_status: 'PENDING',
+        screenshot_url: payload.screenshotUrl || undefined,
         submitted_at: now
       };
       store.payments.push(payment);
@@ -1611,6 +1616,7 @@ export const serverStore = {
               payer_name: p.payer_name,
               amount: p.amount || 100,
               payment_status: p.payment_status,
+              screenshot_url: p.screenshot_url || undefined,
               notes: p.notes || undefined,
               rejection_reason: p.rejection_reason || undefined,
               submitted_at: p.submitted_at,

@@ -28,27 +28,100 @@ The platform includes a **6-step registration flow**, **server-side Razorpay pay
 
 ## 2. Full-Stack Architecture
 
-```
-User Submits 6-Step Registration (RegisterModal)
-                  │
-                  ▼
-   POST /api/payment/create-order
-   (Validates Indian phones, emails, 4 members, & creates ₹100 Razorpay order)
-                  │
-                  ▼
-   Razorpay Checkout Modal / Sandbox Simulator
-                  │
-                  ▼
-   POST /api/payment/verify
-   (Verifies HMAC-SHA256 signature server-side & updates status to SUCCESS)
-                  │
-                  ▼
-   Supabase PostgreSQL Relational Database (`teams` + `team_members`)
-                  │
-        ┌─────────┴───────────────────────┐
-        ▼                                 ▼
-GET /api/registrations/count    GET /api/admin/registrations
-(Live count in HeroSection)     (Protected Admin Dashboard + CSV Export)
+```mermaid
+flowchart TD
+
+subgraph group_public["Public registration"]
+  node_landing["Landing page<br/>Next.js page<br/>[page.tsx]"]
+  node_event_data["Event content<br/>static data<br/>[orionData.ts]"]
+  node_register_modal["Registration modal<br/>React client UI<br/>[RegisterModal.tsx]"]
+  node_receipt_modal["Payment receipt<br/>React client UI"]
+end
+
+subgraph group_server["Server API"]
+  node_registration_api["Registration API<br/>POST route handler<br/>[route.ts]"]
+  node_registration_count["Public count/status API<br/>route handler<br/>[route.ts]"]
+  node_create_order["Create payment order<br/>POST route handler<br/>[route.ts]"]
+  node_verify_payment["Verify payment<br/>POST route handler<br/>[route.ts]"]
+end
+
+subgraph group_access["Participant and organizer access"]
+  node_portal_page["Team portal<br/>Next.js page<br/>[page.tsx]"]
+  node_team_auth["Team authentication<br/>route handler<br/>[route.ts]"]
+  node_portal_api["Portal data API<br/>route handler<br/>[route.ts]"]
+  node_submission_api["Team submission API<br/>route handler<br/>[route.ts]"]
+  node_admin_page["Organizer command center<br/>Next.js page<br/>[page.tsx]"]
+  node_admin_config["Admin access validation<br/>route handler<br/>[route.ts]"]
+  node_admin_registrations["Admin registrations API<br/>route handler<br/>[route.ts]"]
+end
+
+subgraph group_integrations["Persistence and operations"]
+  node_supabase_client["Supabase server client<br/>data access layer<br/>[supabase.ts]"]
+  node_database[("Teams and members<br/>PostgreSQL schema<br/>[schema.sql]")]
+  node_razorpay{{"Razorpay<br/>payment gateway"}}
+  node_reminder_cron["Payment reminder cron<br/>scheduled route handler<br/>[route.ts]"]
+  node_email["Email delivery<br/>server service<br/>[email.ts]"]
+  node_rate_limit["Rate limiting<br/>server guard<br/>[rateLimit.ts]"]
+end
+
+node_landing -->|"renders content"| node_event_data
+node_landing -->|"opens"| node_register_modal
+node_landing -->|"reads telemetry"| node_registration_count
+node_register_modal -->|"submits team"| node_registration_api
+node_register_modal -->|"starts checkout"| node_create_order
+node_create_order -->|"creates order"| node_razorpay
+node_razorpay -->|"returns payment/signature"| node_verify_payment
+node_verify_payment -->|"confirmation result"| node_receipt_modal
+node_registration_api -->|"persists"| node_supabase_client
+node_create_order -->|"checks team"| node_supabase_client
+node_verify_payment -->|"confirms status"| node_supabase_client
+node_supabase_client -->|"reads and writes"| node_database
+node_portal_page -->|"authenticates"| node_team_auth
+node_portal_page -->|"loads state"| node_portal_api
+node_portal_page -->|"submits"| node_submission_api
+node_team_auth -->|"looks up team"| node_supabase_client
+node_portal_api -->|"reads portal data"| node_supabase_client
+node_submission_api -->|"stores submission"| node_supabase_client
+node_admin_page -->|"validates access"| node_admin_config
+node_admin_page -->|"loads operations data"| node_admin_registrations
+node_admin_registrations -->|"retrieves records"| node_supabase_client
+node_reminder_cron -->|"finds unpaid teams"| node_supabase_client
+node_reminder_cron -->|"sends reminders"| node_email
+node_registration_api -.->|"protected by"| node_rate_limit
+node_create_order -.->|"protected by"| node_rate_limit
+
+click node_landing "https://github.com/goprocker/orion-hackathon/blob/main/src/app/page.tsx"
+click node_event_data "https://github.com/goprocker/orion-hackathon/blob/main/src/data/orionData.ts"
+click node_register_modal "https://github.com/goprocker/orion-hackathon/blob/main/src/components/modals/RegisterModal.tsx"
+click node_receipt_modal "https://github.com/goprocker/orion-hackathon/blob/main/src/components/modals/PaymentReceiptModal.tsx"
+click node_registration_api "https://github.com/goprocker/orion-hackathon/blob/main/src/app/api/registrations/route.ts"
+click node_registration_count "https://github.com/goprocker/orion-hackathon/blob/main/src/app/api/registrations/count/route.ts"
+click node_create_order "https://github.com/goprocker/orion-hackathon/blob/main/src/app/api/payment/create-order/route.ts"
+click node_verify_payment "https://github.com/goprocker/orion-hackathon/blob/main/src/app/api/payment/verify/route.ts"
+click node_portal_page "https://github.com/goprocker/orion-hackathon/blob/main/src/app/portal/page.tsx"
+click node_team_auth "https://github.com/goprocker/orion-hackathon/blob/main/src/app/api/auth/team/route.ts"
+click node_portal_api "https://github.com/goprocker/orion-hackathon/blob/main/src/app/api/team/portal/route.ts"
+click node_submission_api "https://github.com/goprocker/orion-hackathon/blob/main/src/app/api/team/submission/route.ts"
+click node_admin_page "https://github.com/goprocker/orion-hackathon/blob/main/src/app/admin/page.tsx"
+click node_admin_config "https://github.com/goprocker/orion-hackathon/blob/main/src/app/api/admin/config/route.ts"
+click node_admin_registrations "https://github.com/goprocker/orion-hackathon/blob/main/src/app/api/admin/registrations/route.ts"
+click node_supabase_client "https://github.com/goprocker/orion-hackathon/blob/main/src/lib/supabase.ts"
+click node_database "https://github.com/goprocker/orion-hackathon/blob/main/src/db/schema.sql"
+click node_reminder_cron "https://github.com/goprocker/orion-hackathon/blob/main/src/app/api/cron/payment-reminders/route.ts"
+click node_email "https://github.com/goprocker/orion-hackathon/blob/main/src/lib/email.ts"
+click node_rate_limit "https://github.com/goprocker/orion-hackathon/blob/main/src/lib/rateLimit.ts"
+
+classDef toneNeutral fill:#f8fafc,stroke:#334155,stroke-width:1.5px,color:#0f172a
+classDef toneBlue fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#172554
+classDef toneAmber fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f
+classDef toneMint fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d
+classDef toneRose fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px,color:#881337
+classDef toneIndigo fill:#e0e7ff,stroke:#4f46e5,stroke-width:1.5px,color:#312e81
+classDef toneTeal fill:#ccfbf1,stroke:#0f766e,stroke-width:1.5px,color:#134e4a
+class node_landing,node_event_data,node_register_modal,node_receipt_modal toneBlue
+class node_registration_api,node_registration_count,node_create_order,node_verify_payment toneAmber
+class node_portal_page,node_team_auth,node_portal_api,node_submission_api,node_admin_page,node_admin_config,node_admin_registrations toneMint
+class node_supabase_client,node_database,node_razorpay,node_reminder_cron,node_email,node_rate_limit toneRose
 ```
 
 ---
