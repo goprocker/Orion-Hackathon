@@ -349,6 +349,25 @@ export const serverStore = {
     let teamNumber = String(maxNum + 1).padStart(4, '0');
     let registrationId = `ORION-2026-${teamNumber}`;
 
+    // A leader who already owns a team is re-registering — almost always
+    // because the confirmation email never arrived and they assumed failure.
+    // A second registration creates a twin team that pollutes the roster,
+    // the CSV export and the payment ledger, so block it outright and point
+    // them back at their existing credentials. (Member-level overlaps stay
+    // soft suspicion flags below — those can be legitimate mistakes worth a
+    // human look rather than a hard wall.)
+    const leaderOwnedTeam = existingTeamsForDupCheck.find(t =>
+      t.leader_email.toLowerCase() === cleanLeaderEmail ||
+      t.leader_phone.replace(/[\s\-()]/g, '') === cleanLeaderPhone
+    );
+    if (leaderOwnedTeam) {
+      throw new Error(
+        `This leader is already registered: squad "${leaderOwnedTeam.team_name}" (${leaderOwnedTeam.registration_id}). ` +
+        'Do NOT register again — open the Team Portal and sign in with that Registration ID and your access passcode. ' +
+        'Lost the passcode? Use "Forgot passcode" on the portal with your registered leader email.'
+      );
+    }
+
     // Duplicate & Suspicion Analysis
     const suspicionFlags: SuspicionFlag[] = [];
 

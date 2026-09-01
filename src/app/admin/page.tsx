@@ -676,6 +676,7 @@ export default function AdminDashboard() {
         'Verified By',
         'Verified At',
         'Screenshot Attached',
+        'Suspicion Flags',
         'Round 1 Status',
         'Round 2 Status',
         'Score Total (/50)',
@@ -720,6 +721,11 @@ export default function AdminDashboard() {
           t.payment?.verified_by || '',
           t.payment?.verified_at ? t.payment.verified_at.replace('T', ' ').slice(0, 16) : '',
           t.payment?.screenshot_url ? 'YES' : 'NO',
+          // Labels a duplicate row with WHICH team it collides with, so the
+          // sheet itself shows what to purge (e.g. DUPLICATE_EMAIL:ORION-2026-0284).
+          (t.suspicion_flags || [])
+            .map(f => (f.matched_team_id ? `${f.flag_type}:${f.matched_team_id}` : f.flag_type))
+            .join('; '),
           t.round_1_status,
           t.round_2_status,
           totalScore,

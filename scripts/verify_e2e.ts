@@ -16,6 +16,10 @@ async function runE2ETests() {
   }
 
   try {
+    // Unique identities per run: leader re-registration is now hard-blocked,
+    // so fixed emails/phones would collide with leftovers from earlier runs.
+    const stamp = Date.now().toString().slice(-8);
+
     // 1. Register Team Alpha
     console.log('\n--- TEST STEP 1: Register Team Alpha ---');
     const alphaPayload = {
@@ -25,13 +29,13 @@ async function runE2ETests() {
       department: 'Computer Science',
       year: '3rd Year',
       leaderName: 'Arjun Sharma',
-      leaderEmail: 'arjun.sharma@testgenesis.org',
-      leaderPhone: '9876543210',
+      leaderEmail: `arjun.sharma+${stamp}@testgenesis.org`,
+      leaderPhone: `96${stamp}`,
       members: [
         {
           name: 'Priya Sundar',
-          email: 'priya.sundar@testgenesis.org',
-          phone: '9876543211',
+          email: `priya.sundar+${stamp}@testgenesis.org`,
+          phone: `97${stamp}`,
           department: 'Information Technology',
           year: '3rd Year'
         }
@@ -66,12 +70,12 @@ async function runE2ETests() {
       problemStatement: 'AI-01',
       institution: 'Anna University',
       leaderName: 'Vikram Patel',
-      leaderEmail: 'vikram.patel@other.org',
-      leaderPhone: '9123456789',
+      leaderEmail: `vikram.patel+${stamp}@other.org`,
+      leaderPhone: `91${stamp}`,
       members: [
         {
           name: 'Rohan Verma',
-          phone: '9123456788'
+          phone: `92${stamp}`
         }
       ]
     };
@@ -85,25 +89,46 @@ async function runE2ETests() {
     });
     assert(duplicateRes.success === false, 'Duplicate UTR was rejected: ' + duplicateRes.error);
 
-    // 3. Duplicate Participant Anomaly & Suspicion Flagging
-    console.log('\n--- TEST STEP 3: Suspicious Registration Flagging ---');
-    const gammaPayload = {
-      teamName: 'Shadow Syndicate',
+    // 3a. A leader who already owns a team must be BLOCKED from re-registering
+    //     (double-submits were filling the roster and CSV with twin teams).
+    console.log('\n--- TEST STEP 3a: Duplicate Leader Registration Blocked ---');
+    let dupBlocked = false;
+    let dupMsg = '';
+    try {
+      await serverStore.registerTeam({
+        teamName: 'Shadow Syndicate',
+        problemStatement: 'AI-02',
+        institution: 'Sathyabama University',
+        leaderName: 'Arjun Clone',
+        leaderEmail: alphaPayload.leaderEmail, // REUSED LEADER EMAIL
+        leaderPhone: alphaPayload.leaderPhone, // REUSED LEADER PHONE
+        members: [{ name: 'Clone Member', phone: `93${stamp}` }]
+      });
+    } catch (err) {
+      dupBlocked = true;
+      dupMsg = err instanceof Error ? err.message : String(err);
+    }
+    assert(dupBlocked, 'Re-registration by an already-registered leader is blocked');
+    assert(dupMsg.includes(teamAlpha.registration_id), 'Block message names the existing squad: ' + dupMsg);
+
+    // 3b. Member-level overlap stays a SOFT suspicion flag, not a block.
+    console.log('\n--- TEST STEP 3b: Cross-Team Member Soft-Flagged ---');
+    const regGamma = await serverStore.registerTeam({
+      teamName: 'Shadow Syndicate II',
       problemStatement: 'AI-02',
       institution: 'Sathyabama University',
-      leaderName: 'Arjun Clone',
-      leaderEmail: 'arjun.sharma@testgenesis.org', // REUSED EMAIL
-      leaderPhone: '9876543210',                  // REUSED PHONE
+      leaderName: 'Gamma Leader',
+      leaderEmail: `gamma.leader+${stamp}@other.org`,
+      leaderPhone: `94${stamp}`,
       members: [
         {
-          name: 'Clone Member',
-          phone: '9876543219'
+          name: 'Priya Clone',
+          phone: alphaPayload.members[0].phone // REUSED MEMBER PHONE
         }
       ]
-    };
-    const regGamma = await serverStore.registerTeam(gammaPayload);
+    });
     const teamGamma = regGamma.team;
-    assert((teamGamma.suspicion_flags?.length || 0) > 0, 'Team registered with duplicate participant flagged with suspicion flags');
+    assert((teamGamma.suspicion_flags?.length || 0) > 0, 'Cross-team member overlap registered WITH suspicion flags');
     assert(!!teamGamma.suspicion_flags && teamGamma.suspicion_flags.length > 0, 'Suspicion details tagged: ' + teamGamma.suspicion_flags?.[0]?.description);
 
     // 4. Authenticate Team via Portal Credentials
