@@ -27,11 +27,13 @@ import {
   Globe,
   Send,
   ShieldCheck,
+  KeyRound,
   XCircle
 } from 'lucide-react';
 import { GlassCard } from '@/components/common/GlassCard';
 import { PaymentReceiptModal } from '@/components/modals/PaymentReceiptModal';
 import type { TeamRecord, SystemConfig } from '@/types/orion';
+import { RESET_TOKEN_TTL_MINUTES } from '@/lib/passcodePolicy';
 import { sound } from '@/audio/soundEffects';
 import confetti from 'canvas-confetti';
 
@@ -78,6 +80,13 @@ export default function TeamPortalPage() {
   const [reuploadReason, setReuploadReason] = useState('');
   const [isRequestingReupload, setIsRequestingReupload] = useState(false);
   const [reuploadMsg, setReuploadMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  // Forgot-passcode flow — requests a one-time reset link to the registered
+  // leader email. Reuses the Team ID field above rather than asking for it twice.
+  const [showForgot, setShowForgot] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [isSendingReset, setIsSendingReset] = useState(false);
+  const [forgotMsg, setForgotMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   const handleLoginDirect = useCallback(async (id: string, token: string) => {
     if (!id || !token) return;
@@ -137,6 +146,37 @@ export default function TeamPortalPage() {
     e.preventDefault();
     sound.playClick();
     handleLoginDirect(teamIdInput, secretInput);
+  };
+
+  const handleForgotSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    sound.playClick();
+    if (!teamIdInput.trim() || !forgotEmail.trim()) return;
+
+    setIsSendingReset(true);
+    setForgotMsg(null);
+    try {
+      const res = await fetch('/api/auth/team/forgot', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ teamId: teamIdInput.trim(), email: forgotEmail.trim() })
+      });
+      const data = await res.json();
+
+      // The route answers identically whether or not the details matched, so
+      // there is deliberately nothing to branch on here. Anything smarter —
+      // "no such team", a different icon on failure — would rebuild in the UI
+      // the account-existence oracle the API is careful not to be.
+      setForgotMsg(
+        res.ok
+          ? { type: 'success', text: data.message || 'If those details match, a reset link is on its way.' }
+          : { type: 'error', text: data.error || 'Could not send a reset link. Try again shortly.' }
+      );
+    } catch {
+      setForgotMsg({ type: 'error', text: 'Connection error while requesting the reset link.' });
+    } finally {
+      setIsSendingReset(false);
+    }
   };
 
   const handleRefresh = useCallback(async () => {
@@ -434,14 +474,14 @@ export default function TeamPortalPage() {
 
                 <div>
                   <label className="block text-[11px] font-mono-hud text-[#BAE6FD] mb-1">
-                    PASSCODE OR LEADER EMAIL <span className="text-[#38BDF8]">*</span>
+                    PASSCODE <span className="text-[#38BDF8]">*</span>
                   </label>
                   <input
                     type="password"
                     required
                     value={secretInput}
                     onChange={(e) => setSecretInput(e.target.value)}
-                    placeholder="PASS-XXXX or leader@email.com"
+                    placeholder="ORN-XXXX-XXXX"
                     className="w-full px-3.5 py-2.5 bg-[#040E24] border border-[rgba(212,233,255,0.15)] text-white text-xs font-mono-hud focus:border-[#38BDF8] focus:outline-none"
                   />
                 </div>
@@ -461,6 +501,86 @@ export default function TeamPortalPage() {
                   )}
                 </button>
               </form>
+
+              <div className="mt-4 text-center">
+                <button
+                  type="button"
+                  onClick={() => {
+                    sound.playClick();
+                    setShowForgot(v => !v);
+                    setForgotMsg(null);
+                  }}
+                  className="text-[11px] font-mono-hud text-[#BAE6FD] hover:text-[#38BDF8] underline underline-offset-4 cursor-pointer"
+                >
+                  {showForgot ? 'BACK TO SIGN IN' : 'FORGOT PASSCODE?'}
+                </button>
+              </div>
+
+              {showForgot && (
+                <div className="mt-4 p-4 bg-[#040E24] border border-[#38BDF8]/25 animate-in fade-in duration-200">
+                  <div className="flex items-center gap-2 mb-2">
+                    <KeyRound className="w-4 h-4 text-[#38BDF8]" />
+                    <span className="text-[11px] font-mono-hud text-[#38BDF8] font-bold uppercase tracking-wider">
+                      Reset your passcode
+                    </span>
+                  </div>
+
+                  <p className="text-[11px] text-slate-400 font-sans mb-3 leading-relaxed">
+                    Fill in your Team ID above, then the leader email you registered with.
+                    We will send a one-time reset link to that address — it expires in{' '}
+                    {RESET_TOKEN_TTL_MINUTES} minutes. The link only ever goes to the
+                    registered address, never to whoever asks.
+                  </p>
+
+                  <form onSubmit={handleForgotSubmit} className="space-y-3">
+                    <div>
+                      <label className="block text-[11px] font-mono-hud text-[#BAE6FD] mb-1">
+                        REGISTERED LEADER EMAIL <span className="text-[#38BDF8]">*</span>
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        value={forgotEmail}
+                        onChange={(e) => setForgotEmail(e.target.value)}
+                        placeholder="leader@email.com"
+                        className="w-full px-3.5 py-2.5 bg-[#07193D] border border-[rgba(212,233,255,0.15)] text-white text-xs font-mono-hud focus:border-[#38BDF8] focus:outline-none"
+                      />
+                    </div>
+
+                    {forgotMsg && (
+                      <div
+                        className={`p-3 border text-xs font-mono flex items-start gap-2 ${
+                          forgotMsg.type === 'success'
+                            ? 'bg-emerald-950/50 border-emerald-500/50 text-emerald-200'
+                            : 'bg-rose-950/60 border-rose-500/50 text-rose-200'
+                        }`}
+                      >
+                        {forgotMsg.type === 'success' ? (
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                        ) : (
+                          <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+                        )}
+                        <span>{forgotMsg.text}</span>
+                      </div>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={isSendingReset}
+                      className="w-full py-2.5 font-display font-black text-xs text-[#040E24] bg-gradient-to-r from-[#BAE6FD] to-[#38BDF8] flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50"
+                    >
+                      {isSendingReset ? (
+                        <span>SENDING RESET LINK...</span>
+                      ) : (
+                        <>
+                          <Send className="w-3.5 h-3.5 text-[#040E24]" />
+                          <span>EMAIL ME A RESET LINK</span>
+                        </>
+                      )}
+                    </button>
+                  </form>
+                </div>
+              )}
 
               <div className="mt-6 pt-4 border-t border-white/10 text-center text-xs text-slate-400 font-sans">
                 Haven&apos;t registered your squad yet?{' '}

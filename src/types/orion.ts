@@ -181,6 +181,24 @@ export interface AuditLogRecord {
   created_at: string;
 }
 
+/**
+ * A pending self-service passcode reset.
+ *
+ * `token_hash` is the SHA-256 of the emailed token — the raw value is never
+ * persisted, so this record cannot be replayed into a portal login by anyone
+ * reading the database. Single use is enforced by setting `consumed_at` under
+ * a `consumed_at is null` guard.
+ */
+export interface PasswordResetRecord {
+  id: string;
+  team_id: string;
+  token_hash: string;
+  expires_at: string;
+  consumed_at?: string | null;
+  requested_ip?: string | null;
+  created_at: string;
+}
+
 export interface EvaluationScores {
   innovation: number;    // 0-10 Technical Innovation & Novelty
   architecture: number;  // 0-10 System Architecture & Tech Depth

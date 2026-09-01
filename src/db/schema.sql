@@ -136,6 +136,20 @@ create table if not exists public.system_config (
   updated_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 
+-- 7b. Create Passcode Reset Tokens Table (self-service portal recovery)
+--     Only the SHA-256 of the token is stored — a dump of this table yields no
+--     usable reset link. Single use is enforced by updating where consumed_at
+--     is null. See migrations/004_password_resets.sql.
+create table if not exists public.password_resets (
+  id uuid default gen_random_uuid() primary key,
+  team_id uuid references public.teams(id) on delete cascade not null,
+  token_hash text not null unique,
+  expires_at timestamp with time zone not null,
+  consumed_at timestamp with time zone,
+  requested_ip text,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
 -- 8. Performance & Search Indexes
 create index if not exists idx_teams_registration_id on public.teams(registration_id);
 create index if not exists idx_teams_leader_email on public.teams(leader_email);
@@ -154,6 +168,9 @@ create index if not exists idx_resub_team_id on public.resubmission_requests(tea
 create index if not exists idx_resub_status on public.resubmission_requests(status);
 create index if not exists idx_audit_logs_team_id on public.audit_logs(team_id);
 create index if not exists idx_suspicion_flags_team_id on public.suspicion_flags(team_id);
+create index if not exists idx_password_resets_token_hash on public.password_resets(token_hash);
+create index if not exists idx_password_resets_team_id on public.password_resets(team_id);
+create index if not exists idx_password_resets_expires_at on public.password_resets(expires_at);
 
 -- 9. Row Level Security (RLS)
 alter table public.teams enable row level security;
@@ -164,6 +181,9 @@ alter table public.resubmission_requests enable row level security;
 alter table public.suspicion_flags enable row level security;
 alter table public.audit_logs enable row level security;
 alter table public.system_config enable row level security;
+-- Deliberately policy-free: read access here plus a known Team ID would be a
+-- standing account takeover. Only the service role touches it.
+alter table public.password_resets enable row level security;
 
 -- Public read / write policies
 create policy "Allow public squad team inserts" on public.teams for insert with check (true);

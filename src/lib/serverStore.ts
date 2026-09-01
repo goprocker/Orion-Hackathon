@@ -11,11 +11,13 @@ import type {
   AuditLogRecord, 
   SuspicionFlag, 
   SystemConfig,
+  PasswordResetRecord,
   EvaluationScores,
   Round1Status,
   Round2Status
 } from '@/types/orion';
 import { sendPaymentReminderEmail } from './email';
+import { RESET_TOKEN_TTL_MINUTES, validateNewPasscode, normalisePasscode } from './passcodePolicy';
 
 // ==============================================================================
 // Fallback In-Memory / File Persistent Store (For Local Dev Offline Mode)
@@ -31,6 +33,7 @@ interface StoreSchema {
   resubmissionRequests: ResubmissionRequest[];
   suspicionFlags: SuspicionFlag[];
   auditLogs: AuditLogRecord[];
+  passwordResets: PasswordResetRecord[];
   config: SystemConfig;
 }
 
@@ -114,6 +117,39 @@ export function safeEqualCI(a: string, b: string): boolean {
   return crypto.timingSafeEqual(ha, hb);
 }
 
+// ==============================================================================
+// Passcode reset tokens
+// ==============================================================================
+//
+// The reset token is the one credential in this system that arrives by email,
+// so it is treated as strictly more dangerous than the passcode it replaces:
+//
+//   - 256 bits from a CSPRNG. Unlike the passcode, nobody types this by hand,
+//     so there is no reason to trade entropy for readability.
+//   - Stored ONLY as a SHA-256 hash. `access_token` is readable in the teams
+//     table by anyone holding the service key; this table must not repeat that,
+//     or a database read becomes a standing takeover of every account.
+//   - Single use and short lived, enforced in the database (see
+//     migrations/004_password_resets.sql).
+
+/**
+ * Hash a raw reset token for storage and lookup.
+ *
+ * Plain SHA-256, not bcrypt/argon2 — deliberately. A slow KDF protects secrets
+ * with low entropy that an attacker can guess offline. This token is 256 random
+ * bits, so there is nothing to guess; the hash exists only so the stored value
+ * cannot be replayed. A fast hash also keeps the lookup a single indexed query
+ * instead of a scan-and-compare over every outstanding row.
+ */
+function hashResetToken(raw: string): string {
+  return crypto.createHash('sha256').update((raw || '').trim()).digest('hex');
+}
+
+/** base64url so the token survives a query string and an email client untouched. */
+function generateResetToken(): string {
+  return crypto.randomBytes(32).toString('base64url');
+}
+
 // Safe helper for local disk store
 function loadLocalStore(): StoreSchema {
   try {
@@ -130,6 +166,7 @@ function loadLocalStore(): StoreSchema {
       parsed.resubmissionRequests = parsed.resubmissionRequests || [];
       parsed.suspicionFlags = parsed.suspicionFlags || [];
       parsed.auditLogs = parsed.auditLogs || [];
+      parsed.passwordResets = parsed.passwordResets || [];
       return parsed;
     }
   } catch (err) {
@@ -143,6 +180,7 @@ function loadLocalStore(): StoreSchema {
     resubmissionRequests: [],
     suspicionFlags: [],
     auditLogs: [],
+    passwordResets: [],
     config: DEFAULT_CONFIG
   };
 
@@ -581,6 +619,306 @@ export const serverStore = {
 
     if (!team) return null;
     return await this.getTeam(team.id);
+  },
+
+  // ============================================================================
+  // Self-Service Passcode Reset
+  // ============================================================================
+
+  /**
+   * Issue a reset token — but only to someone who can already name the team's
+   * REGISTERED LEADER EMAIL.
+   *
+   * A Team ID is printed on every confirmation email and quoted in group chats;
+   * it identifies a team, it does not authenticate one. Requiring the leader
+   * email as well means a reset needs something an attacker would have to know
+   * already, and the token itself then lands in an inbox only the real leader
+   * can read. Both halves are necessary: the email check stops a stranger from
+   * spraying reset mail at every sequential Team ID, and the emailed token
+   * stops a guessed email from being enough on its own.
+   *
+   * Returns null on EVERY failure — unknown team, wrong email, database
+   * error — so the caller has nothing to branch on and cannot be turned into an
+   * account-existence oracle. The route answers identically either way.
+   */
+  async createPasscodeReset(
+    identifier: string,
+    email: string,
+    requestedIp?: string
+  ): Promise<{ team: TeamRecord; rawToken: string; expiresAt: string } | null> {
+    const cleanId = (identifier || '').trim();
+    const cleanEmail = (email || '').trim();
+
+    if (!cleanId || !cleanEmail || !looksLikeEmail(cleanEmail)) return null;
+
+    const team = await this.getTeam(cleanId);
+    if (!team) return null;
+
+    // Constant-time and case-insensitive, matching how the address was stored.
+    if (!team.leader_email || !safeEqualCI(team.leader_email, cleanEmail)) return null;
+
+    const rawToken = generateResetToken();
+    const tokenHash = hashResetToken(rawToken);
+    const nowDate = new Date();
+    const now = nowDate.toISOString();
+    const expiresAt = new Date(nowDate.getTime() + RESET_TOKEN_TTL_MINUTES * 60 * 1000).toISOString();
+
+    if (isSupabaseConfigured() && supabase) {
+      try {
+        // Retire any link already outstanding for this team. Without this, a
+        // participant who clicks "forgot" three times leaves three live tokens,
+        // and the two they abandoned stay valid in their inbox for the full TTL.
+        await supabase
+          .from('password_resets')
+          .update({ consumed_at: now })
+          .eq('team_id', team.id)
+          .is('consumed_at', null);
+
+        const { error } = await supabase.from('password_resets').insert([{
+          team_id: team.id,
+          token_hash: tokenHash,
+          expires_at: expiresAt,
+          requested_ip: requestedIp || null,
+          created_at: now
+        }]);
+
+        if (error) {
+          console.error('[Reset] Failed to record reset token:', error.message);
+          return null;
+        }
+
+        // Audit detail deliberately carries no token and no passcode.
+        await supabase.from('audit_logs').insert([{
+          team_id: team.id,
+          team_name: team.team_name,
+          action: 'Passcode Reset Requested',
+          actor: 'Participant Portal',
+          details: 'Reset link issued to the registered leader email. Expires in ' + RESET_TOKEN_TTL_MINUTES + ' minutes.',
+          created_at: now
+        }]);
+
+        return { team, rawToken, expiresAt };
+      } catch (err) {
+        console.error('[Reset] createPasscodeReset error:', err);
+        return null;
+      }
+    }
+
+    // Local fallback
+    const store = loadLocalStore();
+    const localTeam = store.teams.find(t => t.id === team.id || t.registration_id === team.registration_id);
+    if (!localTeam) return null;
+
+    for (const r of store.passwordResets) {
+      if (r.team_id === localTeam.id && !r.consumed_at) r.consumed_at = now;
+    }
+
+    store.passwordResets.push({
+      id: 'reset-' + Date.now() + '-' + crypto.randomBytes(4).toString('hex'),
+      team_id: localTeam.id,
+      token_hash: tokenHash,
+      expires_at: expiresAt,
+      consumed_at: null,
+      requested_ip: requestedIp || null,
+      created_at: now
+    });
+
+    store.auditLogs.push({
+      id: 'log-' + Date.now() + '-reset-req',
+      team_id: localTeam.id,
+      team_name: localTeam.team_name,
+      action: 'Passcode Reset Requested',
+      actor: 'Participant Portal',
+      details: 'Reset link issued to the registered leader email. Expires in ' + RESET_TOKEN_TTL_MINUTES + ' minutes.',
+      created_at: now
+    });
+
+    saveLocalStore(store);
+    return { team, rawToken, expiresAt };
+  },
+
+  /** Look a reset token up by hash. Shared by peek and redeem. */
+  async findPasscodeReset(rawToken: string): Promise<PasswordResetRecord | null> {
+    const tokenHash = hashResetToken(rawToken);
+    if (!tokenHash) return null;
+
+    if (isSupabaseConfigured() && supabase) {
+      try {
+        const { data, error } = await supabase
+          .from('password_resets')
+          .select('*')
+          .eq('token_hash', tokenHash)
+          .maybeSingle();
+        if (error) {
+          console.warn('[Reset] findPasscodeReset error:', error.message);
+          return null;
+        }
+        return (data as PasswordResetRecord) || null;
+      } catch (err) {
+        console.warn('[Reset] findPasscodeReset threw:', err);
+        return null;
+      }
+    }
+
+    const store = loadLocalStore();
+    return store.passwordResets.find(r => r.token_hash === tokenHash) || null;
+  },
+
+  /**
+   * Check a reset token without spending it, so the page can show "this link is
+   * still good, here is the team it belongs to" before anything is typed.
+   *
+   * Naming the team is not a leak: the caller already holds a token that was
+   * delivered to that team's own registered inbox. It is worth showing, because
+   * it is what stops a leader who runs two teams resetting the wrong one.
+   */
+  async peekPasscodeReset(rawToken: string): Promise<{
+    valid: boolean;
+    reason?: 'INVALID' | 'EXPIRED' | 'USED';
+    teamName?: string;
+    registrationId?: string;
+  }> {
+    const clean = (rawToken || '').trim();
+    if (!clean) return { valid: false, reason: 'INVALID' };
+
+    const record = await this.findPasscodeReset(clean);
+    if (!record) return { valid: false, reason: 'INVALID' };
+    if (record.consumed_at) return { valid: false, reason: 'USED' };
+    if (new Date(record.expires_at).getTime() <= Date.now()) return { valid: false, reason: 'EXPIRED' };
+
+    const team = await this.getTeam(record.team_id);
+    if (!team) return { valid: false, reason: 'INVALID' };
+
+    return {
+      valid: true,
+      teamName: team.team_name,
+      registrationId: team.registration_id
+    };
+  },
+
+  /**
+   * Spend a reset token and set the new passcode.
+   *
+   * Order matters. The token is consumed FIRST, under a `consumed_at is null`
+   * guard, and only then is the passcode written. Two requests racing the same
+   * link therefore have exactly one winner — the database decides, not a
+   * read-then-write in application code that both sides would pass. Doing it
+   * the other way round (write the passcode, then mark consumed) would leave a
+   * replayable token behind if the second step failed.
+   *
+   * Error strings here can be specific: the caller already holds a token, so
+   * telling them it expired reveals nothing they could not learn by trying it.
+   */
+  async redeemPasscodeReset(
+    rawToken: string,
+    newPasscode: string
+  ): Promise<{ success: boolean; error?: string; team?: TeamRecord }> {
+    const clean = (rawToken || '').trim();
+    if (!clean) return { success: false, error: 'This reset link is not valid. Request a new one.' };
+
+    const check = validateNewPasscode(newPasscode);
+    if (!check.ok) return { success: false, error: check.error };
+
+    const passcode = normalisePasscode(newPasscode);
+
+    const record = await this.findPasscodeReset(clean);
+    if (!record) return { success: false, error: 'This reset link is not valid. Request a new one.' };
+    if (record.consumed_at) {
+      return { success: false, error: 'This reset link has already been used. Request a new one.' };
+    }
+    if (new Date(record.expires_at).getTime() <= Date.now()) {
+      return { success: false, error: 'This reset link has expired. Request a new one.' };
+    }
+
+    const now = new Date().toISOString();
+
+    if (isSupabaseConfigured() && supabase) {
+      try {
+        // Atomic claim. Zero rows back means someone else redeemed it first.
+        const { data: claimed, error: claimErr } = await supabase
+          .from('password_resets')
+          .update({ consumed_at: now })
+          .eq('id', record.id)
+          .is('consumed_at', null)
+          .select('id, team_id');
+
+        if (claimErr) {
+          console.error('[Reset] Failed to claim reset token:', claimErr.message);
+          return { success: false, error: 'Could not complete the reset. Please try again.' };
+        }
+        if (!claimed || claimed.length === 0) {
+          return { success: false, error: 'This reset link has already been used. Request a new one.' };
+        }
+
+        const { error: updErr } = await supabase
+          .from('teams')
+          .update({ access_token: passcode, updated_at: now })
+          .eq('id', record.team_id);
+
+        if (updErr) {
+          console.error('[Reset] Failed to set new passcode:', updErr.message);
+          return { success: false, error: 'Could not complete the reset. Please try again.' };
+        }
+
+        // Any other link outstanding for this team dies with the reset — someone
+        // who requested one earlier must not keep a live token after the real
+        // leader has taken the account back.
+        await supabase
+          .from('password_resets')
+          .update({ consumed_at: now })
+          .eq('team_id', record.team_id)
+          .is('consumed_at', null);
+
+        const team = await this.getTeam(record.team_id);
+
+        await supabase.from('audit_logs').insert([{
+          team_id: record.team_id,
+          team_name: team ? team.team_name : null,
+          action: 'Passcode Reset Completed',
+          actor: 'Participant Portal',
+          details: 'Team portal passcode changed via an emailed reset link.',
+          created_at: now
+        }]);
+
+        return { success: true, team: team || undefined };
+      } catch (err) {
+        console.error('[Reset] redeemPasscodeReset error:', err);
+        return { success: false, error: 'Could not complete the reset. Please try again.' };
+      }
+    }
+
+    // Local fallback
+    const store = loadLocalStore();
+    const local = store.passwordResets.find(r => r.id === record.id);
+    if (!local || local.consumed_at) {
+      return { success: false, error: 'This reset link has already been used. Request a new one.' };
+    }
+
+    const localTeam = store.teams.find(t => t.id === local.team_id);
+    if (!localTeam) return { success: false, error: 'This reset link is not valid. Request a new one.' };
+
+    local.consumed_at = now;
+    for (const r of store.passwordResets) {
+      if (r.team_id === local.team_id && !r.consumed_at) r.consumed_at = now;
+    }
+
+    localTeam.access_token = passcode;
+    localTeam.updated_at = now;
+
+    store.auditLogs.push({
+      id: 'log-' + Date.now() + '-reset-done',
+      team_id: localTeam.id,
+      team_name: localTeam.team_name,
+      action: 'Passcode Reset Completed',
+      actor: 'Participant Portal',
+      details: 'Team portal passcode changed via an emailed reset link.',
+      created_at: now
+    });
+
+    saveLocalStore(store);
+
+    const team = await this.getTeam(localTeam.id);
+    return { success: true, team: team || undefined };
   },
 
   // Fetch Team By ID, Registration ID, or Email
