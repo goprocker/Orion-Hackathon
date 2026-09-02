@@ -214,14 +214,20 @@ function saveLocalStore(store: StoreSchema): void {
  * the admin roster started losing members 4-5 from most teams once ~200 teams
  * had registered, and registration's duplicate detection went blind.
  */
+async function fetchAllRows(
+  table: string,
+  order?: { column: string; ascending: boolean },
+  select = '*',
+  eq?: { column: string; value: string }
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function fetchAllRows(table: string, order?: { column: string; ascending: boolean }): Promise<any[]> {
+): Promise<any[]> {
   if (!supabase) return [];
   const PAGE = 1000;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const all: any[] = [];
   for (let offset = 0; ; offset += PAGE) {
-    let q = supabase.from(table).select('*').range(offset, offset + PAGE - 1);
+    let q = supabase.from(table).select(select).range(offset, offset + PAGE - 1);
+    if (eq) q = q.eq(eq.column, eq.value);
     if (order) q = q.order(order.column, { ascending: order.ascending });
     const { data, error } = await q;
     if (error) throw new Error(`Could not load ${table}: ${error.message}`);
@@ -1681,24 +1687,34 @@ export const serverStore = {
           throw subErr || new Error('Submission insert returned no row');
         }
 
+        // The accepted deck is real from here on — these are state-sync writes
+        // whose failure must be loudly visible but must not undo the upload.
         if (supersededIds.length > 0) {
-          await supabase
+          const { error: supErr } = await supabase
             .from('submissions')
             .update({ submission_status: 'SUPERSEDED' })
             .in('id', supersededIds);
+          if (supErr) console.error(`[Submission] Could not mark old decks SUPERSEDED for ${team.registration_id}: ${supErr.message}`);
         }
 
         if (approvedRequest) {
-          await supabase
+          const { error: linkErr } = await supabase
             .from('resubmission_requests')
             .update({ consumed_submission_id: subData.id })
             .eq('id', approvedRequest.id);
+          if (linkErr) console.error(`[Submission] Could not link consumed approval for ${team.registration_id}: ${linkErr.message}`);
         }
 
-        await supabase
+        const { data: statusRows, error: statusErr } = await supabase
           .from('teams')
           .update({ round_1_status: 'SUBMITTED', updated_at: now })
-          .eq('id', team.id);
+          .eq('id', team.id)
+          .select('id');
+        if (statusErr || !statusRows || statusRows.length === 0) {
+          console.error(
+            `[Submission] Deck saved for ${team.registration_id} but round_1_status did not update: ${statusErr?.message || 'no row matched'}`
+          );
+        }
 
         await supabase.from('audit_logs').insert([{
           team_id: team.id,
@@ -1730,7 +1746,14 @@ export const serverStore = {
           }
         };
       } catch (sbErr) {
+        // Return the failure. The old fall-through wrote the submission into
+        // the ephemeral local store on serverless and reported success — the
+        // participant saw 'submitted' while the jury never got a record.
         console.error('Supabase submitRound1File error:', sbErr);
+        return {
+          success: false,
+          error: 'Could not record your submission just now — nothing was saved. Please submit again in a moment; contact the organisers if it keeps failing.'
+        };
       }
     }
 
@@ -2275,7 +2298,13 @@ export const serverStore = {
               payer_upi: p.payer_upi || null,
               amount: p.amount || 100,
               payment_status: p.payment_status,
-              screenshot_url: p.screenshot_url || undefined,
+              // Receipts stored as data: URLs are multi-MB each; shipping them
+              // for EVERY team blows the roster response toward Vercel's
+              // ~4.5MB limit. The bulk payload carries the 'inline' marker;
+              // the console fetches the real bytes per team on click.
+              screenshot_url: p.screenshot_url
+                ? (String(p.screenshot_url).startsWith('data:') ? 'inline' : p.screenshot_url)
+                : undefined,
               notes: p.notes || undefined,
               rejection_reason: p.rejection_reason || undefined,
               submitted_at: p.submitted_at,
@@ -2381,7 +2410,11 @@ export const serverStore = {
           }));
         }
       } catch (err) {
-        console.warn('Supabase getAdminOverview error, using fallback:', err);
+        // Surface the failure. Falling through to the (empty on serverless)
+        // local store made a transient DB error look like ZERO registered
+        // teams in the console — and an empty CSV export.
+        console.error('Supabase getAdminOverview error:', err);
+        throw err instanceof Error ? err : new Error('Could not load the admin overview');
       }
     }
 
@@ -2618,11 +2651,10 @@ export const serverStore = {
     const remindedTeamIds = new Set<string>();
     if (isSupabaseConfigured() && supabase) {
       try {
-        const { data } = await supabase
-          .from('audit_logs')
-          .select('team_id')
-          .eq('action', REMINDER_ACTION);
-        for (const row of data || []) {
+        // Paged: an unpaginated select caps at 1000 rows, and a truncated
+        // reminder history means re-mailing teams that were already reminded.
+        const data = await fetchAllRows('audit_logs', undefined, 'team_id', { column: 'action', value: REMINDER_ACTION });
+        for (const row of data) {
           if (row.team_id) remindedTeamIds.add(row.team_id);
         }
       } catch (err) {

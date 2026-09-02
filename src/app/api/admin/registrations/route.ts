@@ -239,6 +239,18 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: true, message: `Payment resubmission requested — notice ${mail.note}`, mail, data: res });
     }
 
+    // 2a-bis. Lazy receipt fetch: the bulk roster replaces multi-MB data: URL
+    // screenshots with an 'inline' marker; the console asks for the real
+    // bytes here, one team at a time, when the organiser clicks INSPECT.
+    if (action === 'GET_PAYMENT_SCREENSHOT') {
+      if (!teamId) return NextResponse.json({ error: 'teamId is required' }, { status: 400 });
+      const team = await serverStore.getTeam(teamId);
+      if (!team?.payment?.screenshot_url) {
+        return NextResponse.json({ error: 'No screenshot on record for this team.' }, { status: 404 });
+      }
+      return NextResponse.json({ success: true, url: team.payment.screenshot_url });
+    }
+
     // 2b. Manual registration-confirmation email (auto-dispatch on signup is off
     //     by design; organisers send this explicitly).
     if (action === 'SEND_REGISTRATION_EMAIL') {

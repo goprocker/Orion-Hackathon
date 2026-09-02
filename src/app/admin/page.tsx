@@ -605,19 +605,33 @@ export default function AdminDashboard() {
 
   // data: receipt URLs cannot be opened via <a href> — browsers block
   // top-frame navigation to data: — so decode to a Blob and open that.
-  const openReceiptScreenshot = async (url: string) => {
+  // The bulk roster ships inline receipts as the marker 'inline'; the real
+  // bytes are fetched per team on click to keep the roster payload small.
+  const openReceiptScreenshot = async (url: string, teamId?: string) => {
     sound.playClick();
     try {
-      if (url.startsWith('data:')) {
-        const blob = await (await fetch(url)).blob();
+      let target = url;
+      if (url === 'inline' && teamId) {
+        const res = await fetch('/api/admin/registrations', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'GET_PAYMENT_SCREENSHOT', teamId })
+        });
+        const json = await res.json();
+        if (!res.ok || !json.url) throw new Error(json.error || 'Could not load the screenshot');
+        target = json.url;
+      }
+      if (target.startsWith('data:')) {
+        const blob = await (await fetch(target)).blob();
         const objUrl = URL.createObjectURL(blob);
         window.open(objUrl, '_blank', 'noopener');
         setTimeout(() => URL.revokeObjectURL(objUrl), 60_000);
       } else {
-        window.open(url, '_blank', 'noopener');
+        window.open(target, '_blank', 'noopener');
       }
-    } catch {
-      showToast('error', 'Could Not Open Screenshot', 'The stored receipt could not be decoded.');
+    } catch (err) {
+      showToast('error', 'Could Not Open Screenshot', err instanceof Error ? err.message : 'The stored receipt could not be decoded.');
     }
   };
 
@@ -1446,7 +1460,7 @@ export default function AdminDashboard() {
                           are blocked from top-frame navigation by browsers. */}
                       <button
                         type="button"
-                        onClick={() => openReceiptScreenshot(selectedTeam.payment!.screenshot_url!)}
+                        onClick={() => openReceiptScreenshot(selectedTeam.payment!.screenshot_url!, selectedTeam.registration_id)}
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0B2556] border border-[#38BDF8]/50 text-[#38BDF8] hover:bg-[#133A80] text-xs font-mono transition-colors cursor-pointer"
                       >
                         <ExternalLink className="w-3.5 h-3.5" />
