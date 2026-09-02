@@ -2261,13 +2261,28 @@ export const serverStore = {
       try {
         // fetchAllRows pages past the 1000-row cap; audit_logs stays capped
         // at the 50 most recent on purpose.
+        //
+        // Child tables degrade to [] with a LOUD log rather than killing the
+        // whole roster: this live database has repeatedly been missing tables
+        // and columns its migrations promise (001, 004, 005, 006, 007...),
+        // and a missing resubmission_requests table must not render the
+        // console as zero teams. Only the teams fetch itself stays fatal.
+        const softFetch = async (table: string, order?: { column: string; ascending: boolean }) => {
+          try {
+            return await fetchAllRows(table, order);
+          } catch (err) {
+            console.error(`[AdminOverview] ${table} unavailable — roster renders without it. Apply the missing migration.`, err);
+            return [];
+          }
+        };
+
         const [teamsData, memData, payData, subData, resubData, flagData, logRes] = await Promise.all([
           fetchAllRows('teams', { column: 'created_at', ascending: false }),
-          fetchAllRows('team_members', { column: 'member_number', ascending: true }),
-          fetchAllRows('payments'),
-          fetchAllRows('submissions', { column: 'version', ascending: false }),
-          fetchAllRows('resubmission_requests', { column: 'created_at', ascending: false }),
-          fetchAllRows('suspicion_flags', { column: 'created_at', ascending: false }),
+          softFetch('team_members', { column: 'member_number', ascending: true }),
+          softFetch('payments'),
+          softFetch('submissions', { column: 'version', ascending: false }),
+          softFetch('resubmission_requests', { column: 'created_at', ascending: false }),
+          softFetch('suspicion_flags', { column: 'created_at', ascending: false }),
           supabase.from('audit_logs').select('*').order('created_at', { ascending: false }).limit(50)
         ]);
 
