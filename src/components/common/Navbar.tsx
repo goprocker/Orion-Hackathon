@@ -9,9 +9,10 @@ import {
   ChevronRight 
 } from 'lucide-react';
 import { GooeyNav } from './GooeyNav';
+import { GOOGLE_FORM_REGISTRATION_URL } from '@/data/orionData';
 
 interface NavbarProps {
-  onOpenRegister: () => void;
+  onOpenRegister?: () => void;
   onOpenStatus?: () => void;
 }
 
@@ -117,15 +118,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenRegister }) => {
             </Link>
 
             {/* Primary CTA */}
-            <button
-              onClick={() => {
-                onOpenRegister();
-              }}
+            <a
+              href={GOOGLE_FORM_REGISTRATION_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn-glow-cyan px-5 py-2.5 rounded-none font-sans font-bold text-xs tracking-wide text-[#020617] bg-gradient-to-r from-[#FFFFFF] via-[#BAE6FD] to-[#00BCF2] hover:opacity-95 transition-all shadow-md flex items-center gap-2 active:scale-98 cursor-pointer"
             >
               <Rocket className="w-3.5 h-3.5 text-[#020617]" />
               <span>Register Team — ₹100</span>
-            </button>
+            </a>
           </div>
 
           {/* Mobile Navigation Toggle */}
@@ -136,14 +137,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenRegister }) => {
             >
               Portal
             </Link>
-            <button
-              onClick={() => {
-                onOpenRegister();
-              }}
-              className="px-3.5 py-2 rounded-none font-sans font-bold text-xs text-[#020617] bg-gradient-to-r from-[#FFFFFF] via-[#BAE6FD] to-[#00BCF2] active:scale-95 transition-transform shadow-sm"
+            <a
+              href={GOOGLE_FORM_REGISTRATION_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3.5 py-2 rounded-none font-sans font-bold text-xs text-[#020617] bg-gradient-to-r from-[#FFFFFF] via-[#BAE6FD] to-[#00BCF2] active:scale-95 transition-transform shadow-sm flex items-center justify-center"
             >
               Register ₹100
-            </button>
+            </a>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2.5 rounded-none bg-[#071426] border border-white/10 text-slate-400 hover:text-white"
@@ -206,15 +207,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenRegister }) => {
         className="fixed bottom-3 inset-x-3 z-40 lg:hidden pointer-events-auto"
       >
         <div className="p-2 bg-[#0B1220]/95 backdrop-blur-2xl border border-white/15 rounded-none shadow-2xl flex items-center">
-          <button
-            onClick={() => {
-              onOpenRegister();
-            }}
+          <a
+            href={GOOGLE_FORM_REGISTRATION_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="w-full py-3 px-4 rounded-none font-sans font-bold text-xs text-[#020617] bg-gradient-to-r from-[#FFFFFF] via-[#BAE6FD] to-[#00BCF2] flex items-center justify-center gap-2 shadow-md active:scale-98 cursor-pointer"
           >
             <Rocket className="w-4 h-4 text-[#020617]" />
             <span>Register Your Team — ₹100</span>
-          </button>
+          </a>
         </div>
       </nav>
     </>

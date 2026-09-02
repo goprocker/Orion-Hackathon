@@ -30,8 +30,11 @@ export const EVENT_METRICS = {
   venue: "Sathyabama Institute of Science and Technology, Chennai",
   organizer: "Microsoft Club SIST",
   participation: "Students & Working Professionals",
-  googleMapsUrl: "https://maps.google.com/?q=Sathyabama+Institute+of+Science+and+Technology+Chennai"
+  googleMapsUrl: "https://maps.google.com/?q=Sathyabama+Institute+of+Science+and+Technology+Chennai",
+  registrationFormUrl: "https://forms.gle/txiRwn9EELUgZvrJ6"
 };
+
+export const GOOGLE_FORM_REGISTRATION_URL = "https://forms.gle/txiRwn9EELUgZvrJ6";
 
 export const PRIZE_TIERS = [
   {
