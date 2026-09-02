@@ -16,7 +16,7 @@ import { Footer } from '@/components/sections/Footer';
 import { RegisterModal } from '@/components/modals/RegisterModal';
 import { TeamStatusModal } from '@/components/modals/TeamStatusModal';
 import { ChallengeModal } from '@/components/modals/ChallengeModal';
-import { INITIAL_REGISTERED_TEAMS } from '@/data/orionData';
+import { INITIAL_REGISTERED_TEAMS, GOOGLE_FORM_REGISTRATION_URL } from '@/data/orionData';
 import type { ProblemStatement, RegisteredTeam } from '@/types/orion';
 
 // Dynamically import Three.js space background with SSR disabled
@@ -53,8 +53,12 @@ export default function Home() {
     setRegisteredCount((prev) => prev + 1);
   };
 
+  const handleOpenRegister = () => {
+    window.open(GOOGLE_FORM_REGISTRATION_URL, '_blank', 'noopener,noreferrer');
+  };
+
   const handleSelectTrackFromModal = () => {
-    setIsRegisterOpen(true);
+    window.open(GOOGLE_FORM_REGISTRATION_URL, '_blank', 'noopener,noreferrer');
   };
 
   // Scroll to top and reset hash on page load/refresh
@@ -88,13 +92,13 @@ export default function Home() {
         <SpaceBackground />
 
         <Navbar 
-          onOpenRegister={() => setIsRegisterOpen(true)}
+          onOpenRegister={handleOpenRegister}
           onOpenStatus={() => setIsStatusOpen(true)}
         />
 
         <main className="relative z-10 flex flex-col">
           <HeroSection 
-            onOpenRegister={() => setIsRegisterOpen(true)}
+            onOpenRegister={handleOpenRegister}
             onOpenStatus={() => setIsStatusOpen(true)}
             onExplorePrizes={() => {
               document.getElementById('prizes')?.scrollIntoView({ behavior: 'smooth' });
@@ -113,7 +117,7 @@ export default function Home() {
         </main>
 
         <Footer 
-          onOpenRegister={() => setIsRegisterOpen(true)}
+          onOpenRegister={handleOpenRegister}
           onOpenStatus={() => setIsStatusOpen(true)}
         />
 

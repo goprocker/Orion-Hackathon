@@ -11,9 +11,10 @@ import {
 } from 'lucide-react';
 import { ScrollReveal } from '../common/ScrollReveal';
 import { sound } from '../../audio/soundEffects';
+import { GOOGLE_FORM_REGISTRATION_URL } from '@/data/orionData';
 
 interface FooterProps {
-  onOpenRegister: () => void;
+  onOpenRegister?: () => void;
   onOpenStatus?: () => void;
 }
 
@@ -85,16 +86,18 @@ export const Footer: React.FC<FooterProps> = ({ onOpenRegister }) => {
                 COMMAND ACTIONS
               </h4>
               <div className="space-y-2.5">
-                <button
+                <a
+                  href={GOOGLE_FORM_REGISTRATION_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={() => {
                     sound.playLaunchWarp();
-                    onOpenRegister();
                   }}
                   className="btn-sheen w-full py-3 px-4 rounded-none bg-[#0B2556] hover:bg-[#103374] border border-[#38BDF8]/40 text-xs font-mono-hud text-[#38BDF8] hover:text-white transition-all text-left flex items-center justify-between cursor-pointer active:scale-95 shadow-sm font-bold"
                 >
                   <span>REGISTER TEAM</span>
                   <span className="text-[10px] bg-[#38BDF8] text-[#040E24] px-2 py-0.5 font-bold shadow-sm">₹100</span>
-                </button>
+                </a>
 
                 <Link
                   href="/terms"
