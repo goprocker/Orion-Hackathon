@@ -109,7 +109,7 @@ export const GuidelinesSection: React.FC = () => {
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
-                    <span>Choose from 3 Flagship Problem Statements OR Open Innovation tracks</span>
+                    <span>Choose from 3 Flagship Problem Statements OR Open Innovation & Student Innovation Projects — welcome only for Round 1</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />

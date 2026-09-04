@@ -195,12 +195,12 @@ export const PROBLEM_STATEMENTS: ProblemStatement[] = [
   {
     id: "open-innovation",
     code: "ORION-PS-04",
-    title: "Open Innovation Track",
-    tagline: "Autonomous AI Systems, Web3 Protocols, Cybersecurity & Next-Gen Hardware",
+    title: "Open Innovation & Student Innovation Projects",
+    tagline: "Autonomous AI Systems, Web3 Protocols, Cybersecurity & Next-Gen Hardware — Round 1 Only",
     domain: "AI / Web3 / Systems / Robotics",
     accentColor: "violet",
     visualTheme: "Cybernetic Mesh • Quantum Systems • Multi-Domain Architecture",
-    overview: "Have a novel breakthrough outside the 3 flagship challenges? The Open Innovation Track empowers engineering squads to architect, prototype, and defend disruptive solutions across emerging fields including Generative & Agentic AI, Zero-Knowledge Web3 systems, post-quantum cybersecurity, IoT robotics, healthcare diagnostics, and space exploration.",
+    overview: "Have a novel breakthrough outside the 3 flagship challenges? The Open Innovation & Student Innovation Projects track empowers engineering squads and student researchers to architect, prototype, and defend disruptive solutions across emerging fields including Generative & Agentic AI, Zero-Knowledge Web3 systems, post-quantum cybersecurity, IoT robotics, healthcare diagnostics, and space exploration. This track is welcome only for Round 1 — the Grand Finale carries no Open Innovation option, and every finalist team builds on an on-the-spot assigned problem statement instead.",
     keyFeatures: [
       "Autonomous Multi-Agent AI & Edge Inference Systems",
       "Zero-Knowledge Proofs & Verifiable Computation Protocols",
@@ -216,7 +216,7 @@ export const PROBLEM_STATEMENTS: ProblemStatement[] = [
     ],
     datasetSources: ["Open Source Public Datasets", "Synthetic Test Benches", "Domain-Specific Telemetry APIs"],
     evaluationFocus: ["Novelty & distinct value proposition", "System architecture & engineering depth", "Feasibility & commercial deployment potential", "Live technical jury defense"],
-    classificationLevel: "OPEN TRACK — ELIGIBLE FOR ₹1,00,000 PRIZE POOL"
+    classificationLevel: "OPEN TRACK — ROUND 1 ONLY — ELIGIBLE FOR ₹1,00,000 PRIZE POOL"
   }
 ];
 
@@ -288,10 +288,10 @@ export const IMPORTANT_RULES = [
   {
     number: "03",
     title: "No Open Innovation in the Finale",
-    summary: "The Open Innovation category will not be available during the final round.",
-    detail: "Open Innovation is a Round 1 track only. Every finalist team works on an assigned problem statement in the Grand Finale.",
-    allowed: "Open Innovation in Round 1",
-    notAllowed: "Open Innovation in the Grand Finale",
+    summary: "Open Innovation and Student Innovation Projects will not be available during the final round.",
+    detail: "Open Innovation and Student Innovation Projects are welcome only for Round 1. Every finalist team works on an assigned problem statement in the Grand Finale.",
+    allowed: "Open Innovation & Student Innovation Projects in Round 1",
+    notAllowed: "Open Innovation or Student Innovation Projects in the Grand Finale",
     icon: "Ban",
     appliesTo: "Grand Finale"
   },
@@ -355,7 +355,7 @@ export const TIMELINE_PHASES: TimelinePhase[] = [
     status: "active",
     highlights: [
       "Flat ₹100 registration fee per team (2–6 members)",
-      "Choose from 3 Flagship Problem Statements OR Open Innovation tracks (AI, Web3, Systems, Cloud, Healthcare, Hardware)",
+      "Choose from 3 Flagship Problem Statements OR Open Innovation & Student Innovation Projects (AI, Web3, Systems, Cloud, Healthcare, Hardware) — welcome only for Round 1",
       "Prepare and upload mandatory standardized PPT / PDF blueprint before September 08, 2026"
     ]
   },
@@ -573,7 +573,7 @@ export const FAQ_DATA: FAQItem[] = [
   {
     category: "Round 1 & Submissions",
     question: "What do we build and submit in Round 1?",
-    answer: "In Round 1, teams must choose a Problem Statement track and submit their problem analysis, system architecture, tech stack justification, and project roadmap using the official mandatory ORION 1.0 PPT template (exported as PPTX or PDF). Working prototype links or demo videos can be included within the designated slide placeholders."
+    answer: "In Round 1, teams must choose a Problem Statement track — including the 3 flagship challenges or the Open Innovation & Student Innovation Projects track — and submit their problem analysis, system architecture, tech stack justification, and project roadmap using the official mandatory ORION 1.0 PPT template (exported as PPTX or PDF). Open Innovation and Student Innovation Projects are welcome only for Round 1; the Grand Finale has no open-innovation option. Working prototype links or demo videos can be included within the designated slide placeholders."
   },
   {
     category: "Round 1 & Submissions",
