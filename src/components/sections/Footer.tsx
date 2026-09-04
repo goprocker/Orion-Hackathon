@@ -74,6 +74,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenRegister }) => {
                 <li><a href="#challenges" className="hover:text-[#38BDF8] transition-colors">Challenge Arena (04 Tracks)</a></li>
                 <li><a href="#prizes" className="hover:text-[#38BDF8] transition-colors">₹1,00,000 Prize Pool & Bounties</a></li>
                 <li><a href="#guidelines" className="hover:text-[#38BDF8] transition-colors">Two-Tier Selection Protocol</a></li>
+                <li><a href="#rules" className="hover:text-[#38BDF8] transition-colors">Important Rules (Submission &amp; Finale)</a></li>
                 <li><a href="#timeline" className="hover:text-[#38BDF8] transition-colors">Event Timeline & Milestones</a></li>
                 <li><a href="#venue" className="hover:text-[#38BDF8] transition-colors">Finalist Accommodation & Venue</a></li>
                 <li><Link href="/terms" className="text-[#38BDF8] hover:text-white transition-colors flex items-center gap-1 font-bold"><span>Official Rulebook & Terms</span> →</Link></li>

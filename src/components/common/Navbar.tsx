@@ -25,6 +25,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenRegister }) => {
     { label: "CHALLENGES", href: "#challenges" },
     { label: "PRIZES", href: "#prizes" },
     { label: "GUIDELINES", href: "#guidelines" },
+    { label: "RULES", href: "#rules" },
     { label: "TIMELINE", href: "#timeline" },
     { label: "ORGANIZERS", href: "#organizers" },
     { label: "FAQ", href: "#faq" },

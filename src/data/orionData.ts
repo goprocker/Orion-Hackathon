@@ -255,6 +255,58 @@ export const PPT_TEMPLATE_RULES = [
   }
 ];
 
+export const IMPORTANT_RULES_NOTICE = {
+  title: "ORION 1.0 – IMPORTANT RULES",
+  greeting: "Dear Participants,",
+  intro: "Please carefully read and follow the rules below. These apply to every registered team.",
+  warning: "Failure to follow these rules may result in the rejection of the submission or disqualification of the team.",
+  signOff: "ORION 1.0 Organizing Team",
+  signOffOrg: "Microsoft Club SIST"
+};
+
+export const IMPORTANT_RULES = [
+  {
+    number: "01",
+    title: "One PPT per Team",
+    summary: "Each team is allowed to submit only one final PPT.",
+    detail: "Multiple submissions from the same team will not be accepted. Finalise your deck internally before uploading it through the Team Portal.",
+    allowed: "One final PPT per team",
+    notAllowed: "Multiple or duplicate submissions",
+    icon: "FileCheck2",
+    appliesTo: "Round 1 Submission"
+  },
+  {
+    number: "02",
+    title: "Leave the Team ID Blank",
+    summary: "The Team ID field in the PPT will be filled in by the ORION 1.0 organizing team.",
+    detail: "Participants must leave this field blank. Do not invent, guess, or copy a Team ID into the template.",
+    allowed: "Empty Team ID field",
+    notAllowed: "Filling in your own Team ID",
+    icon: "Hash",
+    appliesTo: "PPT Template"
+  },
+  {
+    number: "03",
+    title: "No Open Innovation in the Finale",
+    summary: "The Open Innovation category will not be available during the final round.",
+    detail: "Open Innovation is a Round 1 track only. Every finalist team works on an assigned problem statement in the Grand Finale.",
+    allowed: "Open Innovation in Round 1",
+    notAllowed: "Open Innovation in the Grand Finale",
+    icon: "Ban",
+    appliesTo: "Grand Finale"
+  },
+  {
+    number: "04",
+    title: "On-the-Spot Problem Statements",
+    summary: "All shortlisted teams receive their problem statements on the spot on 18 September 2026.",
+    detail: "Teams must develop their solutions based on the problem statement assigned during the event.",
+    allowed: "Building on the assigned statement",
+    notAllowed: "Bringing a pre-decided finale problem",
+    icon: "CalendarClock",
+    appliesTo: "18 September 2026"
+  }
+];
+
 export const HOSPITALITY_SYSTEMS = [
   {
     icon: "Coffee",
@@ -548,7 +600,7 @@ export const FAQ_DATA: FAQItem[] = [
   {
     category: "Finale & Fees",
     question: "How are the Grand Finale problem statements distributed?",
-    answer: "While teams can continue building upon their Round 1 architectural solution, live problem twists and dynamic constraints will be revealed on-the-spot at the start of the 24-hour offline sprint at SIST Chennai."
+    answer: "All shortlisted teams receive their problem statements on the spot on 18 September 2026, at the start of the 24-hour offline sprint at SIST Chennai. Teams must build their finale solution on the problem statement assigned during the event. The Open Innovation category is not available in the final round."
   },
 
   // 4. Hospitality & Venue

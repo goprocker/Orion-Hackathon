@@ -8,6 +8,7 @@ import { HeroSection } from '@/components/sections/HeroSection';
 import { ChallengeArena } from '@/components/sections/ChallengeArena';
 import { PrizeSection } from '@/components/sections/PrizeSection';
 import { GuidelinesSection } from '@/components/sections/GuidelinesSection';
+import { ImportantRulesSection } from '@/components/sections/ImportantRulesSection';
 import { TimelineSection } from '@/components/sections/TimelineSection';
 import { VenuePerksSection } from '@/components/sections/VenuePerksSection';
 import { OrganizersSection } from '@/components/sections/OrganizersSection';
@@ -110,6 +111,7 @@ export default function Home() {
           />
           <PrizeSection />
           <GuidelinesSection />
+          <ImportantRulesSection />
           <TimelineSection />
           <OrganizersSection />
           <FAQSection />
