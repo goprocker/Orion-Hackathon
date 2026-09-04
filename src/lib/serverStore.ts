@@ -213,6 +213,20 @@ function saveLocalStore(store: StoreSchema): void {
  * Unpaginated selects truncate quietly at 1000 rows — at ~5 members per team
  * the admin roster started losing members 4-5 from most teams once ~200 teams
  * had registered, and registration's duplicate detection went blind.
+ *
+ * `order.column` alone is not enough once paging is involved. team_members is
+ * ordered by member_number, but member_number is wildly non-unique — every
+ * team has a row with member_number=1, another with 2, etc. — so within each
+ * value there are thousands of tied rows across different teams. Postgres
+ * does not promise a stable order among ties, and each page here is a
+ * SEPARATE query (a fresh `.range()` call), so the tie order can shift
+ * between one page's query and the next. A row can land past the end of the
+ * page it "should" be on and never get picked up by the next one — in
+ * practice this is exactly what made a 6-member squad's higher member
+ * numbers (4, 5, 6 — the rarest, and so the most sparsely scattered ties)
+ * randomly vanish from the roster and CSV exports even after the 1000-row
+ * cap fix above. Always appending the primary key as a final tiebreaker
+ * makes the order — and therefore the paging — deterministic.
  */
 async function fetchAllRows(
   table: string,
@@ -229,6 +243,7 @@ async function fetchAllRows(
     let q = supabase.from(table).select(select).range(offset, offset + PAGE - 1);
     if (eq) q = q.eq(eq.column, eq.value);
     if (order) q = q.order(order.column, { ascending: order.ascending });
+    if (!order || order.column !== 'id') q = q.order('id', { ascending: true });
     const { data, error } = await q;
     if (error) throw new Error(`Could not load ${table}: ${error.message}`);
     all.push(...(data || []));
