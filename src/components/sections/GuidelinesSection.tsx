@@ -222,13 +222,6 @@ export const GuidelinesSection: React.FC = () => {
                   <div className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
                     <div>
-                      <strong className="text-white block font-semibold text-sm">GitHub / Video Demo (Optional)</strong>
-                      Including a public GitHub prototype link or a 2-minute video explanation awards bonus evaluation points.
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
-                    <div>
                       <strong className="text-white block font-semibold text-sm">Shortlist Notification</strong>
                       Top 70 finalist squads will receive official invitation letters & instructions for the Round 2 offline sprint at SIST Chennai.
                     </div>
