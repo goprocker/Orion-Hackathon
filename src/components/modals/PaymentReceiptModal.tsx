@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { 
   CheckCircle2, 
   Printer, 
@@ -21,6 +21,15 @@ export const PaymentReceiptModal: React.FC<PaymentReceiptModalProps> = ({
   team
 }) => {
   const receiptRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', handleEsc);
+    return () => document.removeEventListener('keydown', handleEsc);
+  }, [isOpen, onClose]);
 
   if (!isOpen || !team) return null;
 
@@ -46,7 +55,12 @@ export const PaymentReceiptModal: React.FC<PaymentReceiptModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto print:p-0 print:bg-white">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto print:p-0 print:bg-white"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
       <div 
         className="relative w-full max-w-2xl bg-[#040E24] border border-[#38BDF8]/40 shadow-[0_0_50px_rgba(56,189,248,0.2)] text-slate-100 my-8 print:my-0 print:border-none print:shadow-none print:text-black print:bg-white"
         onClick={(e) => e.stopPropagation()}

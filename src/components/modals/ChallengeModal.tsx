@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { 
   X, 
   Terminal, 
@@ -28,6 +28,18 @@ export const ChallengeModal: React.FC<ChallengeModalProps> = ({
   onSelectTrack,
   onSelectForRegister
 }) => {
+  useEffect(() => {
+    if (!problem) return;
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        sound.playModalClose();
+        onClose();
+      }
+    };
+    document.addEventListener('keydown', handleEsc);
+    return () => document.removeEventListener('keydown', handleEsc);
+  }, [problem, onClose]);
+
   if (!problem) return null;
 
   const handleSelect = () => {
@@ -38,7 +50,15 @@ export const ChallengeModal: React.FC<ChallengeModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          sound.playModalClose();
+          onClose();
+        }
+      }}
+    >
       <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto">
         <GlassCard
           glowColor={problem.accentColor}
