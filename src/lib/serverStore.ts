@@ -18,6 +18,7 @@ import type {
 } from '@/types/orion';
 import { sendPaymentReminderEmail } from './email';
 import { RESET_TOKEN_TTL_MINUTES, validateNewPasscode, normalisePasscode } from './passcodePolicy';
+import { verifyPassword } from './credentialCrypto';
 
 // ==============================================================================
 // Fallback In-Memory / File Persistent Store (For Local Dev Offline Mode)
@@ -636,47 +637,72 @@ export const serverStore = {
 
     if (!cleanId || !cleanSecret) return null;
 
+    const normalizedId = cleanId.toUpperCase().replace(/\s+/g, '');
+    const normalizedSecret = cleanSecret.toUpperCase().replace(/[^A-Z0-9]/g, '');
+
+    // --- STEP 1: Supabase Authentication (Primary) ---
     if (isSupabaseConfigured() && supabase) {
       try {
-        // Match on one column chosen by shape, with the value passed as an
-        // argument. The previous `.or()` built the filter by string
-        // interpolation, so an identifier of `*` matched every row and a comma
-        // injected extra filter terms.
-        const column = looksLikeEmail(cleanId) ? 'leader_email' : 'registration_id';
+        const column = looksLikeEmail(cleanId) 
+          ? 'leader_email' 
+          : cleanId.toUpperCase().startsWith('ORION-') 
+            ? 'registration_id' 
+            : 'team_name';
+
         const { data: teams, error } = await supabase
           .from('teams')
           .select('*')
           .ilike(column, escapeLikeValue(cleanId))
-          .limit(5);
+          .limit(10);
 
         if (!error && teams && teams.length > 0) {
-          const matched = teams.find(t =>
-            typeof t.access_token === 'string' &&
-            t.access_token.length > 0 &&
-            safeEqualCI(t.access_token, cleanSecret)
-          );
+          const matched = teams.find(t => {
+            const matchAccessToken = typeof t.access_token === 'string' &&
+              t.access_token.length > 0 &&
+              safeEqualCI(t.access_token, cleanSecret);
+
+            const matchLeaderName = typeof t.leader_name === 'string' &&
+              t.leader_name.toUpperCase().replace(/[^A-Z0-9]/g, '') === normalizedSecret;
+
+            return matchAccessToken || matchLeaderName;
+          });
 
           if (matched) {
             return await this.getTeam(matched.id);
           }
         }
       } catch (err) {
-        console.warn('Supabase authenticateTeam error, using fallback:', err);
+        console.warn('Supabase authenticateTeam error, cascading to local store fallback:', err);
       }
     }
 
+    // --- STEP 2: Encrypted Local Store Fallback ---
     const store = loadLocalStore();
     const cleanIdLower = cleanId.toLowerCase();
 
     const team = store.teams.find(t => {
+      const normTeamName = t.team_name.toUpperCase().replace(/\s+/g, '');
+
       const matchId =
         t.registration_id.toLowerCase() === cleanIdLower ||
-        t.leader_email.toLowerCase() === cleanIdLower;
+        t.leader_email.toLowerCase() === cleanIdLower ||
+        normTeamName === normalizedId;
+
+      if (!matchId) return false;
+
+      // Check salted hash verification if salt + hash exist
+      if (t.password_salt && t.password_hash) {
+        if (verifyPassword(cleanSecret, t.password_salt, t.password_hash)) {
+          return true;
+        }
+      }
+
+      // Check direct access_token or normalized leader_name
       const matchSecret =
-        typeof t.access_token === 'string' &&
-        t.access_token.length > 0 &&
-        safeEqualCI(t.access_token, cleanSecret);
-      return matchId && matchSecret;
+        (typeof t.access_token === 'string' && t.access_token.length > 0 && safeEqualCI(t.access_token, cleanSecret)) ||
+        (typeof t.leader_name === 'string' && t.leader_name.toUpperCase().replace(/[^A-Z0-9]/g, '') === normalizedSecret);
+
+      return matchSecret;
     });
 
     if (!team) return null;

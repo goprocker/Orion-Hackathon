@@ -48,6 +48,8 @@ next-env.d.ts
 
 # root temporary files
 /*.pptx
+username*.xlsx
+ORION 1.0 .xlsx
 
 
 # uploaded participant submissions (local fallback storage)

@@ -230,6 +230,8 @@ export interface TeamRecord {
   year?: string;
   problem_statement: string;
   access_token: string; // Secure passcode for team portal
+  password_hash?: string; // Cryptographic SHA-256 salted hash of password
+  password_salt?: string; // Cryptographic salt for offline/fallback auth
   payment_status: PaymentStatus;
   payment?: PaymentRecord | null;
   amount: number;

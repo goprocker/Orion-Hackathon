@@ -12,17 +12,19 @@ export async function POST(request: Request) {
       }, { status: 429 });
     }
 
-    const { teamId, secret } = await request.json();
+    const body = await request.json();
+    const identifier = (body.username || body.teamId || '').trim();
+    const secret = (body.password || body.secret || '').trim();
 
-    if (!teamId?.trim() || !secret?.trim()) {
-      return NextResponse.json({ error: 'Team ID and access passcode are required' }, { status: 400 });
+    if (!identifier || !secret) {
+      return NextResponse.json({ error: 'Username (or Team ID) and Password (or access passcode) are required.' }, { status: 400 });
     }
 
-    const team = await serverStore.authenticateTeam(teamId, secret);
+    const team = await serverStore.authenticateTeam(identifier, secret);
 
     if (!team) {
       return NextResponse.json({ 
-        error: 'Invalid credentials. Enter your Team ID (e.g. ORION-2026-0147) and your team access passcode.' 
+        error: 'Invalid credentials. Enter your Team Name / Team ID and your Leader Name / access passcode.' 
       }, { status: 401 });
     }
 
