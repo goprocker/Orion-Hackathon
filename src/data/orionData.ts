@@ -34,6 +34,12 @@ export const EVENT_METRICS = {
   registrationFormUrl: "https://forms.gle/txiRwn9EELUgZvrJ6"
 };
 
+/** Short uppercase IST date (e.g. "SEP 11, 2026") derived from an ISO string. */
+export const formatShortDate = (iso: string): string =>
+  new Date(iso)
+    .toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric', timeZone: 'Asia/Kolkata' })
+    .toUpperCase();
+
 export const GOOGLE_FORM_REGISTRATION_URL = "https://forms.gle/txiRwn9EELUgZvrJ6";
 
 export const PRIZE_TIERS = [

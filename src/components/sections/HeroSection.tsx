@@ -8,7 +8,7 @@ import {
 import { CountdownTimer } from '../common/CountdownTimer';
 import { ScrollReveal } from '../common/ScrollReveal';
 import { sound } from '../../audio/soundEffects';
-import { EVENT_METRICS, GOOGLE_FORM_REGISTRATION_URL } from '../../data/orionData';
+import { EVENT_METRICS, GOOGLE_FORM_REGISTRATION_URL, formatShortDate } from '../../data/orionData';
 
 interface HeroSectionProps {
   onOpenRegister?: () => void;
@@ -29,8 +29,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenRegister, onOpen
   const highlightPills = [
     { label: "PRIZE POOL", value: EVENT_METRICS.prizePool, color: "text-[#00BCF2]" },
     { label: "REGISTRATION FEE", value: `${EVENT_METRICS.round1Fee} / Team`, color: "text-emerald-400" },
-    { label: "ONLINE DEADLINE", value: "SEP 08, 2026", color: "text-[#22D3EE]" },
-    { label: "OFFLINE FINALE", value: "SEP 18, 2026", color: "text-white" }
+    { label: "ONLINE DEADLINE", value: formatShortDate(EVENT_METRICS.onlineDeadlineIso), color: "text-[#22D3EE]" },
+    { label: "OFFLINE FINALE", value: formatShortDate(EVENT_METRICS.offlineFinaleIso), color: "text-white" }
   ];
 
   return (
