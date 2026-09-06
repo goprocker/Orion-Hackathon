@@ -202,3 +202,36 @@ create policy "Allow public resubmission request read/write" on public.resubmiss
 create policy "Allow public audit log read/write" on public.audit_logs for all using (true);
 create policy "Allow public suspicion flags read/write" on public.suspicion_flags for all using (true);
 create policy "Allow public system config read" on public.system_config for select using (true);
+
+-- 10. Readable Team Directory (see migrations/010_team_directory_view.sql)
+--     One row per team: identity, leader, roster and progress in one place,
+--     instead of joining teams to team_members by hand every time.
+--     security_invoker = on so the view inherits the caller's RLS rather than
+--     becoming a way to read around it. access_token is deliberately excluded.
+create or replace view public.team_directory
+with (security_invoker = on) as
+select
+  t.registration_id,
+  t.team_name,
+  t.leader_name,
+  nullif(t.leader_email, '') as leader_email,
+  nullif(t.leader_phone, '') as leader_phone,
+  nullif(t.institution, '')  as institution,
+  t.department,
+  t.year,
+  nullif(t.problem_statement, '') as problem_statement,
+  count(m.id)                                             as member_count,
+  string_agg(m.member_name, ', ' order by m.member_number) as members,
+  array_agg(m.member_name order by m.member_number)        as member_names,
+  t.registration_status,
+  t.payment_status,
+  t.amount,
+  t.round_1_status,
+  t.round_2_status,
+  t.round_1_score,
+  t.created_at,
+  t.id as team_id
+from public.teams t
+left join public.team_members m on m.team_id = t.id
+group by t.id
+order by t.registration_id;
