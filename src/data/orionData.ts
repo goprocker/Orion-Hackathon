@@ -584,17 +584,22 @@ export const FAQ_DATA: FAQItem[] = [
   {
     category: "Round 1 & PPT Submissions",
     question: "Do we need to submit a prototype or a pitch video for Round 1?",
-    answer: "No. Round 1 only requires the PPT submission. No prototype, code, or video is mandatory at this stage — you are simply pitching your idea on slides. Demo videos are optionally accepted; if you wish to include one, upload it via the dedicated demo video Drive link shared in the announcement group."
+    answer: "No. Round 1 only requires the PPT submission. No prototype, code, or video is needed at this stage — you are simply pitching your idea on slides. Demo videos are optionally accepted; if you wish to include one, upload it via the dedicated demo video Drive link shared in the official announcement group."
   },
   {
     category: "Round 1 & PPT Submissions",
-    question: "How exactly do we submit the PPT and optional demo video? Should they be in a single folder?",
-    answer: "They must be submitted separately using two distinct Drive links shared in the official announcement group: PPT → upload via the dedicated PPT Drive link; Demo video → upload via the dedicated demo video Drive link. Please do not combine them into a single folder — use the respective link for each file."
+    question: "Are demo videos accepted from participants for Round 1?",
+    answer: "Yes, demo videos are accepted. You can upload your demo video using the dedicated demo video Drive link provided in the official announcement group. The PPT is the mandatory submission — the demo video is optional."
   },
   {
     category: "Round 1 & PPT Submissions",
-    question: "Can we modify the slide count, format, or branding of the PPT template?",
-    answer: "No. Strict rule: No slides may be added, removed, or reordered. Branding, headers, and footers must remain intact. The Team ID field on the PPT must be left blank (it will be filled in by the organizing team). Submissions must be named strictly as: TeamName_ORION1.0 (PPTX or PDF)."
+    question: "How exactly do we submit the PPT and demo video for Round 1?",
+    answer: "They are submitted separately using two different links shared in the official announcement group:\n• PPT → upload via the dedicated PPT Drive link\n• Demo video → upload via the dedicated demo video Drive link\n\nPlease do not combine them into a single folder — use the respective link for each file."
+  },
+  {
+    category: "Round 1 & PPT Submissions",
+    question: "I need to upload a folder consisting of my PPT and demo video, but it isn't uploading to Drive. Shall I upload separately?",
+    answer: "Yes — upload them separately. There are two separate Drive links shared in the announcement group: one dedicated link for the PPT and a separate link for the demo video. Please do not combine them into a single folder — use the respective link for each file."
   },
   {
     category: "Round 1 & PPT Submissions",
@@ -608,6 +613,11 @@ export const FAQ_DATA: FAQItem[] = [
   },
   {
     category: "Round 1 & PPT Submissions",
+    question: "Can we modify the slide count, format, or branding of the PPT template?",
+    answer: "No. Strict rule: No slides may be added, removed, or reordered. Branding, headers, and footers must remain intact. The Team ID field on the PPT must be left blank (it will be filled in by the organizing team). Submissions must be named strictly as: TeamName_ORION1.0 (PPTX or PDF)."
+  },
+  {
+    category: "Round 1 & PPT Submissions",
     question: "Is Open Innovation / Student Innovation Projects allowed?",
     answer: "Yes, but only for Round 1. Teams without a flagship track idea can propose their own Open Innovation or Student Innovation project. However, this option is not available in the Grand Finale — every finalist team will instead work on a problem statement assigned on the spot at the venue."
   },
@@ -615,18 +625,18 @@ export const FAQ_DATA: FAQItem[] = [
   // 3. Finale, Selection & Fees
   {
     category: "Finale & Fees",
-    question: "What is the registration fee structure?",
-    answer: "Round 1 (online): ₹100, flat per team, regardless of team size (covers the entire squad of 2–6 members, not per member). Grand Finale (only for shortlisted Top 70 teams): ₹250 per head — charged individually for each finalist team member, not per team."
+    question: "What is the registration fee?",
+    answer: "Round 1 (online): ₹100, flat per team, regardless of team size. This covers the entire squad (2–6 members), not per member. Grand Finale (only for shortlisted teams): ₹250 per head — charged individually for each finalist team member, not per team."
   },
   {
     category: "Finale & Fees",
     question: "Is the registration fee refundable or transferable?",
-    answer: "No. All fees are strictly non-refundable and non-transferable under any circumstances, including withdrawal, non-attendance, travel issues, academic commitments, or team disputes. Fees also cannot be adjusted or transferred to another team."
+    answer: "No. All fees are strictly non-refundable and non-transferable, regardless of the reason — including withdrawal, non-attendance, travel issues, academic commitments, or team disputes. Fees also cannot be adjusted or transferred to another team."
   },
   {
     category: "Finale & Fees",
     question: "How many teams qualify for the Grand Finale?",
-    answer: "The Top 70 teams, selected through rigorous jury evaluation of Round 1 submissions (based on innovation, feasibility, technical depth, and template compliance), will advance to the 24-hour offline Grand Finale."
+    answer: "The Top 70 teams, selected through jury evaluation of Round 1 submissions (based on innovation, feasibility, technical depth, and template compliance), will advance to the 24-hour offline Grand Finale."
   },
   {
     category: "Finale & Fees",
@@ -635,13 +645,13 @@ export const FAQ_DATA: FAQItem[] = [
   },
   {
     category: "Finale & Fees",
-    question: "What are the important dates and schedule?",
-    answer: "• Registration closes: 11 September 2026\n• Round 1 (online idea submission): on or before 11 September 2026\n• Top 70 Shortlist Announcement: 13 September 2026\n• Grand Finale (24-hour offline sprint): 18–19 September 2026 at Sathyabama Institute of Science and Technology, Chennai."
+    question: "What are the important dates?",
+    answer: "• Registration closes: 11 September 2026\n• Round 1 (online idea submission): on or before 11 September 2026\n• Top 70 Shortlist Announcement: 13 September 2026\n• Grand Finale (offline): 18–19 September 2026 at Sathyabama Institute of Science and Technology, Chennai."
   },
   {
     category: "Finale & Fees",
-    question: "What is the prize pool and how are awards distributed?",
-    answer: "The total prize pool is ₹1,00,000 (including ₹25k Champion, ₹15k 1st Runner-Up, ₹10k 2nd Runner-Up, and Special Track Bounties). Physical trophies, cash awards, and Certificates of Merit will be awarded during the Valedictory Ceremony concluding the 24-hour sprint."
+    question: "How are the prizes distributed?",
+    answer: "The total prize pool of ₹1,00,000 (including ₹25k 1st Place Champion, ₹15k 1st Runner-Up, ₹10k 2nd Runner-Up, and Special Track Bounties) along with Certificates of Merit and trophies will be awarded physically during the Valedictory Ceremony immediately concluding the 24-hour sprint."
   },
 
   // 4. Hospitality & Venue
