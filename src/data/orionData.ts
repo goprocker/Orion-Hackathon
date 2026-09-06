@@ -1,0 +1,692 @@
+import type { 
+  ProblemStatement, 
+  FAQItem, 
+  PatronProfile, 
+  OfficeBearer, 
+  TimelinePhase, 
+  RegisteredTeam, 
+  JudgingCriterion
+} from '../types/orion';
+
+export const EVENT_METRICS = {
+  prizePool: "₹1,00,000",
+  round1Fee: "₹100",
+  round1FeeLabel: "Flat per team",
+  finalistFee: "₹250",
+  finalistFeeLabel: "Per head (Top 70 finalists)",
+  teamSize: "2–6",
+  teamSizeLabel: "Members per team",
+  finalistCount: "TOP 70",
+  finalistCountLabel: "Teams to Offline Finale",
+  deadlineDate: "September 11, 2026",
+  deadlineIso: "2026-09-11T23:59:59+05:30",
+  onlineDeadlineDate: "September 11, 2026",
+  onlineDeadlineIso: "2026-09-11T23:59:59+05:30",
+  offlineFinaleDate: "September 18, 2026",
+  offlineFinaleIso: "2026-09-18T09:00:00+05:30",
+  duration: "24-Hour Offline Sprint",
+  venue: "Sathyabama Institute of Science and Technology, Chennai",
+  organizer: "Microsoft Club SIST",
+  participation: "Students & Working Professionals",
+  googleMapsUrl: "https://maps.google.com/?q=Sathyabama+Institute+of+Science+and+Technology+Chennai",
+  registrationFormUrl: "https://forms.gle/txiRwn9EELUgZvrJ6"
+};
+
+/** Short uppercase IST date (e.g. "SEP 11, 2026") derived from an ISO string. */
+export const formatShortDate = (iso: string): string =>
+  new Date(iso)
+    .toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric', timeZone: 'Asia/Kolkata' })
+    .toUpperCase();
+
+export const GOOGLE_FORM_REGISTRATION_URL = "https://forms.gle/txiRwn9EELUgZvrJ6";
+
+export const PRIZE_TIERS = [
+  {
+    rank: "1st Place",
+    label: "CHAMPION / MISSION ALPHA",
+    amount: "₹25,000",
+    badge: "GRAND WINNER",
+    accent: "from-cyan-400 via-teal-300 to-blue-500",
+    border: "border-cyan-400/50",
+    glow: "glow-cyan",
+    perks: [
+      "₹25,000 Cash Grant",
+      "Direct Microsoft Mentor Network Access",
+      "Grand Champion Aerospace Trophy",
+      "Physical Certificate of Excellence",
+      "Featured Club Showcase"
+    ]
+  },
+  {
+    rank: "1st Runner-Up",
+    label: "MISSION BETA",
+    amount: "₹15,000",
+    badge: "1ST RUNNER-UP",
+    accent: "from-purple-400 via-indigo-300 to-violet-500",
+    border: "border-purple-400/50",
+    glow: "glow-violet",
+    perks: [
+      "₹15,000 Cash Grant",
+      "Ecosystem Cloud Credits & Perks",
+      "Runner-Up Aerospace Trophy",
+      "Physical Certificate of Merit",
+      "Incubation Guidance"
+    ]
+  },
+  {
+    rank: "2nd Runner-Up",
+    label: "MISSION GAMMA",
+    amount: "₹10,000",
+    badge: "2ND RUNNER-UP",
+    accent: "from-amber-400 via-yellow-300 to-orange-500",
+    border: "border-amber-400/50",
+    glow: "glow-amber",
+    perks: [
+      "₹10,000 Cash Grant",
+      "Ecosystem Swag & Mentorship",
+      "Aerospace Trophy",
+      "Physical Certificate of Merit"
+    ]
+  }
+];
+
+export const SPECIAL_TRACK_BOUNTIES = [
+  {
+    title: "Best AI Innovation",
+    icon: "Cpu",
+    description: "Breakthrough multi-modal, agentic or generative AI pipeline with high technical complexity.",
+    reward: "Track Bounty + Recognition"
+  },
+  {
+    title: "Best UI/UX Experience",
+    icon: "Layout",
+    description: "Exceptional cybernetic design, spatial clarity, accessibility and seamless user experience.",
+    reward: "Track Bounty + Recognition"
+  },
+  {
+    title: "Best Hardware Prototype",
+    icon: "HardDrive",
+    description: "Innovative IoT / embedded systems / robotics integration solving real-world physical challenges.",
+    reward: "Track Bounty + Recognition"
+  },
+  {
+    title: "Best Pitch & Architecture",
+    icon: "Presentation",
+    description: "Crisp technical defense, bulletproof system architecture, and clear commercial feasibility.",
+    reward: "Track Bounty + Recognition"
+  }
+];
+
+export const PROBLEM_STATEMENTS: ProblemStatement[] = [
+  {
+    id: "floatchat",
+    code: "ORION-PS-01",
+    title: "FLOATCHAT",
+    tagline: "Multi-Modal Semantic Query Engine & 4D Visualization for ARGO Oceanographic Data",
+    domain: "Ocean Informatics • Geospatial AI • 4D Visualization",
+    accentColor: "cyan",
+    visualTheme: "Deep Ocean Trench • Hydrothermal Holographics • ARGO Float Telemetry",
+    overview: "Global ocean climate monitoring relies on thousands of autonomous robotic ARGO profiling floats drifting through ocean depths, sampling salinity, temperature, and geochemical variables from surface to 2,000m depth. FloatChat challenges builders to design an intelligent natural-language query interface and spat-temporal 4D WebGL visualization pipeline that allows marine scientists, oceanographers, and policy analysts to query, cross-correlate, and forecast marine anomalies using multi-modal LLMs.",
+    keyFeatures: [
+      "Natural Language to Geospatial/Temporal NetCDF Queries",
+      "Interactive 4D Spatio-Temporal WebGL Trajectory Renderer",
+      "Thermocline & Salinity Gradient Depth-Profile Cross-Sections",
+      "Automated Marine Heatwave & Ocean Anomaly Detection"
+    ],
+    techStack: ["Next.js / React Three Fiber", "Python / FastFloat Engine", "ARGO NetCDF API", "Vector RAG (Chroma/Weaviate)", "Shader Material Trajectories"],
+    deliverables: [
+      "Interactive WebGL 4D marine data exploration portal",
+      "Natural-language query engine with NetCDF multi-variable parsing",
+      "Architecture diagram demonstrating low-latency spatio-temporal retrieval",
+      "Demonstration of real ARGO profiling float telemetry ingestion"
+    ],
+    datasetSources: ["Global ARGO Data Repository (GDAC)", "Copernicus Marine Environment Service", "NOAA Ocean Climate Telemetry"],
+    evaluationFocus: ["Query accuracy & RAG grounding", "Rendering performance of 100k+ coordinate points", "Scientific utility & intuitive UX", "Latency under multi-parameter filtering"],
+    classificationLevel: "CLASSIFIED MISSION — OPEN TO ROUND 1"
+  },
+  {
+    id: "lexvault",
+    code: "ORION-PS-02",
+    title: "LEXVAULT",
+    tagline: "Zero-Knowledge, Blockchain-Powered eVault for Legal & Evidentiary Chains of Custody",
+    domain: "Applied Cryptography • Zero-Knowledge Proofs • LegalTech",
+    accentColor: "violet",
+    visualTheme: "Cryptographic Vault • Immutable Blocks • ZK-SNARK Verification Mesh",
+    overview: "Legal and digital forensic evidence must endure strict cryptographic scrutiny without leaking confidential client data or violating data privacy mandates during discovery. LexVault challenges engineers to architect a decentralized, tamper-evident digital evidence depository that uses Zero-Knowledge Proofs (ZK-SNARKs/STARKs) and verifiable ledger anchoring to prove forensic provenance, hash integrity, and chain of custody timelines without disclosing underlying evidentiary content.",
+    keyFeatures: [
+      "Zero-Knowledge Proof Generation for Document Authenticity",
+      "Immutable Cryptographic Chain of Custody Audit Ledger",
+      "Multi-Signature Role-Based Discovery Access Controls",
+      "Tamper-Evident SHA-256 / Merkle Tree Forensic Verification"
+    ],
+    techStack: ["Circom / SnarkJS / Noir", "Solidity / Polygon / Arbitrum", "IPFS / Arweave Decentralized Storage", "TypeScript / Web Cryptography API", "Audit HUD"],
+    deliverables: [
+      "Zero-Knowledge proof generation and verification circuit demo",
+      "Decentralized evidence vault interface with timestamped provenance",
+      "Verifiable forensic custody logs with cryptographic signatures",
+      "Technical architecture documentation with threat model analysis"
+    ],
+    datasetSources: ["Synthetic Legal Discovery Mock Corpus", "Forensic Disk Image EnCase Hashes", "NIST Computer Forensics Tool Testing"],
+    evaluationFocus: ["Cryptographic soundness & zero-leakage guarantee", "Gas/Compute efficiency of proof verification", "Audit trail immutability", "Enterprise-grade legal usability"],
+    classificationLevel: "CLASSIFIED MISSION — OPEN TO ROUND 1"
+  },
+  {
+    id: "sylvasense",
+    code: "ORION-PS-03",
+    title: "SYLVASENSE",
+    tagline: "Automated Tree Enumeration & Aboveground Biomass Estimation from Multi-Spectral & SAR Satellite Imagery",
+    domain: "Earth Observation • Computer Vision • Climate Tech",
+    accentColor: "emerald",
+    visualTheme: "Canopy LiDAR Radar • Multi-Spectral SAR • High-Resolution Bio-Telemetry",
+    overview: "Verifiable carbon offset verification and biodiversity preservation require high-resolution, scalable canopy density auditing. SylvaSense tasks builders with constructing an end-to-end computer vision and remote-sensing pipeline that merges optical Sentinel-2 / Landsat imagery with Synthetic Aperture Radar (SAR) Sentinel-1 and LiDAR datasets to accurately enumerate individual tree canopies, classify forest biomes, and estimate Aboveground Biomass (AGB) and carbon sequestration metrics.",
+    keyFeatures: [
+      "Multi-Spectral Optical + Synthetic Aperture Radar (SAR) Data Fusion",
+      "High-Resolution Canopy Instance Segmentation & Counting",
+      "Aboveground Biomass (AGB) Regression & Carbon Metric Forecasting",
+      "Deforestation Alerting & Temporal Canopy Degradation Heatmaps"
+    ],
+    techStack: ["PyTorch / YOLOv8-OBB / Mask2Former", "Google Earth Engine API / Sentinel Hub", "GeoTIFF Rasterio / GDAL", "Mapbox GL JS / Deck.gl", "FastAPI Inference Backend"],
+    deliverables: [
+      "Canopy segmentation model pipeline with GeoJSON boundary export",
+      "Interactive map dashboard with multi-layer spectral band toggles",
+      "Biomass estimation mathematical formulation & validation report",
+      "Live raster inference demo on target forest polygon coordinates"
+    ],
+    datasetSources: ["ESA Sentinel-1/Sentinel-2 Open Access Hub", "NASA GEDI Spaceborne LiDAR Canopy Height Data", "Neon Forest Structural Survey Open Datasets"],
+    evaluationFocus: ["Canopy instance segmentation precision (mAP/IoU)", "Biomass estimation mathematical validity", "Data fusion robustness across cloudy terrain", "Scale & inferencing throughput"],
+    classificationLevel: "CLASSIFIED MISSION — OPEN TO ROUND 1"
+  },
+  {
+    id: "open-innovation",
+    code: "ORION-PS-04",
+    title: "Open Innovation & Student Innovation Projects",
+    tagline: "Autonomous AI Systems, Web3 Protocols, Cybersecurity & Next-Gen Hardware — Round 1 Only",
+    domain: "AI / Web3 / Systems / Robotics",
+    accentColor: "violet",
+    visualTheme: "Cybernetic Mesh • Quantum Systems • Multi-Domain Architecture",
+    overview: "Have a novel breakthrough outside the 3 flagship challenges? The Open Innovation & Student Innovation Projects track empowers engineering squads and student researchers to architect, prototype, and defend disruptive solutions across emerging fields including Generative & Agentic AI, Zero-Knowledge Web3 systems, post-quantum cybersecurity, IoT robotics, healthcare diagnostics, and space exploration. This track is welcome only for Round 1 — the Grand Finale carries no Open Innovation option, and every finalist team builds on an on-the-spot assigned problem statement instead.",
+    keyFeatures: [
+      "Autonomous Multi-Agent AI & Edge Inference Systems",
+      "Zero-Knowledge Proofs & Verifiable Computation Protocols",
+      "Post-Quantum Cryptography & Embedded Hardware Security",
+      "IoT Rovers, Autonomous Drones & Space Telemetry"
+    ],
+    techStack: ["React / Next.js / TypeScript", "Python / FastAPI / PyTorch", "Solidity / Web Cryptography", "ROS / Embedded C++", "Azure AI & Cloud Services"],
+    deliverables: [
+      "Working prototype demo repository and live inference link",
+      "System architecture diagram and technical specifications",
+      "Standardized 8-slide blueprint defense",
+      "Quantifiable impact and deployment viability analysis"
+    ],
+    datasetSources: ["Open Source Public Datasets", "Synthetic Test Benches", "Domain-Specific Telemetry APIs"],
+    evaluationFocus: ["Novelty & distinct value proposition", "System architecture & engineering depth", "Feasibility & commercial deployment potential", "Live technical jury defense"],
+    classificationLevel: "OPEN TRACK — ROUND 1 ONLY — ELIGIBLE FOR ₹1,00,000 PRIZE POOL"
+  }
+];
+
+export const OFFICIAL_PPT_TEMPLATE_URL = '/ORION_1.0_Template.pptx';
+
+export const IMPORTANT_RULES_NOTICE = {
+  title: "ORION 1.0 – IMPORTANT RULES",
+  greeting: "Dear Participants,",
+  intro: "Please carefully read and follow the rules below. These apply to every registered team.",
+  warning: "Failure to follow these rules may result in the rejection of the submission or disqualification of the team.",
+  signOff: "ORION 1.0 Organizing Team",
+  signOffOrg: "Microsoft Club SIST"
+};
+
+export const IMPORTANT_RULES = [
+  {
+    number: "01",
+    title: "One PPT per Team",
+    summary: "Each team is allowed to submit only one final PPT.",
+    detail: "Multiple submissions from the same team will not be accepted. Finalise your deck internally before uploading it through the Team Portal.",
+    allowed: "One final PPT per team",
+    notAllowed: "Multiple or duplicate submissions",
+    icon: "FileCheck2",
+    appliesTo: "Round 1 Submission"
+  },
+  {
+    number: "02",
+    title: "Leave the Team ID Blank",
+    summary: "The Team ID field in the PPT will be filled in by the ORION 1.0 organizing team.",
+    detail: "Participants must leave this field blank. Do not invent, guess, or copy a Team ID into the template.",
+    allowed: "Empty Team ID field",
+    notAllowed: "Filling in your own Team ID",
+    icon: "Hash",
+    appliesTo: "PPT Template"
+  },
+  {
+    number: "03",
+    title: "No Open Innovation in the Finale",
+    summary: "Open Innovation and Student Innovation Projects will not be available during the final round.",
+    detail: "Open Innovation and Student Innovation Projects are welcome only for Round 1. Every finalist team works on an assigned problem statement in the Grand Finale.",
+    allowed: "Open Innovation & Student Innovation Projects in Round 1",
+    notAllowed: "Open Innovation or Student Innovation Projects in the Grand Finale",
+    icon: "Ban",
+    appliesTo: "Grand Finale"
+  },
+  {
+    number: "04",
+    title: "On-the-Spot Problem Statements",
+    summary: "All shortlisted teams receive their problem statements on the spot on 18 September 2026.",
+    detail: "Teams must develop their solutions based on the problem statement assigned during the event.",
+    allowed: "Building on the assigned statement",
+    notAllowed: "Bringing a pre-decided finale problem",
+    icon: "CalendarClock",
+    appliesTo: "18 September 2026"
+  },
+  {
+    number: "05",
+    title: "10% Maximum AI Usage",
+    summary: "A maximum of 10% AI usage is allowed. Usage beyond this limit is not permitted.",
+    detail: "AI-assisted tools may only be used up to 10%. Over-reliance on AI or auto-generated submissions will lead to immediate disqualification.",
+    allowed: "Up to 10% AI assistance",
+    notAllowed: "AI usage exceeding 10%",
+    icon: "Bot",
+    appliesTo: "All Tracks & Rounds"
+  },
+  {
+    number: "06",
+    title: "Mandatory PPT Submission Deadline",
+    summary: "Every team must submit its PPT by 11:00 on 11 September 2026 using the official template.",
+    detail: "Once submitted, the PPT must not be edited or replaced. Upload your deck only to the dedicated folder (PS1, PS2, PS3, or Open Innovation).",
+    allowed: "Submission before 11:00 AM Sep 11",
+    notAllowed: "Post-submission edits or replacing slides",
+    icon: "Clock",
+    appliesTo: "Round 1 Qualifier"
+  }
+];
+
+export const HOSPITALITY_SYSTEMS = [
+  {
+    icon: "Coffee",
+    title: "2 BREAKFASTS",
+    subtitle: "Both hack days covered",
+    detail: "Nutritious morning spreads to power intense ideation sprints."
+  },
+  {
+    icon: "Utensils",
+    title: "2 LUNCHES & DINNER",
+    subtitle: "Both hack days covered",
+    detail: "Full multi-cuisine lunches and dinner provided inside the air-conditioned campus arena."
+  },
+  {
+    icon: "Shirt",
+    title: "OFFICIAL SWAG KIT",
+    subtitle: "Tees, stickers & badges",
+    detail: "Custom ORION 1.0 commemorative tees, mission badges, stickers and lanyard."
+  },
+  {
+    icon: "Zap",
+    title: "24/7 POWER & HIGH-SPEED WIFI",
+    subtitle: "Dedicated hacking arena",
+    detail: "Uninterrupted power back-up, dedicated LAN/Wi-Fi mesh, and dual monitor stations."
+  },
+  {
+    icon: "Home",
+    title: "FREE ACCOMMODATION",
+    subtitle: "For out-of-Chennai finalist teams",
+    detail: "Clean on-campus hostel lodging for confirmed finalists traveling to Chennai."
+  },
+  {
+    icon: "Flame",
+    title: "LIVE PROBLEM STATEMENTS",
+    subtitle: "Revealed on-spot at Finale",
+    detail: "Exclusive 24-hour sprint challenges and mentor masterclasses during the Grand Finale."
+  }
+];
+
+export const TIMELINE_PHASES: TimelinePhase[] = [
+  {
+    number: "01",
+    title: "MISSION REGISTRATIONS & ONLINE SUBMISSION",
+    subtitle: "Round 1 Online Qualifier",
+    date: "Active Now — Closes Sep 11, 2026",
+    status: "active",
+    highlights: [
+      "Flat ₹100 registration fee per team (2–6 members)",
+      "Choose from 3 Flagship Problem Statements OR Open Innovation & Student Innovation Projects (AI, Web3, Systems, Cloud, Healthcare, Hardware) — welcome only for Round 1",
+      "Prepare and upload mandatory standardized PPT / PDF blueprint before September 11, 2026"
+    ]
+  },
+  {
+    number: "02",
+    title: "ONLINE SCREENING & JURY EVALUATION",
+    subtitle: "Rigorous Technical Filter",
+    date: "September 12, 2026",
+    status: "upcoming",
+    highlights: [
+      "Jury review across Innovation, Feasibility, Technical Depth & Impact",
+      "Plagiarism, template compliance, and architectural soundness validation",
+      "Shortlisting matrix computed for pan-India participants"
+    ]
+  },
+  {
+    number: "03",
+    title: "THE CUT — TOP 70 FINALISTS ANNOUNCED",
+    subtitle: "Elite Shortlist Notification",
+    date: "September 13, 2026",
+    status: "upcoming",
+    highlights: [
+      "Official publication of Top 70 Finalist Teams",
+      "Direct Discord / Email dispatch with invitation credentials",
+      "Issuance of Digital Finalist Credential Badges"
+    ]
+  },
+  {
+    number: "04",
+    title: "PHASE 2 CONFIRMATION & LOGISTICS LOCK",
+    subtitle: "Finalist Slot Confirmation",
+    date: "September 14 – September 16, 2026",
+    status: "upcoming",
+    highlights: [
+      "₹250 per head finalist confirmation fee",
+      "Locks in 2 Breakfasts, 2 Lunches, Dinner, Swag Kits & Arena access",
+      "Free campus hostel accommodation booking for outstation teams"
+    ]
+  },
+  {
+    number: "05",
+    title: "24H OFFLINE GRAND FINALE",
+    subtitle: "The Final Frontier at SIST Chennai",
+    date: "September 18, 2026 • SIST Chennai Campus",
+    status: "upcoming",
+    highlights: [
+      "24-hour continuous coding sprint in dedicated mission arena",
+      "Live on-the-spot problem twists and mentor checkpoints",
+      "Grand jury defense on stage & ₹1,00,000 prize distribution"
+    ]
+  }
+];
+
+export const JUDGING_CRITERIA: JudgingCriterion[] = [
+  {
+    number: "01",
+    name: "Technical Innovation & Novelty",
+    weight: 30,
+    weightLabel: "30%",
+    description: "Uniqueness of the technical solution, novelty of the algorithmic or architectural approach, and creative problem deconstruction.",
+    keyFactors: [
+      "Originality of concept vs existing solutions",
+      "Creative utilization of modern tech stacks & APIs",
+      "Distinctive value proposition and ingenuity"
+    ],
+    color: "#00BCF2"
+  },
+  {
+    number: "02",
+    name: "System Architecture & Engineering Depth",
+    weight: 30,
+    weightLabel: "30%",
+    description: "Robustness of system design, code quality, modularity, data pipelines, scalability, latency benchmarks, and threat resistance.",
+    keyFactors: [
+      "End-to-end architecture & block diagram clarity",
+      "Effective data flow, state management & security",
+      "Technical complexity handled with elegance"
+    ],
+    color: "#0078D4"
+  },
+  {
+    number: "03",
+    name: "Feasibility & Real-World Impact",
+    weight: 20,
+    weightLabel: "20%",
+    description: "Practical utility in production, user adoption feasibility, deployment viability, and quantifiable societal or enterprise impact.",
+    keyFactors: [
+      "Clear commercial or environmental impact",
+      "Practical deployment & operational cost model",
+      "Realistic mitigation of potential edge-case failures"
+    ],
+    color: "#22D3EE"
+  },
+  {
+    number: "04",
+    name: "Presentation, Pitch & Live Defense",
+    weight: 20,
+    weightLabel: "20%",
+    description: "Adherence to the mandatory standardized 8-slide template, clarity of technical explanation, demo effectiveness, and live jury defense.",
+    keyFactors: [
+      "Strict adherence to official 8-slide structure",
+      "Crisp articulation of architecture & sprint roadmap",
+      "Convincing responses during technical Q&A"
+    ],
+    color: "#8B5CF6"
+  }
+];
+
+export const FAQ_DATA: FAQItem[] = [
+  // 1. Eligibility & Squads
+  {
+    category: "Eligibility & Squads",
+    question: "Who is eligible to participate in ORION 1.0?",
+    answer: "ORION 1.0 is open to all college students (undergraduate, postgraduate, PhD) and early-career working professionals across India. Cross-institutional and multidisciplinary teams are enthusiastically welcome!"
+  },
+  {
+    category: "Eligibility & Squads",
+    question: "What is the team size?",
+    answer: "Each team must have a minimum of 2 and a maximum of 6 members (1 Team Leader + 1 to 5 Team Members). Individual solo participation is not permitted. Cross-college and cross-department teams are allowed."
+  },
+  {
+    category: "Eligibility & Squads",
+    question: "Can team members be from different colleges or departments?",
+    answer: "Yes! Cross-college, cross-department, and cross-year teams are fully permitted. All participants will receive individual certificates of participation."
+  },
+
+  // 2. Round 1 & Submissions
+  {
+    category: "Round 1 & Submissions",
+    question: "Is PPT submission mandatory?",
+    answer: "Yes. Every team must submit its PPT by 11:00 on 11 September 2026."
+  },
+  {
+    category: "Round 1 & Submissions",
+    question: "Which PPT template should we use?",
+    answer: "Using the official PPT template provided by the organizing team is mandatory. PPTs prepared using any other template will not be accepted."
+  },
+  {
+    category: "Round 1 & Submissions",
+    question: "Can we edit our PPT after submission?",
+    answer: "No. Once submitted, the PPT must not be edited or replaced. Review your content carefully before submitting."
+  },
+  {
+    category: "Round 1 & Submissions",
+    question: "Is AI usage allowed?",
+    answer: "A maximum of 10% AI usage is allowed. Usage beyond this limit is not permitted."
+  },
+  {
+    category: "Round 1 & Submissions",
+    question: "Are a demo video and a GitHub repository link mandatory?",
+    answer: "No. Both the demo video and the GitHub repository link are optional. PPT submission is mandatory."
+  },
+  {
+    category: "Round 1 & Submissions",
+    question: "Where should we upload our PPT?",
+    answer: "The shared PPT submission Drive contains four folders: PS1, PS2, PS3, and Open Innovation. Upload your PPT only to the folder corresponding to your selected problem statement or category."
+  },
+  {
+    category: "Round 1 & Submissions",
+    question: "Why have two demo video upload links been shared?",
+    answer: "Two demo video upload folders have been provided to accommodate storage limitations. Upload your video to the first folder. Only if you cannot upload because that folder’s storage is full, use the second folder. Uploading to both folders is not required."
+  },
+  {
+    category: "Round 1 & Submissions",
+    question: "Clarification on Open Innovation — is it available in the finals?",
+    answer: "The Open Innovation category is available only for Round 1 (shortlisting) and will not be available in the finals. All shortlisted teams must work on the problem statements provided on the spot for the final round, regardless of the category chosen in Round 1."
+  },
+
+  // 3. Finale & Fees
+  {
+    category: "Finale & Fees",
+    question: "What is the registration fee?",
+    answer: "Round 1 (online): ₹100 flat per team, regardless of team size. This covers the entire squad, not per member. Grand Finale (only for shortlisted teams): ₹250 per head — charged individually for each finalist team member, not per team."
+  },
+  {
+    category: "Finale & Fees",
+    question: "Is the registration fee refundable or transferable?",
+    answer: "No. All fees are strictly non-refundable and non-transferable, regardless of the reason — including withdrawal, non-attendance, travel issues, academic commitments, or team disputes. Fees also cannot be adjusted or transferred to another team."
+  },
+  {
+    category: "Finale & Fees",
+    question: "How does the two-tier fee structure work?",
+    answer: "Round 1 is a low-barrier online qualifier with a flat registration fee of ₹100 per team (regardless of 2 or 6 members). Only teams shortlisted in the Top 70 for the offline Grand Finale pay the ₹250 per head finalist confirmation fee, which covers 2 days of meals (Breakfasts, Lunches & Dinner), official swag kits, 24/7 venue access, and free hostel accommodation."
+  },
+  {
+    category: "Finale & Fees",
+    question: "How many teams qualify for the Grand Finale?",
+    answer: "The Top 70 teams, selected through jury evaluation of Round 1 submissions (based on innovation, feasibility, technical depth, and template compliance), will advance to the 24-hour offline Grand Finale."
+  },
+  {
+    category: "Finale & Fees",
+    question: "How are the prizes distributed?",
+    answer: "The total prize pool of ₹1,00,000 (including ₹25k 1st Place, ₹15k 1st Runner-Up, ₹10k 2nd Runner-Up, and Special Track Bounties) along with Certificates of Merit and trophies will be awarded physically during the Valedictory Ceremony immediately concluding the 24-hour sprint."
+  },
+  {
+    category: "Finale & Fees",
+    question: "How are the Grand Finale problem statements distributed?",
+    answer: "All shortlisted teams receive their problem statements on the spot on 18 September 2026, at the start of the 24-hour offline sprint at SIST Chennai. Teams must build their finale solution on the problem statement assigned during the event. The Open Innovation category is not available in the final round."
+  },
+  {
+    category: "Finale & Fees",
+    question: "What are the important dates?",
+    answer: "Registration closes: 11 September 2026. Round 1 (online idea submission): on or before 11 September 2026. Grand Finale (offline): 18–19 September 2026."
+  },
+
+  // 4. Hospitality & Venue
+  {
+    category: "Hospitality & Venue",
+    question: "Is accommodation and food provided at the Grand Finale?",
+    answer: "Yes. Free on-campus hostel accommodation is provided for outstation finalist teams. Meals include 2 breakfasts, 2 lunches, dinner, and midnight snacks. High-speed Wi-Fi, power backup, and air-conditioned workspaces are also provided throughout the 24-hour event."
+  },
+  {
+    category: "Hospitality & Venue",
+    question: "What meals and refreshments are provided during the Grand Finale?",
+    answer: "All confirmed finalist teams receive full event catering across the 24-hour offline hackathon at SIST Chennai, including 2 Breakfasts, 2 Lunches, Dinner, and midnight booster packs (coffee, tea, snacks, and energy boosters). Multi-cuisine options are catered inside the air-conditioned hack arena."
+  },
+  {
+    category: "Hospitality & Venue",
+    question: "Is free accommodation provided for outstation teams?",
+    answer: "Yes! Free on-campus hostel accommodation at Sathyabama Institute of Science and Technology (SIST) is provided for all confirmed out-of-Chennai finalist teams. Clean hostel rooms with bedding, round-the-clock security, and washroom facilities are arranged."
+  },
+  {
+    category: "Hospitality & Venue",
+    question: "Where is the offline Grand Finale venue and how do we reach it?",
+    answer: "The 24-hour offline sprint takes place at the School of Computing Complex, Sathyabama Institute of Science and Technology, Jeppiaar Nagar, Rajiv Gandhi Salai (OMR), Chennai - 600119. The campus is ~22 km from Chennai International Airport (MAA) and ~25 km from Chennai Central (MAS) / Tambaram Railway Station with direct bus and cab connectivity."
+  },
+  {
+    category: "Hospitality & Venue",
+    question: "What hardware and connectivity amenities are available at the arena?",
+    answer: "Participants have access to 24/7 uninterrupted power backup, dedicated power sockets at every team station, high-speed dual-band Wi-Fi and LAN mesh networks, mentor breakout zones, and round-the-clock medical & technical support."
+  },
+  {
+    category: "Hospitality & Venue",
+    question: "What documents do participants need to carry for campus entry?",
+    answer: "Every participant must carry their official College/University ID card (or valid government photo ID) along with their digital ORION 1.0 Finalist Invitation Dossier for security check-in at the main campus gate."
+  }
+];
+
+export const CHIEF_PATRONS: PatronProfile[] = [
+  {
+    name: "Dr. Mariazeena Johnson",
+    title: "Chancellor",
+    organization: "Sathyabama Institute of Science and Technology",
+    roleType: "Chief Patron",
+    initials: "MJ",
+    avatarColor: "from-cyan-500 to-blue-700"
+  },
+  {
+    name: "Dr. Marie Johnson",
+    title: "President",
+    organization: "Sathyabama Institute of Science and Technology",
+    roleType: "Chief Patron",
+    initials: "MJ",
+    avatarColor: "from-purple-500 to-indigo-800"
+  },
+  {
+    name: "Ms. Maria Bernadette Tamilarasi",
+    title: "Vice President",
+    organization: "Sathyabama Institute of Science and Technology",
+    roleType: "Chief Patron",
+    initials: "MB",
+    avatarColor: "from-teal-500 to-emerald-700"
+  },
+  {
+    name: "Mr. J. Arul Selvan",
+    title: "Vice President",
+    organization: "Sathyabama Institute of Science and Technology",
+    roleType: "Chief Patron",
+    initials: "AS",
+    avatarColor: "from-amber-500 to-orange-700"
+  },
+  {
+    name: "Ms. Maria Catherine Johnson",
+    title: "Vice President",
+    organization: "Sathyabama Institute of Science and Technology",
+    roleType: "Chief Patron",
+    initials: "MC",
+    avatarColor: "from-rose-500 to-pink-700"
+  }
+];
+
+export const ACADEMIC_PATRONS: PatronProfile[] = [
+  {
+    name: "Dr. L. Lakshmanan",
+    title: "Dean",
+    organization: "School of Computing, SIST",
+    roleType: "Academic Patron",
+    initials: "LL",
+    avatarColor: "from-blue-600 to-cyan-800",
+    bio: "Visionary academic leader driving cutting-edge computing initiatives and student research excellence."
+  },
+  {
+    name: "Dr. P. Ajitha",
+    title: "Head of Department",
+    organization: "CSE - AI, BCT, CS, CSBS, IoT",
+    roleType: "Academic Patron",
+    initials: "PA",
+    avatarColor: "from-indigo-600 to-purple-800",
+    bio: "Pioneering curriculum innovation across emerging computing domains and hackathon ecosystems."
+  },
+  {
+    name: "Dr. Senduru Srinivasulu",
+    title: "Head of Department",
+    organization: "CSE - AIML, DS, AIR",
+    roleType: "Academic Patron",
+    initials: "SS",
+    avatarColor: "from-violet-600 to-blue-900",
+    bio: "Leading advanced research in Artificial Intelligence, Machine Learning, Data Science, and Robotics."
+  }
+];
+
+export const EVENT_ORGANIZERS: OfficeBearer[] = [
+  {
+    name: "Nihitha Juliet A",
+    title: "President",
+    department: "IInd Yr BE CSBS",
+    phone: "8870227906",
+    initials: "NJ",
+    organization: "Microsoft Club SIST"
+  },
+  {
+    name: "Harshini M",
+    title: "Vice - President",
+    department: "IIIrd Yr BTech IT",
+    phone: "7200524207",
+    initials: "HM",
+    organization: "Microsoft Club SIST"
+  },
+  {
+    name: "Praveen Kumar S",
+    title: "Cluster Co-ordinator",
+    department: "IIIrd Yr BE CSE",
+    phone: "9176594860",
+    initials: "PK",
+    organization: "Microsoft Club SIST"
+  }
+];
+
+export const INITIAL_REGISTERED_TEAMS: RegisteredTeam[] = [];
+
+
+
+

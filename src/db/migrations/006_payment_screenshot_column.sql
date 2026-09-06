@@ -1,0 +1,60 @@
+-- ==============================================================================
+-- ORION 1.0 — Migration 006: THE PAYMENT SCREENSHOT COLUMN THAT NEVER SHIPPED
+-- ==============================================================================
+--
+--  ####  THIS FIXES A LIVE, USER-FACING FAILURE. APPLY IT.  ####
+--
+-- WHY
+--
+-- The compulsory payment-screenshot feature (26eb56b, 983fbe2) added
+-- `screenshot_url text` to schema.sql — the FILE — but shipped no migration,
+-- so the live database never gained the column. schema.sql documents what a
+-- fresh install would create; editing it changes nothing that already exists.
+--
+-- The payment upsert now includes `screenshot_url` in its payload, and
+-- PostgREST rejects an insert that names a column the table does not have
+-- (PGRST204: "Could not find the 'screenshot_url' column of 'payments' in the
+-- schema cache"). So EVERY payment submission fails, and the participant sees
+-- the honest-but-unwelcome message:
+--
+--   "We could not save your payment reference just now. Your payment itself
+--    is not affected — this step only records the UTR. ..."
+--
+-- This is the second time the same failure shape shipped: a write that assumes
+-- schema the database does not have (005 was the missing unique constraint the
+-- upsert's ON CONFLICT needed). The lesson both times: a schema.sql edit MUST
+-- be accompanied by a migration file, and the migration must be applied before
+-- the code that needs it deploys.
+--
+-- ------------------------------------------------------------------------------
+-- 1. Add the column. Additive and idempotent — safe to run on live data.
+-- ------------------------------------------------------------------------------
+alter table public.payments
+  add column if not exists screenshot_url text;
+
+-- ------------------------------------------------------------------------------
+-- 2. Verify: this should list the column.
+-- ------------------------------------------------------------------------------
+-- select column_name, data_type
+--   from information_schema.columns
+--  where table_schema = 'public'
+--    and table_name   = 'payments'
+--    and column_name  = 'screenshot_url';
+--
+-- ------------------------------------------------------------------------------
+-- DELIBERATELY NOT DONE HERE: creating the 'payments' storage bucket.
+--
+-- The route tries to upload receipts to a storage bucket named 'payments' and
+-- store its PUBLIC url (`getPublicUrl`). A public bucket of payment receipts
+-- repeats the exact leak migration 003 closed for pitch decks: the object path
+-- is `receipts/payment_<REG_ID>_<ms-timestamp>.<ext>`, the registration ID is
+-- printed on the participant's own confirmation screen, and a payment
+-- screenshot shows a person's name, bank/UPI handle and transaction details.
+--
+-- While the bucket does not exist, the upload fails and the route falls back
+-- to embedding the image as a data: URL in this column — which keeps receipts
+-- INSIDE the database, readable only through the admin console. That is the
+-- more private behaviour, so it is left as-is. If receipts should move to
+-- object storage later, create the bucket PRIVATE and mint signed URLs at
+-- read time, exactly as lib/storage.ts already does for submissions.
+-- ==============================================================================

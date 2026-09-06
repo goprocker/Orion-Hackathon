@@ -1,0 +1,195 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-base: #020617;
+    --bg-surface-1: #071426;
+    --bg-surface-2: #0B1220;
+    --bg-surface-3: #0F172A;
+    --border-subtle: rgba(0, 188, 242, 0.18);
+    --border-highlight: rgba(0, 188, 242, 0.5);
+    
+    /* Microsoft Azure & Cyber Cyan Palette */
+    --ms-blue: #0078D4;
+    --azure-cyan: #00BCF2;
+    --electric-cyan: #22D3EE;
+    
+    /* Microsoft 4-Color Energy System */
+    --ms-red: #F25022;
+    --ms-green: #7FBA00;
+    --ms-light-blue: #00A4EF;
+    --ms-yellow: #FFB900;
+
+    --text-primary: #F8FAFC;
+    --text-secondary: #94A3B8;
+  }
+
+  * {
+    border-radius: 0px !important;
+  }
+
+  body {
+    background: #020617;
+    background-image: 
+      radial-gradient(ellipse at 50% 0%, #071426 0%, #020617 70%, #000000 100%);
+    background-attachment: fixed;
+    color: #F8FAFC;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+    letter-spacing: -0.01em;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    letter-spacing: -0.02em;
+  }
+
+  .font-mono-hud {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+}
+
+/* Sharp Edge Microsoft Fluent Glassmorphism System */
+.fluent-glass {
+  background: rgba(11, 18, 32, 0.65);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 0px !important;
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fluent-glass:hover {
+  background: rgba(15, 25, 45, 0.78);
+  border-color: rgba(0, 188, 242, 0.5);
+  box-shadow: 0 28px 60px -12px rgba(0, 188, 242, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.glass-panel {
+  background: rgba(11, 18, 32, 0.65);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 0px !important;
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.glass-panel-heavy {
+  background: rgba(7, 20, 38, 0.85);
+  backdrop-filter: blur(36px) saturate(200%);
+  -webkit-backdrop-filter: blur(36px) saturate(200%);
+  border: 1px solid rgba(0, 188, 242, 0.35);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 0px !important;
+  box-shadow: 0 28px 70px -15px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Custom Azure Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #071426;
+  border: 1px solid rgba(0, 188, 242, 0.3);
+  border-radius: 0px !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00BCF2;
+}
+
+/* Gradient Text Utilities */
+.text-gradient-azure {
+  background: linear-gradient(180deg, #FFFFFF 0%, #BAE6FD 45%, #00BCF2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-cyan {
+  background: linear-gradient(135deg, #00BCF2 0%, #22D3EE 50%, #38BDF8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Sharp Glassmorphic Buttons */
+.btn-sheen {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 0px !important;
+}
+.btn-sheen::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: none;
+  pointer-events: none;
+}
+.btn-sheen:hover::after {
+  left: 140%;
+  transition: all 0.75s ease-in-out;
+}
+
+.btn-glow-cyan {
+  box-shadow: 0 4px 24px -2px rgba(0, 188, 242, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  border-radius: 0px !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-glow-cyan:hover {
+  box-shadow: 0 8px 32px 0 rgba(0, 188, 242, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Custom Floating and Pulsing Animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.08);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+/* Accessibility Focus */
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 2px solid #00BCF2;
+  outline-offset: 3px;
+}
