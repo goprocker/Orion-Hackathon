@@ -19,6 +19,7 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { ScrollReveal } from '@/components/common/ScrollReveal';
+import { IMPORTANT_RULES, IMPORTANT_RULES_NOTICE } from '@/data/orionData';
 
 export default function TermsAndConditionsPage() {
   return (
@@ -129,6 +130,53 @@ export default function TermsAndConditionsPage() {
       {/* Main Rulebook Body */}
       <main className="relative z-10 py-8 px-4 sm:px-8 max-w-6xl mx-auto text-left space-y-6">
         
+        {/* Important Rules Notice (Official Announcement) */}
+        <section id="important-rules" className="p-6 sm:p-8 bg-gradient-to-br from-[#1a1305] via-[#07101E] to-[#07101E] border border-amber-400/50 shadow-[0_0_30px_rgba(255,185,0,0.12)] space-y-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-amber-400/20">
+            <div className="flex items-center gap-2 text-xs font-mono font-bold text-amber-300 tracking-widest uppercase">
+              <AlertTriangle className="w-4 h-4 text-amber-400" />
+              <span>OFFICIAL NOTICE — {IMPORTANT_RULES_NOTICE.title}</span>
+            </div>
+            <span className="text-[10px] font-mono text-amber-200/70 uppercase tracking-wider">Applies to all registered teams</span>
+          </div>
+
+          <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            <strong className="text-white">{IMPORTANT_RULES_NOTICE.greeting}</strong> {IMPORTANT_RULES_NOTICE.intro}
+          </p>
+
+          <ol className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {IMPORTANT_RULES.map((rule) => (
+              <li key={rule.number} className="p-4 bg-[#020617] border border-white/5 flex gap-4">
+                <span className="text-2xl font-display font-black text-amber-400/80 leading-none select-none">{rule.number}</span>
+                <div className="space-y-1.5">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <strong className="text-white font-mono text-xs uppercase tracking-wide">{rule.title}</strong>
+                    <span className="px-2 py-0.5 text-[10px] font-mono text-slate-400 border border-white/10 uppercase">{rule.appliesTo}</span>
+                  </div>
+                  <p className="text-xs text-slate-200 font-semibold">{rule.summary}</p>
+                  <p className="text-xs text-slate-400 leading-relaxed">{rule.detail}</p>
+                  <div className="flex flex-col sm:flex-row gap-2 pt-1 text-[11px]">
+                    <span className="inline-flex items-center gap-1.5 text-emerald-300"><CheckCircle2 className="w-3.5 h-3.5 shrink-0" /> {rule.allowed}</span>
+                    <span className="inline-flex items-center gap-1.5 text-rose-300"><AlertTriangle className="w-3.5 h-3.5 shrink-0" /> {rule.notAllowed}</span>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ol>
+
+          <div className="p-4 bg-rose-950/20 border border-rose-500/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <p className="text-xs sm:text-sm text-rose-200 font-semibold flex items-start gap-2">
+              <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+              <span>{IMPORTANT_RULES_NOTICE.warning}</span>
+            </p>
+            <div className="text-[11px] font-mono text-slate-400 sm:text-right shrink-0">
+              <span className="block">Regards,</span>
+              <span className="block text-white font-bold">{IMPORTANT_RULES_NOTICE.signOff}</span>
+              <span className="block text-[#38BDF8]">{IMPORTANT_RULES_NOTICE.signOffOrg}</span>
+            </div>
+          </div>
+        </section>
+
         {/* Section 1 */}
         <section className="p-6 bg-[#07101E] border border-white/10 space-y-3">
           <div className="flex items-center gap-2 text-xs font-mono font-bold text-[#38BDF8] tracking-widest uppercase">

@@ -99,6 +99,16 @@ export async function POST(request: Request) {
       }, { status: 400 });
     }
 
+    // Deadline check BEFORE the storage upload: a late attempt used to upload
+    // the full deck to the bucket first and only then get refused, leaving an
+    // orphaned object with no submission record. (submitRound1File re-checks —
+    // that stays the authority.)
+    if (Date.now() > new Date(config.round1SubmissionDeadline).getTime()) {
+      return NextResponse.json({
+        error: `Round 1 Submission Deadline has passed (${config.round1SubmissionDeadline}). Submissions are locked.`
+      }, { status: 400 });
+    }
+
     const cleanTeamSlug = team.registration_id.replace(/[^a-zA-Z0-9_-]/g, '_');
     const timestamp = Date.now();
     const safeSavedName = `${cleanTeamSlug}_Round1_${timestamp}${fileExt}`;

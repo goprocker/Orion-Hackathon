@@ -8,10 +8,10 @@ import {
 import { CountdownTimer } from '../common/CountdownTimer';
 import { ScrollReveal } from '../common/ScrollReveal';
 import { sound } from '../../audio/soundEffects';
-import { EVENT_METRICS } from '../../data/orionData';
+import { EVENT_METRICS, GOOGLE_FORM_REGISTRATION_URL, formatShortDate } from '../../data/orionData';
 
 interface HeroSectionProps {
-  onOpenRegister: () => void;
+  onOpenRegister?: () => void;
   onOpenStatus?: () => void;
   onExplorePrizes?: () => void;
 }
@@ -29,8 +29,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenRegister, onOpen
   const highlightPills = [
     { label: "PRIZE POOL", value: EVENT_METRICS.prizePool, color: "text-[#00BCF2]" },
     { label: "REGISTRATION FEE", value: `${EVENT_METRICS.round1Fee} / Team`, color: "text-emerald-400" },
-    { label: "ONLINE DEADLINE", value: "SEP 08, 2026", color: "text-[#22D3EE]" },
-    { label: "OFFLINE FINALE", value: "SEP 18, 2026", color: "text-white" }
+    { label: "ONLINE DEADLINE", value: formatShortDate(EVENT_METRICS.onlineDeadlineIso), color: "text-[#22D3EE]" },
+    { label: "OFFLINE FINALE", value: formatShortDate(EVENT_METRICS.offlineFinaleIso), color: "text-white" }
   ];
 
   return (
@@ -121,17 +121,19 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenRegister, onOpen
           {/* Centered Action Buttons */}
           <div className="pt-6 flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-lg mx-auto">
             
-            <button
+            <a
+              href={GOOGLE_FORM_REGISTRATION_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => {
                 sound.playLaunchWarp();
-                onOpenRegister();
               }}
               className="btn-sheen btn-glow-cyan w-full sm:w-auto py-4 px-8 rounded-none font-display font-bold text-xs sm:text-sm tracking-wider text-[#020617] bg-gradient-to-r from-[#FFFFFF] via-[#BAE6FD] to-[#00BCF2] hover:opacity-95 transition-all shadow-2xl flex items-center justify-center gap-2 group active:scale-95 cursor-pointer"
             >
               <Rocket className="w-4 h-4 text-[#020617]" />
               <span>REGISTER YOUR TEAM — ₹100</span>
               <ChevronRight className="w-4 h-4 text-[#020617] group-hover:translate-x-1 transition-transform" />
-            </button>
+            </a>
 
             {onOpenStatus && (
               <button

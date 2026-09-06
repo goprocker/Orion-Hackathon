@@ -25,8 +25,10 @@ export interface FAQItem {
     | 'Finale & Logistics'
     | 'Eligibility & Squads'
     | 'Round 1 & Submissions'
+    | 'Round 1 & PPT Submissions'
     | 'Finale & Fees'
-    | 'Hospitality & Venue';
+    | 'Hospitality & Venue'
+    | string;
 }
 
 export interface PatronProfile {
@@ -82,6 +84,9 @@ export type Round2Status =
 export interface TeamMember {
   id?: string;
   team_id?: string;
+  /** Denormalised copy of teams.team_name, maintained by a database trigger
+   *  (migration 011). Read-only — never send it on an insert or update. */
+  team_name?: string;
   member_number: number;
   member_name: string;
   member_email?: string;

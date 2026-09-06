@@ -1,6 +1,5 @@
-import { NextResponse, after } from 'next/server';
+import { NextResponse } from 'next/server';
 import { serverStore } from '@/lib/serverStore';
-import { sendRegistrationReceivedEmail } from '@/lib/email';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
 import type { TeamRegistrationPayload } from '@/types/orion';
 
@@ -110,21 +109,6 @@ export async function POST(request: Request) {
       problemStatement,
       members
     });
-
-    try {
-      after(async () => {
-        try {
-          await sendRegistrationReceivedEmail(team);
-        } catch (emailErr) {
-          console.error('[Registration] Failed to send registration email:', emailErr);
-        }
-      });
-    } catch {
-      // Direct invocation in test harness outside Next.js request context
-      sendRegistrationReceivedEmail(team).catch(emailErr => {
-        console.error('[Registration] Failed to send registration email:', emailErr);
-      });
-    }
 
     return NextResponse.json({
       success: true,

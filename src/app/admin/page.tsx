@@ -29,7 +29,8 @@ import {
   Info,
   Mail,
   Trash2,
-  CreditCard
+  CreditCard,
+  Phone
 } from 'lucide-react';
 import Link from 'next/link';
 import type { TeamRecord, AuditLogRecord, SystemConfig, EvaluationScores } from '@/types/orion';
@@ -605,19 +606,33 @@ export default function AdminDashboard() {
 
   // data: receipt URLs cannot be opened via <a href> — browsers block
   // top-frame navigation to data: — so decode to a Blob and open that.
-  const openReceiptScreenshot = async (url: string) => {
+  // The bulk roster ships inline receipts as the marker 'inline'; the real
+  // bytes are fetched per team on click to keep the roster payload small.
+  const openReceiptScreenshot = async (url: string, teamId?: string) => {
     sound.playClick();
     try {
-      if (url.startsWith('data:')) {
-        const blob = await (await fetch(url)).blob();
+      let target = url;
+      if (url === 'inline' && teamId) {
+        const res = await fetch('/api/admin/registrations', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'GET_PAYMENT_SCREENSHOT', teamId })
+        });
+        const json = await res.json();
+        if (!res.ok || !json.url) throw new Error(json.error || 'Could not load the screenshot');
+        target = json.url;
+      }
+      if (target.startsWith('data:')) {
+        const blob = await (await fetch(target)).blob();
         const objUrl = URL.createObjectURL(blob);
         window.open(objUrl, '_blank', 'noopener');
         setTimeout(() => URL.revokeObjectURL(objUrl), 60_000);
       } else {
-        window.open(url, '_blank', 'noopener');
+        window.open(target, '_blank', 'noopener');
       }
-    } catch {
-      showToast('error', 'Could Not Open Screenshot', 'The stored receipt could not be decoded.');
+    } catch (err) {
+      showToast('error', 'Could Not Open Screenshot', err instanceof Error ? err.message : 'The stored receipt could not be decoded.');
     }
   };
 
@@ -771,6 +786,68 @@ export default function AdminDashboard() {
     }
   };
 
+  // Export a flat "who to call" sheet: one row per person (leader + every
+  // member), with their name, phone number and which team they belong to.
+  // The full roster export above is one row per TEAM with 30+ admin columns;
+  // this is the opposite shape — one row per PERSON with just the columns
+  // someone dialing down a contact list actually needs.
+  const handleExportContactsCSV = () => {
+    if (!teams.length) {
+      showToast('warning', 'Nothing to Export', 'No team records are loaded yet. Hit SYNC and try again.');
+      return;
+    }
+
+    try {
+      const headers = ['Team ID', 'Team Name', 'Track', 'Role', 'Name', 'Phone Number', 'Email'];
+
+      const rows: string[][] = [];
+      for (const t of teams) {
+        rows.push([
+          t.registration_id,
+          t.team_name,
+          t.problem_statement,
+          'Leader',
+          t.leader_name,
+          t.leader_phone,
+          t.leader_email
+        ].map(csvCell));
+
+        for (const m of t.members || []) {
+          rows.push([
+            t.registration_id,
+            t.team_name,
+            t.problem_statement,
+            `Member ${m.member_number}`,
+            m.member_name,
+            m.member_phone,
+            m.member_email || ''
+          ].map(csvCell));
+        }
+      }
+
+      const totalPeople = rows.length;
+      const csvContent = [headers.map(csvCell).join(','), ...rows.map(e => e.join(','))].join('\r\n');
+
+      // Same Blob + delayed-revoke pattern as the roster export above — see
+      // the comments there for why (data: URIs truncate on '#' and cap at ~2MB;
+      // revoking the object URL synchronously can abort an unstarted download).
+      const blob = new Blob(['﻿' + csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `ORION_Hackathon_Contacts_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(() => URL.revokeObjectURL(url), 60_000);
+
+      showToast('success', 'Contacts Exported', `Downloaded ${totalPeople} contact${totalPeople === 1 ? '' : 's'} across ${teams.length} team${teams.length === 1 ? '' : 's'} as CSV.`);
+    } catch (err) {
+      console.error('[Admin] Contacts CSV export failed:', err);
+      showToast('error', 'Export Failed', err instanceof Error ? err.message : 'Could not build the contacts CSV file.');
+    }
+  };
+
   // Filtered Teams
   const filteredTeams = teams.filter((t) => {
     const q = searchQuery.toLowerCase().trim();
@@ -840,6 +917,15 @@ export default function AdminDashboard() {
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span className="hidden sm:inline">EXPORT CSV</span>
+                </button>
+
+                <button
+                  onClick={handleExportContactsCSV}
+                  className="px-3 py-1.5 bg-[#0B2556] border border-[#38BDF8]/40 text-[#38BDF8] hover:bg-[#38BDF8]/20 transition-colors text-xs font-mono-hud flex items-center gap-1.5 cursor-pointer"
+                  title="Download every leader & member name + phone number, one row per person, with their team"
+                >
+                  <Phone className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">EXPORT CONTACTS</span>
                 </button>
 
                 <button
@@ -1446,7 +1532,7 @@ export default function AdminDashboard() {
                           are blocked from top-frame navigation by browsers. */}
                       <button
                         type="button"
-                        onClick={() => openReceiptScreenshot(selectedTeam.payment!.screenshot_url!)}
+                        onClick={() => openReceiptScreenshot(selectedTeam.payment!.screenshot_url!, selectedTeam.registration_id)}
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0B2556] border border-[#38BDF8]/50 text-[#38BDF8] hover:bg-[#133A80] text-xs font-mono transition-colors cursor-pointer"
                       >
                         <ExternalLink className="w-3.5 h-3.5" />

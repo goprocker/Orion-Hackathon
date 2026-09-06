@@ -293,10 +293,10 @@ export const ChallengeArena: React.FC<ChallengeArenaProps> = ({ onOpenProblemMod
                   <div className="flex items-center justify-between gap-3 mb-5 flex-wrap">
                     <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#00BCF2]/10 border border-[#00BCF2]/30 text-xs font-mono font-bold text-[#BAE6FD]">
                       <Sparkles className="w-3.5 h-3.5 text-[#00BCF2]" />
-                      <span>{ps4.code} • OPEN INNOVATION ARCHITECTURE</span>
+                      <span>{ps4.code} • OPEN INNOVATION & STUDENT PROJECTS</span>
                     </div>
-                    <span className="text-[10px] font-mono text-cyan-400 font-semibold px-2 py-0.5 bg-cyan-400/10 border border-cyan-400/25">
-                      ALL DOMAINS WELCOME
+                    <span className="text-[10px] font-mono text-amber-300 font-bold px-2 py-0.5 bg-amber-400/10 border border-amber-400/30 animate-pulse">
+                      ROUND 1 ONLY
                     </span>
                   </div>
 

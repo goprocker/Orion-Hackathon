@@ -20,18 +20,27 @@ export const EVENT_METRICS = {
   teamSizeLabel: "Members per team",
   finalistCount: "TOP 70",
   finalistCountLabel: "Teams to Offline Finale",
-  deadlineDate: "September 08, 2026",
-  deadlineIso: "2026-09-08T23:59:59+05:30",
-  onlineDeadlineDate: "September 08, 2026",
-  onlineDeadlineIso: "2026-09-08T23:59:59+05:30",
+  deadlineDate: "September 11, 2026",
+  deadlineIso: "2026-09-11T23:59:59+05:30",
+  onlineDeadlineDate: "September 11, 2026",
+  onlineDeadlineIso: "2026-09-11T23:59:59+05:30",
   offlineFinaleDate: "September 18, 2026",
   offlineFinaleIso: "2026-09-18T09:00:00+05:30",
   duration: "24-Hour Offline Sprint",
   venue: "Sathyabama Institute of Science and Technology, Chennai",
   organizer: "Microsoft Club SIST",
   participation: "Students & Working Professionals",
-  googleMapsUrl: "https://maps.google.com/?q=Sathyabama+Institute+of+Science+and+Technology+Chennai"
+  googleMapsUrl: "https://maps.google.com/?q=Sathyabama+Institute+of+Science+and+Technology+Chennai",
+  registrationFormUrl: "https://forms.gle/txiRwn9EELUgZvrJ6"
 };
+
+/** Short uppercase IST date (e.g. "SEP 11, 2026") derived from an ISO string. */
+export const formatShortDate = (iso: string): string =>
+  new Date(iso)
+    .toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric', timeZone: 'Asia/Kolkata' })
+    .toUpperCase();
+
+export const GOOGLE_FORM_REGISTRATION_URL = "https://forms.gle/txiRwn9EELUgZvrJ6";
 
 export const PRIZE_TIERS = [
   {
@@ -192,12 +201,12 @@ export const PROBLEM_STATEMENTS: ProblemStatement[] = [
   {
     id: "open-innovation",
     code: "ORION-PS-04",
-    title: "Open Innovation Track",
-    tagline: "Autonomous AI Systems, Web3 Protocols, Cybersecurity & Next-Gen Hardware",
+    title: "Open Innovation & Student Innovation Projects",
+    tagline: "Autonomous AI Systems, Web3 Protocols, Cybersecurity & Next-Gen Hardware — Round 1 Only",
     domain: "AI / Web3 / Systems / Robotics",
     accentColor: "violet",
     visualTheme: "Cybernetic Mesh • Quantum Systems • Multi-Domain Architecture",
-    overview: "Have a novel breakthrough outside the 3 flagship challenges? The Open Innovation Track empowers engineering squads to architect, prototype, and defend disruptive solutions across emerging fields including Generative & Agentic AI, Zero-Knowledge Web3 systems, post-quantum cybersecurity, IoT robotics, healthcare diagnostics, and space exploration.",
+    overview: "Have a novel breakthrough outside the 3 flagship challenges? The Open Innovation & Student Innovation Projects track empowers engineering squads and student researchers to architect, prototype, and defend disruptive solutions across emerging fields including Generative & Agentic AI, Zero-Knowledge Web3 systems, post-quantum cybersecurity, IoT robotics, healthcare diagnostics, and space exploration. This track is welcome only for Round 1 — the Grand Finale carries no Open Innovation option, and every finalist team builds on an on-the-spot assigned problem statement instead.",
     keyFeatures: [
       "Autonomous Multi-Agent AI & Edge Inference Systems",
       "Zero-Knowledge Proofs & Verifiable Computation Protocols",
@@ -213,7 +222,7 @@ export const PROBLEM_STATEMENTS: ProblemStatement[] = [
     ],
     datasetSources: ["Open Source Public Datasets", "Synthetic Test Benches", "Domain-Specific Telemetry APIs"],
     evaluationFocus: ["Novelty & distinct value proposition", "System architecture & engineering depth", "Feasibility & commercial deployment potential", "Live technical jury defense"],
-    classificationLevel: "OPEN TRACK — ELIGIBLE FOR ₹1,00,000 PRIZE POOL"
+    classificationLevel: "OPEN TRACK — ROUND 1 ONLY — ELIGIBLE FOR ₹1,00,000 PRIZE POOL"
   }
 ];
 
@@ -249,6 +258,58 @@ export const PPT_TEMPLATE_RULES = [
     rule: "Strict File Naming Protocol",
     description: "Submissions must be strictly formatted as: TeamName_ORION1.0 (PPTX or PDF).",
     icon: "FileCode"
+  }
+];
+
+export const IMPORTANT_RULES_NOTICE = {
+  title: "ORION 1.0 – IMPORTANT RULES",
+  greeting: "Dear Participants,",
+  intro: "Please carefully read and follow the rules below. These apply to every registered team.",
+  warning: "Failure to follow these rules may result in the rejection of the submission or disqualification of the team.",
+  signOff: "ORION 1.0 Organizing Team",
+  signOffOrg: "Microsoft Club SIST"
+};
+
+export const IMPORTANT_RULES = [
+  {
+    number: "01",
+    title: "One PPT per Team",
+    summary: "Each team is allowed to submit only one final PPT.",
+    detail: "Multiple submissions from the same team will not be accepted. Finalise your deck internally before uploading it through the Team Portal.",
+    allowed: "One final PPT per team",
+    notAllowed: "Multiple or duplicate submissions",
+    icon: "FileCheck2",
+    appliesTo: "Round 1 Submission"
+  },
+  {
+    number: "02",
+    title: "Leave the Team ID Blank",
+    summary: "The Team ID field in the PPT will be filled in by the ORION 1.0 organizing team.",
+    detail: "Participants must leave this field blank. Do not invent, guess, or copy a Team ID into the template.",
+    allowed: "Empty Team ID field",
+    notAllowed: "Filling in your own Team ID",
+    icon: "Hash",
+    appliesTo: "PPT Template"
+  },
+  {
+    number: "03",
+    title: "No Open Innovation in the Finale",
+    summary: "Open Innovation and Student Innovation Projects will not be available during the final round.",
+    detail: "Open Innovation and Student Innovation Projects are welcome only for Round 1. Every finalist team works on an assigned problem statement in the Grand Finale.",
+    allowed: "Open Innovation & Student Innovation Projects in Round 1",
+    notAllowed: "Open Innovation or Student Innovation Projects in the Grand Finale",
+    icon: "Ban",
+    appliesTo: "Grand Finale"
+  },
+  {
+    number: "04",
+    title: "On-the-Spot Problem Statements",
+    summary: "All shortlisted teams receive their problem statements on the spot on 18 September 2026.",
+    detail: "Teams must develop their solutions based on the problem statement assigned during the event.",
+    allowed: "Building on the assigned statement",
+    notAllowed: "Bringing a pre-decided finale problem",
+    icon: "CalendarClock",
+    appliesTo: "18 September 2026"
   }
 ];
 
@@ -296,19 +357,19 @@ export const TIMELINE_PHASES: TimelinePhase[] = [
     number: "01",
     title: "MISSION REGISTRATIONS & ONLINE SUBMISSION",
     subtitle: "Round 1 Online Qualifier",
-    date: "Active Now — Closes Sep 08, 2026",
+    date: "Active Now — Closes Sep 11, 2026",
     status: "active",
     highlights: [
       "Flat ₹100 registration fee per team (2–6 members)",
-      "Choose from 3 Flagship Problem Statements OR Open Innovation tracks (AI, Web3, Systems, Cloud, Healthcare, Hardware)",
-      "Prepare and upload mandatory standardized PPT / PDF blueprint before September 08, 2026"
+      "Choose from 3 Flagship Problem Statements OR Open Innovation & Student Innovation Projects (AI, Web3, Systems, Cloud, Healthcare, Hardware) — welcome only for Round 1",
+      "Prepare and upload mandatory standardized PPT / PDF blueprint before September 11, 2026"
     ]
   },
   {
     number: "02",
     title: "ONLINE SCREENING & JURY EVALUATION",
     subtitle: "Rigorous Technical Filter",
-    date: "September 09 – September 12, 2026",
+    date: "September 12, 2026",
     status: "upcoming",
     highlights: [
       "Jury review across Innovation, Feasibility, Technical Depth & Impact",
@@ -501,63 +562,93 @@ export const FAQ_DATA: FAQItem[] = [
   {
     category: "Eligibility & Squads",
     question: "Who is eligible to participate in ORION 1.0?",
-    answer: "ORION 1.0 is open to all college students (undergraduate, postgraduate, PhD) and early-career working professionals across India. Cross-institutional and multidisciplinary teams are enthusiastically welcome!"
+    answer: "ORION 1.0 is open to all college students (undergraduate, postgraduate, PhD) and early-career working professionals across India. Cross-institutional, cross-department, and multidisciplinary teams are enthusiastically welcome!"
   },
   {
     category: "Eligibility & Squads",
-    question: "What are the exact squad size rules?",
-    answer: "Teams must consist of a minimum of 2 members and a maximum of 6 members (1 Team Leader + 1 to 5 Team Members). Individual solo participation is not permitted to encourage an collaborative engineering mindset."
+    question: "What is the team size and composition?",
+    answer: "Each team must have a minimum of 2 and a maximum of 6 members (1 Team Leader + 1 to 5 Team Members). Individual solo participation is strictly not permitted. Cross-college, cross-department, and cross-year teams are fully allowed."
   },
   {
     category: "Eligibility & Squads",
     question: "Can team members be from different colleges or departments?",
-    answer: "Yes! Cross-college, cross-department, and cross-year teams are fully permitted. All participants will receive individual certificates of participation."
+    answer: "Yes! Cross-college, cross-department, and cross-year teams are completely permitted. All participating team members will receive individual certificates of participation."
   },
 
-  // 2. Round 1 & PPT Template
+  // 2. Round 1 & PPT Submissions
   {
-    category: "Round 1 & Submissions",
-    question: "What do we build and submit in Round 1?",
-    answer: "In Round 1, teams must choose a Problem Statement track and submit their problem analysis, system architecture, tech stack justification, and project roadmap using the official mandatory ORION 1.0 PPT template (exported as PPTX or PDF). Working prototype links or demo videos can be included within the designated slide placeholders."
+    category: "Round 1 & PPT Submissions",
+    question: "What do we need to submit for Round 1?",
+    answer: "Each team must submit an idea abstract and a pitch deck (PPT), prepared using the official ORION 1.0 template, through the Google Form / Team Portal on or before 11 September 2026. Only the prescribed template will be accepted — using any other format leads to disqualification."
   },
   {
-    category: "Round 1 & Submissions",
-    question: "Can we modify the slide count or format of the PPT template?",
-    answer: "No. Strict rule: No slides may be added, removed, or reordered. Branding, headers, and footers must remain intact. Only fill the provided content placeholders. File name must be formatted as: TeamName_ORION1.0 (PPTX or PDF)."
+    category: "Round 1 & PPT Submissions",
+    question: "Do we need to submit a prototype or a pitch video for Round 1?",
+    answer: "No. Round 1 only requires the PPT submission. No prototype, code, or video is mandatory at this stage — you are simply pitching your idea on slides. Demo videos are optionally accepted; if you wish to include one, upload it via the dedicated demo video Drive link shared in the announcement group."
   },
   {
-    category: "Round 1 & Submissions",
-    question: "What is the deadline for Round 1 submission?",
-    answer: "Round 1 online submissions close on September 08, 2026 at 23:59 IST. Teams can submit and revise their presentation via the Team Portal until the deadline."
+    category: "Round 1 & PPT Submissions",
+    question: "How exactly do we submit the PPT and optional demo video? Should they be in a single folder?",
+    answer: "They must be submitted separately using two distinct Drive links shared in the official announcement group: PPT → upload via the dedicated PPT Drive link; Demo video → upload via the dedicated demo video Drive link. Please do not combine them into a single folder — use the respective link for each file."
+  },
+  {
+    category: "Round 1 & PPT Submissions",
+    question: "Can we modify the slide count, format, or branding of the PPT template?",
+    answer: "No. Strict rule: No slides may be added, removed, or reordered. Branding, headers, and footers must remain intact. The Team ID field on the PPT must be left blank (it will be filled in by the organizing team). Submissions must be named strictly as: TeamName_ORION1.0 (PPTX or PDF)."
+  },
+  {
+    category: "Round 1 & PPT Submissions",
+    question: "I already submitted my PPT, but I want to upload a newer/updated version. What should I do?",
+    answer: "Google Form entries cannot be edited once submitted. In this case, simply upload the newer PPT to the shared Google Drive link provided by the organizers in the official announcement group. You do not need to fill the form again — the Drive upload alone is sufficient to update your submission."
+  },
+  {
+    category: "Round 1 & PPT Submissions",
+    question: "What if the PPT submission link isn't working properly?",
+    answer: "If the originally shared submission link isn't working, a new/updated link has been posted in the official announcement group. Please check the announcement group and use that link to complete your submission."
+  },
+  {
+    category: "Round 1 & PPT Submissions",
+    question: "Is Open Innovation / Student Innovation Projects allowed?",
+    answer: "Yes, but only for Round 1. Teams without a flagship track idea can propose their own Open Innovation or Student Innovation project. However, this option is not available in the Grand Finale — every finalist team will instead work on a problem statement assigned on the spot at the venue."
   },
 
-  // 3. Finale & Fees
+  // 3. Finale, Selection & Fees
   {
     category: "Finale & Fees",
-    question: "How does the two-tier fee structure work?",
-    answer: "Round 1 is a low-barrier online qualifier with a flat registration fee of ₹100 per team (regardless of 2 or 6 members). Only teams shortlisted in the Top 70 for the offline Grand Finale pay the ₹250 per head finalist confirmation fee, which covers 2 days of meals (Breakfasts, Lunches & Dinner), official swag kits, 24/7 venue access, and free hostel accommodation."
+    question: "What is the registration fee structure?",
+    answer: "Round 1 (online): ₹100, flat per team, regardless of team size (covers the entire squad of 2–6 members, not per member). Grand Finale (only for shortlisted Top 70 teams): ₹250 per head — charged individually for each finalist team member, not per team."
   },
   {
     category: "Finale & Fees",
-    question: "How are the prizes distributed?",
-    answer: "The total prize pool of ₹1,00,000 (including ₹25k 1st Place, ₹15k 1st Runner-Up, ₹10k 2nd Runner-Up, and Special Track Bounties) along with Certificates of Merit and trophies will be awarded physically during the Valedictory Ceremony immediately concluding the 24-hour sprint."
+    question: "Is the registration fee refundable or transferable?",
+    answer: "No. All fees are strictly non-refundable and non-transferable under any circumstances, including withdrawal, non-attendance, travel issues, academic commitments, or team disputes. Fees also cannot be adjusted or transferred to another team."
+  },
+  {
+    category: "Finale & Fees",
+    question: "How many teams qualify for the Grand Finale?",
+    answer: "The Top 70 teams, selected through rigorous jury evaluation of Round 1 submissions (based on innovation, feasibility, technical depth, and template compliance), will advance to the 24-hour offline Grand Finale."
   },
   {
     category: "Finale & Fees",
     question: "How are the Grand Finale problem statements distributed?",
-    answer: "While teams can continue building upon their Round 1 architectural solution, live problem twists and dynamic constraints will be revealed on-the-spot at the start of the 24-hour offline sprint at SIST Chennai."
+    answer: "All shortlisted teams receive their problem statements on the spot on 18 September 2026, at the start of the 24-hour offline sprint at SIST Chennai. Teams must build their solution on the problem statement assigned during the event. Open Innovation is not available in the final round."
+  },
+  {
+    category: "Finale & Fees",
+    question: "What are the important dates and schedule?",
+    answer: "• Registration closes: 11 September 2026\n• Round 1 (online idea submission): on or before 11 September 2026\n• Top 70 Shortlist Announcement: 13 September 2026\n• Grand Finale (24-hour offline sprint): 18–19 September 2026 at Sathyabama Institute of Science and Technology, Chennai."
+  },
+  {
+    category: "Finale & Fees",
+    question: "What is the prize pool and how are awards distributed?",
+    answer: "The total prize pool is ₹1,00,000 (including ₹25k Champion, ₹15k 1st Runner-Up, ₹10k 2nd Runner-Up, and Special Track Bounties). Physical trophies, cash awards, and Certificates of Merit will be awarded during the Valedictory Ceremony concluding the 24-hour sprint."
   },
 
   // 4. Hospitality & Venue
   {
     category: "Hospitality & Venue",
-    question: "What meals and refreshments are provided during the Grand Finale?",
-    answer: "All confirmed finalist teams receive full event catering across the 24-hour offline hackathon at SIST Chennai, including 2 Breakfasts, 2 Lunches, Dinner, and midnight booster packs (coffee, tea, snacks, and energy boosters). Multi-cuisine options are catered inside the air-conditioned hack arena."
-  },
-  {
-    category: "Hospitality & Venue",
-    question: "Is free accommodation provided for outstation teams?",
-    answer: "Yes! Free on-campus hostel accommodation at Sathyabama Institute of Science and Technology (SIST) is provided for all confirmed out-of-Chennai finalist teams. Clean hostel rooms with bedding, round-the-clock security, and washroom facilities are arranged."
+    question: "Is accommodation and food provided at the Grand Finale?",
+    answer: "Yes. Free on-campus hostel accommodation is provided for outstation finalist teams. Meals include 2 breakfasts, 2 lunches, dinner, and midnight snacks. High-speed Wi-Fi, power backup, and air-conditioned workspaces are also provided throughout the 24-hour event."
   },
   {
     category: "Hospitality & Venue",
@@ -567,7 +658,7 @@ export const FAQ_DATA: FAQItem[] = [
   {
     category: "Hospitality & Venue",
     question: "What hardware and connectivity amenities are available at the arena?",
-    answer: "Participants have access to 24/7 uninterrupted power backup, dedicated power sockets at every team station, high-speed dual-band Wi-Fi and LAN mesh networks, mentor breakout zones, and round-the-clock medical & technical support."
+    answer: "Participants have access to 24/7 uninterrupted power backup, dedicated power sockets at every team station, high-speed dual-band Wi-Fi and LAN mesh networks, mentor breakout zones, and round-the-clock medical and technical support."
   },
   {
     category: "Hospitality & Venue",

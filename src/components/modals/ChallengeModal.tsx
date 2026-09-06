@@ -11,6 +11,7 @@ import {
 import { GlassCard } from '../common/GlassCard';
 import type { ProblemStatement } from '../../types/orion';
 import { sound } from '../../audio/soundEffects';
+import { GOOGLE_FORM_REGISTRATION_URL } from '@/data/orionData';
 
 interface ChallengeModalProps {
   problem: ProblemStatement | null;
@@ -142,13 +143,16 @@ export const ChallengeModal: React.FC<ChallengeModalProps> = ({
                 <Sparkles className="w-3.5 h-3.5 text-[#38BDF8]" />
                 <span>ELIGIBLE FOR ₹1,00,000 PRIZE ORBIT</span>
               </div>
-              <button
+              <a
+                href={GOOGLE_FORM_REGISTRATION_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={handleSelect}
                 className="btn-sheen btn-glow-cyan w-full sm:w-auto px-6 py-3 rounded-none font-display font-bold text-xs tracking-wider text-[#040E24] bg-gradient-to-r from-[#FFFFFF] via-[#BAE6FD] to-[#38BDF8] hover:opacity-95 transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-95"
               >
                 <Rocket className="w-4 h-4 text-[#040E24]" />
                 <span>CHOOSE THIS TRACK & REGISTER — ₹100</span>
-              </button>
+              </a>
             </div>
 
           </div>

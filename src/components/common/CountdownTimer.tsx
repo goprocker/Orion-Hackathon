@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Clock, ShieldAlert } from 'lucide-react';
-import { EVENT_METRICS } from '../../data/orionData';
+import { EVENT_METRICS, formatShortDate } from '../../data/orionData';
 
 interface TimeLeft {
   days: number;
@@ -42,6 +42,9 @@ export const CountdownTimer: React.FC = () => {
     { label: 'SECONDS', value: timeLeft.seconds },
   ];
 
+  const ONLINE_DEADLINE_SHORT = formatShortDate(EVENT_METRICS.onlineDeadlineIso);
+  const OFFLINE_FINALE_SHORT = formatShortDate(EVENT_METRICS.offlineFinaleIso);
+
   return (
     <div className="w-full bg-[#0B1220]/75 backdrop-blur-2xl border border-white/15 border-t-white/30 p-3.5 sm:p-6 rounded-none shadow-2xl relative">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 mb-4 border-b border-white/10">
@@ -71,8 +74,8 @@ export const CountdownTimer: React.FC = () => {
       </div>
 
       <div className="mt-3 flex flex-col sm:flex-row items-center justify-between text-[9px] sm:text-[10px] font-sans text-[#94A3B8] pt-2 border-t border-white/10 gap-1">
-        <span>ONLINE QUALIFIER DEADLINE: SEP 08, 2026 (23:59 IST)</span>
-        <span className="text-[#22D3EE] font-bold">24H OFFLINE FINALE: SEP 18, 2026 @ SIST CHENNAI</span>
+        <span>ONLINE QUALIFIER DEADLINE: {ONLINE_DEADLINE_SHORT} (23:59 IST)</span>
+        <span className="text-[#22D3EE] font-bold">24H OFFLINE FINALE: {OFFLINE_FINALE_SHORT} @ SIST CHENNAI</span>
       </div>
     </div>
   );

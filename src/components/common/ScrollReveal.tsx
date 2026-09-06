@@ -18,7 +18,7 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
   delay = 0,
   duration = 600,
   className = '',
-  threshold = 0.02,
+  threshold = 0.15,
   once = true,
 }) => {
   const [isVisible, setIsVisible] = useState(() => {
@@ -32,25 +32,18 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
   useEffect(() => {
     if (isVisible && once) return;
 
-    // Safety fallback: ensure content is revealed even if IntersectionObserver is delayed or suppressed
-    const fallbackTimer = setTimeout(() => {
-      setIsVisible(true);
-    }, 600 + delay);
-
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-            if (once && domRef.current) {
-              observer.unobserve(domRef.current);
-            }
-          } else if (!once) {
-            setIsVisible(false);
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          if (once && domRef.current) {
+            observer.unobserve(domRef.current);
           }
-        });
+        } else if (!once) {
+          setIsVisible(false);
+        }
       },
-      { threshold, rootMargin: '0px 0px 50px 0px' }
+      { threshold }
     );
 
     const currentTarget = domRef.current;
@@ -59,12 +52,11 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
     }
 
     return () => {
-      clearTimeout(fallbackTimer);
       if (currentTarget) {
         observer.unobserve(currentTarget);
       }
     };
-  }, [threshold, once, delay, isVisible]);
+  }, [threshold, once]);
 
   const getTransformStyle = () => {
     if (isVisible) return 'translate3d(0, 0, 0) scale(1)';

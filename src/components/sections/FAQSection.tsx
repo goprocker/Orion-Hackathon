@@ -68,11 +68,12 @@ export const FAQSection: React.FC = () => {
               onClick={() => {
                 sound.playClick();
                 setCategoryFilter(cat.id);
+                setOpenIdx(null);
               }}
-              className={`px-4 py-2 rounded-full text-xs font-sans font-semibold transition-all cursor-pointer ${
+              className={`px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs font-sans font-semibold transition-all cursor-pointer ${
                 categoryFilter === cat.id
-                  ? 'bg-blue-600 text-white shadow-md'
-                  : 'bg-slate-900/60 border border-slate-800 text-slate-400 hover:text-white'
+                  ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
+                  : 'bg-slate-900/60 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
               }`}
             >
               {cat.label}
@@ -88,7 +89,7 @@ export const FAQSection: React.FC = () => {
             return (
               <div 
                 key={idx}
-                className={`border transition-all duration-300 ${
+                className={`border rounded-lg transition-all duration-300 overflow-hidden ${
                   isOpen 
                     ? 'bg-[#0B1220]/95 border-[#00BCF2]/50 shadow-[0_0_25px_rgba(0,188,242,0.12)]' 
                     : 'bg-[#0B1220]/60 border-white/10 hover:border-white/20'
@@ -96,19 +97,19 @@ export const FAQSection: React.FC = () => {
               >
                 <button
                   onClick={() => toggleAccordion(idx)}
-                  className="w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4 cursor-pointer"
+                  className="w-full p-4 sm:p-5 md:p-6 text-left flex items-start sm:items-center justify-between gap-3 sm:gap-4 cursor-pointer"
                   aria-expanded={isOpen}
                 >
-                  <div className="flex items-center gap-3">
-                    <span className="font-mono text-xs text-[#00BCF2] font-bold">
-                      0{idx + 1}.
+                  <div className="flex items-start sm:items-center gap-3">
+                    <span className="font-mono text-xs text-[#00BCF2] font-bold shrink-0 mt-0.5 sm:mt-0">
+                      {idx < 9 ? `0${idx + 1}.` : `${idx + 1}.`}
                     </span>
-                    <h3 className="font-display font-bold text-base sm:text-lg text-white leading-snug">
+                    <h3 className="font-display font-bold text-sm sm:text-base md:text-lg text-white leading-snug">
                       {faq.question}
                     </h3>
                   </div>
 
-                  <div className={`p-1.5 rounded-full border transition-transform duration-300 shrink-0 ${
+                  <div className={`p-1.5 rounded-full border transition-transform duration-300 shrink-0 mt-0.5 sm:mt-0 ${
                     isOpen 
                       ? 'bg-[#00BCF2]/20 border-[#00BCF2] text-[#00BCF2] rotate-180' 
                       : 'bg-white/5 border-white/10 text-slate-400'
@@ -118,7 +119,7 @@ export const FAQSection: React.FC = () => {
                 </button>
 
                 {isOpen && (
-                  <div className="px-5 sm:px-6 pb-6 pt-1 border-t border-white/5 text-sm text-slate-300 font-sans leading-relaxed">
+                  <div className="px-4 sm:px-6 pb-5 sm:pb-6 pt-2 border-t border-white/5 text-xs sm:text-sm text-slate-300 font-sans leading-relaxed whitespace-pre-line">
                     <p>{faq.answer}</p>
                   </div>
                 )}
