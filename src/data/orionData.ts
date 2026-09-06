@@ -20,10 +20,10 @@ export const EVENT_METRICS = {
   teamSizeLabel: "Members per team",
   finalistCount: "TOP 70",
   finalistCountLabel: "Teams to Offline Finale",
-  deadlineDate: "September 08, 2026",
-  deadlineIso: "2026-09-08T23:59:59+05:30",
-  onlineDeadlineDate: "September 08, 2026",
-  onlineDeadlineIso: "2026-09-08T23:59:59+05:30",
+  deadlineDate: "September 11, 2026",
+  deadlineIso: "2026-09-11T23:59:59+05:30",
+  onlineDeadlineDate: "September 11, 2026",
+  onlineDeadlineIso: "2026-09-11T23:59:59+05:30",
   offlineFinaleDate: "September 18, 2026",
   offlineFinaleIso: "2026-09-18T09:00:00+05:30",
   duration: "24-Hour Offline Sprint",
@@ -351,19 +351,19 @@ export const TIMELINE_PHASES: TimelinePhase[] = [
     number: "01",
     title: "MISSION REGISTRATIONS & ONLINE SUBMISSION",
     subtitle: "Round 1 Online Qualifier",
-    date: "Active Now — Closes Sep 08, 2026",
+    date: "Active Now — Closes Sep 11, 2026",
     status: "active",
     highlights: [
       "Flat ₹100 registration fee per team (2–6 members)",
       "Choose from 3 Flagship Problem Statements OR Open Innovation & Student Innovation Projects (AI, Web3, Systems, Cloud, Healthcare, Hardware) — welcome only for Round 1",
-      "Prepare and upload mandatory standardized PPT / PDF blueprint before September 08, 2026"
+      "Prepare and upload mandatory standardized PPT / PDF blueprint before September 11, 2026"
     ]
   },
   {
     number: "02",
     title: "ONLINE SCREENING & JURY EVALUATION",
     subtitle: "Rigorous Technical Filter",
-    date: "September 09 – September 12, 2026",
+    date: "September 12, 2026",
     status: "upcoming",
     highlights: [
       "Jury review across Innovation, Feasibility, Technical Depth & Impact",

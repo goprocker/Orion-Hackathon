@@ -406,7 +406,7 @@ export default function TeamPortalPage() {
   // First upload is free; replacing it needs an approval in hand.
   const canUpload = !latestSubmission || !!approvedReuploadRequest;
 
-  const deadlineStr = config?.round1SubmissionDeadline || '2026-09-08T23:59:59+05:30';
+  const deadlineStr = config?.round1SubmissionDeadline || '2026-09-11T23:59:59+05:30';
   // UI courtesy only — the server independently enforces the deadline on
   // upload. Without this, late participants filled in the whole form and
   // uploaded their deck just to be refused at submit time.

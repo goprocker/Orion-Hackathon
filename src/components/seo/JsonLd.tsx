@@ -61,7 +61,7 @@ export const JsonLd: React.FC = () => {
       priceCurrency: 'INR',
       availability: 'https://schema.org/InStock',
       validFrom: '2026-08-01T00:00:00+05:30',
-      validThrough: '2026-09-08T23:59:59+05:30',
+      validThrough: '2026-09-11T23:59:59+05:30',
       url: baseUrl,
     },
     performer: {
