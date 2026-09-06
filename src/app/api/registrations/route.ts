@@ -116,6 +116,7 @@ export async function POST(request: Request) {
       team: {
         id: team.id,
         teamId: team.registration_id,
+        username: team.username,
         teamName: team.team_name,
         leaderName: team.leader_name,
         leaderEmail: team.leader_email,

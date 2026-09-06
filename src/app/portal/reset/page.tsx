@@ -77,6 +77,7 @@ export default function PasscodeResetPage() {
   const [probe, setProbe] = useState<ProbeState>('LOADING');
   const [teamName, setTeamName] = useState('');
   const [registrationId, setRegistrationId] = useState('');
+  const [username, setUsername] = useState('');
 
   const [passcode, setPasscode] = useState('');
   const [confirmPasscode, setConfirmPasscode] = useState('');
@@ -111,6 +112,7 @@ export default function PasscodeResetPage() {
         if (data?.valid) {
           setTeamName(data.teamName || '');
           setRegistrationId(data.registrationId || '');
+          setUsername(data.username || '');
           setProbe('VALID');
         } else {
           setProbe((data?.reason as ProbeState) || 'INVALID');
@@ -151,6 +153,7 @@ export default function PasscodeResetPage() {
 
       if (res.ok && data.success) {
         setRegistrationId(data.registrationId || registrationId);
+        setUsername(data.username || username);
         setIsDone(true);
       } else {
         setError(data.error || 'Could not reset the passcode. Request a fresh link.');
@@ -162,8 +165,9 @@ export default function PasscodeResetPage() {
     }
   };
 
-  const signInHref = registrationId
-    ? `/portal?teamId=${encodeURIComponent(registrationId)}`
+  // Prefill with the username, since that is now the login identifier.
+  const signInHref = username
+    ? `/portal?username=${encodeURIComponent(username)}`
     : '/portal';
 
   return (
@@ -236,7 +240,7 @@ export default function PasscodeResetPage() {
                 <div>
                   <div className="font-bold">Passcode updated</div>
                   <div className="mt-1 text-emerald-200/80">
-                    Sign in with your Team ID and the passcode you just chose. Your old
+                    Sign in with your username and the passcode you just chose. Your old
                     passcode and this reset link no longer work.
                   </div>
                 </div>
@@ -257,7 +261,9 @@ export default function PasscodeResetPage() {
                   Resetting the passcode for
                 </div>
                 <div className="mt-1 font-display font-black text-white text-sm">{teamName}</div>
-                <div className="text-[11px] font-mono text-[#38BDF8]">{registrationId}</div>
+                <div className="text-[11px] font-mono text-[#38BDF8]">
+                  {username || registrationId}
+                </div>
               </div>
 
               {error && (

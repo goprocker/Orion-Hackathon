@@ -64,6 +64,7 @@ export async function GET(request: Request) {
       found: true,
       data: {
         teamId: team.registration_id,
+        username: team.username,
         teamName: team.team_name,
         institution: team.institution,
         track: team.problem_statement,

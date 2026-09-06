@@ -68,6 +68,7 @@ export const TeamStatusModal: React.FC<TeamStatusModalProps> = ({ isOpen, onClos
     const found = teams.find(
       (t) =>
         t.teamId.toLowerCase() === lower ||
+        (t.username || '').toLowerCase() === lower.replace(/[^a-z0-9]/g, '') ||
         t.teamName.toLowerCase().includes(lower) ||
         t.leaderEmail.toLowerCase() === lower
     );
@@ -177,8 +178,8 @@ export const TeamStatusModal: React.FC<TeamStatusModalProps> = ({ isOpen, onClos
 
                   <div className="grid grid-cols-2 gap-3 text-xs">
                     <div>
-                      <span className="text-[10px] font-mono-hud text-[#7DD3FC] block">TEAM ID</span>
-                      <span className="text-white font-mono-hud font-bold">{result.teamId}</span>
+                      <span className="text-[10px] font-mono-hud text-[#7DD3FC] block">USERNAME</span>
+                      <span className="text-white font-mono-hud font-bold">{result.username || result.teamId}</span>
                     </div>
                     <div>
                       <span className="text-[10px] font-mono-hud text-[#7DD3FC] block">SELECTED TRACK</span>
@@ -204,7 +205,7 @@ export const TeamStatusModal: React.FC<TeamStatusModalProps> = ({ isOpen, onClos
 
                   <div className="pt-2">
                     <Link
-                      href={`/portal?teamId=${result.teamId}`}
+                      href={`/portal?username=${result.username || ''}`}
                       onClick={onClose}
                       className="btn-glow-cyan w-full py-2.5 font-display font-bold text-xs text-[#040E24] bg-gradient-to-r from-[#FFFFFF] via-[#BAE6FD] to-[#38BDF8] flex items-center justify-center gap-2 cursor-pointer shadow-md"
                     >

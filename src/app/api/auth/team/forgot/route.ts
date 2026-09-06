@@ -8,15 +8,16 @@ import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
 // POST /api/auth/team/forgot — request a passcode reset link
 // ==============================================================================
 //
-// Takes a Team ID and the REGISTERED LEADER EMAIL, and emails a one-time reset
-// link to that address if — and only if — the two belong to the same team.
+// Takes the team's USERNAME (its name as one word) and the REGISTERED LEADER
+// EMAIL, and emails a one-time reset link to that address if — and only if —
+// the two belong to the same team.
 //
 // Three things this route deliberately does NOT do:
 //
-//   1. It never says whether a team exists. Registration IDs are sequential and
-//      printed on every confirmation email, so a route that answered "no such
-//      team" would enumerate the entire event roster, and one that answered
-//      "wrong email" would confirm a leader's address for phishing.
+//   1. It never says whether a team exists. Usernames are just team names, so a
+//      route that answered "no such team" would let anyone with the public team
+//      directory enumerate the roster, and one that answered "wrong email" would
+//      confirm a leader's address for phishing.
 //   2. It never returns the token. The token's only job is to prove control of
 //      the inbox; handing it back in the HTTP response would defeat that
 //      entirely and make the email decorative.
@@ -26,7 +27,7 @@ import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
 const GENERIC_RESPONSE = {
   success: true,
   message:
-    'If that Team ID and registered leader email match, a reset link is on its way. ' +
+    'If that username and registered leader email match, a reset link is on its way. ' +
     'Check the inbox — and the spam folder — for the address you registered with.'
 };
 
@@ -63,13 +64,14 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json().catch(() => ({}));
-    const teamId = String(body?.teamId ?? '').trim();
+    // `teamId` is the wire name kept for older clients; the value is a username.
+    const teamId = String(body?.username ?? body?.teamId ?? '').trim();
     const email = String(body?.email ?? '').trim();
 
     if (!teamId || !email) {
       await settleAfter(startedAt);
       return NextResponse.json(
-        { error: 'Team ID and your registered leader email are both required.' },
+        { error: 'Your team username and registered leader email are both required.' },
         { status: 400 }
       );
     }

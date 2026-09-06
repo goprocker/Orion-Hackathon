@@ -75,13 +75,14 @@ export async function POST(request: Request) {
       });
     }
 
-    // The registration ID goes back so the sign-in form can be prefilled. The
-    // passcode does not — the participant just chose it, and putting it in a
-    // response body only creates another copy to leak.
+    // The username goes back so the sign-in form can be prefilled. The passcode
+    // does not — the participant just chose it, and putting it in a response
+    // body only creates another copy to leak.
     return NextResponse.json({
       success: true,
+      username: result.team?.username || null,
       registrationId: result.team?.registration_id || null,
-      message: 'Passcode updated. Sign in with your Team ID and your new passcode.'
+      message: 'Passcode updated. Sign in with your username and your new passcode.'
     });
   } catch (err: unknown) {
     console.error('[Reset] reset commit error:', err instanceof Error ? err.message : err);

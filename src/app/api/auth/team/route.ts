@@ -12,17 +12,21 @@ export async function POST(request: Request) {
       }, { status: 429 });
     }
 
-    const { teamId, secret } = await request.json();
+    // `teamId` is the wire name kept for older clients; the value is a
+    // username — the team's own name, lowercased with spaces removed.
+    const body = await request.json();
+    const username = body?.username ?? body?.teamId;
 
-    if (!teamId?.trim() || !secret?.trim()) {
-      return NextResponse.json({ error: 'Team ID and access passcode are required' }, { status: 400 });
+    if (!username?.trim() || !body?.secret?.trim()) {
+      return NextResponse.json({ error: 'Username and access passcode are required' }, { status: 400 });
     }
 
-    const team = await serverStore.authenticateTeam(teamId, secret);
+    const team = await serverStore.authenticateTeam(username, body.secret);
 
     if (!team) {
       return NextResponse.json({ 
-        error: 'Invalid credentials. Enter your Team ID (e.g. ORION-2026-0147) and your team access passcode.' 
+        error: 'Invalid credentials. Your username is your team name as one word, without spaces ' +
+               '(so "Tech Titans" signs in as techtitans). Check it against your team access passcode.'
       }, { status: 401 });
     }
 

@@ -254,6 +254,7 @@ interface DispatchOptions {
   /** Short label used to build a stable, non-threading message reference. */
   kind: string;
   registrationId: string;
+  username?: string;
 }
 
 async function dispatchMail(
@@ -279,7 +280,7 @@ async function dispatchMail(
 
   const from = senderAddress();
   const domain = from.split('@')[1] || 'orion.local';
-  const portalLink = `${SITE_URL}/portal?teamId=${encodeURIComponent(opts.registrationId)}`;
+  const portalLink = `${SITE_URL}/portal?username=${encodeURIComponent(opts.username || opts.registrationId)}`;
 
   try {
     const info = await transporter.sendMail({
@@ -484,8 +485,12 @@ export function generatePaymentVerifiedHtml(team: TeamRecord): string {
                         <td style="padding-bottom: 8px; color: #F8FAFC; font-weight: 600; font-size: 13px;">${escapeHtml(team.leader_name)}</td>
                       </tr>
                       <tr>
+                        <td style="padding-bottom: 8px; color: #94A3B8; font-size: 13px;">Portal Username:</td>
+                        <td style="padding-bottom: 8px; font-family: 'JetBrains Mono', Consolas, monospace; color: #22D3EE; font-weight: 700; font-size: 14.5px; letter-spacing: 1px;">${escapeHtml(team.username)}</td>
+                      </tr>
+                      <tr>
                         <td style="padding-bottom: 8px; color: #94A3B8; font-size: 13px;">Registration ID:</td>
-                        <td style="padding-bottom: 8px; font-family: 'JetBrains Mono', Consolas, monospace; color: #22D3EE; font-weight: 700; font-size: 14.5px; letter-spacing: 1px;">${escapeHtml(team.registration_id)}</td>
+                        <td style="padding-bottom: 8px; font-family: 'JetBrains Mono', Consolas, monospace; color: #64748B; font-weight: 600; font-size: 13px; letter-spacing: 1px;">${escapeHtml(team.registration_id)}</td>
                       </tr>
                       <tr>
                         <td style="padding-bottom: 8px; color: #94A3B8; font-size: 13px;">Access Passcode:</td>
@@ -651,7 +656,7 @@ export function generateResubmissionRequiredHtml(team: TeamRecord, reason: strin
     process.env.NEXT_PUBLIC_WHATSAPP_GROUP_URL ||
     'https://chat.whatsapp.com/C76LZLzWkOh3FPC99iXw8f';
   
-  const portalUrl = `${SITE_URL}/portal?teamId=${encodeURIComponent(team.registration_id)}`;
+  const portalUrl = `${SITE_URL}/portal?username=${encodeURIComponent(team.username)}`;
 
   return `<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
@@ -881,7 +886,7 @@ export async function sendPaymentVerifiedEmail(team: TeamRecord): Promise<MailRe
   const to = validRecipient(team, 'payment-verified');
   if (!to) return { success: false, error: 'Invalid or missing team leader email' };
 
-  const portalUrl = `${SITE_URL}/portal?teamId=${encodeURIComponent(team.registration_id)}`;
+  const portalUrl = `${SITE_URL}/portal?username=${encodeURIComponent(team.username)}`;
   const text = [
     `Hello ${team.leader_name},`,
     '',
@@ -890,6 +895,7 @@ export async function sendPaymentVerifiedEmail(team: TeamRecord): Promise<MailRe
     'TEAM ACCESS CREDENTIALS',
     `  Team name        : ${team.team_name}`,
     `  Team leader      : ${team.leader_name}`,
+    `  Portal Username  : ${team.username}`,
     `  Registration ID  : ${team.registration_id}`,
     `  Access passcode  : ${team.access_token}`,
     `  Problem statement: ${team.problem_statement || 'Assigned in Round 1'}`,
@@ -911,7 +917,8 @@ export async function sendPaymentVerifiedEmail(team: TeamRecord): Promise<MailRe
     html: generatePaymentVerifiedHtml(team),
     text,
     kind: 'payment-verified',
-    registrationId: team.registration_id
+    registrationId: team.registration_id,
+    username: team.username
   });
 }
 
@@ -925,7 +932,7 @@ export async function sendResubmissionRequiredEmail(
   const to = validRecipient(team, 'payment-resubmission');
   if (!to) return { success: false, error: 'Invalid or missing team leader email' };
 
-  const portalUrl = `${SITE_URL}/portal?teamId=${encodeURIComponent(team.registration_id)}`;
+  const portalUrl = `${SITE_URL}/portal?username=${encodeURIComponent(team.username)}`;
   const text = [
     `Hello ${team.leader_name},`,
     '',
@@ -950,7 +957,8 @@ export async function sendResubmissionRequiredEmail(
     html: generateResubmissionRequiredHtml(team, reason),
     text,
     kind: 'payment-resubmission',
-    registrationId: team.registration_id
+    registrationId: team.registration_id,
+    username: team.username
   });
 }
 
@@ -962,7 +970,7 @@ export function generatePaymentReminderHtml(team: TeamRecord): string {
     process.env.NEXT_PUBLIC_WHATSAPP_GROUP_URL ||
     'https://chat.whatsapp.com/C76LZLzWkOh3FPC99iXw8f';
   
-  const portalUrl = `${SITE_URL}/portal?teamId=${encodeURIComponent(team.registration_id)}`;
+  const portalUrl = `${SITE_URL}/portal?username=${encodeURIComponent(team.username)}`;
 
   return `<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
@@ -1194,7 +1202,7 @@ export async function sendPaymentReminderEmail(
   const to = validRecipient(team, 'payment-reminder');
   if (!to) return { success: false, error: 'Invalid or missing team leader email' };
 
-  const portalUrl = `${SITE_URL}/portal?teamId=${encodeURIComponent(team.registration_id)}`;
+  const portalUrl = `${SITE_URL}/portal?username=${encodeURIComponent(team.username)}`;
   const text = [
     `Hello ${team.leader_name},`,
     '',
@@ -1221,7 +1229,8 @@ export async function sendPaymentReminderEmail(
     html: generatePaymentReminderHtml(team),
     text,
     kind: 'payment-reminder',
-    registrationId: team.registration_id
+    registrationId: team.registration_id,
+    username: team.username
   });
 }
 
@@ -1233,7 +1242,7 @@ export function generateRegistrationReceivedHtml(team: TeamRecord): string {
     process.env.NEXT_PUBLIC_WHATSAPP_GROUP_URL ||
     'https://chat.whatsapp.com/C76LZLzWkOh3FPC99iXw8f';
   
-  const portalUrl = `${SITE_URL}/portal?teamId=${encodeURIComponent(team.registration_id)}`;
+  const portalUrl = `${SITE_URL}/portal?username=${encodeURIComponent(team.username)}`;
 
   return `<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
@@ -1460,7 +1469,7 @@ export async function sendRegistrationReceivedEmail(
   const to = validRecipient(team, 'registration-received');
   if (!to) return { success: false, error: 'Invalid or missing team leader email' };
 
-  const portalUrl = `${SITE_URL}/portal?teamId=${encodeURIComponent(team.registration_id)}`;
+  const portalUrl = `${SITE_URL}/portal?username=${encodeURIComponent(team.username)}`;
   const roster = team.members
     .map((m, i) => `  ${i + 1}. ${m.member_name} (${m.member_phone})`)
     .join('\n');
@@ -1471,6 +1480,7 @@ export async function sendRegistrationReceivedEmail(
     `Thank you for registering team "${team.team_name}" for ORION 1.0, the 24-hour national hackathon hosted by Microsoft Club SIST at Sathyabama Institute of Science and Technology, Chennai.`,
     '',
     'YOUR TEAM RECORD',
+    `  Portal Username  : ${team.username}`,
     `  Registration ID  : ${team.registration_id}`,
     `  Access passcode  : ${team.access_token}`,
     `  Team leader      : ${team.leader_name} (${team.leader_email})`,
@@ -1495,7 +1505,8 @@ export async function sendRegistrationReceivedEmail(
     html: generateRegistrationReceivedHtml(team),
     text,
     kind: 'registration-received',
-    registrationId: team.registration_id
+    registrationId: team.registration_id,
+    username: team.username
   });
 }
 
@@ -1599,7 +1610,7 @@ function decisionShell(opts: {
 }
 
 export function generateReuploadApprovedHtml(team: TeamRecord, note?: string | null): string {
-  const portalUrl = `${SITE_URL}/portal?teamId=${encodeURIComponent(team.registration_id)}`;
+  const portalUrl = `${SITE_URL}/portal?username=${encodeURIComponent(team.username)}`;
 
   const noteBlock = note
     ? `<table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin:18px 0;background:#030712;border-left:3px solid #10B981;">
@@ -1639,7 +1650,7 @@ export function generateReuploadApprovedHtml(team: TeamRecord, note?: string | n
       </table>
 
       <p style="margin:0;color:#94A3B8;font-size:13px;">
-        Sign in with Registration ID <strong style="color:#E2E8F0;">${escapeHtml(team.registration_id)}</strong>
+        Sign in with username <strong style="color:#E2E8F0;">${escapeHtml(team.username)}</strong>
         and your team access passcode.
       </p>
     `
@@ -1647,7 +1658,7 @@ export function generateReuploadApprovedHtml(team: TeamRecord, note?: string | n
 }
 
 export function generateReuploadRejectedHtml(team: TeamRecord, note?: string | null): string {
-  const portalUrl = `${SITE_URL}/portal?teamId=${encodeURIComponent(team.registration_id)}`;
+  const portalUrl = `${SITE_URL}/portal?username=${encodeURIComponent(team.username)}`;
 
   const noteBlock = note
     ? `<table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin:18px 0;background:#030712;border-left:3px solid #F59E0B;">
@@ -1694,7 +1705,7 @@ export async function sendReuploadApprovedEmail(
   const to = validRecipient(team, 'reupload-approved');
   if (!to) return { success: false, error: 'Invalid or missing team leader email' };
 
-  const portalUrl = `${SITE_URL}/portal?teamId=${encodeURIComponent(team.registration_id)}`;
+  const portalUrl = `${SITE_URL}/portal?username=${encodeURIComponent(team.username)}`;
   const text = [
     `Hello ${team.leader_name},`,
     '',
@@ -1718,7 +1729,8 @@ export async function sendReuploadApprovedEmail(
     html: generateReuploadApprovedHtml(team, note),
     text,
     kind: 'reupload-approved',
-    registrationId: team.registration_id
+    registrationId: team.registration_id,
+    username: team.username
   });
 }
 
@@ -1729,7 +1741,7 @@ export async function sendReuploadRejectedEmail(
   const to = validRecipient(team, 'reupload-rejected');
   if (!to) return { success: false, error: 'Invalid or missing team leader email' };
 
-  const portalUrl = `${SITE_URL}/portal?teamId=${encodeURIComponent(team.registration_id)}`;
+  const portalUrl = `${SITE_URL}/portal?username=${encodeURIComponent(team.username)}`;
   const text = [
     `Hello ${team.leader_name},`,
     '',
@@ -1752,7 +1764,8 @@ export async function sendReuploadRejectedEmail(
     html: generateReuploadRejectedHtml(team, note),
     text,
     kind: 'reupload-rejected',
-    registrationId: team.registration_id
+    registrationId: team.registration_id,
+    username: team.username
   });
 }
 
@@ -1847,12 +1860,13 @@ export async function sendPasscodeResetEmail(
     html: generatePasscodeResetHtml(team, resetUrl, ttlMinutes),
     text,
     kind: 'passcode-reset',
-    registrationId: team.registration_id
+    registrationId: team.registration_id,
+    username: team.username
   });
 }
 
 export function generatePasscodeChangedHtml(team: TeamRecord): string {
-  const portalUrl = `${SITE_URL}/portal?teamId=${encodeURIComponent(team.registration_id)}`;
+  const portalUrl = `${SITE_URL}/portal?username=${encodeURIComponent(team.username)}`;
 
   return decisionShell({
     title: 'ORION 1.0 — Portal Passcode Changed',
@@ -1895,7 +1909,7 @@ export async function sendPasscodeChangedEmail(
   const to = validRecipient(team, 'passcode-changed');
   if (!to) return { success: false, error: 'Invalid or missing team leader email' };
 
-  const portalUrl = `${SITE_URL}/portal?teamId=${encodeURIComponent(team.registration_id)}`;
+  const portalUrl = `${SITE_URL}/portal?username=${encodeURIComponent(team.username)}`;
   const text = [
     `Hello ${team.leader_name},`,
     '',
@@ -1919,6 +1933,7 @@ export async function sendPasscodeChangedEmail(
     html: generatePasscodeChangedHtml(team),
     text,
     kind: 'passcode-changed',
-    registrationId: team.registration_id
+    registrationId: team.registration_id,
+    username: team.username
   });
 }

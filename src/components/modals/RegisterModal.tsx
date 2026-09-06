@@ -83,6 +83,7 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
   const [errorMessage, setErrorMessage] = useState('');
   const [registeredTeamData, setRegisteredTeamData] = useState<{
     teamId: string;
+    username: string;
     accessToken: string;
     teamName: string;
   } | null>(null);
@@ -209,6 +210,7 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
 
       setRegisteredTeamData({
         teamId: data.team.teamId,
+        username: data.team.username,
         accessToken: data.team.accessToken,
         teamName: data.team.teamName
       });
@@ -956,12 +958,15 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
               <div className="p-5 bg-[#040E24] border border-[#38BDF8]/50 text-left space-y-4 max-w-lg mx-auto">
                 <div className="flex items-center justify-between border-b border-white/10 pb-3">
                   <div>
-                    <span className="text-[9px] font-mono-hud text-[#7DD3FC] block">IMMUTABLE TEAM ID</span>
-                    <strong className="text-white font-mono text-lg font-bold">{registeredTeamData.teamId}</strong>
+                    <span className="text-[9px] font-mono-hud text-[#7DD3FC] block">PORTAL USERNAME</span>
+                    <strong className="text-white font-mono text-lg font-bold">{registeredTeamData.username}</strong>
+                    <span className="text-[9px] font-mono-hud text-[#7DD3FC]/70 block mt-1">
+                      TEAM ID {registeredTeamData.teamId}
+                    </span>
                   </div>
                   <button
                     type="button"
-                    onClick={() => handleCopy(registeredTeamData.teamId, 'id')}
+                    onClick={() => handleCopy(registeredTeamData.username, 'id')}
                     className="px-3 py-1.5 bg-[#0B2556] border border-[#38BDF8]/40 text-[#38BDF8] text-xs font-mono flex items-center gap-1.5 cursor-pointer hover:bg-[#0B2556]/80 transition-colors"
                   >
                     {copiedId ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
@@ -985,14 +990,14 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({
                 </div>
 
                 <div className="p-2.5 bg-[#020817] border border-amber-400/30 text-[10px] font-mono text-amber-200/90 leading-relaxed">
-                  ⏳ <strong>Payment Status: Pending Verification</strong>. Save your Team ID and Passcode. You can log in to your <strong>Team Portal</strong> anytime to monitor your payment verification status and access Round 1 PPT submission once verified.
+                  ⏳ <strong>Payment Status: Pending Verification</strong>. Save your Username and Passcode. You can log in to your <strong>Team Portal</strong> anytime to monitor your payment verification status and access Round 1 PPT submission once verified.
                 </div>
               </div>
 
               {/* Action Buttons */}
               <div className="pt-3 flex flex-col sm:flex-row items-center justify-center gap-3">
                 <Link
-                  href={`/portal?teamId=${registeredTeamData.teamId}&token=${registeredTeamData.accessToken}`}
+                  href={`/portal?username=${registeredTeamData.username}&token=${registeredTeamData.accessToken}`}
                   onClick={onClose}
                   className="btn-glow-cyan w-full sm:w-auto px-7 py-3 font-display font-black text-xs text-[#040E24] bg-gradient-to-r from-[#FFFFFF] via-[#BAE6FD] to-[#38BDF8] flex items-center justify-center gap-2 cursor-pointer shadow-lg active:scale-95"
                 >

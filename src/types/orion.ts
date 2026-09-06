@@ -222,6 +222,8 @@ export interface TeamRecord {
   id: string;
   registration_id: string; // e.g. ORION-2026-0147
   team_name: string;
+  username: string; // Portal login handle: team_name, lowercased, no spaces
+
   leader_name: string;
   leader_phone: string;
   leader_email: string;
@@ -250,6 +252,7 @@ export interface TeamRecord {
 
 export interface RegisteredTeam {
   teamId: string;
+  username?: string; // Portal login handle
   teamName: string;
   leaderName: string;
   leaderEmail: string;
