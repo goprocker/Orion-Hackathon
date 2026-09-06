@@ -562,76 +562,71 @@ export const FAQ_DATA: FAQItem[] = [
   {
     category: "Eligibility & Squads",
     question: "Who is eligible to participate in ORION 1.0?",
-    answer: "ORION 1.0 is open to all college students (undergraduate, postgraduate, PhD) and early-career working professionals across India. Cross-institutional and multidisciplinary teams are enthusiastically welcome!"
+    answer: "ORION 1.0 is open to all college students (undergraduate, postgraduate, PhD) and early-career working professionals across India. Cross-institutional, cross-department, and multidisciplinary teams are enthusiastically welcome!"
   },
   {
     category: "Eligibility & Squads",
-    question: "What is the team size?",
-    answer: "Each team must have a minimum of 2 and a maximum of 6 members (1 Team Leader + 1 to 5 Team Members). Individual solo participation is not permitted. Cross-college and cross-department teams are allowed."
+    question: "What is the team size and composition?",
+    answer: "Each team must have a minimum of 2 and a maximum of 6 members (1 Team Leader + 1 to 5 Team Members). Individual solo participation is strictly not permitted. Cross-college, cross-department, and cross-year teams are fully allowed."
   },
   {
     category: "Eligibility & Squads",
     question: "Can team members be from different colleges or departments?",
-    answer: "Yes! Cross-college, cross-department, and cross-year teams are fully permitted. All participants will receive individual certificates of participation."
+    answer: "Yes! Cross-college, cross-department, and cross-year teams are completely permitted. All participating team members will receive individual certificates of participation."
   },
 
-  // 2. Round 1 & Submissions
+  // 2. Round 1 & PPT Submissions
   {
-    category: "Round 1 & Submissions",
+    category: "Round 1 & PPT Submissions",
     question: "What do we need to submit for Round 1?",
-    answer: "Each team must submit an idea abstract and a pitch deck (PPT), prepared using the official ORION 1.0 template, through the Google Form/Team Portal. This must be done on or before 11 September 2026. Only the prescribed template will be accepted — using any other format leads to disqualification."
+    answer: "Each team must submit an idea abstract and a pitch deck (PPT), prepared using the official ORION 1.0 template, through the Google Form / Team Portal on or before 11 September 2026. Only the prescribed template will be accepted — using any other format leads to disqualification."
   },
   {
-    category: "Round 1 & Submissions",
+    category: "Round 1 & PPT Submissions",
     question: "Do we need to submit a prototype or a pitch video for Round 1?",
-    answer: "No. Round 1 only requires the PPT submission. No prototype, code, or video is needed at this stage — you are simply pitching your idea on slides. Demo videos are optionally accepted; if you wish to include one, upload it via the dedicated demo video Drive link shared in the announcement group."
+    answer: "No. Round 1 only requires the PPT submission. No prototype, code, or video is needed at this stage — you are simply pitching your idea on slides. Demo videos are optionally accepted; if you wish to include one, upload it via the dedicated demo video Drive link shared in the official announcement group."
   },
   {
-    category: "Round 1 & Submissions",
+    category: "Round 1 & PPT Submissions",
     question: "Are demo videos accepted from participants for Round 1?",
     answer: "Yes, demo videos are accepted. You can upload your demo video using the dedicated demo video Drive link provided in the official announcement group. The PPT is the mandatory submission — the demo video is optional."
   },
   {
-    category: "Round 1 & Submissions",
+    category: "Round 1 & PPT Submissions",
     question: "How exactly do we submit the PPT and demo video for Round 1?",
-    answer: "They are submitted separately using two different links shared in the official announcement group: PPT → upload via the dedicated PPT Drive link; Demo video → upload via the dedicated demo video Drive link. Do not combine them into a single folder — use the respective link for each file."
+    answer: "They are submitted separately using two different links shared in the official announcement group:\n• PPT → upload via the dedicated PPT Drive link\n• Demo video → upload via the dedicated demo video Drive link\n\nPlease do not combine them into a single folder — use the respective link for each file."
   },
   {
-    category: "Round 1 & Submissions",
-    question: "Can we modify the slide count or format of the PPT template?",
-    answer: "No. Strict rule: No slides may be added, removed, or reordered. Branding, headers, and footers must remain intact. Only fill the provided content placeholders. File name must be formatted as: TeamName_ORION1.0 (PPTX or PDF)."
+    category: "Round 1 & PPT Submissions",
+    question: "I need to upload a folder consisting of my PPT and demo video, but it isn't uploading to Drive. Shall I upload separately?",
+    answer: "Yes — upload them separately. There are two separate Drive links shared in the announcement group: one dedicated link for the PPT and a separate link for the demo video. Please do not combine them into a single folder — use the respective link for each file."
   },
   {
-    category: "Round 1 & Submissions",
-    question: "What is the deadline for Round 1 submission?",
-    answer: "Round 1 online submissions close on 11 September 2026. Teams must submit their PPT through the Google Form/Team Portal on or before this date."
-  },
-  {
-    category: "Round 1 & Submissions",
+    category: "Round 1 & PPT Submissions",
     question: "I already submitted my PPT, but I want to upload a newer/updated version. What should I do?",
-    answer: "Google Form entries cannot be edited once submitted. In this case, simply upload the newer PPT to the shared Google Drive link provided by the organizers. You do not need to fill the form again — the Drive upload alone is sufficient to update your submission."
+    answer: "Google Form entries cannot be edited once submitted. In this case, simply upload the newer PPT to the shared Google Drive link provided by the organizers in the official announcement group. You do not need to fill the form again — the Drive upload alone is sufficient to update your submission."
   },
   {
-    category: "Round 1 & Submissions",
-    question: "I need to upload a folder with my PPT and demo video, but it isn't uploading to Drive. What should I do?",
-    answer: "Upload them separately. There are two separate Drive links shared in the official announcement group: one dedicated link for the PPT and a separate link for the demo video. Do not combine them into a single folder — use the respective link for each file."
-  },
-  {
-    category: "Round 1 & Submissions",
+    category: "Round 1 & PPT Submissions",
     question: "What if the PPT submission link isn't working properly?",
-    answer: "If the originally shared submission link isn't working, a new/updated link has been posted in the official announcement group. Please check the announcement group and use that updated link to complete your submission."
+    answer: "If the originally shared submission link isn't working, a new/updated link has been posted in the official announcement group. Please check the announcement group and use that link to complete your submission."
   },
   {
-    category: "Round 1 & Submissions",
+    category: "Round 1 & PPT Submissions",
+    question: "Can we modify the slide count, format, or branding of the PPT template?",
+    answer: "No. Strict rule: No slides may be added, removed, or reordered. Branding, headers, and footers must remain intact. The Team ID field on the PPT must be left blank (it will be filled in by the organizing team). Submissions must be named strictly as: TeamName_ORION1.0 (PPTX or PDF)."
+  },
+  {
+    category: "Round 1 & PPT Submissions",
     question: "Is Open Innovation / Student Innovation Projects allowed?",
     answer: "Yes, but only for Round 1. Teams without a flagship track idea can propose their own Open Innovation or Student Innovation project. However, this option is not available in the Grand Finale — every finalist team will instead work on a problem statement assigned on the spot at the venue."
   },
 
-  // 3. Finale & Fees
+  // 3. Finale, Selection & Fees
   {
     category: "Finale & Fees",
     question: "What is the registration fee?",
-    answer: "Round 1 (online): ₹100 flat per team, regardless of team size. This covers the entire squad, not per member. Grand Finale (only for shortlisted teams): ₹250 per head — charged individually for each finalist team member, not per team."
+    answer: "Round 1 (online): ₹100, flat per team, regardless of team size. This covers the entire squad (2–6 members), not per member. Grand Finale (only for shortlisted teams): ₹250 per head — charged individually for each finalist team member, not per team."
   },
   {
     category: "Finale & Fees",
@@ -640,28 +635,23 @@ export const FAQ_DATA: FAQItem[] = [
   },
   {
     category: "Finale & Fees",
-    question: "How does the two-tier fee structure work?",
-    answer: "Round 1 is a low-barrier online qualifier with a flat registration fee of ₹100 per team (regardless of 2 or 6 members). Only teams shortlisted in the Top 70 for the offline Grand Finale pay the ₹250 per head finalist confirmation fee, which covers 2 days of meals (Breakfasts, Lunches & Dinner), official swag kits, 24/7 venue access, and free hostel accommodation."
-  },
-  {
-    category: "Finale & Fees",
     question: "How many teams qualify for the Grand Finale?",
     answer: "The Top 70 teams, selected through jury evaluation of Round 1 submissions (based on innovation, feasibility, technical depth, and template compliance), will advance to the 24-hour offline Grand Finale."
   },
   {
     category: "Finale & Fees",
-    question: "How are the prizes distributed?",
-    answer: "The total prize pool of ₹1,00,000 (including ₹25k 1st Place, ₹15k 1st Runner-Up, ₹10k 2nd Runner-Up, and Special Track Bounties) along with Certificates of Merit and trophies will be awarded physically during the Valedictory Ceremony immediately concluding the 24-hour sprint."
-  },
-  {
-    category: "Finale & Fees",
     question: "How are the Grand Finale problem statements distributed?",
-    answer: "All shortlisted teams receive their problem statements on the spot on 18 September 2026, at the start of the 24-hour offline sprint at SIST Chennai. Teams must build their finale solution on the problem statement assigned during the event. The Open Innovation category is not available in the final round."
+    answer: "All shortlisted teams receive their problem statements on the spot on 18 September 2026, at the start of the 24-hour offline sprint at SIST Chennai. Teams must build their solution on the problem statement assigned during the event. Open Innovation is not available in the final round."
   },
   {
     category: "Finale & Fees",
     question: "What are the important dates?",
-    answer: "Registration closes: 11 September 2026. Round 1 (online idea submission): on or before 11 September 2026. Grand Finale (offline): 18–19 September 2026."
+    answer: "• Registration closes: 11 September 2026\n• Round 1 (online idea submission): on or before 11 September 2026\n• Top 70 Shortlist Announcement: 13 September 2026\n• Grand Finale (offline): 18–19 September 2026 at Sathyabama Institute of Science and Technology, Chennai."
+  },
+  {
+    category: "Finale & Fees",
+    question: "How are the prizes distributed?",
+    answer: "The total prize pool of ₹1,00,000 (including ₹25k 1st Place Champion, ₹15k 1st Runner-Up, ₹10k 2nd Runner-Up, and Special Track Bounties) along with Certificates of Merit and trophies will be awarded physically during the Valedictory Ceremony immediately concluding the 24-hour sprint."
   },
 
   // 4. Hospitality & Venue
@@ -672,23 +662,13 @@ export const FAQ_DATA: FAQItem[] = [
   },
   {
     category: "Hospitality & Venue",
-    question: "What meals and refreshments are provided during the Grand Finale?",
-    answer: "All confirmed finalist teams receive full event catering across the 24-hour offline hackathon at SIST Chennai, including 2 Breakfasts, 2 Lunches, Dinner, and midnight booster packs (coffee, tea, snacks, and energy boosters). Multi-cuisine options are catered inside the air-conditioned hack arena."
-  },
-  {
-    category: "Hospitality & Venue",
-    question: "Is free accommodation provided for outstation teams?",
-    answer: "Yes! Free on-campus hostel accommodation at Sathyabama Institute of Science and Technology (SIST) is provided for all confirmed out-of-Chennai finalist teams. Clean hostel rooms with bedding, round-the-clock security, and washroom facilities are arranged."
-  },
-  {
-    category: "Hospitality & Venue",
     question: "Where is the offline Grand Finale venue and how do we reach it?",
     answer: "The 24-hour offline sprint takes place at the School of Computing Complex, Sathyabama Institute of Science and Technology, Jeppiaar Nagar, Rajiv Gandhi Salai (OMR), Chennai - 600119. The campus is ~22 km from Chennai International Airport (MAA) and ~25 km from Chennai Central (MAS) / Tambaram Railway Station with direct bus and cab connectivity."
   },
   {
     category: "Hospitality & Venue",
     question: "What hardware and connectivity amenities are available at the arena?",
-    answer: "Participants have access to 24/7 uninterrupted power backup, dedicated power sockets at every team station, high-speed dual-band Wi-Fi and LAN mesh networks, mentor breakout zones, and round-the-clock medical & technical support."
+    answer: "Participants have access to 24/7 uninterrupted power backup, dedicated power sockets at every team station, high-speed dual-band Wi-Fi and LAN mesh networks, mentor breakout zones, and round-the-clock medical and technical support."
   },
   {
     category: "Hospitality & Venue",

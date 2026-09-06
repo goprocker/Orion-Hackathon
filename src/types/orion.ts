@@ -25,8 +25,10 @@ export interface FAQItem {
     | 'Finale & Logistics'
     | 'Eligibility & Squads'
     | 'Round 1 & Submissions'
+    | 'Round 1 & PPT Submissions'
     | 'Finale & Fees'
-    | 'Hospitality & Venue';
+    | 'Hospitality & Venue'
+    | string;
 }
 
 export interface PatronProfile {
