@@ -677,6 +677,48 @@ export const FAQ_DATA: FAQItem[] = [
     category: "Hospitality & Venue",
     question: "What documents do participants need to carry for campus entry?",
     answer: "Every participant must carry their official College/University ID card (or valid government photo ID) along with their digital ORION 1.0 Finalist Invitation Dossier for security check-in at the main campus gate."
+  },
+
+  // 5. Special Mentions
+  {
+    category: "Special Mentions",
+    question: "Can participants leave the campus during the event?",
+    answer: "No. Once participants enter the campus, they must remain inside until the event concludes and the organizers permit departure. Leaving during the event is not allowed."
+  },
+  {
+    category: "Special Mentions",
+    question: "Are outside food deliveries allowed?",
+    answer: "No. Food and snack deliveries through services such as Blinkit, Swiggy, and Instamart, or any other external delivery service, are not permitted inside the university campus."
+  },
+  {
+    category: "Special Mentions",
+    question: "Can participants bring their own food or snacks?",
+    answer: "Yes. Participants may bring packed food and snacks. These must be consumed outside the event venue, within the campus, only during designated breaks or at times permitted by the organizers."
+  },
+  {
+    category: "Special Mentions",
+    question: "Is eating allowed inside the event venue?",
+    answer: "No. Eating food or snacks inside the event venue is strictly prohibited."
+  },
+  {
+    category: "Special Mentions",
+    question: "Can we change or replace team members on the day of the finals?",
+    answer: "No. Changes, substitutions, or swapping of team members on the event day are not permitted. Participants must attend with their registered team."
+  },
+  {
+    category: "Special Mentions",
+    question: "Can registration fees be refunded?",
+    answer: "No. All payments are strictly non-refundable."
+  },
+  {
+    category: "Special Mentions",
+    question: "Can fees be transferred or exchanged between teams?",
+    answer: "No. Fees cannot be transferred, adjusted, or exchanged between teams."
+  },
+  {
+    category: "Special Mentions",
+    question: "Will the Round 1 fee be refunded if our team does not qualify?",
+    answer: "No. The Round 1 registration fee will not be refunded if a team does not qualify for the finals."
   }
 ];
 

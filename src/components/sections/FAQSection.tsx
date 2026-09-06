@@ -6,7 +6,7 @@ import { ScrollReveal } from '../common/ScrollReveal';
 import { FAQ_DATA } from '../../data/orionData';
 import { sound } from '../../audio/soundEffects';
 
-type FAQCategory = 'all' | 'eligibility' | 'submission' | 'finale' | 'hospitality';
+type FAQCategory = 'all' | 'eligibility' | 'submission' | 'finale' | 'hospitality' | 'special';
 
 export const FAQSection: React.FC = () => {
   const [openIdx, setOpenIdx] = useState<number | null>(0);
@@ -17,7 +17,8 @@ export const FAQSection: React.FC = () => {
     { id: 'eligibility', label: 'ELIGIBILITY & SQUADS' },
     { id: 'submission', label: 'ROUND 1 & PPT TEMPLATE' },
     { id: 'finale', label: 'FINALE & FEES' },
-    { id: 'hospitality', label: 'HOSPITALITY & VENUE' }
+    { id: 'hospitality', label: 'HOSPITALITY & VENUE' },
+    { id: 'special', label: 'SPECIAL MENTIONS' }
   ];
 
   const filteredFaqs = FAQ_DATA.filter(faq => {
@@ -33,6 +34,9 @@ export const FAQSection: React.FC = () => {
     }
     if (categoryFilter === 'hospitality') {
       return faq.category.toLowerCase().includes('hospit') || faq.category.toLowerCase().includes('venue') || faq.category.toLowerCase().includes('accommodat');
+    }
+    if (categoryFilter === 'special') {
+      return faq.category.toLowerCase().includes('special');
     }
     return faq.category.toLowerCase().includes(categoryFilter);
   });
