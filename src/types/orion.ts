@@ -82,6 +82,9 @@ export type Round2Status =
 export interface TeamMember {
   id?: string;
   team_id?: string;
+  /** Denormalised copy of teams.team_name, maintained by a database trigger
+   *  (migration 011). Read-only — never send it on an insert or update. */
+  team_name?: string;
   member_number: number;
   member_name: string;
   member_email?: string;

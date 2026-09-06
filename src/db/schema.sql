@@ -34,6 +34,9 @@ create table if not exists public.team_members (
   team_id uuid references public.teams(id) on delete cascade not null,
   member_number integer not null check (member_number between 1 and 6),
   member_name text not null,
+  -- Denormalised copy of teams.team_name so the roster reads without a join.
+  -- Maintained by trigger, never written by hand. See migrations/011.
+  team_name text not null,
   member_email text,
   member_phone text not null,
   department text,
