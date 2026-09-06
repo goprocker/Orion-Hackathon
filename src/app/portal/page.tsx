@@ -34,6 +34,7 @@ import { GlassCard } from '@/components/common/GlassCard';
 import { PaymentReceiptModal } from '@/components/modals/PaymentReceiptModal';
 import type { TeamRecord, SystemConfig } from '@/types/orion';
 import { RESET_TOKEN_TTL_MINUTES } from '@/lib/passcodePolicy';
+import { SUBMISSION_DRIVE_URL } from '@/data/orionData';
 import { sound } from '@/audio/soundEffects';
 import confetti from 'canvas-confetti';
 
@@ -41,9 +42,10 @@ export default function TeamPortalPage() {
   const [teamIdInput, setTeamIdInput] = useState(() => {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
-      // regId kept as a fallback: emails sent before the param rename link
-      // /portal?regId=... and should still prefill the Team ID field.
-      return params.get('teamId') || params.get('regId') || sessionStorage.getItem('orion_portal_team_id') || '';
+      // Only ?username= prefills. Older mail links carry ?teamId=ORION-2026-XXXX,
+      // and a registration ID in the username box would just fail the login with
+      // no hint why — better to leave the field empty and let the label explain.
+      return params.get('username') || sessionStorage.getItem('orion_portal_team_id') || '';
     }
     return '';
   });
@@ -90,7 +92,7 @@ export default function TeamPortalPage() {
   const [reuploadMsg, setReuploadMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   // Forgot-passcode flow — requests a one-time reset link to the registered
-  // leader email. Reuses the Team ID field above rather than asking for it twice.
+  // leader email. Reuses the username field above rather than asking twice.
   const [showForgot, setShowForgot] = useState(false);
   const [forgotEmail, setForgotEmail] = useState('');
   const [isSendingReset, setIsSendingReset] = useState(false);
@@ -104,7 +106,7 @@ export default function TeamPortalPage() {
       const res = await fetch('/api/auth/team', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ teamId: id.trim(), secret: token.trim() })
+        body: JSON.stringify({ username: id.trim(), secret: token.trim() })
       });
       const data = await res.json();
       if (res.ok && data.team) {
@@ -137,7 +139,7 @@ export default function TeamPortalPage() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
-      const qTeamId = params.get('teamId') || params.get('regId');
+      const qTeamId = params.get('username');
       const qToken = params.get('token');
 
       const savedId = sessionStorage.getItem('orion_portal_team_id');
@@ -178,7 +180,7 @@ export default function TeamPortalPage() {
       const res = await fetch('/api/auth/team/forgot', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ teamId: teamIdInput.trim(), email: forgotEmail.trim() })
+        body: JSON.stringify({ username: teamIdInput.trim(), email: forgotEmail.trim() })
       });
       const data = await res.json();
 
@@ -503,14 +505,14 @@ export default function TeamPortalPage() {
               <form onSubmit={handleLoginSubmit} className="space-y-4">
                 <div>
                   <label className="block text-[11px] font-mono-hud text-[#BAE6FD] mb-1">
-                    TEAM ID (e.g. ORION-2026-0147) <span className="text-[#38BDF8]">*</span>
+                    USERNAME (your team name, no spaces) <span className="text-[#38BDF8]">*</span>
                   </label>
                   <input
                     type="text"
                     required
                     value={teamIdInput}
                     onChange={(e) => setTeamIdInput(e.target.value)}
-                    placeholder="ORION-2026-XXXX or Leader Email"
+                    placeholder="e.g. techtitans"
                     className="w-full px-3.5 py-2.5 bg-[#040E24] border border-[rgba(212,233,255,0.15)] text-white text-xs font-mono-hud focus:border-[#38BDF8] focus:outline-none"
                   />
                 </div>
@@ -569,7 +571,7 @@ export default function TeamPortalPage() {
                   </div>
 
                   <p className="text-[11px] text-slate-400 font-sans mb-3 leading-relaxed">
-                    Fill in your Team ID above, then the leader email you registered with.
+                    Fill in your username above, then the leader email you registered with.
                     We will send a one-time reset link to that address — it expires in{' '}
                     {RESET_TOKEN_TTL_MINUTES} minutes. The link only ever goes to the
                     registered address, never to whoever asks.
@@ -664,16 +666,18 @@ export default function TeamPortalPage() {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-3">
-                  {/* Team ID Pill */}
+                  {/* Username Pill — the sign-in identifier */}
                   <div className="p-2.5 bg-[#040E24] border border-[#38BDF8]/50 flex items-center gap-2.5">
                     <div>
-                      <div className="text-[8px] font-mono-hud text-[#7DD3FC]">TEAM ID</div>
-                      <div className="text-white font-mono font-bold text-sm">{team.registration_id}</div>
+                      <div className="text-[8px] font-mono-hud text-[#7DD3FC]">
+                        USERNAME · ID {team.registration_id}
+                      </div>
+                      <div className="text-white font-mono font-bold text-sm">{team.username}</div>
                     </div>
                     <button
-                      onClick={() => handleCopy(team.registration_id, 'id')}
+                      onClick={() => handleCopy(team.username, 'id')}
                       className="p-1.5 bg-[#07193D] hover:bg-[#38BDF8]/20 text-[#38BDF8] transition-colors"
-                      title="Copy Team ID"
+                      title="Copy username"
                     >
                       {copiedId ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                     </button>
@@ -1137,6 +1141,26 @@ export default function TeamPortalPage() {
                   </div>
                 ) : (
                   <div className="space-y-4">
+                    {/* Official Google Drive submission folder */}
+                    <div className="p-4 bg-[#040E24] border border-emerald-500/40 space-y-2">
+                      <div className="flex items-center gap-2 text-emerald-400 font-mono-hud text-xs font-bold">
+                        <ExternalLink className="w-4 h-4" />
+                        <span>OFFICIAL SUBMISSION LINK</span>
+                      </div>
+                      <p className="text-xs text-slate-400 font-sans">
+                        Submit your Round 1 presentation to the official ORION 1.0 drive folder:
+                      </p>
+                      <a
+                        href={SUBMISSION_DRIVE_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-xs font-mono text-emerald-400 hover:text-emerald-300 underline underline-offset-4 break-all"
+                      >
+                        <span>{SUBMISSION_DRIVE_URL}</span>
+                        <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+                      </a>
+                    </div>
+
                     {/* Active Submission Card if file exists */}
                     {latestSubmission && (
                       <div className="p-4 bg-[#040E24] border border-emerald-500/40 space-y-3">

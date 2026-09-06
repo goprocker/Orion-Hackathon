@@ -228,6 +228,9 @@ export const PROBLEM_STATEMENTS: ProblemStatement[] = [
 
 export const OFFICIAL_PPT_TEMPLATE_URL = '/ORION_1.0_Template.pptx';
 
+export const SUBMISSION_DRIVE_URL =
+  'https://drive.google.com/drive/folders/1OtzOvFmcQnygkD8q7Y0UTZm8XA2HUUp0?usp=sharing';
+
 export const PPT_TEMPLATE_RULES = [
   {
     rule: "No slides may be added",

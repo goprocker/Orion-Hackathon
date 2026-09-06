@@ -7,12 +7,14 @@ import {
   Sparkles,
   Target,
   Mic,
-  Download
+  Download,
+  UploadCloud,
+  ExternalLink
 } from 'lucide-react';
 import { GlassCard } from '../common/GlassCard';
 import { ScrollReveal } from '../common/ScrollReveal';
 import { AnimatedCounter } from '../common/AnimatedCounter';
-import { EVENT_METRICS, JUDGING_CRITERIA, OFFICIAL_PPT_TEMPLATE_URL } from '../../data/orionData';
+import { EVENT_METRICS, JUDGING_CRITERIA, OFFICIAL_PPT_TEMPLATE_URL, SUBMISSION_DRIVE_URL } from '../../data/orionData';
 
 export const GuidelinesSection: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'phases' | 'submission' | 'judging'>('phases');
@@ -198,8 +200,38 @@ export const GuidelinesSection: React.FC = () => {
                   <Download className="w-4 h-4 text-[#040E24]" />
                   <span>DOWNLOAD OFFICIAL TEMPLATE (.PPTX)</span>
                 </a>
+
+                <a
+                  href={SUBMISSION_DRIVE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-400 hover:from-emerald-400 hover:to-emerald-500 text-[#040E24] font-display font-black text-xs flex items-center justify-center gap-2 rounded-lg cursor-pointer shadow-[0_0_20px_rgba(16,185,129,0.4)] active:scale-95 transition-all shrink-0"
+                >
+                  <UploadCloud className="w-4 h-4 text-[#040E24]" />
+                  <span>OPEN SUBMISSION LINK</span>
+                  <ExternalLink className="w-3.5 h-3.5 text-[#040E24]" />
+                </a>
               </div>
               
+              <div className="p-4 bg-emerald-500/5 border border-emerald-500/30 rounded-xl text-left space-y-2">
+                <div className="flex items-center gap-2 text-emerald-300 font-mono text-xs font-bold uppercase tracking-wider">
+                  <UploadCloud className="w-4 h-4" />
+                  <span>Official Submission Link</span>
+                </div>
+                <p className="text-xs text-slate-300 font-sans">
+                  Upload your completed Round 1 presentation to the official ORION 1.0 submission drive folder:
+                </p>
+                <a
+                  href={SUBMISSION_DRIVE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-xs font-mono text-emerald-400 hover:text-emerald-300 underline underline-offset-4 break-all"
+                >
+                  <span>{SUBMISSION_DRIVE_URL}</span>
+                  <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+                </a>
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
                 <div className="space-y-4 text-xs sm:text-sm text-slate-300 font-sans">
                   <div className="flex items-start gap-3">
