@@ -24,9 +24,11 @@ export async function POST(request: Request) {
     const team = await serverStore.authenticateTeam(username, body.secret);
 
     if (!team) {
-      return NextResponse.json({ 
-        error: 'Invalid credentials. Your username is your team name as one word, without spaces ' +
-               '(so "Tech Titans" signs in as techtitans). Check it against your team access passcode.'
+      return NextResponse.json({
+        error: 'Invalid credentials. Your username is your team name as one word and your ' +
+               'passcode is your team leader\'s name as one word — drop the spaces and ' +
+               'punctuation from both, so "Tech Titans" led by "Deekshith. P" is ' +
+               'techtitans / deekshithp. Capitals do not matter.'
       }, { status: 401 });
     }
 

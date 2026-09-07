@@ -495,6 +495,18 @@ export default function TeamPortalPage() {
                 </div>
               </div>
 
+              {/* Both halves are things the whole squad already knows, so nobody
+                  has to dig a registration ID out of one person's inbox. Several
+                  squads picked the same team name — the leader's name is what
+                  tells them apart, so it has to be the leader who registered. */}
+              <div className="mb-5 p-3 bg-[#040E24] border border-[#38BDF8]/25 text-[#BAE6FD] text-[11px] font-mono-hud leading-relaxed">
+                Sign in with your <span className="text-white font-bold">team name</span> as the
+                username and your <span className="text-white font-bold">team leader&apos;s name</span> as
+                the passcode. Drop the spaces and punctuation from both — &ldquo;Tech Titans&rdquo;
+                led by &ldquo;Deekshith. P&rdquo; is <span className="text-[#38BDF8]">techtitans</span> /{' '}
+                <span className="text-[#38BDF8]">deekshithp</span>. Capitals do not matter.
+              </div>
+
               {authError && (
                 <div className="mb-5 p-3 bg-rose-950/60 border border-rose-500/50 text-rose-200 text-xs font-mono flex items-start gap-2">
                   <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
@@ -519,14 +531,14 @@ export default function TeamPortalPage() {
 
                 <div>
                   <label className="block text-[11px] font-mono-hud text-[#BAE6FD] mb-1">
-                    PASSCODE <span className="text-[#38BDF8]">*</span>
+                    PASSCODE (your team leader&apos;s name, no spaces) <span className="text-[#38BDF8]">*</span>
                   </label>
                   <input
                     type="password"
                     required
                     value={secretInput}
                     onChange={(e) => setSecretInput(e.target.value)}
-                    placeholder="ORN-XXXX-XXXX"
+                    placeholder="e.g. deekshithp"
                     className="w-full px-3.5 py-2.5 bg-[#040E24] border border-[rgba(212,233,255,0.15)] text-white text-xs font-mono-hud focus:border-[#38BDF8] focus:outline-none"
                   />
                 </div>

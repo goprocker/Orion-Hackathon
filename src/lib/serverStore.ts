@@ -661,11 +661,16 @@ export const serverStore = {
       try {
         // Value passed as an argument and LIKE wildcards escaped — never
         // interpolated into the filter grammar, or `*` would match every row.
+        // Not limit(1): a username is NOT unique. Migration 016 loads the
+        // organisers' credential sheet verbatim, and four separate squads on it
+        // are called TECHTITANS. Every row on the username is fetched and the
+        // passcode picks the one that owns it — (username, passcode) is the
+        // login key, and that pair is what the database enforces as unique.
         let { data: teams, error } = await supabase
           .from('teams')
           .select('*')
           .ilike('username', escapeLikeValue(cleanUsername))
-          .limit(5);
+          .limit(25);
 
         // The column arrives with migration 015. If the app is deployed ahead
         // of the migration the query fails, and without this branch that means
@@ -748,7 +753,25 @@ export const serverStore = {
 
     if (!cleanId || !cleanEmail || !looksLikeEmail(cleanEmail)) return null;
 
-    const team = await this.getTeam(cleanId);
+    // getTeam() resolves a username to the OLDEST matching row, which is the
+    // wrong row for three of the four squads called TECHTITANS (see migration
+    // 016 — usernames are not unique, the pair is). The email is the second
+    // half of the credential either way, so when it does not match the oldest
+    // row, look the team up BY the email and confirm it carries the username
+    // that was typed. Without this, only the oldest squad on a shared name
+    // could ever reset.
+    let team = await this.getTeam(cleanId);
+
+    if (!team || !team.leader_email || !safeEqualCI(team.leader_email, cleanEmail)) {
+      const byEmail = await this.getTeam(cleanEmail);
+      const typedUsername = toUsername(cleanId);
+      const matchesTyped = !!byEmail && (
+        byEmail.registration_id.toLowerCase() === cleanId.toLowerCase() ||
+        (!!typedUsername && (byEmail.username || toUsername(byEmail.team_name)) === typedUsername)
+      );
+      team = matchesTyped ? byEmail : null;
+    }
+
     if (!team) return null;
 
     // Constant-time and case-insensitive, matching how the address was stored.
