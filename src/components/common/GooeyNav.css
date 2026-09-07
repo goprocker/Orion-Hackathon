@@ -1,0 +1,117 @@
+:root {
+  --color-1: #FFFFFF;
+  --color-2: #BAE6FD;
+  --color-3: #00BCF2;
+  --color-4: #0078D4;
+}
+
+.gooey-nav-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  background: rgba(11, 18, 32, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 4px;
+  border-radius: 0px !important;
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.gooey-nav-container nav {
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.gooey-nav-container nav ul {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 2px;
+}
+
+.gooey-nav-container nav ul li {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  z-index: 2;
+}
+
+.gooey-nav-container nav ul li a {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #94A3B8;
+  text-decoration: none;
+  transition: color 0.15s ease;
+  white-space: nowrap;
+  cursor: pointer;
+  border-radius: 0px !important;
+}
+
+.gooey-nav-container nav ul li a:hover {
+  color: #FFFFFF;
+}
+
+.gooey-nav-container nav ul li.active a {
+  color: transparent;
+}
+
+.gooey-nav-container .effect {
+  position: absolute;
+  pointer-events: none;
+  box-sizing: border-box;
+  border-radius: 0px !important;
+}
+
+.gooey-nav-container .effect.filter {
+  background: linear-gradient(135deg, #00BCF2 0%, #0078D4 100%);
+  z-index: 1;
+  box-shadow: 0 4px 14px rgba(0, 188, 242, 0.45);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gooey-nav-container .effect.text {
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gooey-nav-container .particle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.gooey-nav-container .particle .point {
+  display: block;
+  width: 4px;
+  height: 4px;
+  background: var(--color, #00BCF2);
+  border-radius: 0px !important;
+  box-shadow: 0 0 6px var(--color, #00BCF2);
+}
