@@ -15,6 +15,7 @@ import { OrganizersSection } from '@/components/sections/OrganizersSection';
 import { FAQSection } from '@/components/sections/FAQSection';
 import { Footer } from '@/components/sections/Footer';
 import { RegisterModal } from '@/components/modals/RegisterModal';
+import { OrionChatbot } from '@/components/chatbot/OrionChatbot';
 import { TeamStatusModal } from '@/components/modals/TeamStatusModal';
 import { ChallengeModal } from '@/components/modals/ChallengeModal';
 import { INITIAL_REGISTERED_TEAMS, GOOGLE_FORM_REGISTRATION_URL } from '@/data/orionData';
@@ -141,6 +142,9 @@ export default function Home() {
           onClose={() => setSelectedProblem(null)}
           onSelectTrack={handleSelectTrackFromModal}
         />
+
+        {/* ORION AI Floating Chatbot */}
+        <OrionChatbot />
       </div>
     </ClickSpark>
   );
