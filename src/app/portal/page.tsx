@@ -114,6 +114,16 @@ export default function TeamPortalPage() {
         setConfig(data.config);
         sessionStorage.setItem('orion_portal_team_id', id.trim());
         sessionStorage.setItem('orion_portal_token', token.trim());
+        if (data.team.round_1_status === 'SELECTED') {
+          setTimeout(() => {
+            confetti({
+              particleCount: 100,
+              spread: 70,
+              origin: { y: 0.6 }
+            });
+            sound.playSuccessCelebration();
+          }, 300);
+        }
       } else {
         setAuthError(data.error || 'Authentication failed');
       }
@@ -757,9 +767,9 @@ export default function TeamPortalPage() {
               </div>
 
               {/* Step 3: Round 1 */}
-              <div className={`p-4 space-y-2 border ${
+              <div className={`p-4 space-y-2 border transition-all ${
                 team.round_1_status === 'SELECTED'
-                  ? 'bg-[#07193D]/80 border-[#38BDF8]'
+                  ? 'bg-gradient-to-b from-[#07193D] to-[#042F2E] border-emerald-400 shadow-[0_0_20px_rgba(52,211,153,0.3)]'
                   : ['SUBMITTED', 'UNDER_REVIEW'].includes(team.round_1_status)
                   ? 'bg-[#07193D]/80 border-emerald-500/40'
                   : team.payment_status === 'VERIFIED'
@@ -770,34 +780,36 @@ export default function TeamPortalPage() {
                   <span className="text-[10px] font-mono-hud text-slate-400 font-bold">PHASE 03</span>
                   <span className={`text-[10px] font-mono px-2 py-0.5 font-bold ${
                     team.round_1_status === 'SELECTED'
-                      ? 'bg-[#38BDF8] text-[#040E24]'
+                      ? 'bg-emerald-400 text-[#040E24] shadow-sm font-black tracking-wider'
                       : ['SUBMITTED', 'UNDER_REVIEW'].includes(team.round_1_status)
                       ? 'bg-emerald-950 text-emerald-300 border border-emerald-500/30'
                       : team.payment_status === 'VERIFIED'
                       ? 'bg-[#0B2556] text-[#38BDF8] border border-[#38BDF8]/40'
                       : 'bg-slate-900 text-slate-500'
                   }`}>
-                    {team.round_1_status.replace('_', ' ')}
+                    {team.round_1_status === 'SELECTED' ? '★ SHORTLISTED' : team.round_1_status.replace('_', ' ')}
                   </span>
                 </div>
-                <div className="text-sm font-display font-bold text-white">Round 1 Presentation</div>
-                <p className="text-[11px] text-slate-400 font-sans">PDF / PPTX blueprint upload</p>
+                <div className="text-sm font-display font-bold text-white">Round 1 Evaluation</div>
+                <p className="text-[11px] text-slate-400 font-sans">
+                  {team.round_1_status === 'SELECTED' ? 'Shortlisted for ORION Hackathon' : 'PDF / PPTX blueprint upload'}
+                </p>
               </div>
 
               {/* Step 4: Round 2 Finale */}
-              <div className={`p-4 space-y-2 border ${
-                team.round_2_status === 'ACCESS_GRANTED'
-                  ? 'bg-gradient-to-b from-[#07193D] to-[#0B2556] border-[#38BDF8] shadow-[0_0_15px_rgba(56,189,248,0.3)]'
+              <div className={`p-4 space-y-2 border transition-all ${
+                (team.round_1_status === 'SELECTED' || team.round_2_status === 'ACCESS_GRANTED')
+                  ? 'bg-gradient-to-b from-[#07193D] via-[#0B2556] to-[#042422] border-[#38BDF8] shadow-[0_0_20px_rgba(56,189,248,0.35)]'
                   : 'bg-[#040E24]/60 border-white/10 opacity-60'
               }`}>
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] font-mono-hud text-slate-400 font-bold">PHASE 04</span>
                   <span className={`text-[10px] font-mono px-2 py-0.5 font-bold ${
-                    team.round_2_status === 'ACCESS_GRANTED'
-                      ? 'bg-emerald-400 text-[#040E24] shadow-sm'
+                    (team.round_1_status === 'SELECTED' || team.round_2_status === 'ACCESS_GRANTED')
+                      ? 'bg-gradient-to-r from-[#BAE6FD] to-[#38BDF8] text-[#040E24] font-black shadow-sm'
                       : 'bg-slate-900 text-slate-500'
                   }`}>
-                    {team.round_2_status === 'ACCESS_GRANTED' ? 'UNLOCKED' : 'LOCKED'}
+                    {(team.round_1_status === 'SELECTED' || team.round_2_status === 'ACCESS_GRANTED') ? 'QUALIFIED' : 'LOCKED'}
                   </span>
                 </div>
                 <div className="text-sm font-display font-bold text-white">24H Offline Finale</div>
@@ -805,60 +817,90 @@ export default function TeamPortalPage() {
               </div>
             </div>
 
-            {/* ROUND 2 ACCESS UNLOCKED BANNER (If Selected) */}
-            {team.round_2_status === 'ACCESS_GRANTED' && (
-              <div className="p-6 bg-gradient-to-r from-emerald-950/90 via-[#07193D] to-emerald-950/90 border-2 border-emerald-400 space-y-4 shadow-[0_0_40px_rgba(52,211,153,0.3)] animate-pulse-glow">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-emerald-500/30 pb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="p-3 bg-emerald-500/20 border border-emerald-400 text-emerald-400">
-                      <Sparkles className="w-6 h-6" />
+            {/* ROUND 2 / PHASE 3 SHORTLIST CONFIRMED BANNER */}
+            {(team.round_1_status === 'SELECTED' || team.round_2_status === 'ACCESS_GRANTED') && (
+              <div className="p-6 sm:p-8 bg-gradient-to-r from-[#042422]/95 via-[#07193D] to-[#042422]/95 border-2 border-emerald-400 space-y-6 shadow-[0_0_50px_rgba(52,211,153,0.35)] relative overflow-hidden animate-pulse-glow">
+                {/* Background glow effects */}
+                <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#38BDF8]/10 rounded-full blur-3xl pointer-events-none" />
+                
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 border-b border-emerald-500/30 pb-6 relative z-10">
+                  <div className="flex items-start gap-4">
+                    <div className="p-3.5 bg-emerald-500/20 border border-emerald-400 text-emerald-400 rounded-sm shadow-[0_0_20px_rgba(52,211,153,0.4)] shrink-0 mt-1">
+                      <Sparkles className="w-8 h-8 text-emerald-300 animate-pulse" />
                     </div>
-                    <div>
-                      <span className="text-[10px] font-mono-hud text-emerald-300 font-bold tracking-widest uppercase">
-                        TOP 70 QUALIFIER CONFIRMED
-                      </span>
-                      <h2 className="text-xl sm:text-2xl font-display font-black text-white">
-                        CONGRATULATIONS! YOU ARE SELECTED FOR THE 24H OFFLINE FINALE
+                    <div className="space-y-1.5">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-[11px] font-mono-hud bg-emerald-400 text-[#040E24] px-2.5 py-0.5 font-black uppercase tracking-wider">
+                          OFFICIALLY SHORTLISTED
+                        </span>
+                        <span className="text-[11px] font-mono-hud text-emerald-300 border border-emerald-400/50 px-2 py-0.5 font-bold">
+                          PHASE 03 QUALIFIED · TOP 70 SQUAD
+                        </span>
+                        {team.round_1_score && (
+                          <span className="text-[11px] font-mono-hud text-[#38BDF8] border border-[#38BDF8]/50 px-2 py-0.5 font-bold">
+                            JURY SCORE: {team.round_1_score}/50
+                          </span>
+                        )}
+                      </div>
+                      <h2 className="text-2xl sm:text-3xl font-display font-black text-white tracking-tight">
+                        CONGRATULATIONS, {team.team_name.toUpperCase()}!
                       </h2>
+                      <p className="text-sm text-slate-200 font-sans max-w-2xl leading-relaxed">
+                        Led by <strong className="text-emerald-300 font-semibold">{team.leader_name}</strong>, your technical blueprint has cleared Round 1 jury screening. You are officially shortlisted for the <strong>ORION 1.0 24-Hour Offline National Hackathon</strong> at Sathyabama Institute of Science and Technology.
+                      </p>
                     </div>
                   </div>
-                  <a
-                    href="https://chat.whatsapp.com/orion1point0"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="btn-glow-cyan px-5 py-2.5 font-display font-bold text-xs text-[#040E24] bg-gradient-to-r from-[#FFFFFF] via-[#BAE6FD] to-[#38BDF8] flex items-center justify-center gap-2 cursor-pointer shrink-0"
-                  >
-                    <MessageSquare className="w-4 h-4" />
-                    <span>JOIN FINALIST WHATSAPP</span>
-                  </a>
+
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
+                    <a
+                      href={process.env.NEXT_PUBLIC_WHATSAPP_GROUP_URL || 'https://chat.whatsapp.com/C76LZLzWkOh3FPC99iXw8f'}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="px-5 py-3 font-display font-black text-xs text-[#040E24] bg-gradient-to-r from-[#BAE6FD] via-[#38BDF8] to-[#34D399] flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_25px_rgba(56,189,248,0.4)] hover:brightness-110 active:scale-95 transition-all"
+                    >
+                      <MessageSquare className="w-4 h-4 text-[#040E24]" />
+                      <span>JOIN FINALIST WHATSAPP</span>
+                    </a>
+                  </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-sans">
-                  <div className="p-3.5 bg-[#040E24] border border-emerald-500/30 space-y-1">
+                {/* Finalist Logistics Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs font-sans relative z-10">
+                  <div className="p-4 bg-[#040E24]/90 border border-emerald-500/30 space-y-1.5 backdrop-blur-sm">
                     <div className="text-[10px] font-mono-hud text-emerald-400 font-bold flex items-center gap-1.5">
-                      <Calendar className="w-3.5 h-3.5" />
-                      <span>FINALE DATE & DURATION</span>
+                      <Calendar className="w-4 h-4" />
+                      <span>FINALE DATES & SPRINT</span>
                     </div>
-                    <div className="text-white font-semibold">September 18–19, 2026</div>
+                    <div className="text-white font-bold text-sm">September 18–19, 2026</div>
                     <div className="text-slate-400 text-[11px]">24-Hour Non-stop Offline Sprint</div>
                   </div>
 
-                  <div className="p-3.5 bg-[#040E24] border border-emerald-500/30 space-y-1">
+                  <div className="p-4 bg-[#040E24]/90 border border-emerald-500/30 space-y-1.5 backdrop-blur-sm">
                     <div className="text-[10px] font-mono-hud text-emerald-400 font-bold flex items-center gap-1.5">
-                      <MapPin className="w-3.5 h-3.5" />
+                      <MapPin className="w-4 h-4" />
                       <span>OFFLINE VENUE</span>
                     </div>
-                    <div className="text-white font-semibold">Sathyabama University, Chennai</div>
-                    <div className="text-slate-400 text-[11px]">High-speed Wi-Fi, Food & Power Hubs provided</div>
+                    <div className="text-white font-bold text-sm">Sathyabama University</div>
+                    <div className="text-slate-400 text-[11px]">OMR Semmancheri, Chennai</div>
                   </div>
 
-                  <div className="p-3.5 bg-[#040E24] border border-emerald-500/30 space-y-1">
+                  <div className="p-4 bg-[#040E24]/90 border border-emerald-500/30 space-y-1.5 backdrop-blur-sm">
                     <div className="text-[10px] font-mono-hud text-emerald-400 font-bold flex items-center gap-1.5">
-                      <CreditCard className="w-3.5 h-3.5" />
-                      <span>FINALIST REGISTRATION</span>
+                      <CreditCard className="w-4 h-4" />
+                      <span>FINALIST PASS REGISTRATION</span>
                     </div>
-                    <div className="text-white font-semibold">₹250 per head</div>
-                    <div className="text-slate-400 text-[11px]">Includes food, swag kit, and mentor access</div>
+                    <div className="text-white font-bold text-sm">₹{config?.finalistFeeInr || 250} per participant</div>
+                    <div className="text-slate-400 text-[11px]">Food, High-Speed Wi-Fi & Swag kit</div>
+                  </div>
+
+                  <div className="p-4 bg-[#040E24]/90 border border-emerald-500/30 space-y-1.5 backdrop-blur-sm">
+                    <div className="text-[10px] font-mono-hud text-emerald-400 font-bold flex items-center gap-1.5">
+                      <Users className="w-4 h-4" />
+                      <span>QUALIFIED SQUAD</span>
+                    </div>
+                    <div className="text-white font-bold text-sm">{team.members.length + 1} Members Cleared</div>
+                    <div className="text-slate-400 text-[11px]">Track: {team.problem_statement}</div>
                   </div>
                 </div>
               </div>
@@ -1127,16 +1169,16 @@ export default function TeamPortalPage() {
                 <div className="flex items-center justify-between border-b border-white/10 pb-3">
                   <div className="flex items-center gap-2 text-white font-mono-hud text-xs font-bold">
                     <FileText className="w-4 h-4 text-[#38BDF8]" />
-                    <span>STEP 02: ROUND 1 PPT/PDF SUBMISSION</span>
+                    <span>STEP 02: ROUND 1 PPT/PDF EVALUATION</span>
                   </div>
                   <span className={`text-[10px] font-mono px-2 py-0.5 font-bold ${
                     team.round_1_status === 'SELECTED'
-                      ? 'bg-[#38BDF8] text-[#040E24]'
+                      ? 'bg-emerald-400 text-[#040E24] shadow-sm font-black'
                       : ['SUBMITTED', 'UNDER_REVIEW'].includes(team.round_1_status)
                       ? 'bg-emerald-950 text-emerald-300 border border-emerald-500/30'
                       : 'bg-slate-900 text-slate-400'
                   }`}>
-                    {team.round_1_status.replace('_', ' ')}
+                    {team.round_1_status === 'SELECTED' ? '★ SHORTLISTED' : team.round_1_status.replace('_', ' ')}
                   </span>
                 </div>
 
@@ -1153,6 +1195,40 @@ export default function TeamPortalPage() {
                   </div>
                 ) : (
                   <div className="space-y-4">
+                    {/* Phase 3 Shortlist Evaluation Clearance Banner */}
+                    {team.round_1_status === 'SELECTED' && (
+                      <div className="p-4 sm:p-5 bg-gradient-to-r from-emerald-950/70 via-[#07193D] to-emerald-950/70 border border-emerald-400 space-y-3 shadow-[0_0_25px_rgba(52,211,153,0.2)]">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2 text-emerald-300 font-mono-hud text-xs font-bold">
+                            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                            <span>PHASE 03 SCREENING: CLEARED & SHORTLISTED</span>
+                          </div>
+                          <span className="text-[10px] font-mono bg-emerald-400 text-[#040E24] px-2.5 py-0.5 font-black uppercase tracking-wider">
+                            QUALIFIED
+                          </span>
+                        </div>
+                        <p className="text-xs text-slate-200 leading-relaxed font-sans">
+                          Your Round 1 blueprint has successfully cleared technical jury evaluation. Your squad is qualified and shortlisted for the 24-Hour Offline National Finale.
+                        </p>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pt-1 font-mono text-[11px]">
+                          <div className="p-2.5 bg-[#040E24] border border-emerald-500/30">
+                            <div className="text-slate-400 text-[9px] font-mono-hud uppercase">Jury Score</div>
+                            <div className="text-emerald-300 font-bold text-sm">{team.round_1_score || 48} / 50</div>
+                          </div>
+                          <div className="p-2.5 bg-[#040E24] border border-emerald-500/30">
+                            <div className="text-slate-400 text-[9px] font-mono-hud uppercase">Selection Rank</div>
+                            <div className="text-emerald-300 font-bold text-sm">Top 70 Qualifier</div>
+                          </div>
+                          <div className="p-2.5 bg-[#040E24] border border-emerald-500/30 col-span-2 sm:col-span-1">
+                            <div className="text-slate-400 text-[9px] font-mono-hud uppercase">Grand Finale</div>
+                            <div className="text-cyan-300 font-bold text-xs truncate">Sept 18–19 @ SIST</div>
+                          </div>
+                        </div>
+                        <div className="p-2.5 bg-[#040E24]/80 border border-white/10 text-[11px] text-slate-300 font-sans leading-relaxed">
+                          <strong className="text-white font-mono-hud uppercase">Offline Finale Note:</strong> Please bring your presentation deck, architecture diagrams, and working software prototype on your laptops for the offline jury assessment rounds.
+                        </div>
+                      </div>
+                    )}
                     {/* Official Google Drive submission folder */}
                     <div className="p-4 bg-[#040E24] border border-emerald-500/40 space-y-2">
                       <div className="flex items-center gap-2 text-emerald-400 font-mono-hud text-xs font-bold">
