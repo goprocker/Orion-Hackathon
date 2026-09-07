@@ -1015,6 +1015,7 @@ export default function TeamPortalPage() {
                       <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
                         <div className="sm:col-span-4 flex flex-col items-center justify-center p-2 bg-[#020817] border border-[#38BDF8]/40">
                           <div className="w-full max-w-[140px] aspect-square bg-white p-1.5 rounded-sm flex items-center justify-center">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img 
                               src={config?.upiQrCodeUrl || '/orion_payment_qr.jpg'} 
                               alt="Official Orion UPI QR Code" 

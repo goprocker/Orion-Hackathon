@@ -18,7 +18,7 @@ interface FooterProps {
   onOpenStatus?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onOpenRegister }) => {
+export const Footer: React.FC<FooterProps> = () => {
   const scrollToTop = () => {
     sound.playHover();
     window.scrollTo({ top: 0, behavior: 'smooth' });

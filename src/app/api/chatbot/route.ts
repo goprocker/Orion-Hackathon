@@ -9,6 +9,7 @@ import {
   HOSPITALITY_SYSTEMS,
   IMPORTANT_RULES,
 } from '../../../data/orionData';
+import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
 
 // ─── Build FAQ document from orionData ────────────────────────────────────────
 
@@ -111,7 +112,7 @@ async function callGemini(userMessage: string): Promise<string> {
   }
 
   const models = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
-  let lastError: any = null;
+  let lastError: unknown = null;
 
   for (const model of models) {
     try {
@@ -286,6 +287,27 @@ function localAnswerFallback(query: string): string {
 
 export async function POST(req: NextRequest) {
   try {
+    const clientIp = getClientIp(req);
+    // Allow up to 15 queries per minute per client IP
+    const rate = checkRateLimit(`chatbot-${clientIp}`, 15, 60 * 1000);
+    if (!rate.allowed) {
+      return NextResponse.json(
+        {
+          error: `Too many questions. Please wait ${rate.resetInSec}s before sending another message.`,
+          reply: `⏳ You're asking questions a bit too fast! Please wait ${rate.resetInSec}s before asking another question.`,
+        },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': String(rate.resetInSec),
+            'X-RateLimit-Limit': '15',
+            'X-RateLimit-Remaining': '0',
+            'X-RateLimit-Reset': String(rate.resetInSec),
+          },
+        }
+      );
+    }
+
     const body = await req.json();
     const { message } = body as { message?: string };
 
@@ -322,7 +344,16 @@ export async function POST(req: NextRequest) {
       reply = localAnswerFallback(query);
     }
 
-    return NextResponse.json({ reply });
+    return NextResponse.json(
+      { reply },
+      {
+        headers: {
+          'X-RateLimit-Limit': '15',
+          'X-RateLimit-Remaining': String(rate.remaining),
+          'X-RateLimit-Reset': String(rate.resetInSec),
+        },
+      }
+    );
   } catch (err) {
     console.error('[chatbot] unexpected error:', err);
     // Always return a helpful answer rather than a 500

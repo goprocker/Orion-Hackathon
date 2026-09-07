@@ -3,8 +3,14 @@ import { serverStore } from '@/lib/serverStore';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
 import { isAdminRequest } from '@/lib/adminAuth';
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const clientIp = getClientIp(request);
+    const rate = checkRateLimit(`admin-config-get-${clientIp}`, 30, 60 * 1000);
+    if (!rate.allowed) {
+      return NextResponse.json({ error: `Too many requests. Please wait ${rate.resetInSec}s.` }, { status: 429 });
+    }
+
     const config = await serverStore.getConfig();
     return NextResponse.json({ success: true, config });
   } catch (err: unknown) {

@@ -10,7 +10,6 @@ import {
   Download,
   UploadCloud,
   ExternalLink,
-  AlertTriangle,
   Bot
 } from 'lucide-react';
 import { GlassCard } from '../common/GlassCard';

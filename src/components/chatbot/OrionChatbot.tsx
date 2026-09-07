@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { MessageSquare, X, Send, Bot, User, Loader2, Minimize2, Maximize2, ChevronDown } from 'lucide-react';
+import { X, Send, Bot, User, Loader2, Minimize2, Maximize2, ChevronDown } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -106,7 +106,6 @@ export const OrionChatbot: React.FC = () => {
   useEffect(() => {
     if (isOpen && !isMinimized) {
       scrollToBottom('auto');
-      setUnreadCount(0);
       inputRef.current?.focus();
     }
   }, [isOpen, isMinimized, scrollToBottom]);
@@ -114,14 +113,8 @@ export const OrionChatbot: React.FC = () => {
   useEffect(() => {
     if (isOpen && !isMinimized) {
       scrollToBottom();
-    } else if (!isOpen) {
-      // Count new assistant messages
-      const lastMsg = messages[messages.length - 1];
-      if (lastMsg?.role === 'assistant' && lastMsg.id !== 'welcome') {
-        setUnreadCount((c) => c + 1);
-      }
     }
-  }, [messages]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [messages, isOpen, isMinimized, scrollToBottom]);
 
   const handleScroll = () => {
     const el = messagesContainerRef.current;

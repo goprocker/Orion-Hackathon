@@ -5,17 +5,9 @@ import Link from 'next/link';
 import { 
   ArrowLeft, 
   ShieldCheck, 
-  FileText, 
   CheckCircle2, 
   AlertTriangle, 
-  Users, 
-  Award, 
-  CreditCard, 
-  Building, 
-  Clock, 
-  Mail, 
   Sparkles,
-  ExternalLink,
   ChevronRight
 } from 'lucide-react';
 import { ScrollReveal } from '@/components/common/ScrollReveal';

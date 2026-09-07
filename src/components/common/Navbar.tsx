@@ -16,27 +16,27 @@ interface NavbarProps {
   onOpenStatus?: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onOpenRegister }) => {
+const NAV_ITEMS = [
+  { label: "CHALLENGES", href: "#challenges" },
+  { label: "PRIZES", href: "#prizes" },
+  { label: "GUIDELINES", href: "#guidelines" },
+  { label: "RULES", href: "#rules" },
+  { label: "TIMELINE", href: "#timeline" },
+  { label: "ORGANIZERS", href: "#organizers" },
+  { label: "FAQ", href: "#faq" },
+  { label: "VENUE & PERKS", href: "#venue" },
+];
+
+export const Navbar: React.FC<NavbarProps> = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
-
-  const navItems = [
-    { label: "CHALLENGES", href: "#challenges" },
-    { label: "PRIZES", href: "#prizes" },
-    { label: "GUIDELINES", href: "#guidelines" },
-    { label: "RULES", href: "#rules" },
-    { label: "TIMELINE", href: "#timeline" },
-    { label: "ORGANIZERS", href: "#organizers" },
-    { label: "FAQ", href: "#faq" },
-    { label: "VENUE & PERKS", href: "#venue" },
-  ];
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
 
-      const sections = navItems.map(item => item.href.substring(1));
+      const sections = NAV_ITEMS.map(item => item.href.substring(1));
       const scrollPosition = window.scrollY + 220;
 
       let currentSection = '';
@@ -56,7 +56,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenRegister }) => {
   }, []);
 
   const activeIndex = activeSection 
-    ? navItems.findIndex(item => item.href === `#${activeSection}`) 
+    ? NAV_ITEMS.findIndex(item => item.href === `#${activeSection}`) 
     : -1;
 
   return (
@@ -99,7 +99,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenRegister }) => {
           {/* Desktop Navigation */}
           <div className="hidden xl:flex items-center justify-center">
             <GooeyNav 
-              items={navItems}
+              items={NAV_ITEMS}
               activeIndex={activeIndex}
               particleCount={6}
               particleDistances={[50, 8]}
@@ -161,7 +161,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenRegister }) => {
         {mobileMenuOpen && (
           <div className="lg:hidden bg-[#0B1220]/95 backdrop-blur-2xl border-b border-white/15 px-4 py-4 space-y-3 shadow-2xl">
             <div className="grid grid-cols-2 gap-2">
-              {navItems.map((item, idx) => {
+              {NAV_ITEMS.map((item, idx) => {
                 const isActive = activeSection === item.href.substring(1);
                 return (
                   <a

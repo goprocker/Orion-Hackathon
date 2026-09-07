@@ -56,7 +56,7 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
         observer.unobserve(currentTarget);
       }
     };
-  }, [threshold, once]);
+  }, [threshold, once, isVisible]);
 
   const getTransformStyle = () => {
     if (isVisible) return 'translate3d(0, 0, 0) scale(1)';

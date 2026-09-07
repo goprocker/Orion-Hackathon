@@ -70,7 +70,7 @@ A 50-file module cannot be fully read in one session. Use this progressive strat
    - Three consecutive expanded files yield no new behavioral assertions
    - You've read 15 files total for this capability
 
-3. **Defer**: If files remain unread, list them in an `<!-- deferred: file1.md, file2.md -->` comment at the bottom of the spec. They can be mined in a subsequent session.
+3. **Defer**: If files remain unread, list them in an `&lt;!-- deferred: file1.md, file2.md --&gt;` comment at the bottom of the spec. They can be mined in a subsequent session.
 
 #### Mining Sources (scan entries, expand along call chains)
 
@@ -117,16 +117,16 @@ Write the `description` in the frontmatter to include a summary of the module's 
 ---
 
 ### Requirement: [behavior name]
-<!-- id: FileName.methodName -->
-<!-- entities: EntityA, EntityB -->
-<!-- depends_on: [optional: prerequisite Requirement name, same capability only] -->
-<!-- triggers: [optional: downstream Requirement name, same capability only] -->
-<!-- enforced: FileName.methodName() -->
+&lt;!-- id: FileName.methodName --&gt;
+&lt;!-- entities: EntityA, EntityB --&gt;
+&lt;!-- depends_on: [optional: prerequisite Requirement name, same capability only] --&gt;
+&lt;!-- triggers: [optional: downstream Requirement name, same capability only] --&gt;
+&lt;!-- enforced: FileName.methodName() --&gt;
 
 [Concise description of the behavior using SHALL/MUST. One paragraph.]
 
 #### Scenario: [scenario name]
-<!-- test: [optional: TestClass.testMethod()] -->
+&lt;!-- test: [optional: TestClass.testMethod()] --&gt;
 - **WHEN** [precise condition — inputs, entity state, context]
 - **THEN** [observable outcome — return value, state change, side effect, error]
 
@@ -137,9 +137,9 @@ Write the `description` in the frontmatter to include a summary of the module's 
 ---
 
 ### Requirement: [another behavior name]
-<!-- id: FileName.methodName -->
-<!-- entities: EntityC -->
-<!-- enforced: OtherFile.otherMethod() -->
+&lt;!-- id: FileName.methodName --&gt;
+&lt;!-- entities: EntityC --&gt;
+&lt;!-- enforced: OtherFile.otherMethod() --&gt;
 
 [Description...]
 
@@ -150,9 +150,9 @@ Write the `description` in the frontmatter to include a summary of the module's 
 ---
 
 ### Invariant: [invariant name]
-<!-- entities: EntityA -->
-<!-- enforced: FileName.methodName() -->
-<!-- verified_by: [optional: TestClass.testMethod()] -->
+&lt;!-- entities: EntityA --&gt;
+&lt;!-- enforced: FileName.methodName() --&gt;
+&lt;!-- verified_by: [optional: TestClass.testMethod()] --&gt;
 
 [What must ALWAYS be true, regardless of triggers. Use SHALL.]
 
@@ -161,8 +161,8 @@ Write the `description` in the frontmatter to include a summary of the module's 
 ---
 
 ### Invariant: [another invariant name]
-<!-- entities: EntityB, EntityC -->
-<!-- enforced: OtherFile.otherMethod() -->
+&lt;!-- entities: EntityB, EntityC --&gt;
+&lt;!-- enforced: OtherFile.otherMethod() --&gt;
 
 [Description...]
 ```
@@ -172,7 +172,7 @@ Write the `description` in the frontmatter to include a summary of the module's 
 1. **Only two block types**: `### Requirement:` for triggered behaviors, `### Invariant:` for always-true constraints. Nothing else at the `###` level.
 2. **No type chapters**: No "API Contracts", "Business Rules", "State Machines", "Domain Calculations", "Authorization" sections. Type information lives in the Requirement description text and entity metadata.
 3. **`#### Scenario:` uses exactly 4 hashtags** — OpenSpec tooling depends on this depth.
-4. **`<!-- -->` comments are metadata**, not documentation. They MUST be machine-parseable: `<!-- key: value -->`. One key-value per line. The keys `deferred` and `uncertainty` are document-level metadata that carry their payload after the colon: `<!-- deferred: file1.md, file2.md -->`, `<!-- uncertainty: <reason> -->`.
+4. **Metadata comments**: `&lt;!-- key: value --&gt;` comments are metadata, not documentation. They MUST be machine-parseable. One key-value per line. The keys `deferred` and `uncertainty` are document-level metadata that carry their payload after the colon: `&lt;!-- deferred: file1.md, file2.md --&gt;`, `&lt;!-- uncertainty: &lt;reason&gt; --&gt;`.
 5. **`entities`** lists domain entity names as they appear in code (camelCase or PascalCase).
 6. **`enforced`** uses format `FileName.methodName()` — precise enough for code-explorer to jump to.
 7. **`id`** is the stable anchor for delta matching. It is derived from `enforced` (the most upstream enforcement point). When `enforced` is available, `id` MUST be set. It does NOT change when the human-readable Requirement name changes. If `enforced` is unknown, `id` is omitted.
@@ -188,17 +188,17 @@ Write the `description` in the frontmatter to include a summary of the module's 
 | "When user submits order, system creates order record" | "Account balance must always equal sum of transactions" |
 | "When stock is insufficient, return error INSUFFICIENT_STOCK" | "Inventory quantity must never be negative" |
 | "When payment succeeds, activate subscription" | "Order total must equal sum of line item amounts" |
-| Has at least one `#### Scenario:` | Has no Scenarios; MAY have `<!-- verified_by: -->` |
+| Has at least one `#### Scenario:` | Has no Scenarios; MAY have `&lt;!-- verified_by: --&gt;` |
 | Triggered by an action or event | True at all times, regardless of triggers |
 
 ## Guardrails
 
-1. **Never invent behavior.** If the code doesn't clearly express a contract, put it in an `<!-- uncertainty: <reason> -->` comment at the bottom of the spec file — don't create a Requirement from guesswork.
+1. **Never invent behavior.** If the code doesn't clearly express a contract, put it in an `&lt;!-- uncertainty: &lt;reason&gt; --&gt;` comment at the bottom of the spec file — don't create a Requirement from guesswork.
 2. **Cross-validate.** A function's docstring says it returns `User | null`, but every caller null-checks — the Requirement says "returns User, null for nonexistent". The actual contract is what callers rely on, not what docs claim.
 3. **Don't classify.** Do not create chapters for "Business Rules" or "API Contracts". The AI reading this spec will grep by `entities` and `enforced`, not by chapter title. Classification chapters add noise, not signal.
 4. **One capability, one spec file.** A capability is a cohesive set of behaviors. If the file exceeds 500 lines, the capability is probably too broad — split it.
 5. **Metadata is mandatory when known.** Every Requirement should have `entities` and `enforced` at minimum. These are what make the spec searchable by AI. A Requirement without `enforced` is a promise with no accountability.
-6. **Flag, don't fix.** You're a miner, not a refactorer. Code inconsistencies go in `<!-- uncertainty: -->` comments, not in a PR to fix them.
+6. **Flag, don't fix.** You're a miner, not a refactorer. Code inconsistencies go in `&lt;!-- uncertainty: --&gt;` comments, not in a PR to fix them.
 7. **Delta-ready.** Every spec is a baseline for future OpenSpec deltas. Someone will write `## ADDED Requirements` / `## MODIFIED Requirements` / `## REMOVED Requirements` above your Requirements. Keep the structure flat so delta operations are easy.
 8. **Record the commit.** Every `Last verified` line MUST include the current git commit hash. This is the anchor that makes freshness checks possible.
 

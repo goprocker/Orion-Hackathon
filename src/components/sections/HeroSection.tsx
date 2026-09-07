@@ -16,7 +16,7 @@ interface HeroSectionProps {
   onExplorePrizes?: () => void;
 }
 
-export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenRegister, onOpenStatus, onExplorePrizes }) => {
+export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenStatus, onExplorePrizes }) => {
   const handleStatusClick = () => {
     sound.playClick();
     if (onOpenStatus) {
