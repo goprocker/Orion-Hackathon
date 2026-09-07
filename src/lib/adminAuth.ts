@@ -28,9 +28,17 @@ function adminSecret(): string {
   return (process.env.ADMIN_SECRET_KEY || '').trim();
 }
 
+function marshalSecret(): string {
+  return (process.env.MARSHAL_KEY || '').trim();
+}
+
+function signingKey(): string {
+  return adminSecret() || marshalSecret() || 'orion-auth-signing-fallback';
+}
+
 /** A secret shorter than 8 chars is treated as unset — fail closed, never open. */
 export function isAdminSecretUsable(): boolean {
-  return adminSecret().length >= 8;
+  return adminSecret().length >= 8 || marshalSecret().length >= 8;
 }
 
 export function safeCompare(a: string, b: string): boolean {
@@ -41,16 +49,19 @@ export function safeCompare(a: string, b: string): boolean {
   return crypto.timingSafeEqual(bufA, bufB);
 }
 
-/** Verifies a passcode typed at the admin login screen. */
+/** Verifies a passcode typed at the admin/marshal login screen. */
 export function verifyAdminPasscode(passcode: string): boolean {
   if (!isAdminSecretUsable()) return false;
-  return safeCompare((passcode || '').trim(), adminSecret());
+  const clean = (passcode || '').trim();
+  if (adminSecret().length >= 8 && safeCompare(clean, adminSecret())) return true;
+  if (marshalSecret().length >= 8 && safeCompare(clean, marshalSecret())) return true;
+  return false;
 }
 
 function sign(payload: string): string {
   // Domain-separated so a session token can never be confused with any other
   // HMAC we might key off the same secret later.
-  return crypto.createHmac('sha256', adminSecret()).update(`orion.admin.v1|${payload}`).digest('hex');
+  return crypto.createHmac('sha256', signingKey()).update(`orion.admin.v1|${payload}`).digest('hex');
 }
 
 /** Token layout: v1.<expiry epoch seconds>.<nonce>.<hmac> */
@@ -105,7 +116,10 @@ export function isAdminRequest(request: Request): boolean {
   if (cookie && verifyAdminSessionToken(cookie)) return true;
 
   const headerKey = (request.headers.get('x-admin-key') || '').trim();
-  return headerKey ? safeCompare(headerKey, adminSecret()) : false;
+  if (!headerKey) return false;
+  if (adminSecret().length >= 8 && safeCompare(headerKey, adminSecret())) return true;
+  if (marshalSecret().length >= 8 && safeCompare(headerKey, marshalSecret())) return true;
+  return false;
 }
 
 function cookieAttributes(maxAge: number): string {
