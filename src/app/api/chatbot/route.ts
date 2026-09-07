@@ -102,10 +102,63 @@ Rules:
 ${FAQ_DOCUMENT}
 --- FAQ DOCUMENT END ---`;
 
+// ─── Gemini API call ──────────────────────────────────────────────────────────
+
+async function callGemini(userMessage: string): Promise<string> {
+  const apiKey = (process.env.GEMINI_API_KEY || '').trim();
+  if (!apiKey) {
+    throw new Error('GEMINI_API_KEY is not configured.');
+  }
+
+  const models = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
+  let lastError: any = null;
+
+  for (const model of models) {
+    try {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-goog-api-key': apiKey,
+        },
+        body: JSON.stringify({
+          systemInstruction: {
+            parts: [{ text: SYSTEM_PROMPT }],
+          },
+          contents: [
+            {
+              role: 'user',
+              parts: [{ text: userMessage }],
+            },
+          ],
+          generationConfig: {
+            temperature: 0.3,
+            maxOutputTokens: 800,
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        const err = await response.text();
+        throw new Error(`Gemini API (${model}) error ${response.status}: ${err}`);
+      }
+
+      const data = await response.json();
+      const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (reply) return reply.trim();
+    } catch (err) {
+      lastError = err;
+    }
+  }
+
+  throw lastError || new Error('No reply from Gemini API.');
+}
+
 // ─── Mistral API call ─────────────────────────────────────────────────────────
 
 async function callMistral(userMessage: string): Promise<string> {
-  const apiKey = process.env.MISTRAL_API_KEY;
+  const apiKey = (process.env.MISTRAL_API_KEY || '').trim();
   if (!apiKey) {
     throw new Error('MISTRAL_API_KEY is not configured.');
   }
@@ -138,6 +191,97 @@ async function callMistral(userMessage: string): Promise<string> {
   return reply.trim();
 }
 
+// ─── Local FAQ Knowledge Base Fallback ────────────────────────────────────────
+
+function localAnswerFallback(query: string): string {
+  const q = query.toLowerCase();
+
+  // Problem statements
+  for (const ps of PROBLEM_STATEMENTS) {
+    if (
+      q.includes(ps.code.toLowerCase()) ||
+      q.includes(ps.title.toLowerCase()) ||
+      (ps.tagline && q.includes(ps.tagline.toLowerCase()))
+    ) {
+      return `### **${ps.code} — ${ps.title}**\n\n` +
+        `**Domain:** ${ps.domain} | **Classification:** ${ps.classificationLevel}\n\n` +
+        `**Overview:** ${ps.overview}\n\n` +
+        `**Key Features:**\n${ps.keyFeatures.map((f) => `• ${f}`).join('\n')}\n\n` +
+        `**Tech Stack:** ${ps.techStack.join(', ')}\n\n` +
+        `**Deliverables:**\n${ps.deliverables.map((d) => `• ${d}`).join('\n')}`;
+    }
+  }
+
+  // Prizes & Bounties
+  if (q.includes('prize') || q.includes('reward') || q.includes('cash') || q.includes('bounty') || q.includes('pool')) {
+    return `🏆 **ORION 1.0 Total Prize Pool: ${EVENT_METRICS.prizePool}**\n\n` +
+      PRIZE_TIERS.map((t) => `• **${t.rank} (${t.label}):** ${t.amount}\n  Perks: ${t.perks.join(', ')}`).join('\n\n') +
+      `\n\n**Special Track Bounties:**\n` +
+      SPECIAL_TRACK_BOUNTIES.map((b) => `• **${b.title}:** ${b.description}`).join('\n');
+  }
+
+  // Registration Fee / Cost
+  if (q.includes('fee') || q.includes('cost') || q.includes('pay') || q.includes('price') || q.includes('amount') || q.includes('charge')) {
+    return `💰 **Registration Fee Details:**\n\n` +
+      `• **Round 1 (Online PPT Submission):** **${EVENT_METRICS.round1Fee}** flat per team (${EVENT_METRICS.teamSize} members).\n` +
+      `• **Round 2 (Grand Finale):** **${EVENT_METRICS.finalistFee}** per head for only the **${EVENT_METRICS.finalistCount} finalist teams** advancing to the offline sprint.\n\n` +
+      `📝 **Register:** [Google Form Registration](${EVENT_METRICS.registrationFormUrl})`;
+  }
+
+  // Deadlines & Dates
+  if (q.includes('deadline') || q.includes('date') || q.includes('when') || q.includes('schedule') || q.includes('timeline')) {
+    return `📅 **Key Dates & Schedule:**\n\n` +
+      `• **Registration & PPT Submission Deadline:** **${EVENT_METRICS.deadlineDate} at 11:59 PM IST**\n` +
+      `• **Round 1 Results Announced:** September 13, 2026\n` +
+      `• **Grand Finale (24-Hour Offline):** **${EVENT_METRICS.offlineFinaleDate}**\n` +
+      `• **Venue:** ${EVENT_METRICS.venue}`;
+  }
+
+  // Team Size & Eligibility
+  if (q.includes('eligible') || q.includes('eligibility') || q.includes('team size') || q.includes('members') || q.includes('who can') || q.includes('college')) {
+    return `👥 **Eligibility & Team Rules:**\n\n` +
+      `• **Team Size:** **${EVENT_METRICS.teamSize} members** per team.\n` +
+      `• **Eligibility:** Open to all college students (UG/PG across any branch or year) and working professionals.\n` +
+      `• **Cross-college teams:** Allowed and encouraged!`;
+  }
+
+  // Venue & Amenities
+  if (q.includes('venue') || q.includes('location') || q.includes('food') || q.includes('stay') || q.includes('accommodation') || q.includes('chennai')) {
+    return `📍 **Venue & Amenities:**\n\n` +
+      `• **Venue:** **${EVENT_METRICS.venue}**\n` +
+      `• **Food & Refreshments:** Provided during the 24-hour offline finale for all participants.\n` +
+      `• **Outside Food:** Deliveries (Swiggy, Zomato, Blinkit) are not permitted on campus.\n` +
+      `• [View on Google Maps](${EVENT_METRICS.googleMapsUrl})`;
+  }
+
+  // Keyword match in FAQ_DATA
+  const words = q.replace(/[^a-z0-9\s]/g, ' ').split(/\s+/).filter((w) => w.length > 2);
+  let bestMatch: { item: typeof FAQ_DATA[0]; score: number } | null = null;
+
+  for (const item of FAQ_DATA) {
+    const itemText = (item.question + ' ' + item.answer).toLowerCase();
+    let score = 0;
+    for (const word of words) {
+      if (item.question.toLowerCase().includes(word)) score += 3;
+      else if (itemText.includes(word)) score += 1;
+    }
+    if (score > (bestMatch?.score || 0)) {
+      bestMatch = { item, score };
+    }
+  }
+
+  if (bestMatch && bestMatch.score >= 2) {
+    return `**${bestMatch.item.question}**\n\n${bestMatch.item.answer}`;
+  }
+
+  return `👋 I am **ORION AI**, the official assistant for **ORION 1.0 Hackathon**.\n\n` +
+    `• **Prize Pool:** ${EVENT_METRICS.prizePool}\n` +
+    `• **Deadline:** **${EVENT_METRICS.deadlineDate}**\n` +
+    `• **Team Size:** ${EVENT_METRICS.teamSize} members (${EVENT_METRICS.round1Fee} flat fee)\n` +
+    `• **Venue:** ${EVENT_METRICS.venue}\n\n` +
+    `For more questions, feel free to ask or join our official WhatsApp group: [Join WhatsApp Group](${process.env.NEXT_PUBLIC_WHATSAPP_GROUP_URL || 'https://chat.whatsapp.com/C76LZLzWkOh3FPC99iXw8f'})`;
+}
+
 // ─── API Route ─────────────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
@@ -153,14 +297,38 @@ export async function POST(req: NextRequest) {
     }
 
     const query = message.trim().slice(0, 500);
-    const reply = await callMistral(query);
+    let reply = '';
+
+    // 1. Try Gemini first (Gemini 2.5/2.0/1.5 Flash)
+    if (process.env.GEMINI_API_KEY) {
+      try {
+        reply = await callGemini(query);
+      } catch (geminiErr) {
+        console.warn('[chatbot] Gemini call failed, falling back to Mistral/local:', geminiErr);
+      }
+    }
+
+    // 2. Try Mistral if Gemini didn't provide a response
+    if (!reply && process.env.MISTRAL_API_KEY) {
+      try {
+        reply = await callMistral(query);
+      } catch (mistralErr) {
+        console.warn('[chatbot] Mistral call failed, using local fallback:', mistralErr);
+      }
+    }
+
+    // 3. Fallback to smart verified local FAQ knowledge base
+    if (!reply) {
+      reply = localAnswerFallback(query);
+    }
 
     return NextResponse.json({ reply });
   } catch (err) {
-    console.error('[chatbot] error:', err);
-    return NextResponse.json(
-      { error: 'Internal server error. Please try again later.' },
-      { status: 500 }
-    );
+    console.error('[chatbot] unexpected error:', err);
+    // Always return a helpful answer rather than a 500
+    return NextResponse.json({
+      reply: `I'm having a brief connection hitch, but here is what you need to know:\n\n• **Deadline:** September 11, 2026\n• **Prize Pool:** ₹1,00,000\n• **Registration Form:** https://forms.gle/txiRwn9EELUgZvrJ6\n• **Support:** https://chat.whatsapp.com/C76LZLzWkOh3FPC99iXw8f`
+    });
   }
 }
+
