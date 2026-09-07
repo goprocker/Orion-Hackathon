@@ -1581,10 +1581,11 @@ export default function TeamPortalPage() {
                         <span>DOWNLOAD OFFICIAL PPT TEMPLATE (.PPTX)</span>
                       </a>
 
-                      <div className="space-y-1 pt-1">
+                      <div className="space-y-1.5 pt-1">
                         <div className="font-mono-hud text-[#7DD3FC] text-[10px] font-bold">SUBMISSION PROTOCOL:</div>
                         <div>• Name file as: <code>{team.team_name.replace(/\s+/g, '')}_ORION1.0.pptx</code></div>
                         <div>• Strictly follow the official slide deck structure without altering required sections</div>
+                        <div className="text-amber-300 font-semibold">• <span className="font-bold uppercase tracking-wider text-amber-400">Strict AI Policy:</span> Only up to 10% AI assistance permitted (for minor grammar/formatting only). 90%+ must be original human engineering & architecture.</div>
                       </div>
                     </div>
                   </div>

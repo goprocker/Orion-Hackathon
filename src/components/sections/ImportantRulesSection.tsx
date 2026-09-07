@@ -13,6 +13,7 @@ import {
   ShieldAlert,
   XCircle,
   ChevronRight,
+  Bot,
   type LucideIcon,
 } from 'lucide-react';
 import { GlassCard } from '../common/GlassCard';
@@ -24,6 +25,7 @@ const RULE_ICONS: Record<string, LucideIcon> = {
   Hash,
   Ban,
   CalendarClock,
+  Bot,
 };
 
 export const ImportantRulesSection: React.FC = () => {

@@ -234,6 +234,7 @@ export default function TermsAndConditionsPage() {
               <li>Submit within announced deadline.</li>
               <li>Late entries will not be considered.</li>
               <li>Prescribed template format required.</li>
+              <li>Strict AI limit: Maximum 10% AI assistance permitted.</li>
               <li>Incomplete entries will be rejected.</li>
             </ul>
           </section>

@@ -313,6 +313,16 @@ export const IMPORTANT_RULES = [
     notAllowed: "Bringing a pre-decided finale problem",
     icon: "CalendarClock",
     appliesTo: "18 September 2026"
+  },
+  {
+    number: "05",
+    title: "Maximum 10% AI Usage in PPTs",
+    summary: "Strict policy: Only a maximum of 10% AI assistance is permitted in your presentation deck.",
+    detail: "At least 90% of your presentation deck — including solution architecture, system design, technical diagrams, workflows, and problem analysis — must be original human work developed by your team members. Generative AI tools (ChatGPT, Claude, Gemini, etc.) may only be used minimally for light grammar touch-ups or proofreading. Automated screening and jury evaluations will scrutinize all submissions for synthetic AI content. Presentations violating this limit will face heavy score penalties or direct disqualification.",
+    allowed: "Up to 10% AI assistance for light grammar correction and proofreading only",
+    notAllowed: "AI-generated problem statements, system architectures, workflows, or slide content exceeding 10%",
+    icon: "Bot",
+    appliesTo: "Round 1 PPT & Proposal"
   }
 ];
 
@@ -616,8 +626,13 @@ export const FAQ_DATA: FAQItem[] = [
   },
   {
     category: "Round 1 & PPT Submissions",
+    question: "Can we use AI tools (like ChatGPT, Gemini, or Claude) to create our PPT?",
+    answer: "Strict Rule: Only a maximum of 10% AI assistance is permitted in your PPT submission, strictly restricted to light grammar checks, spelling corrections, or proofreading. At least 90% of your deck — including your idea, problem formulation, solution architecture, technical diagrams, workflows, and implementation feasibility — must be 100% human-crafted and originally engineered by your squad. Automated screening tools and jury scrutiny will evaluate submissions for synthetic AI content. Decks detected with heavy AI generation will face severe point deductions or outright disqualification."
+  },
+  {
+    category: "Round 1 & PPT Submissions",
     question: "Can we modify the slide count, format, or branding of the PPT template?",
-    answer: "No. Strict rule: No slides may be added, removed, or reordered. Branding, headers, and footers must remain intact. The Team ID field on the PPT must be left blank (it will be filled in by the organizing team). Submissions must be named strictly as: TeamName_ORION1.0 (PPTX or PDF)."
+    answer: "No. Strict rules: No slides may be added, removed, or reordered. Branding, headers, and footers must remain intact. Additionally, only up to 10% AI assistance is allowed (for grammar/formatting touch-ups only). The Team ID field on the PPT must be left blank (it will be filled in by the organizing team). Submissions must be named strictly as: TeamName_ORION1.0 (PPTX or PDF)."
   },
   {
     category: "Round 1 & PPT Submissions",

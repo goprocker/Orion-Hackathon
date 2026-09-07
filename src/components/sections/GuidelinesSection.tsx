@@ -9,7 +9,9 @@ import {
   Mic,
   Download,
   UploadCloud,
-  ExternalLink
+  ExternalLink,
+  AlertTriangle,
+  Bot
 } from 'lucide-react';
 import { GlassCard } from '../common/GlassCard';
 import { ScrollReveal } from '../common/ScrollReveal';
@@ -251,6 +253,14 @@ export const GuidelinesSection: React.FC = () => {
                 </div>
 
                 <div className="space-y-4 text-xs sm:text-sm text-slate-300 font-sans">
+                  <div className="flex items-start gap-3 p-3.5 bg-amber-400/10 border border-amber-400/40 rounded-xl shadow-md">
+                    <Bot className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                    <div>
+                      <strong className="text-amber-300 block font-semibold text-sm">Strict AI Policy: Max 10% AI Allowed</strong>
+                      Only up to 10% AI assistance (for light grammar proofreading or formatting) is permitted in your PPT. 90%+ of all technical blueprints, solution architectures, workflows, and core innovation must be 100% human-crafted. Heavily AI-generated decks will be penalized or disqualified.
+                    </div>
+                  </div>
+
                   <div className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
                     <div>
