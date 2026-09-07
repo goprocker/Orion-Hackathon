@@ -1004,14 +1004,14 @@ export default function AdminDashboard() {
               <form onSubmit={handleLogin} className="space-y-4">
                 <div>
                   <label className="block text-[11px] font-mono-hud text-[#BAE6FD] mb-1">
-                    ADMIN SECURITY PASSCODE
+                    ADMIN / MARSHAL SECURITY PASSCODE
                   </label>
                   <input
                     type="password"
                     required
                     value={passcode}
                     onChange={(e) => setPasscode(e.target.value)}
-                    placeholder="Enter admin key (e.g. orion_genesis_2026)"
+                    placeholder="Enter admin or marshal key"
                     className="w-full px-3.5 py-2.5 bg-[#040E24] border border-[#38BDF8]/40 text-white text-xs font-mono focus:outline-none"
                   />
                 </div>
