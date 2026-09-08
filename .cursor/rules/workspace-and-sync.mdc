@@ -1,0 +1,12 @@
+---
+description: Keep all project work inside the Orion repository and sync before editing
+alwaysApply: true
+---
+
+# Workspace and Sync
+
+- Work only inside `C:\Users\gopin\Downloads\Projects\orion-v1`.
+- Before starting repository work, fetch and fast-forward from the tracked remote branch.
+- Prefer `git pull --ff-only` so remote history is never rewritten or merged implicitly.
+- Preserve all uncommitted user changes. If they prevent a safe pull, stop and report the conflict instead of stashing, discarding, or overwriting them.
+- Do not create project artifacts, temporary files, or exports outside this repository unless the user explicitly requests a different location.
