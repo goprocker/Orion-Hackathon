@@ -107,6 +107,53 @@ export function toTeamFacingRecord(team: TeamRecord): TeamRecord {
 }
 
 /**
+ * Filter out any squad member entries that duplicate the team leader or another member.
+ * In ORION, `leader_name` represents Participant 1, while `members` holds the
+ * additional participants (Participants 2..N). If a member matches the leader's
+ * name, phone, or email, or duplicates another member, it is stripped.
+ */
+export function deduplicateTeamMembers(
+  members: TeamMember[] | undefined | null,
+  leader: { leader_name?: string; leader_phone?: string; leader_email?: string }
+): TeamMember[] {
+  if (!members || !members.length) return [];
+  const cleanStr = (s?: string) => (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  const cleanPhone = (p?: string) => (p || '').replace(/\D/g, '').slice(-10);
+  const cleanEmail = (e?: string) => (e || '').trim().toLowerCase();
+
+  const lName = cleanStr(leader.leader_name);
+  const lPhone = cleanPhone(leader.leader_phone);
+  const lEmail = cleanEmail(leader.leader_email);
+
+  const seen = new Set<string>();
+  const result: TeamMember[] = [];
+
+  for (const m of members) {
+    const mName = cleanStr(m.member_name);
+    const mPhone = cleanPhone(m.member_phone);
+    const mEmail = cleanEmail(m.member_email);
+
+    // Check if matches leader
+    if (lName && mName && lName === mName) continue;
+    if (lPhone && mPhone && lPhone === mPhone && lPhone.length >= 10) continue;
+    if (lEmail && mEmail && lEmail === mEmail) continue;
+
+    // Check if duplicate member within squad
+    const key = `${mName}|${mPhone || mEmail}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+
+    result.push(m);
+  }
+
+  // Renumber remaining members sequentially starting from 1
+  return result.map((m, idx) => ({
+    ...m,
+    member_number: idx + 1
+  }));
+}
+
+/**
  * Case-insensitive comparison in constant time, for secrets.
  * Hashing both sides first keeps the compared buffers equal-length, so no
  * length information leaks through the early return.
@@ -1124,16 +1171,19 @@ export const serverStore = {
             round_1_score: team.round_1_score !== null ? Number(team.round_1_score) : null,
             evaluation_scores: team.evaluation_scores || null,
             admin_notes: team.admin_notes || null,
-            members: (memRes.data || []).map(m => ({
-              id: m.id,
-              team_id: m.team_id,
-              member_number: m.member_number,
-              member_name: m.member_name,
-              member_email: m.member_email || undefined,
-              member_phone: m.member_phone,
-              department: m.department || undefined,
-              year: m.year || undefined
-            })),
+            members: deduplicateTeamMembers(
+              (memRes.data || []).map(m => ({
+                id: m.id,
+                team_id: m.team_id,
+                member_number: m.member_number,
+                member_name: m.member_name,
+                member_email: m.member_email || undefined,
+                member_phone: m.member_phone,
+                department: m.department || undefined,
+                year: m.year || undefined
+              })),
+              team
+            ),
             payment: payRes.data ? {
               id: payRes.data.id,
               team_id: payRes.data.team_id,
@@ -1220,6 +1270,7 @@ export const serverStore = {
 
     return {
       ...team,
+      members: deduplicateTeamMembers(team.members, team),
       payment: store.payments.find(p => p.team_id === team.id || p.team_id === team.registration_id) || null,
       submissions: store.submissions.filter(s => s.team_id === team.id || s.team_id === team.registration_id) || [],
       resubmission_requests: (store.resubmissionRequests || [])
@@ -2492,7 +2543,7 @@ export const serverStore = {
             round_1_score: t.round_1_score !== null ? Number(t.round_1_score) : null,
             evaluation_scores: t.evaluation_scores || null,
             admin_notes: t.admin_notes || null,
-            members: membersByTeam.get(t.id) || [],
+            members: deduplicateTeamMembers(membersByTeam.get(t.id) || [], t),
             submissions: subsByTeam.get(t.id) || [],
             resubmission_requests: resubByTeam.get(t.id) || [],
             suspicion_flags: flagsByTeam.get(t.id) || [],
@@ -2523,6 +2574,7 @@ export const serverStore = {
       const store = loadLocalStore();
       teams = store.teams.map(t => ({
         ...t,
+        members: deduplicateTeamMembers(t.members, t),
         payment: store.payments.find(p => p.team_id === t.id || p.team_id === t.registration_id) || null,
         submissions: store.submissions.filter(s => s.team_id === t.id || s.team_id === t.registration_id) || [],
         resubmission_requests: (store.resubmissionRequests || []).filter(r => r.team_id === t.id || r.team_id === t.registration_id),

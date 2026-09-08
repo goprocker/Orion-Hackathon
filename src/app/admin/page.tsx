@@ -33,7 +33,7 @@ import {
   Phone
 } from 'lucide-react';
 import Link from 'next/link';
-import type { TeamRecord, AuditLogRecord, SystemConfig, EvaluationScores } from '@/types/orion';
+import type { TeamRecord, TeamMember, AuditLogRecord, SystemConfig, EvaluationScores } from '@/types/orion';
 import { sound } from '@/audio/soundEffects';
 import confetti from 'canvas-confetti';
 import { PaymentReceiptModal } from '@/components/modals/PaymentReceiptModal';
@@ -659,6 +659,32 @@ export default function AdminDashboard() {
     }
   };
 
+  // Squad member deduplication: in ORION, `leader_name` is Participant 1.
+  // Any member entry matching the leader's name, phone, or email is excluded
+  // so the leader is never listed twice.
+  const getAdditionalMembers = (team: TeamRecord | null | undefined): TeamMember[] => {
+    if (!team || !team.members) return [];
+    const norm = (s?: string) => (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const lName = norm(team.leader_name);
+    const lPhone = (team.leader_phone || '').replace(/\D/g, '').slice(-10);
+    const lEmail = (team.leader_email || '').trim().toLowerCase();
+
+    const seen = new Set<string>();
+    return team.members.filter(m => {
+      const mName = norm(m.member_name);
+      if (lName && mName && lName === mName) return false;
+      const mPhone = (m.member_phone || '').replace(/\D/g, '').slice(-10);
+      if (lPhone && mPhone && lPhone === mPhone && lPhone.length >= 10) return false;
+      const mEmail = (m.member_email || '').trim().toLowerCase();
+      if (lEmail && mEmail && lEmail === mEmail) return false;
+
+      const key = `${mName}|${mPhone || mEmail}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  };
+
   // Export to CSV
   //
   // Every failure in here used to be invisible: an empty roster returned
@@ -750,7 +776,7 @@ export default function AdminDashboard() {
           scores?.impact ?? '',
           scores?.execution ?? '',
           scores?.feasibility ?? '',
-          (t.members?.length || 0) + 1,
+          getAdditionalMembers(t).length + 1,
           t.access_token,
           latestSub?.file_url || '',
           latestSub?.project_url || '',
@@ -812,12 +838,14 @@ export default function AdminDashboard() {
           t.leader_email
         ].map(csvCell));
 
-        for (const m of t.members || []) {
+        const squadMembers = getAdditionalMembers(t);
+        for (let idx = 0; idx < squadMembers.length; idx++) {
+          const m = squadMembers[idx];
           rows.push([
             t.registration_id,
             t.team_name,
             t.problem_statement,
-            `Member ${m.member_number}`,
+            `Member ${idx + 1}`,
             m.member_name,
             m.member_phone,
             m.member_email || ''
@@ -2225,7 +2253,7 @@ export default function AdminDashboard() {
             {/* SQUAD MEMBERS ROSTER */}
             <div className="p-4 bg-[#040E24] border border-white/10 space-y-3">
               <div className="text-[11px] font-mono-hud text-[#38BDF8] font-bold">
-                SQUAD ROSTER ({selectedTeam.members.length + 1} PARTICIPANTS)
+                SQUAD ROSTER ({getAdditionalMembers(selectedTeam).length + 1} PARTICIPANTS)
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 text-xs">
                 <div className="p-2.5 bg-[#07193D] border border-[#38BDF8]/40 space-y-0.5">
@@ -2234,7 +2262,7 @@ export default function AdminDashboard() {
                   <div className="text-slate-400 text-[10px] truncate">{selectedTeam.leader_email}</div>
                   <div className="text-slate-400 text-[10px]">{selectedTeam.department} • {selectedTeam.year}</div>
                 </div>
-                {selectedTeam.members.map((m, idx) => (
+                {getAdditionalMembers(selectedTeam).map((m, idx) => (
                   <div key={idx} className="p-2.5 bg-[#020817] border border-white/10 space-y-0.5">
                     <div className="text-white font-bold text-[10px]">MEMBER 0{idx + 1}: {m.member_name}</div>
                     <div className="text-slate-300">{m.member_phone}</div>
