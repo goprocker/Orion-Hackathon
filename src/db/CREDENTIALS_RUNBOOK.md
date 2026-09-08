@@ -7,10 +7,24 @@ This file contains **no credentials**. It documents the *rule* that derives them
 which is not a secret — the login screen already tells participants what it is
 (`src/app/api/auth/team/route.ts`). Nothing here needs encrypting, and it is
 deliberately readable so it can be picked up cold at the start of a session.
-The generated credential list is a different matter: see [Exporting](#7-exporting-the-credential-list).
+The generated credential list is a different matter: see [Exporting](#8-exporting-the-credential-list).
 
 Last exercised: 2026-09-08, against `ORION 1.0 7th september, 2026.xlsx`
 (252 form rows → 245 teams). See `migrations/017_realign_roster_to_form_sheet.sql`.
+
+Last audited: 2026-09-08, 291 teams, all checks in §7 clean.
+
+> **The roster contract changed on 2026-09-08 and this file has been updated to
+> match.** The leader is no longer stored in `team_members`. `teams.leader_name`
+> is the single canonical record of Participant 1, and `team_members` holds only
+> the *other* members, numbered from 1. Migrations `018_remove_duplicate_leader_members.sql`
+> and `022_remove_new_team_leader_duplicates.sql` removed the leader rows that
+> earlier imports had written, because the leader was rendering twice — once as
+> LEADER and again as MEMBER 01 — in the portal roster and the admin CSV export.
+>
+> Anything you read elsewhere saying "slot 1 is always the leader" predates this
+> and is wrong, **including the schema's own column comments** — see §9. A roster
+> with no leader in it is now the correct state, not a defect to repair.
 
 ---
 
@@ -217,11 +231,43 @@ select tn, ln, count(*) from final
 group by 1,2 having count(*) > 1;
 ```
 
-Rosters: insert only where a team has none, and separately replace any roster whose
-slot 1 does not match the leader. `team_members.team_name` is maintained by
-`trg_team_members_team_name` — never set it by hand. Slot 1 is always the leader;
-where the roster carries a shorter spelling of the same person, align it to
-`teams.leader_name`.
+Rosters: insert only where a team has none, and separately replace any roster that
+still carries the leader. `team_members.team_name` is maintained by
+`trg_team_members_team_name` — never set it by hand.
+
+**Do not write the leader into `team_members`.** Sheet column 4 is the leader and
+belongs only in `teams.leader_name`; `team_members` takes columns 9, 14, 19, 24, 29
+(members 2-6), renumbered contiguously from 1. A five-person squad is one `teams`
+row plus four `team_members` rows. Load `_sheet_members` with
+
+```sql
+member_number = row_number() over (partition by rid order by sheet_member_number)
+```
+
+over the non-leader columns only, rather than reusing the sheet's own 2-6.
+
+If a roster already holds the leader — an older import, or a hand-written insert —
+delete that row rather than renumbering around it, then close the gap:
+
+```sql
+delete from team_members m using teams t
+where m.team_id = t.id
+  and lower(regexp_replace(m.member_name,'[^a-zA-Z0-9]','','g'))
+    = lower(regexp_replace(t.leader_name,'[^a-zA-Z0-9]','','g'));
+
+with renum as (
+  select id, row_number() over (partition by team_id order by member_number) rn
+  from team_members)
+update team_members m set member_number = renum.rn
+from renum where m.id = renum.id and m.member_number <> renum.rn;
+```
+
+The second statement needs `unique_team_member` dropped and re-added inside the
+transaction: `team_members_member_number_check` pins the value to 1-6, so there is
+nowhere to park, and the unique index is checked per row rather than at statement
+end. `022_remove_new_team_leader_duplicates.sql` sidesteps this by deleting a
+team's whole roster and re-inserting it already numbered — simpler, and worth
+copying for anything bigger than a few teams.
 
 ---
 
@@ -234,10 +280,13 @@ select
  (select count(*) from teams)   teams,
  (select count(*) from team_members) members,
  (select count(*) from teams t where not exists (select 1 from team_members m where m.team_id=t.id)) zero_roster,
- (select count(*) from teams t join team_members m on m.team_id=t.id and m.member_number=1
-    where lower(regexp_replace(m.member_name,'[^a-zA-Z0-9]','','g'))
-       <> lower(regexp_replace(t.leader_name,'[^a-zA-Z0-9]','','g'))) leader_slot_mismatch,
- (select count(*) from teams t where not exists (select 1 from team_members m where m.team_id=t.id and m.member_number=1)) no_slot1,
+ (select count(*) from teams t where exists (select 1 from team_members m where m.team_id=t.id
+    and lower(regexp_replace(m.member_name,'[^a-zA-Z0-9]','','g'))
+      = lower(regexp_replace(t.leader_name,'[^a-zA-Z0-9]','','g')))) leader_duplicated_in_roster,
+ (select count(*) from (select team_id from team_members group by team_id
+    having min(member_number) <> 1 or max(member_number) <> count(*)) x) numbering_not_contiguous,
+ (select count(*) from (select team_id, member_name from team_members
+    group by 1,2 having count(*) > 1) y) dup_member_within_team,
  (select count(*) from (select lower(username) u, lower(access_token) p from teams group by 1,2 having count(*)>1) x) dup_logins,
  (select count(*) from teams where coalesce(username,'')='' or coalesce(access_token,'')='') blank_creds,
  (select count(*) from teams where registration_id !~ '^ORION-(S[0-9]{4}|2026-[0-9]{4})$') bad_reg_format,
@@ -245,9 +294,47 @@ select
  (select count(*) from teams where username like 'tmp-%' or access_token like 'TMP-%') parked_creds_left;
 ```
 
+`leader_duplicated_in_roster` is the one that matters and it reads the opposite
+way round from what this section used to check. It must be `0` because the leader
+belongs in `teams` alone; a non-zero value means an import wrote the leader into
+`team_members` again and participants will see that person listed twice. Do not
+"fix" it by adding the leader to teams that lack one — that is the correct state.
+
+`zero_roster` is only a warning, not an error: a solo entrant legitimately has a
+`teams` row and no `team_members` rows at all. Eyeball the list rather than
+assuming a count of `0` is required.
+
 Also confirm payments survived: `select count(*) from payments;` and
 `select count(*) from teams where payment_status='VERIFIED';` should be unchanged
 from before the import.
+
+**Confirm nothing else is writing before you verify.** These counts only mean
+something against a quiet database, and more than one session has held the
+service-role key at once. `teams` and `team_members` both moved mid-audit on
+2026-09-08 while no import was believed to be running — it turned out to be
+migrations 021/022 being applied from another session.
+
+```sql
+select application_name, state, query_start, left(regexp_replace(query,'\s+',' ','g'), 120)
+from pg_stat_activity where datname = current_database() and pid <> pg_backend_pid()
+order by query_start desc nulls last;
+```
+
+MCP `execute_sql` connects as `mgmt-api`; anything writing as `PostgREST` is a
+supabase-js client — the app, a script, or another session. Cheap fingerprint to
+re-check before and after any change:
+
+```sql
+select (select count(*) from teams) teams, (select count(*) from team_members) members,
+ (select max(created_at) from team_members) newest_member,
+ (select md5(string_agg(registration_id||'|'||username||'|'||access_token, E'\n' order by registration_id)) from teams) cred_hash,
+ (select md5(string_agg(m.team_id::text||'|'||m.member_number||'|'||m.member_name, E'\n'
+                        order by m.team_id::text, m.member_number)) from team_members m) roster_hash;
+```
+
+Also check `git fetch && git log HEAD..origin/main` before concluding the database
+is wrong. The 2026-09-08 audit read a roster with no leaders as corruption; the
+explanation was nine unpulled commits deliberately removing them.
 
 Finally drop the staging tables — `_sheet_teams`, `_sheet_members`, `_map` and any
 `_slug()` helper — and run the Supabase security advisor. The `rls_enabled_no_policy`
@@ -274,9 +361,32 @@ select md5(string_agg(registration_id||'|'||username||'|'||access_token, E'\n'
 
 and hash the same three columns from the CSV. They must match.
 
+That hash covers `teams` only, so roster work never invalidates a credential
+export — on 2026-09-08 `cred_hash` held at `6b5ec21b…` across a roster reload that
+rewrote more than 1,100 member rows. Re-run it before handing the file over
+anyway; it is one query, and it is the only thing between a participant and a
+passcode that does not work.
+
+A username is deliberately not unique, so the CSV legitimately repeats: four
+`techtitans`, three `codex`, two each of `binarybrains` and `byteforge`. Do not
+"fix" them — see §1.
+
 ---
 
-## 9. Known gap
+## 9. Known gaps
+
+**The schema comments still describe the old roster contract.** Migration 010 set
+
+- `comment on table teams` — "The leader lives here AND as team_members slot 1 —
+  both are written by the registration flow, keep them in sync."
+- `comment on column teams.leader_name` — "Also stored as team_members.member_number = 1."
+- `comment on column team_members.member_number` — "Roster slot 1-6. Slot 1 is always the leader."
+
+All three are now false: migrations 018 and 022 deleted exactly those rows. The
+comments are what `list_tables` and every schema browser surface first, so they
+are the most likely thing to mislead the next person — they are what sent the
+2026-09-08 audit chasing a defect that did not exist. Worth a migration that
+rewrites them to match 018/022.
 
 `generateAccessToken()` (`src/lib/serverStore.ts:65`) still mints a random
 `ORN-XXXX-XXXX` passcode for teams that register through the app, so a new signup
