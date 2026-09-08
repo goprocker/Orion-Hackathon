@@ -21,3 +21,11 @@ When modifying any extraction, parser, or import pipeline:
 7. Every extraction run must report source, processed, success, partial, failed, and unaccounted counts.
 8. The unaccounted count must always be zero.
 9. Add regression tests whenever an extraction bug is found.
+
+# Commit Attribution
+
+For every commit authored during a Codex session, append this trailer to the commit message:
+
+```text
+Co-authored-by: Jarvis <gopinath2638@gmail.com>
+```
