@@ -73,4 +73,17 @@ for (const [rid,name,, ,department,year,,,members] of rows) {
 }
 correction += `\ncommit;\n`;
 fs.writeFileSync('src/db/migrations/022_remove_new_team_leader_duplicates.sql', correction);
-console.log(JSON.stringify({ imported: rows.length, totalTeams: store.teams.length, migrations: ['src/db/migrations/021_import_final_pdf_teams.sql','src/db/migrations/022_remove_new_team_leader_duplicates.sql'] }));
+
+const newTeamIds = new Set(Array.from({ length: 31 }, (_, index) => `ORION-S${String(index + 277).padStart(4, '0')}`));
+const allNewTeams = store.teams.filter((team) => newTeamIds.has(team.registration_id));
+let memberRepair = `-- Populate non-leader members for every newly added team, S0277-S0307.\n-- Leaders remain exclusively in teams.leader_name. Safe to rerun.\nbegin;\n`;
+for (const team of allNewTeams) {
+  const nonLeaders = (team.members || []).filter((member) => slug(member.member_name).toLowerCase() !== slug(team.leader_name).toLowerCase());
+  memberRepair += `\ndelete from public.team_members where team_id=(select id from public.teams where registration_id='${esc(team.registration_id)}');\n`;
+  nonLeaders.forEach((member, index) => {
+    memberRepair += `insert into public.team_members (team_id,member_number,member_name,team_name,member_phone,member_email,department,year) select id,${index + 1},'${esc(member.member_name)}','${esc(team.team_name)}','${esc(member.member_phone || '')}','${esc(member.member_email || '')}','${esc(member.department || team.department || '')}','${esc(member.year || team.year || '')}' from public.teams where registration_id='${esc(team.registration_id)}';\n`;
+  });
+}
+memberRepair += `\ncommit;\n`;
+fs.writeFileSync('src/db/migrations/023_populate_all_new_team_members.sql', memberRepair);
+console.log(JSON.stringify({ imported: rows.length, totalTeams: store.teams.length, migrations: ['src/db/migrations/021_import_final_pdf_teams.sql','src/db/migrations/022_remove_new_team_leader_duplicates.sql','src/db/migrations/023_populate_all_new_team_members.sql'] }));
