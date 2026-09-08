@@ -665,24 +665,52 @@ export default function AdminDashboard() {
   const getAdditionalMembers = (team: TeamRecord | null | undefined): TeamMember[] => {
     if (!team || !team.members) return [];
     const norm = (s?: string) => (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-    const lName = norm(team.leader_name);
     const lPhone = (team.leader_phone || '').replace(/\D/g, '').slice(-10);
     const lEmail = (team.leader_email || '').trim().toLowerCase();
 
-    const seen = new Set<string>();
-    return team.members.filter(m => {
-      const mName = norm(m.member_name);
-      if (lName && mName && lName === mName) return false;
-      const mPhone = (m.member_phone || '').replace(/\D/g, '').slice(-10);
-      if (lPhone && mPhone && lPhone === mPhone && lPhone.length >= 10) return false;
-      const mEmail = (m.member_email || '').trim().toLowerCase();
-      if (lEmail && mEmail && lEmail === mEmail) return false;
+    const isNameEquivalent = (a?: string, b?: string): boolean => {
+      if (!a || !b) return false;
+      const cleanA = norm(a);
+      const cleanB = norm(b);
+      if (cleanA && cleanB && cleanA === cleanB) return true;
 
-      const key = `${mName}|${mPhone || mEmail}`;
-      if (seen.has(key)) return false;
+      const tokensA = a.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim().split(/\s+/).filter(Boolean).sort().join(' ');
+      const tokensB = b.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim().split(/\s+/).filter(Boolean).sort().join(' ');
+      if (tokensA && tokensB && tokensA === tokensB) return true;
+
+      const initialsA = a.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim().split(/\s+/).filter(w => w.length === 1);
+      const initialsB = b.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim().split(/\s+/).filter(w => w.length === 1);
+      if (initialsA.length > 0 && initialsB.length > 0) {
+        if (initialsA.sort().join('') !== initialsB.sort().join('')) return false;
+      }
+
+      const wordsA = a.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim().split(/\s+/).filter(w => w.length > 1).sort().join(' ');
+      const wordsB = b.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim().split(/\s+/).filter(w => w.length > 1).sort().join(' ');
+      if (wordsA && wordsB && wordsA === wordsB) return true;
+
+      return false;
+    };
+
+    const seen = new Set<string>();
+    const result: TeamMember[] = [];
+
+    for (const m of team.members) {
+      const mPhone = (m.member_phone || '').replace(/\D/g, '').slice(-10);
+      const mEmail = (m.member_email || '').trim().toLowerCase();
+
+      if (isNameEquivalent(m.member_name, team.leader_name)) continue;
+      if (lPhone && mPhone && lPhone === mPhone && lPhone.length >= 10) continue;
+      if (lEmail && mEmail && lEmail === mEmail) continue;
+
+      if (result.some(prev => isNameEquivalent(prev.member_name, m.member_name))) continue;
+      const key = `${(m.member_name || '').toLowerCase().trim()}|${mPhone || mEmail}`;
+      if (seen.has(key)) continue;
       seen.add(key);
-      return true;
-    });
+
+      result.push(m);
+    }
+
+    return result;
   };
 
   // Export to CSV

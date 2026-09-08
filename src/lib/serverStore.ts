@@ -112,16 +112,37 @@ export function toTeamFacingRecord(team: TeamRecord): TeamRecord {
  * additional participants (Participants 2..N). If a member matches the leader's
  * name, phone, or email, or duplicates another member, it is stripped.
  */
+function isNameEquivalent(a?: string, b?: string): boolean {
+  if (!a || !b) return false;
+  const cleanA = (a || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  const cleanB = (b || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  if (cleanA && cleanB && cleanA === cleanB) return true;
+
+  const tokensA = a.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim().split(/\s+/).filter(Boolean).sort().join(' ');
+  const tokensB = b.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim().split(/\s+/).filter(Boolean).sort().join(' ');
+  if (tokensA && tokensB && tokensA === tokensB) return true;
+
+  const initialsA = a.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim().split(/\s+/).filter(w => w.length === 1);
+  const initialsB = b.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim().split(/\s+/).filter(w => w.length === 1);
+  if (initialsA.length > 0 && initialsB.length > 0) {
+    if (initialsA.sort().join('') !== initialsB.sort().join('')) return false;
+  }
+
+  const wordsA = a.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim().split(/\s+/).filter(w => w.length > 1).sort().join(' ');
+  const wordsB = b.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim().split(/\s+/).filter(w => w.length > 1).sort().join(' ');
+  if (wordsA && wordsB && wordsA === wordsB) return true;
+
+  return false;
+}
+
 export function deduplicateTeamMembers(
   members: TeamMember[] | undefined | null,
   leader: { leader_name?: string; leader_phone?: string; leader_email?: string }
 ): TeamMember[] {
   if (!members || !members.length) return [];
-  const cleanStr = (s?: string) => (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
   const cleanPhone = (p?: string) => (p || '').replace(/\D/g, '').slice(-10);
   const cleanEmail = (e?: string) => (e || '').trim().toLowerCase();
 
-  const lName = cleanStr(leader.leader_name);
   const lPhone = cleanPhone(leader.leader_phone);
   const lEmail = cleanEmail(leader.leader_email);
 
@@ -129,17 +150,17 @@ export function deduplicateTeamMembers(
   const result: TeamMember[] = [];
 
   for (const m of members) {
-    const mName = cleanStr(m.member_name);
     const mPhone = cleanPhone(m.member_phone);
     const mEmail = cleanEmail(m.member_email);
 
     // Check if matches leader
-    if (lName && mName && lName === mName) continue;
+    if (isNameEquivalent(m.member_name, leader.leader_name)) continue;
     if (lPhone && mPhone && lPhone === mPhone && lPhone.length >= 10) continue;
     if (lEmail && mEmail && lEmail === mEmail) continue;
 
     // Check if duplicate member within squad
-    const key = `${mName}|${mPhone || mEmail}`;
+    if (result.some(prev => isNameEquivalent(prev.member_name, m.member_name))) continue;
+    const key = `${(m.member_name || '').toLowerCase().trim()}|${mPhone || mEmail}`;
     if (seen.has(key)) continue;
     seen.add(key);
 
