@@ -571,12 +571,18 @@ export default function TeamPortalPage() {
                   <h1 className="text-2xl sm:text-4xl font-display font-black text-white tracking-tight">
                     {team.team_name.toUpperCase()}
                   </h1>
-                  <div className="text-xs text-[#BAE6FD] mt-1 font-sans flex items-center gap-2">
+                  <div className="text-xs text-[#BAE6FD] mt-1.5 font-sans flex flex-wrap items-center gap-2">
                     <span className="font-semibold text-white">Leader: {team.leader_name}</span>
+                    {team.leader_phone && (
+                      <>
+                        <span>•</span>
+                        <span>{team.leader_phone}</span>
+                      </>
+                    )}
                     <span>•</span>
-                    <span>{team.leader_phone}</span>
-                    <span>•</span>
-                    <span className="text-[#38BDF8] font-mono">{team.problem_statement}</span>
+                    <span className="px-2.5 py-0.5 bg-[#0B2556] border border-[#38BDF8]/60 text-[#38BDF8] font-mono font-bold text-[11px] shadow-sm">
+                      {team.problem_statement}
+                    </span>
                   </div>
                 </div>
 
@@ -1123,6 +1129,25 @@ export default function TeamPortalPage() {
                         </div>
                       </div>
                     )}
+                    {/* Official Problem Statement / Track */}
+                    <div className="p-4 bg-[#040E24] border border-[#38BDF8]/50 space-y-2 shadow-lg">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 text-[#38BDF8] font-mono-hud text-xs font-bold">
+                          <FileText className="w-4 h-4 text-[#38BDF8]" />
+                          <span>ASSIGNED PROBLEM STATEMENT / TRACK</span>
+                        </div>
+                        <span className="text-[10px] font-mono bg-[#0B2556] text-[#38BDF8] px-2.5 py-0.5 border border-[#38BDF8]/40 font-bold uppercase">
+                          CONFIRMED ALLOCATION
+                        </span>
+                      </div>
+                      <div className="text-sm sm:text-base font-display font-bold text-white tracking-wide">
+                        {team.problem_statement}
+                      </div>
+                      <p className="text-xs text-slate-400 font-sans">
+                        Please ensure your Round 1 presentation and technical architecture directly address this assigned challenge.
+                      </p>
+                    </div>
+
                     {/* Official Google Drive submission folder */}
                     <div className="p-4 bg-[#040E24] border border-emerald-500/40 space-y-2">
                       <div className="flex items-center gap-2 text-emerald-400 font-mono-hud text-xs font-bold">

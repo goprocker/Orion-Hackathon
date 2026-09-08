@@ -1,8 +1,8 @@
 -- ==============================================================================
--- 019 — Official Updated Verified Roster Import (260 Squads)
+-- 019 — Official Updated Verified Roster Import (267 Squads)
 -- ==============================================================================
 -- 
--- Purges old entries and imports the 260 official squads.
+-- Purges old entries and imports the 267 official squads with assigned Problem Statements.
 -- All squads are set to payment_status = 'VERIFIED' and round_1_status = 'SUBMISSION_OPEN'.
 -- Duplicate team leader names in member slots have been stripped.
 --
@@ -19,7 +19,7 @@ delete from public.suspicion_flags;
 delete from public.audit_logs;
 delete from public.teams;
 
--- 2. Insert all 260 squads
+-- 2. Insert all 267 squads
 
 insert into public.teams (
   id, registration_id, team_name, username, leader_name, leader_phone, leader_email,
@@ -27,28 +27,28 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '486217e9-495e-44ca-8b14-de545503f8b9', 'ORION-S0001', 'Innovex', 'innovex', 'Yasaswini Chilukuri', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'YASASWINICHILUKURI',
+  'a03c442c-f5c3-4774-a645-ca6592105437', 'ORION-S0001', 'Innovex', 'innovex', 'Yasaswini Chilukuri', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track (Artificial Intelligence & Machine Learning)', 'YASASWINICHILUKURI',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '486217e9-495e-44ca-8b14-de545503f8b9', 'VERIFIED-ORION-S0001', 'Yasaswini Chilukuri', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'a03c442c-f5c3-4774-a645-ca6592105437', 'VERIFIED-ORION-S0001', 'Yasaswini Chilukuri', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '486217e9-495e-44ca-8b14-de545503f8b9', 1, 'Hiranya Pallerla', 'Innovex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'a03c442c-f5c3-4774-a645-ca6592105437', 1, null, 'Innovex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '486217e9-495e-44ca-8b14-de545503f8b9', 2, 'Loshitha B', 'Innovex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'a03c442c-f5c3-4774-a645-ca6592105437', 2, null, 'Innovex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -57,33 +57,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'a2cf80a5-f5ea-4674-aea6-87c31e259b25', 'ORION-S0002', 'GirlsGotByte', 'girlsgotbyte', 'S Darshini Jeya Shakthi', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SDARSHINIJEYASHAKTHI',
+  '3ea7709a-fa2f-4eb2-9442-943de1a9a0d9', 'ORION-S0002', 'GirlsGotByte', 'girlsgotbyte', 'S Darshini Jeya Shakthi', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SDARSHINIJEYASHAKTHI',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'a2cf80a5-f5ea-4674-aea6-87c31e259b25', 'VERIFIED-ORION-S0002', 'S Darshini Jeya Shakthi', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '3ea7709a-fa2f-4eb2-9442-943de1a9a0d9', 'VERIFIED-ORION-S0002', 'S Darshini Jeya Shakthi', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a2cf80a5-f5ea-4674-aea6-87c31e259b25', 1, 'Athmaja A', 'GirlsGotByte', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3ea7709a-fa2f-4eb2-9442-943de1a9a0d9', 1, null, 'GirlsGotByte', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a2cf80a5-f5ea-4674-aea6-87c31e259b25', 2, 'URVI DEORE', 'GirlsGotByte', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3ea7709a-fa2f-4eb2-9442-943de1a9a0d9', 2, null, 'GirlsGotByte', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a2cf80a5-f5ea-4674-aea6-87c31e259b25', 3, 'PATEL DHARNI ARVINDBHAI', 'GirlsGotByte', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3ea7709a-fa2f-4eb2-9442-943de1a9a0d9', 3, null, 'GirlsGotByte', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -92,43 +92,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '91fde502-2414-4325-a1da-15156e68f807', 'ORION-S0003', 'Safegrid', 'safegrid', 'Moses Sparjen K', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'MOSESSPARJENK',
+  'e12ce0fe-7049-40f9-afda-00ba7fab15c9', 'ORION-S0003', 'Safegrid', 'safegrid', 'Moses Sparjen K', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'MOSESSPARJENK',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '91fde502-2414-4325-a1da-15156e68f807', 'VERIFIED-ORION-S0003', 'Moses Sparjen K', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'e12ce0fe-7049-40f9-afda-00ba7fab15c9', 'VERIFIED-ORION-S0003', 'Moses Sparjen K', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '91fde502-2414-4325-a1da-15156e68f807', 1, 'Nandhini G', 'Safegrid', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e12ce0fe-7049-40f9-afda-00ba7fab15c9', 1, null, 'Safegrid', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '91fde502-2414-4325-a1da-15156e68f807', 2, 'Tamil selvi SV', 'Safegrid', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e12ce0fe-7049-40f9-afda-00ba7fab15c9', 2, null, 'Safegrid', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '91fde502-2414-4325-a1da-15156e68f807', 3, 'Sharveshwaran MS', 'Safegrid', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e12ce0fe-7049-40f9-afda-00ba7fab15c9', 3, null, 'Safegrid', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '91fde502-2414-4325-a1da-15156e68f807', 4, 'Rakshitha S', 'Safegrid', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e12ce0fe-7049-40f9-afda-00ba7fab15c9', 4, null, 'Safegrid', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '91fde502-2414-4325-a1da-15156e68f807', 5, 'Nithish abinav GK', 'Safegrid', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e12ce0fe-7049-40f9-afda-00ba7fab15c9', 5, null, 'Safegrid', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -137,43 +137,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '488b82fc-b696-4c8d-95bf-ea509d98a76d', 'ORION-S0004', 'TechXKuzhu', 'techxkuzhu', 'Thanishka Yogesh', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'THANISHKAYOGESH',
+  '0b4b0fe2-6fa2-4cc7-b65e-7cb5f0b336b9', 'ORION-S0004', 'TechXKuzhu', 'techxkuzhu', 'Thanishka Yogesh', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track (FinTech)', 'THANISHKAYOGESH',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '488b82fc-b696-4c8d-95bf-ea509d98a76d', 'VERIFIED-ORION-S0004', 'Thanishka Yogesh', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '0b4b0fe2-6fa2-4cc7-b65e-7cb5f0b336b9', 'VERIFIED-ORION-S0004', 'Thanishka Yogesh', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '488b82fc-b696-4c8d-95bf-ea509d98a76d', 1, 'Lokeshwari R', 'TechXKuzhu', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0b4b0fe2-6fa2-4cc7-b65e-7cb5f0b336b9', 1, null, 'TechXKuzhu', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '488b82fc-b696-4c8d-95bf-ea509d98a76d', 2, 'Surya S', 'TechXKuzhu', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0b4b0fe2-6fa2-4cc7-b65e-7cb5f0b336b9', 2, null, 'TechXKuzhu', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '488b82fc-b696-4c8d-95bf-ea509d98a76d', 3, 'Nithish Kumar S', 'TechXKuzhu', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0b4b0fe2-6fa2-4cc7-b65e-7cb5f0b336b9', 3, null, 'TechXKuzhu', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '488b82fc-b696-4c8d-95bf-ea509d98a76d', 4, 'Mithun V', 'TechXKuzhu', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0b4b0fe2-6fa2-4cc7-b65e-7cb5f0b336b9', 4, null, 'TechXKuzhu', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '488b82fc-b696-4c8d-95bf-ea509d98a76d', 5, 'Madhu Karthikeyan S', 'TechXKuzhu', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0b4b0fe2-6fa2-4cc7-b65e-7cb5f0b336b9', 5, null, 'TechXKuzhu', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -182,43 +182,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '4346bfc3-952b-4824-a087-70c8adcedb9f', 'ORION-S0006', 'Neuro Forge', 'neuroforge', 'Sarveshwar V A', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SARVESHWARVA',
+  '1e503683-4dfe-4d9b-9f94-31416bb15bcb', 'ORION-S0006', 'Neuro Forge', 'neuroforge', 'Sarveshwar V A', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track (Sustainability / ClimateTech)', 'SARVESHWARVA',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '4346bfc3-952b-4824-a087-70c8adcedb9f', 'VERIFIED-ORION-S0006', 'Sarveshwar V A', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '1e503683-4dfe-4d9b-9f94-31416bb15bcb', 'VERIFIED-ORION-S0006', 'Sarveshwar V A', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4346bfc3-952b-4824-a087-70c8adcedb9f', 1, 'Sathish D', 'Neuro Forge', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1e503683-4dfe-4d9b-9f94-31416bb15bcb', 1, null, 'Neuro Forge', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4346bfc3-952b-4824-a087-70c8adcedb9f', 2, 'Sridharan R', 'Neuro Forge', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1e503683-4dfe-4d9b-9f94-31416bb15bcb', 2, null, 'Neuro Forge', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4346bfc3-952b-4824-a087-70c8adcedb9f', 3, 'Yaswanth S', 'Neuro Forge', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1e503683-4dfe-4d9b-9f94-31416bb15bcb', 3, null, 'Neuro Forge', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4346bfc3-952b-4824-a087-70c8adcedb9f', 4, 'Shrika M', 'Neuro Forge', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1e503683-4dfe-4d9b-9f94-31416bb15bcb', 4, null, 'Neuro Forge', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4346bfc3-952b-4824-a087-70c8adcedb9f', 5, 'Sanlin Benzer E', 'Neuro Forge', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1e503683-4dfe-4d9b-9f94-31416bb15bcb', 5, null, 'Neuro Forge', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -227,43 +227,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'cb06133d-844e-4960-8527-f60dbbc76a18', 'ORION-S0007', 'HEXAFLUX', 'hexaflux', 'Sakthi lakshmi G', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SAKTHILAKSHMIG',
+  '5785d577-f02c-4b8e-8b1b-52569c84656e', 'ORION-S0007', 'HEXAFLUX', 'hexaflux', 'Sakthi lakshmi G', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SAKTHILAKSHMIG',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'cb06133d-844e-4960-8527-f60dbbc76a18', 'VERIFIED-ORION-S0007', 'Sakthi lakshmi G', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '5785d577-f02c-4b8e-8b1b-52569c84656e', 'VERIFIED-ORION-S0007', 'Sakthi lakshmi G', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'cb06133d-844e-4960-8527-f60dbbc76a18', 1, 'Sarifa Afrin M', 'HEXAFLUX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5785d577-f02c-4b8e-8b1b-52569c84656e', 1, null, 'HEXAFLUX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'cb06133d-844e-4960-8527-f60dbbc76a18', 2, 'Sahaya Ancy J', 'HEXAFLUX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5785d577-f02c-4b8e-8b1b-52569c84656e', 2, null, 'HEXAFLUX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'cb06133d-844e-4960-8527-f60dbbc76a18', 3, 'Roshini Infenta S', 'HEXAFLUX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5785d577-f02c-4b8e-8b1b-52569c84656e', 3, null, 'HEXAFLUX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'cb06133d-844e-4960-8527-f60dbbc76a18', 4, 'Sanjiv Andrew', 'HEXAFLUX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5785d577-f02c-4b8e-8b1b-52569c84656e', 4, null, 'HEXAFLUX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'cb06133d-844e-4960-8527-f60dbbc76a18', 5, 'Sanjai G', 'HEXAFLUX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5785d577-f02c-4b8e-8b1b-52569c84656e', 5, null, 'HEXAFLUX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -272,38 +272,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '9ff6dc82-5e6d-422e-b925-3e2936f546fa', 'ORION-S0008', 'Deadline Dodgers', 'deadlinedodgers', 'E Gogulnath', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'EGOGULNATH',
+  'a2565a17-a232-4f4e-b290-eab2971ca42d', 'ORION-S0008', 'Deadline Dodgers', 'deadlinedodgers', 'E Gogulnath', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track (Web / Mobile Development)', 'EGOGULNATH',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '9ff6dc82-5e6d-422e-b925-3e2936f546fa', 'VERIFIED-ORION-S0008', 'E Gogulnath', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'a2565a17-a232-4f4e-b290-eab2971ca42d', 'VERIFIED-ORION-S0008', 'E Gogulnath', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '9ff6dc82-5e6d-422e-b925-3e2936f546fa', 1, 'Dharshan Y', 'Deadline Dodgers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'a2565a17-a232-4f4e-b290-eab2971ca42d', 1, null, 'Deadline Dodgers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '9ff6dc82-5e6d-422e-b925-3e2936f546fa', 2, 'Divyanth J', 'Deadline Dodgers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'a2565a17-a232-4f4e-b290-eab2971ca42d', 2, null, 'Deadline Dodgers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '9ff6dc82-5e6d-422e-b925-3e2936f546fa', 3, 'Anish Joshua', 'Deadline Dodgers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'a2565a17-a232-4f4e-b290-eab2971ca42d', 3, null, 'Deadline Dodgers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '9ff6dc82-5e6d-422e-b925-3e2936f546fa', 4, 'V Vishal', 'Deadline Dodgers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'a2565a17-a232-4f4e-b290-eab2971ca42d', 4, null, 'Deadline Dodgers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -312,43 +312,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '40252de8-ec22-42be-9807-f7c1bdcbdb2a', 'ORION-S0009', 'CodeNova', 'codenova', 'Aditya P S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'ADITYAPS',
+  '6a961d64-d214-49c9-bc89-c450f399c18c', 'ORION-S0009', 'CodeNova', 'codenova', 'Aditya P S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'ADITYAPS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '40252de8-ec22-42be-9807-f7c1bdcbdb2a', 'VERIFIED-ORION-S0009', 'Aditya P S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '6a961d64-d214-49c9-bc89-c450f399c18c', 'VERIFIED-ORION-S0009', 'Aditya P S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '40252de8-ec22-42be-9807-f7c1bdcbdb2a', 1, 'Neha M', 'CodeNova', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6a961d64-d214-49c9-bc89-c450f399c18c', 1, null, 'CodeNova', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '40252de8-ec22-42be-9807-f7c1bdcbdb2a', 2, 'Asmitha P', 'CodeNova', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6a961d64-d214-49c9-bc89-c450f399c18c', 2, null, 'CodeNova', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '40252de8-ec22-42be-9807-f7c1bdcbdb2a', 3, 'Danisha K', 'CodeNova', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6a961d64-d214-49c9-bc89-c450f399c18c', 3, null, 'CodeNova', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '40252de8-ec22-42be-9807-f7c1bdcbdb2a', 4, 'Devadharshini S', 'CodeNova', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6a961d64-d214-49c9-bc89-c450f399c18c', 4, null, 'CodeNova', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '40252de8-ec22-42be-9807-f7c1bdcbdb2a', 5, 'Buvana V', 'CodeNova', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6a961d64-d214-49c9-bc89-c450f399c18c', 5, null, 'CodeNova', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -357,38 +357,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'eda42e06-4924-474b-9c52-42d96f55bbcf', 'ORION-S0010', 'LOGIC LORDS', 'logiclords', 'JERIN N', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'JERINN',
+  '2dbbcb4a-a4a3-48fc-8339-51c588eb5d77', 'ORION-S0010', 'LOGIC LORDS', 'logiclords', 'JERIN N', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track (Sustainability / ClimateTech)', 'JERINN',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'eda42e06-4924-474b-9c52-42d96f55bbcf', 'VERIFIED-ORION-S0010', 'JERIN N', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '2dbbcb4a-a4a3-48fc-8339-51c588eb5d77', 'VERIFIED-ORION-S0010', 'JERIN N', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'eda42e06-4924-474b-9c52-42d96f55bbcf', 1, 'INIYAVAN S', 'LOGIC LORDS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '2dbbcb4a-a4a3-48fc-8339-51c588eb5d77', 1, null, 'LOGIC LORDS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'eda42e06-4924-474b-9c52-42d96f55bbcf', 2, 'JAIDEV SP', 'LOGIC LORDS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '2dbbcb4a-a4a3-48fc-8339-51c588eb5d77', 2, null, 'LOGIC LORDS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'eda42e06-4924-474b-9c52-42d96f55bbcf', 3, 'JAI AADHITH', 'LOGIC LORDS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '2dbbcb4a-a4a3-48fc-8339-51c588eb5d77', 3, null, 'LOGIC LORDS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'eda42e06-4924-474b-9c52-42d96f55bbcf', 4, 'KALAISELVA', 'LOGIC LORDS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '2dbbcb4a-a4a3-48fc-8339-51c588eb5d77', 4, null, 'LOGIC LORDS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -397,33 +397,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'aaeae8f4-7be2-4e23-aeca-9753b6a84119', 'ORION-S0012', 'Nexyra', 'nexyra', 'B.ARVIND', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'BARVIND',
+  '27d429b0-4eee-4f31-be3d-a5aa43e84d22', 'ORION-S0012', 'Nexyra', 'nexyra', 'B.ARVIND', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'BARVIND',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'aaeae8f4-7be2-4e23-aeca-9753b6a84119', 'VERIFIED-ORION-S0012', 'B.ARVIND', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '27d429b0-4eee-4f31-be3d-a5aa43e84d22', 'VERIFIED-ORION-S0012', 'B.ARVIND', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'aaeae8f4-7be2-4e23-aeca-9753b6a84119', 1, 'K.BHARATHAN', 'Nexyra', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '27d429b0-4eee-4f31-be3d-a5aa43e84d22', 1, null, 'Nexyra', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'aaeae8f4-7be2-4e23-aeca-9753b6a84119', 2, 'B.AKASH', 'Nexyra', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '27d429b0-4eee-4f31-be3d-a5aa43e84d22', 2, null, 'Nexyra', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'aaeae8f4-7be2-4e23-aeca-9753b6a84119', 3, 'M.MARI SELVAM', 'Nexyra', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '27d429b0-4eee-4f31-be3d-a5aa43e84d22', 3, null, 'Nexyra', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -432,38 +432,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'd53680c0-a8fc-4fa1-ac82-e08205b3576e', 'ORION-S0013', 'ARC', 'arc', 'Yuvaraj K L', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'YUVARAJKL',
+  '297c95a2-5c02-4739-9011-9601331adca7', 'ORION-S0013', 'ARC', 'arc', 'Yuvaraj K L', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'YUVARAJKL',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'd53680c0-a8fc-4fa1-ac82-e08205b3576e', 'VERIFIED-ORION-S0013', 'Yuvaraj K L', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '297c95a2-5c02-4739-9011-9601331adca7', 'VERIFIED-ORION-S0013', 'Yuvaraj K L', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd53680c0-a8fc-4fa1-ac82-e08205b3576e', 1, 'dharshan T R', 'ARC', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '297c95a2-5c02-4739-9011-9601331adca7', 1, null, 'ARC', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd53680c0-a8fc-4fa1-ac82-e08205b3576e', 2, 'charish P S', 'ARC', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '297c95a2-5c02-4739-9011-9601331adca7', 2, null, 'ARC', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd53680c0-a8fc-4fa1-ac82-e08205b3576e', 3, 'haris ahmed R', 'ARC', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '297c95a2-5c02-4739-9011-9601331adca7', 3, null, 'ARC', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd53680c0-a8fc-4fa1-ac82-e08205b3576e', 4, 'staffen G', 'ARC', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '297c95a2-5c02-4739-9011-9601331adca7', 4, null, 'ARC', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -472,28 +472,28 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'ab9e6f50-f16f-438f-a6ea-ec6936d41f72', 'ORION-S0014', 'Tech Larper', 'techlarper', 'Farnas.B', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'FARNASB',
+  '73354dcb-0e12-48bc-9496-319d220f8c62', 'ORION-S0014', 'Tech Larper', 'techlarper', 'Farnas.B', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'FARNASB',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'ab9e6f50-f16f-438f-a6ea-ec6936d41f72', 'VERIFIED-ORION-S0014', 'Farnas.B', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '73354dcb-0e12-48bc-9496-319d220f8c62', 'VERIFIED-ORION-S0014', 'Farnas.B', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ab9e6f50-f16f-438f-a6ea-ec6936d41f72', 1, 'Jesran', 'Tech Larper', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '73354dcb-0e12-48bc-9496-319d220f8c62', 1, null, 'Tech Larper', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ab9e6f50-f16f-438f-a6ea-ec6936d41f72', 2, 'Mohamed Noorul Haq M', 'Tech Larper', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '73354dcb-0e12-48bc-9496-319d220f8c62', 2, null, 'Tech Larper', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -502,33 +502,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'cf942e74-2902-49a4-b81b-fab9651c75ac', 'ORION-S0015', 'Adengappa naalu peru', 'adengappanaaluperu', 'N.Sham Venkat', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'NSHAMVENKAT',
+  'a1ee472e-f923-4401-b3ab-a00ae7a48eab', 'ORION-S0015', 'Adengappa naalu peru', 'adengappanaaluperu', 'N.Sham Venkat', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'NSHAMVENKAT',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'cf942e74-2902-49a4-b81b-fab9651c75ac', 'VERIFIED-ORION-S0015', 'N.Sham Venkat', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'a1ee472e-f923-4401-b3ab-a00ae7a48eab', 'VERIFIED-ORION-S0015', 'N.Sham Venkat', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'cf942e74-2902-49a4-b81b-fab9651c75ac', 1, 'A.Vinish', 'Adengappa naalu peru', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'a1ee472e-f923-4401-b3ab-a00ae7a48eab', 1, null, 'Adengappa naalu peru', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'cf942e74-2902-49a4-b81b-fab9651c75ac', 2, 'S.Robin kishor', 'Adengappa naalu peru', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'a1ee472e-f923-4401-b3ab-a00ae7a48eab', 2, null, 'Adengappa naalu peru', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'cf942e74-2902-49a4-b81b-fab9651c75ac', 3, 'M.Vinayagam', 'Adengappa naalu peru', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'a1ee472e-f923-4401-b3ab-a00ae7a48eab', 3, null, 'Adengappa naalu peru', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -537,38 +537,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'b1c0a937-5579-4a52-9461-e67e1cea926c', 'ORION-S0017', 'SOLEX', 'solex', 'Suryaprakash S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SURYAPRAKASHS',
+  'f84ba74e-c813-4ace-b063-6dfa3e99a2d4', 'ORION-S0017', 'SOLEX', 'solex', 'Suryaprakash S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SURYAPRAKASHS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'b1c0a937-5579-4a52-9461-e67e1cea926c', 'VERIFIED-ORION-S0017', 'Suryaprakash S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'f84ba74e-c813-4ace-b063-6dfa3e99a2d4', 'VERIFIED-ORION-S0017', 'Suryaprakash S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'b1c0a937-5579-4a52-9461-e67e1cea926c', 1, 'Yuvega N', 'SOLEX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f84ba74e-c813-4ace-b063-6dfa3e99a2d4', 1, null, 'SOLEX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'b1c0a937-5579-4a52-9461-e67e1cea926c', 2, 'Naveena A', 'SOLEX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f84ba74e-c813-4ace-b063-6dfa3e99a2d4', 2, null, 'SOLEX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'b1c0a937-5579-4a52-9461-e67e1cea926c', 3, 'Tamilarasan S', 'SOLEX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f84ba74e-c813-4ace-b063-6dfa3e99a2d4', 3, null, 'SOLEX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'b1c0a937-5579-4a52-9461-e67e1cea926c', 4, 'Hariharan I', 'SOLEX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f84ba74e-c813-4ace-b063-6dfa3e99a2d4', 4, null, 'SOLEX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -577,33 +577,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '5cf1d2a9-d1ad-4d8d-aebe-55f9e6283c44', 'ORION-S0018', 'Travixa', 'travixa', 'Lovinsha', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'LOVINSHA',
+  '462f844c-864b-49b2-bdc8-e374c075f393', 'ORION-S0018', 'Travixa', 'travixa', 'Lovinsha', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'LOVINSHA',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '5cf1d2a9-d1ad-4d8d-aebe-55f9e6283c44', 'VERIFIED-ORION-S0018', 'Lovinsha', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '462f844c-864b-49b2-bdc8-e374c075f393', 'VERIFIED-ORION-S0018', 'Lovinsha', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5cf1d2a9-d1ad-4d8d-aebe-55f9e6283c44', 1, 'Suriya kiran', 'Travixa', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '462f844c-864b-49b2-bdc8-e374c075f393', 1, null, 'Travixa', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5cf1d2a9-d1ad-4d8d-aebe-55f9e6283c44', 2, 'Hari balan', 'Travixa', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '462f844c-864b-49b2-bdc8-e374c075f393', 2, null, 'Travixa', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5cf1d2a9-d1ad-4d8d-aebe-55f9e6283c44', 3, 'Ragul', 'Travixa', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '462f844c-864b-49b2-bdc8-e374c075f393', 3, null, 'Travixa', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -612,38 +612,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '17e523d4-b7ef-4c8d-b463-d1d652d7a5f9', 'ORION-S0019', 'Team Verse', 'teamverse', 'Naveenkumar P', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'NAVEENKUMARP',
+  'd39c8a59-f000-44f3-b6de-9cd3f13d8beb', 'ORION-S0019', 'Team Verse', 'teamverse', 'Naveenkumar P', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'NAVEENKUMARP',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '17e523d4-b7ef-4c8d-b463-d1d652d7a5f9', 'VERIFIED-ORION-S0019', 'Naveenkumar P', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'd39c8a59-f000-44f3-b6de-9cd3f13d8beb', 'VERIFIED-ORION-S0019', 'Naveenkumar P', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '17e523d4-b7ef-4c8d-b463-d1d652d7a5f9', 1, 'Yazhini G A', 'Team Verse', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd39c8a59-f000-44f3-b6de-9cd3f13d8beb', 1, null, 'Team Verse', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '17e523d4-b7ef-4c8d-b463-d1d652d7a5f9', 2, 'Deepika D', 'Team Verse', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd39c8a59-f000-44f3-b6de-9cd3f13d8beb', 2, null, 'Team Verse', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '17e523d4-b7ef-4c8d-b463-d1d652d7a5f9', 3, 'Nivetha E', 'Team Verse', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd39c8a59-f000-44f3-b6de-9cd3f13d8beb', 3, null, 'Team Verse', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '17e523d4-b7ef-4c8d-b463-d1d652d7a5f9', 4, 'Akshaya R', 'Team Verse', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd39c8a59-f000-44f3-b6de-9cd3f13d8beb', 4, null, 'Team Verse', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -652,43 +652,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'f8e4f01e-e115-46ad-b072-ef428add2cd0', 'ORION-S0020', 'Tech titans', 'techtitans', 'Deekshith. P', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'DEEKSHITHP',
+  '33b505a1-1793-4336-a30f-b32306be56ab', 'ORION-S0020', 'Tech titans', 'techtitans', 'Deekshith. P', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'DEEKSHITHP',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'f8e4f01e-e115-46ad-b072-ef428add2cd0', 'VERIFIED-ORION-S0020', 'Deekshith. P', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '33b505a1-1793-4336-a30f-b32306be56ab', 'VERIFIED-ORION-S0020', 'Deekshith. P', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f8e4f01e-e115-46ad-b072-ef428add2cd0', 1, 'Kamalesh P', 'Tech titans', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '33b505a1-1793-4336-a30f-b32306be56ab', 1, null, 'Tech titans', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f8e4f01e-e115-46ad-b072-ef428add2cd0', 2, 'KAMALADHASAN. M', 'Tech titans', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '33b505a1-1793-4336-a30f-b32306be56ab', 2, null, 'Tech titans', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f8e4f01e-e115-46ad-b072-ef428add2cd0', 3, 'Prakashraj.V', 'Tech titans', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '33b505a1-1793-4336-a30f-b32306be56ab', 3, null, 'Tech titans', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f8e4f01e-e115-46ad-b072-ef428add2cd0', 4, 'Keerthivarman.G', 'Tech titans', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '33b505a1-1793-4336-a30f-b32306be56ab', 4, null, 'Tech titans', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f8e4f01e-e115-46ad-b072-ef428add2cd0', 5, 'Ramanan.R', 'Tech titans', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '33b505a1-1793-4336-a30f-b32306be56ab', 5, null, 'Tech titans', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -697,28 +697,28 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'c151ccab-5abb-4176-a9ec-814cac231bb1', 'ORION-S0021', 'QRYVEXA', 'qryvexa', 'SENTHAMIZH SELVAN.V', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SENTHAMIZHSELVANV',
+  '502fb8c8-9488-4842-8cc1-b66ec749892f', 'ORION-S0021', 'QRYVEXA', 'qryvexa', 'SENTHAMIZH SELVAN.V', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-02: LEXVAULT', 'SENTHAMIZHSELVANV',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'c151ccab-5abb-4176-a9ec-814cac231bb1', 'VERIFIED-ORION-S0021', 'SENTHAMIZH SELVAN.V', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '502fb8c8-9488-4842-8cc1-b66ec749892f', 'VERIFIED-ORION-S0021', 'SENTHAMIZH SELVAN.V', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c151ccab-5abb-4176-a9ec-814cac231bb1', 1, 'RAHUL.M', 'QRYVEXA', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '502fb8c8-9488-4842-8cc1-b66ec749892f', 1, null, 'QRYVEXA', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c151ccab-5abb-4176-a9ec-814cac231bb1', 2, 'YUGA BHARATHI.P', 'QRYVEXA', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '502fb8c8-9488-4842-8cc1-b66ec749892f', 2, null, 'QRYVEXA', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -727,43 +727,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '0ab31a08-876b-475d-9237-3368eca3d333', 'ORION-S0022', 'Hackademics', 'hackademics', 'Akshay Kumar N', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'AKSHAYKUMARN',
+  '052e70b7-df77-4e43-8d84-7313a52dbfb3', 'ORION-S0022', 'Hackademics', 'hackademics', 'Akshay Kumar N', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'AKSHAYKUMARN',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '0ab31a08-876b-475d-9237-3368eca3d333', 'VERIFIED-ORION-S0022', 'Akshay Kumar N', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '052e70b7-df77-4e43-8d84-7313a52dbfb3', 'VERIFIED-ORION-S0022', 'Akshay Kumar N', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0ab31a08-876b-475d-9237-3368eca3d333', 1, 'Devaraj M', 'Hackademics', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '052e70b7-df77-4e43-8d84-7313a52dbfb3', 1, null, 'Hackademics', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0ab31a08-876b-475d-9237-3368eca3d333', 2, 'Pranav Narayan MS', 'Hackademics', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '052e70b7-df77-4e43-8d84-7313a52dbfb3', 2, null, 'Hackademics', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0ab31a08-876b-475d-9237-3368eca3d333', 3, 'Aadith Geeth Mohan', 'Hackademics', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '052e70b7-df77-4e43-8d84-7313a52dbfb3', 3, null, 'Hackademics', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0ab31a08-876b-475d-9237-3368eca3d333', 4, 'Srinivasan S', 'Hackademics', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '052e70b7-df77-4e43-8d84-7313a52dbfb3', 4, null, 'Hackademics', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0ab31a08-876b-475d-9237-3368eca3d333', 5, 'E Harikrishna', 'Hackademics', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '052e70b7-df77-4e43-8d84-7313a52dbfb3', 5, null, 'Hackademics', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -772,23 +772,23 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '61eab6bf-fc97-4c02-8d19-2690f7216a36', 'ORION-S0024', 'ByteForge', 'byteforge', 'Chandini Sundaran', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'CHANDINISUNDARAN',
+  'd31260b0-50ac-4780-86c3-16f0d1d94952', 'ORION-S0024', 'ByteForge', 'byteforge', 'Chandini Sundaran', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'CHANDINISUNDARAN',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '61eab6bf-fc97-4c02-8d19-2690f7216a36', 'VERIFIED-ORION-S0024', 'Chandini Sundaran', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'd31260b0-50ac-4780-86c3-16f0d1d94952', 'VERIFIED-ORION-S0024', 'Chandini Sundaran', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '61eab6bf-fc97-4c02-8d19-2690f7216a36', 1, 'Kanishka K', 'ByteForge', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd31260b0-50ac-4780-86c3-16f0d1d94952', 1, null, 'ByteForge', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -797,38 +797,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'cb009344-8740-48c2-b378-f94b225554d3', 'ORION-S0025', 'REPLICANTS', 'replicants', 'Shirish Babu N', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SHIRISHBABUN',
+  'e47bb6d0-7a2a-4dec-87fb-049b694a47f1', 'ORION-S0025', 'REPLICANTS', 'replicants', 'Shirish Babu N', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SHIRISHBABUN',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'cb009344-8740-48c2-b378-f94b225554d3', 'VERIFIED-ORION-S0025', 'Shirish Babu N', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'e47bb6d0-7a2a-4dec-87fb-049b694a47f1', 'VERIFIED-ORION-S0025', 'Shirish Babu N', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'cb009344-8740-48c2-b378-f94b225554d3', 1, 'Tanishq Kumar', 'REPLICANTS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e47bb6d0-7a2a-4dec-87fb-049b694a47f1', 1, null, 'REPLICANTS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'cb009344-8740-48c2-b378-f94b225554d3', 2, 'Aashin Nibhu', 'REPLICANTS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e47bb6d0-7a2a-4dec-87fb-049b694a47f1', 2, null, 'REPLICANTS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'cb009344-8740-48c2-b378-f94b225554d3', 3, 'Gladiwin A', 'REPLICANTS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e47bb6d0-7a2a-4dec-87fb-049b694a47f1', 3, null, 'REPLICANTS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'cb009344-8740-48c2-b378-f94b225554d3', 4, 'Manish K', 'REPLICANTS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e47bb6d0-7a2a-4dec-87fb-049b694a47f1', 4, null, 'REPLICANTS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -837,43 +837,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'fd82cb20-20e5-4314-b847-b46bfb9fc435', 'ORION-S0027', 'CYPHERFORGE', 'cypherforge', 'Arunadevi.S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'ARUNADEVIS',
+  '44b0e2d2-4e15-4af1-9774-ccd30ad3ef58', 'ORION-S0027', 'CYPHERFORGE', 'cypherforge', 'Arunadevi.S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-02: LEXVAULT', 'ARUNADEVIS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'fd82cb20-20e5-4314-b847-b46bfb9fc435', 'VERIFIED-ORION-S0027', 'Arunadevi.S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '44b0e2d2-4e15-4af1-9774-ccd30ad3ef58', 'VERIFIED-ORION-S0027', 'Arunadevi.S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'fd82cb20-20e5-4314-b847-b46bfb9fc435', 1, 'Divyadharshini', 'CYPHERFORGE', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '44b0e2d2-4e15-4af1-9774-ccd30ad3ef58', 1, null, 'CYPHERFORGE', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'fd82cb20-20e5-4314-b847-b46bfb9fc435', 2, 'Bhoomika.P', 'CYPHERFORGE', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '44b0e2d2-4e15-4af1-9774-ccd30ad3ef58', 2, null, 'CYPHERFORGE', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'fd82cb20-20e5-4314-b847-b46bfb9fc435', 3, 'Anisha Lakshmi.G.S', 'CYPHERFORGE', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '44b0e2d2-4e15-4af1-9774-ccd30ad3ef58', 3, null, 'CYPHERFORGE', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'fd82cb20-20e5-4314-b847-b46bfb9fc435', 4, 'Monisha.S', 'CYPHERFORGE', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '44b0e2d2-4e15-4af1-9774-ccd30ad3ef58', 4, null, 'CYPHERFORGE', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'fd82cb20-20e5-4314-b847-b46bfb9fc435', 5, 'Pradhiksha.D', 'CYPHERFORGE', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '44b0e2d2-4e15-4af1-9774-ccd30ad3ef58', 5, null, 'CYPHERFORGE', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -882,43 +882,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '2ae284d1-5466-4782-8f49-08ad2462b3aa', 'ORION-S0028', 'Hacker Men', 'hackermen', 'BHARANIDHARAN S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'BHARANIDHARANS',
+  '5b1ad803-bc53-4f78-a1c1-88061e29a616', 'ORION-S0028', 'Hacker Men', 'hackermen', 'BHARANIDHARAN S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'BHARANIDHARANS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '2ae284d1-5466-4782-8f49-08ad2462b3aa', 'VERIFIED-ORION-S0028', 'BHARANIDHARAN S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '5b1ad803-bc53-4f78-a1c1-88061e29a616', 'VERIFIED-ORION-S0028', 'BHARANIDHARAN S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '2ae284d1-5466-4782-8f49-08ad2462b3aa', 1, 'HARIKUMAR E', 'Hacker Men', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5b1ad803-bc53-4f78-a1c1-88061e29a616', 1, null, 'Hacker Men', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '2ae284d1-5466-4782-8f49-08ad2462b3aa', 2, 'KAMALESH K', 'Hacker Men', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5b1ad803-bc53-4f78-a1c1-88061e29a616', 2, null, 'Hacker Men', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '2ae284d1-5466-4782-8f49-08ad2462b3aa', 3, 'ASHWIN PERUMAL S', 'Hacker Men', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5b1ad803-bc53-4f78-a1c1-88061e29a616', 3, null, 'Hacker Men', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '2ae284d1-5466-4782-8f49-08ad2462b3aa', 4, 'YUVAN SHANKAR B', 'Hacker Men', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5b1ad803-bc53-4f78-a1c1-88061e29a616', 4, null, 'Hacker Men', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '2ae284d1-5466-4782-8f49-08ad2462b3aa', 5, 'ARVIND A', 'Hacker Men', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5b1ad803-bc53-4f78-a1c1-88061e29a616', 5, null, 'Hacker Men', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -927,33 +927,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '255fceac-61ef-48d7-81de-babf5df26177', 'ORION-S0029', 'adhiradi boys', 'adhiradiboys', 'Pushparaj J', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'PUSHPARAJJ',
+  '84f9b369-60d7-4113-a8d8-ae89524d009b', 'ORION-S0029', 'adhiradi boys', 'adhiradiboys', 'Pushparaj J', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'PUSHPARAJJ',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '255fceac-61ef-48d7-81de-babf5df26177', 'VERIFIED-ORION-S0029', 'Pushparaj J', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '84f9b369-60d7-4113-a8d8-ae89524d009b', 'VERIFIED-ORION-S0029', 'Pushparaj J', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '255fceac-61ef-48d7-81de-babf5df26177', 1, 'Kamal T', 'adhiradi boys', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '84f9b369-60d7-4113-a8d8-ae89524d009b', 1, null, 'adhiradi boys', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '255fceac-61ef-48d7-81de-babf5df26177', 2, 'Monish M', 'adhiradi boys', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '84f9b369-60d7-4113-a8d8-ae89524d009b', 2, null, 'adhiradi boys', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '255fceac-61ef-48d7-81de-babf5df26177', 3, 'Nimmanagoti Tharun', 'adhiradi boys', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '84f9b369-60d7-4113-a8d8-ae89524d009b', 3, null, 'adhiradi boys', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -962,33 +962,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '2030a9c8-8986-44ef-9d9e-ac917c01a000', 'ORION-S0030', 'Error 404', 'error404', 'S.Sai Dolasa', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SSAIDOLASA',
+  'db6bbab9-b789-418f-a6bd-f946dddc699c', 'ORION-S0030', 'Error 404', 'error404', 'S.Sai Dolasa', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SSAIDOLASA',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '2030a9c8-8986-44ef-9d9e-ac917c01a000', 'VERIFIED-ORION-S0030', 'S.Sai Dolasa', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'db6bbab9-b789-418f-a6bd-f946dddc699c', 'VERIFIED-ORION-S0030', 'S.Sai Dolasa', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '2030a9c8-8986-44ef-9d9e-ac917c01a000', 1, 'Chokkani.Vineela', 'Error 404', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'db6bbab9-b789-418f-a6bd-f946dddc699c', 1, null, 'Error 404', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '2030a9c8-8986-44ef-9d9e-ac917c01a000', 2, 'R.Nandu Reddy', 'Error 404', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'db6bbab9-b789-418f-a6bd-f946dddc699c', 2, null, 'Error 404', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '2030a9c8-8986-44ef-9d9e-ac917c01a000', 3, 'A.Joshika Reddy', 'Error 404', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'db6bbab9-b789-418f-a6bd-f946dddc699c', 3, null, 'Error 404', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -997,38 +997,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '4e176844-7536-48f9-a069-22193f032a9f', 'ORION-S0031', 'Hack hawks', 'hackhawks', 'GOPIKRISHNA S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'GOPIKRISHNAS',
+  '92d7bf9f-fc1e-4320-a7ef-f9f5744dd8c0', 'ORION-S0031', 'Hack hawks', 'hackhawks', 'GOPIKRISHNA S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'GOPIKRISHNAS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '4e176844-7536-48f9-a069-22193f032a9f', 'VERIFIED-ORION-S0031', 'GOPIKRISHNA S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '92d7bf9f-fc1e-4320-a7ef-f9f5744dd8c0', 'VERIFIED-ORION-S0031', 'GOPIKRISHNA S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4e176844-7536-48f9-a069-22193f032a9f', 1, 'KISHOR KUMAR s', 'Hack hawks', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '92d7bf9f-fc1e-4320-a7ef-f9f5744dd8c0', 1, null, 'Hack hawks', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4e176844-7536-48f9-a069-22193f032a9f', 2, 'Salman S', 'Hack hawks', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '92d7bf9f-fc1e-4320-a7ef-f9f5744dd8c0', 2, null, 'Hack hawks', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4e176844-7536-48f9-a069-22193f032a9f', 3, 'YOGESHWAR K', 'Hack hawks', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '92d7bf9f-fc1e-4320-a7ef-f9f5744dd8c0', 3, null, 'Hack hawks', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4e176844-7536-48f9-a069-22193f032a9f', 4, 'VISHNU B', 'Hack hawks', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '92d7bf9f-fc1e-4320-a7ef-f9f5744dd8c0', 4, null, 'Hack hawks', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -1037,23 +1037,23 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'b3467121-a4e6-4127-942f-504872c11242', 'ORION-S0033', 'Code Blooded', 'codeblooded', 'Jahnavi Mogarala', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'JAHNAVIMOGARALA',
+  '67a9418e-de9e-4193-aae2-c69401611638', 'ORION-S0033', 'Code Blooded', 'codeblooded', 'Jahnavi Mogarala', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'JAHNAVIMOGARALA',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'b3467121-a4e6-4127-942f-504872c11242', 'VERIFIED-ORION-S0033', 'Jahnavi Mogarala', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '67a9418e-de9e-4193-aae2-c69401611638', 'VERIFIED-ORION-S0033', 'Jahnavi Mogarala', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'b3467121-a4e6-4127-942f-504872c11242', 1, 'Prathiksa G', 'Code Blooded', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '67a9418e-de9e-4193-aae2-c69401611638', 1, null, 'Code Blooded', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -1062,33 +1062,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '273094c4-7c18-44df-b20c-c5d0b9744eb2', 'ORION-S0034', 'Little ghosts', 'littleghosts', 'Gokul chowdry S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'GOKULCHOWDRYS',
+  '4c77d3e0-16d3-46c1-b656-10641e1475ab', 'ORION-S0034', 'Little ghosts', 'littleghosts', 'Gokul chowdry S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'GOKULCHOWDRYS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '273094c4-7c18-44df-b20c-c5d0b9744eb2', 'VERIFIED-ORION-S0034', 'Gokul chowdry S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '4c77d3e0-16d3-46c1-b656-10641e1475ab', 'VERIFIED-ORION-S0034', 'Gokul chowdry S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '273094c4-7c18-44df-b20c-c5d0b9744eb2', 1, 'Vishal', 'Little ghosts', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4c77d3e0-16d3-46c1-b656-10641e1475ab', 1, null, 'Little ghosts', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '273094c4-7c18-44df-b20c-c5d0b9744eb2', 2, 'Anugraha PJ', 'Little ghosts', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4c77d3e0-16d3-46c1-b656-10641e1475ab', 2, null, 'Little ghosts', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '273094c4-7c18-44df-b20c-c5d0b9744eb2', 3, 'Sanjana Rajasekar', 'Little ghosts', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4c77d3e0-16d3-46c1-b656-10641e1475ab', 3, null, 'Little ghosts', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -1097,43 +1097,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '76073696-d414-4e38-b149-6da96dad914f', 'ORION-S0035', 'Apprentice', 'apprentice', 'Navya M', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'NAVYAM',
+  'd488a6f6-d015-49e5-bf5b-8ae840754cc3', 'ORION-S0035', 'Apprentice', 'apprentice', 'Navya M', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'NAVYAM',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '76073696-d414-4e38-b149-6da96dad914f', 'VERIFIED-ORION-S0035', 'Navya M', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'd488a6f6-d015-49e5-bf5b-8ae840754cc3', 'VERIFIED-ORION-S0035', 'Navya M', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '76073696-d414-4e38-b149-6da96dad914f', 1, 'Deepadarsni S', 'Apprentice', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd488a6f6-d015-49e5-bf5b-8ae840754cc3', 1, null, 'Apprentice', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '76073696-d414-4e38-b149-6da96dad914f', 2, 'Hareesh Govind', 'Apprentice', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd488a6f6-d015-49e5-bf5b-8ae840754cc3', 2, null, 'Apprentice', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '76073696-d414-4e38-b149-6da96dad914f', 3, 'Hariharan D', 'Apprentice', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd488a6f6-d015-49e5-bf5b-8ae840754cc3', 3, null, 'Apprentice', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '76073696-d414-4e38-b149-6da96dad914f', 4, 'Guru Prasath', 'Apprentice', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd488a6f6-d015-49e5-bf5b-8ae840754cc3', 4, null, 'Apprentice', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '76073696-d414-4e38-b149-6da96dad914f', 5, 'Balaji M', 'Apprentice', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd488a6f6-d015-49e5-bf5b-8ae840754cc3', 5, null, 'Apprentice', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -1142,38 +1142,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '25f1f294-17b3-40b1-bfe7-1c0afb9ddc9a', 'ORION-S0036', 'MindMesh', 'mindmesh', 'Mrityunjay Krithick M', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'MRITYUNJAYKRITHICKM',
+  '8a7bf172-6147-40ab-b34c-5d9912c6999f', 'ORION-S0036', 'MindMesh', 'mindmesh', 'Mrityunjay Krithick M', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'MRITYUNJAYKRITHICKM',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '25f1f294-17b3-40b1-bfe7-1c0afb9ddc9a', 'VERIFIED-ORION-S0036', 'Mrityunjay Krithick M', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '8a7bf172-6147-40ab-b34c-5d9912c6999f', 'VERIFIED-ORION-S0036', 'Mrityunjay Krithick M', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '25f1f294-17b3-40b1-bfe7-1c0afb9ddc9a', 1, 'Oviya S', 'MindMesh', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8a7bf172-6147-40ab-b34c-5d9912c6999f', 1, null, 'MindMesh', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '25f1f294-17b3-40b1-bfe7-1c0afb9ddc9a', 2, 'Paari S', 'MindMesh', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8a7bf172-6147-40ab-b34c-5d9912c6999f', 2, null, 'MindMesh', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '25f1f294-17b3-40b1-bfe7-1c0afb9ddc9a', 3, 'Sasmita S', 'MindMesh', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8a7bf172-6147-40ab-b34c-5d9912c6999f', 3, null, 'MindMesh', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '25f1f294-17b3-40b1-bfe7-1c0afb9ddc9a', 4, 'Thanmaysree K', 'MindMesh', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8a7bf172-6147-40ab-b34c-5d9912c6999f', 4, null, 'MindMesh', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -1182,38 +1182,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'c0380a75-2bf1-40e0-9546-f28aff9f1e18', 'ORION-S0037', 'Bug syndicate', 'bugsyndicate', 'Megesh L', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'MEGESHL',
+  '4af7726f-90c5-4c84-b321-3a3cd20665d1', 'ORION-S0037', 'Bug syndicate', 'bugsyndicate', 'Megesh L', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'MEGESHL',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'c0380a75-2bf1-40e0-9546-f28aff9f1e18', 'VERIFIED-ORION-S0037', 'Megesh L', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '4af7726f-90c5-4c84-b321-3a3cd20665d1', 'VERIFIED-ORION-S0037', 'Megesh L', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c0380a75-2bf1-40e0-9546-f28aff9f1e18', 1, 'Rajiv G', 'Bug syndicate', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4af7726f-90c5-4c84-b321-3a3cd20665d1', 1, null, 'Bug syndicate', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c0380a75-2bf1-40e0-9546-f28aff9f1e18', 2, 'Soma Sundari N', 'Bug syndicate', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4af7726f-90c5-4c84-b321-3a3cd20665d1', 2, null, 'Bug syndicate', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c0380a75-2bf1-40e0-9546-f28aff9f1e18', 3, 'Dhanalakshmi', 'Bug syndicate', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4af7726f-90c5-4c84-b321-3a3cd20665d1', 3, null, 'Bug syndicate', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c0380a75-2bf1-40e0-9546-f28aff9f1e18', 4, 'Bhavatarikha Lakshmana', 'Bug syndicate', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4af7726f-90c5-4c84-b321-3a3cd20665d1', 4, null, 'Bug syndicate', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -1222,38 +1222,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'cc3119e5-10a2-4dc6-9b6c-b523b3ab2789', 'ORION-S0038', '405 decoders', '405decoders', 'Potnuru Prasanth kumar', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'POTNURUPRASANTHKUMAR',
+  'bccb9d49-a902-4901-9f98-fc6d5782187b', 'ORION-S0038', '405 decoders', '405decoders', 'Potnuru Prasanth kumar', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'POTNURUPRASANTHKUMAR',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'cc3119e5-10a2-4dc6-9b6c-b523b3ab2789', 'VERIFIED-ORION-S0038', 'Potnuru Prasanth kumar', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'bccb9d49-a902-4901-9f98-fc6d5782187b', 'VERIFIED-ORION-S0038', 'Potnuru Prasanth kumar', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'cc3119e5-10a2-4dc6-9b6c-b523b3ab2789', 1, 'Korada venkat sai', '405 decoders', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'bccb9d49-a902-4901-9f98-fc6d5782187b', 1, null, '405 decoders', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'cc3119e5-10a2-4dc6-9b6c-b523b3ab2789', 2, 'Dhanush kayala', '405 decoders', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'bccb9d49-a902-4901-9f98-fc6d5782187b', 2, null, '405 decoders', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'cc3119e5-10a2-4dc6-9b6c-b523b3ab2789', 3, 'Sai Gangadhar Adapa', '405 decoders', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'bccb9d49-a902-4901-9f98-fc6d5782187b', 3, null, '405 decoders', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'cc3119e5-10a2-4dc6-9b6c-b523b3ab2789', 4, 'Rajendra V', '405 decoders', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'bccb9d49-a902-4901-9f98-fc6d5782187b', 4, null, '405 decoders', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -1262,33 +1262,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'c646404e-719d-4686-af6a-c09b75ae31d7', 'ORION-S0039', 'Byteforge', 'byteforge', 'Keshika Valli S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'KESHIKAVALLIS',
+  '6d8ba4d4-993f-4f95-8b40-1fb53ac3f6d8', 'ORION-S0039', 'Byteforge', 'byteforge', 'Keshika Valli S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-02: LEXVAULT', 'KESHIKAVALLIS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'c646404e-719d-4686-af6a-c09b75ae31d7', 'VERIFIED-ORION-S0039', 'Keshika Valli S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '6d8ba4d4-993f-4f95-8b40-1fb53ac3f6d8', 'VERIFIED-ORION-S0039', 'Keshika Valli S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c646404e-719d-4686-af6a-c09b75ae31d7', 1, 'Kritya K', 'Byteforge', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6d8ba4d4-993f-4f95-8b40-1fb53ac3f6d8', 1, null, 'Byteforge', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c646404e-719d-4686-af6a-c09b75ae31d7', 2, 'Keerthana E', 'Byteforge', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6d8ba4d4-993f-4f95-8b40-1fb53ac3f6d8', 2, null, 'Byteforge', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c646404e-719d-4686-af6a-c09b75ae31d7', 3, 'Joshitha S', 'Byteforge', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6d8ba4d4-993f-4f95-8b40-1fb53ac3f6d8', 3, null, 'Byteforge', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -1297,38 +1297,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'f5f0dfa6-f81d-4b28-9919-c403d0f9b40c', 'ORION-S0040', 'Algoryx', 'algoryx', 'Amirtha varsini R', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'AMIRTHAVARSINIR',
+  'bbfc42a3-688c-4e34-acf2-d87779a28829', 'ORION-S0040', 'Algoryx', 'algoryx', 'Amirtha varsini R', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'AMIRTHAVARSINIR',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'f5f0dfa6-f81d-4b28-9919-c403d0f9b40c', 'VERIFIED-ORION-S0040', 'Amirtha varsini R', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'bbfc42a3-688c-4e34-acf2-d87779a28829', 'VERIFIED-ORION-S0040', 'Amirtha varsini R', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f5f0dfa6-f81d-4b28-9919-c403d0f9b40c', 1, 'Ramkarthikeyan G', 'Algoryx', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'bbfc42a3-688c-4e34-acf2-d87779a28829', 1, null, 'Algoryx', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f5f0dfa6-f81d-4b28-9919-c403d0f9b40c', 2, 'Tharshan M', 'Algoryx', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'bbfc42a3-688c-4e34-acf2-d87779a28829', 2, null, 'Algoryx', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f5f0dfa6-f81d-4b28-9919-c403d0f9b40c', 3, 'Kowsik Raja S', 'Algoryx', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'bbfc42a3-688c-4e34-acf2-d87779a28829', 3, null, 'Algoryx', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f5f0dfa6-f81d-4b28-9919-c403d0f9b40c', 4, 'Sastiga Sri H', 'Algoryx', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'bbfc42a3-688c-4e34-acf2-d87779a28829', 4, null, 'Algoryx', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -1337,33 +1337,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '6a793dbd-5a6c-4669-ae0a-574f350822b0', 'ORION-S0042', 'THAMIZH ARIGNARGAL', 'thamizharignargal', 'Muhammadu Rasheeq J M', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'MUHAMMADURASHEEQJM',
+  '8af7241c-830c-48ee-a8e8-47ed26b1f64a', 'ORION-S0042', 'THAMIZH ARIGNARGAL', 'thamizharignargal', 'Muhammadu Rasheeq J M', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'MUHAMMADURASHEEQJM',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '6a793dbd-5a6c-4669-ae0a-574f350822b0', 'VERIFIED-ORION-S0042', 'Muhammadu Rasheeq J M', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '8af7241c-830c-48ee-a8e8-47ed26b1f64a', 'VERIFIED-ORION-S0042', 'Muhammadu Rasheeq J M', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '6a793dbd-5a6c-4669-ae0a-574f350822b0', 1, 'Sai saran A', 'THAMIZH ARIGNARGAL', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8af7241c-830c-48ee-a8e8-47ed26b1f64a', 1, null, 'THAMIZH ARIGNARGAL', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '6a793dbd-5a6c-4669-ae0a-574f350822b0', 2, 'V Mamata', 'THAMIZH ARIGNARGAL', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8af7241c-830c-48ee-a8e8-47ed26b1f64a', 2, null, 'THAMIZH ARIGNARGAL', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '6a793dbd-5a6c-4669-ae0a-574f350822b0', 3, 'Niranjana D', 'THAMIZH ARIGNARGAL', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8af7241c-830c-48ee-a8e8-47ed26b1f64a', 3, null, 'THAMIZH ARIGNARGAL', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -1372,43 +1372,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '6f274764-f5cf-4871-9b4f-4a8181cea49e', 'ORION-S0044', 'Deadline Warriors', 'deadlinewarriors', 'A.R Akshaya Kruthik', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'ARAKSHAYAKRUTHIK',
+  '69ef3f6c-86ca-4963-9bc3-098995b31ec1', 'ORION-S0044', 'Deadline Warriors', 'deadlinewarriors', 'A.R Akshaya Kruthik', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'ARAKSHAYAKRUTHIK',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '6f274764-f5cf-4871-9b4f-4a8181cea49e', 'VERIFIED-ORION-S0044', 'A.R Akshaya Kruthik', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '69ef3f6c-86ca-4963-9bc3-098995b31ec1', 'VERIFIED-ORION-S0044', 'A.R Akshaya Kruthik', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '6f274764-f5cf-4871-9b4f-4a8181cea49e', 1, 'Dheeraj Abhay. R', 'Deadline Warriors', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '69ef3f6c-86ca-4963-9bc3-098995b31ec1', 1, null, 'Deadline Warriors', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '6f274764-f5cf-4871-9b4f-4a8181cea49e', 2, 'Avinash. R', 'Deadline Warriors', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '69ef3f6c-86ca-4963-9bc3-098995b31ec1', 2, null, 'Deadline Warriors', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '6f274764-f5cf-4871-9b4f-4a8181cea49e', 3, 'Dhanuja. J', 'Deadline Warriors', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '69ef3f6c-86ca-4963-9bc3-098995b31ec1', 3, null, 'Deadline Warriors', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '6f274764-f5cf-4871-9b4f-4a8181cea49e', 4, 'S. SAKTHI SRI', 'Deadline Warriors', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '69ef3f6c-86ca-4963-9bc3-098995b31ec1', 4, null, 'Deadline Warriors', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '6f274764-f5cf-4871-9b4f-4a8181cea49e', 5, 'Ashvin Prasad. k', 'Deadline Warriors', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '69ef3f6c-86ca-4963-9bc3-098995b31ec1', 5, null, 'Deadline Warriors', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -1417,33 +1417,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '40ef6ca3-3b96-490a-a6c4-6869f9fa2d6c', 'ORION-S0045', 'PROTECTECH', 'protectech', 'Deveshwar S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'DEVESHWARS',
+  'b733d557-d942-43b0-83b3-5bd9e2bd9f35', 'ORION-S0045', 'PROTECTECH', 'protectech', 'Deveshwar S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'DEVESHWARS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '40ef6ca3-3b96-490a-a6c4-6869f9fa2d6c', 'VERIFIED-ORION-S0045', 'Deveshwar S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'b733d557-d942-43b0-83b3-5bd9e2bd9f35', 'VERIFIED-ORION-S0045', 'Deveshwar S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '40ef6ca3-3b96-490a-a6c4-6869f9fa2d6c', 1, 'Sri Hari S', 'PROTECTECH', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b733d557-d942-43b0-83b3-5bd9e2bd9f35', 1, null, 'PROTECTECH', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '40ef6ca3-3b96-490a-a6c4-6869f9fa2d6c', 2, 'Vijay Karthick S', 'PROTECTECH', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b733d557-d942-43b0-83b3-5bd9e2bd9f35', 2, null, 'PROTECTECH', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '40ef6ca3-3b96-490a-a6c4-6869f9fa2d6c', 3, 'Sree Vishal K S', 'PROTECTECH', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b733d557-d942-43b0-83b3-5bd9e2bd9f35', 3, null, 'PROTECTECH', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -1452,43 +1452,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '575fc575-ff3f-4589-9143-24d7f6c27e73', 'ORION-S0047', 'Alpha Minds', 'alphaminds', 'Vasundra S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'VASUNDRAS',
+  '4aac57f1-8d04-4a99-a175-258d93534b0e', 'ORION-S0047', 'Alpha Minds', 'alphaminds', 'Vasundra S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'VASUNDRAS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '575fc575-ff3f-4589-9143-24d7f6c27e73', 'VERIFIED-ORION-S0047', 'Vasundra S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '4aac57f1-8d04-4a99-a175-258d93534b0e', 'VERIFIED-ORION-S0047', 'Vasundra S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '575fc575-ff3f-4589-9143-24d7f6c27e73', 1, 'Vidhyaa Vardhani Ra', 'Alpha Minds', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4aac57f1-8d04-4a99-a175-258d93534b0e', 1, null, 'Alpha Minds', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '575fc575-ff3f-4589-9143-24d7f6c27e73', 2, 'Narmatha R', 'Alpha Minds', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4aac57f1-8d04-4a99-a175-258d93534b0e', 2, null, 'Alpha Minds', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '575fc575-ff3f-4589-9143-24d7f6c27e73', 3, 'Parvada Vardhni S', 'Alpha Minds', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4aac57f1-8d04-4a99-a175-258d93534b0e', 3, null, 'Alpha Minds', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '575fc575-ff3f-4589-9143-24d7f6c27e73', 4, 'Niranjana S', 'Alpha Minds', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4aac57f1-8d04-4a99-a175-258d93534b0e', 4, null, 'Alpha Minds', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '575fc575-ff3f-4589-9143-24d7f6c27e73', 5, 'Aishwarya', 'Alpha Minds', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4aac57f1-8d04-4a99-a175-258d93534b0e', 5, null, 'Alpha Minds', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -1497,43 +1497,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '2f4b5542-073b-436c-b0d4-d1f3b0b1689f', 'ORION-S0048', 'BytePulse', 'bytepulse', 'Sadhana V', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SADHANAV',
+  '348b3ef5-e237-4f8a-bff2-19d3e3c22446', 'ORION-S0048', 'BytePulse', 'bytepulse', 'Sadhana V', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'SADHANAV',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '2f4b5542-073b-436c-b0d4-d1f3b0b1689f', 'VERIFIED-ORION-S0048', 'Sadhana V', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '348b3ef5-e237-4f8a-bff2-19d3e3c22446', 'VERIFIED-ORION-S0048', 'Sadhana V', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '2f4b5542-073b-436c-b0d4-d1f3b0b1689f', 1, 'Rithika R', 'BytePulse', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '348b3ef5-e237-4f8a-bff2-19d3e3c22446', 1, null, 'BytePulse', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '2f4b5542-073b-436c-b0d4-d1f3b0b1689f', 2, 'Ragavi S', 'BytePulse', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '348b3ef5-e237-4f8a-bff2-19d3e3c22446', 2, null, 'BytePulse', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '2f4b5542-073b-436c-b0d4-d1f3b0b1689f', 3, 'pranika Shree C', 'BytePulse', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '348b3ef5-e237-4f8a-bff2-19d3e3c22446', 3, null, 'BytePulse', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '2f4b5542-073b-436c-b0d4-d1f3b0b1689f', 4, 'Poornaa V', 'BytePulse', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '348b3ef5-e237-4f8a-bff2-19d3e3c22446', 4, null, 'BytePulse', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '2f4b5542-073b-436c-b0d4-d1f3b0b1689f', 5, 'Prasanambika', 'BytePulse', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '348b3ef5-e237-4f8a-bff2-19d3e3c22446', 5, null, 'BytePulse', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -1542,43 +1542,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'a7f3147f-a096-4609-acd1-837565ab504c', 'ORION-S0050', 'Byte me', 'byteme', 'Shivani', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SHIVANI',
+  'bda9950a-be9d-4b99-a442-e85f2acaa199', 'ORION-S0050', 'Byte me', 'byteme', 'Shivani', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'SHIVANI',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'a7f3147f-a096-4609-acd1-837565ab504c', 'VERIFIED-ORION-S0050', 'Shivani', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'bda9950a-be9d-4b99-a442-e85f2acaa199', 'VERIFIED-ORION-S0050', 'Shivani', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a7f3147f-a096-4609-acd1-837565ab504c', 1, 'Jane Marria Harriet', 'Byte me', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'bda9950a-be9d-4b99-a442-e85f2acaa199', 1, null, 'Byte me', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a7f3147f-a096-4609-acd1-837565ab504c', 2, 'Niveditha S', 'Byte me', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'bda9950a-be9d-4b99-a442-e85f2acaa199', 2, null, 'Byte me', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a7f3147f-a096-4609-acd1-837565ab504c', 3, 'Aimy Grace P Georg', 'Byte me', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'bda9950a-be9d-4b99-a442-e85f2acaa199', 3, null, 'Byte me', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a7f3147f-a096-4609-acd1-837565ab504c', 4, 'Jeshvina Emerald', 'Byte me', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'bda9950a-be9d-4b99-a442-e85f2acaa199', 4, null, 'Byte me', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a7f3147f-a096-4609-acd1-837565ab504c', 5, 'Jhanavarshan AM', 'Byte me', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'bda9950a-be9d-4b99-a442-e85f2acaa199', 5, null, 'Byte me', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -1587,43 +1587,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '4e28850c-a7fb-43c5-ab29-cc6786a582e9', 'ORION-S0051', 'Point Break', 'pointbreak', 'Chandru M', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'CHANDRUM',
+  'e2b25fc4-7759-4b26-b70f-eb54ddfec807', 'ORION-S0051', 'Point Break', 'pointbreak', 'Chandru M', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'CHANDRUM',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '4e28850c-a7fb-43c5-ab29-cc6786a582e9', 'VERIFIED-ORION-S0051', 'Chandru M', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'e2b25fc4-7759-4b26-b70f-eb54ddfec807', 'VERIFIED-ORION-S0051', 'Chandru M', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4e28850c-a7fb-43c5-ab29-cc6786a582e9', 1, 'Jaya Karthick R', 'Point Break', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e2b25fc4-7759-4b26-b70f-eb54ddfec807', 1, null, 'Point Break', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4e28850c-a7fb-43c5-ab29-cc6786a582e9', 2, 'Harish S', 'Point Break', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e2b25fc4-7759-4b26-b70f-eb54ddfec807', 2, null, 'Point Break', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4e28850c-a7fb-43c5-ab29-cc6786a582e9', 3, 'Darshan K', 'Point Break', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e2b25fc4-7759-4b26-b70f-eb54ddfec807', 3, null, 'Point Break', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4e28850c-a7fb-43c5-ab29-cc6786a582e9', 4, 'Jovitha E', 'Point Break', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e2b25fc4-7759-4b26-b70f-eb54ddfec807', 4, null, 'Point Break', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4e28850c-a7fb-43c5-ab29-cc6786a582e9', 5, 'Harini BB', 'Point Break', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e2b25fc4-7759-4b26-b70f-eb54ddfec807', 5, null, 'Point Break', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -1632,43 +1632,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '7bd6b254-1663-4ee6-811a-0b94e466f347', 'ORION-S0053', 'Team Rogers', 'teamrogers', 'Vijayalakshmi.V', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'VIJAYALAKSHMIV',
+  'b7d7d7c7-115e-4069-8ed4-a8af2941b678', 'ORION-S0053', 'Team Rogers', 'teamrogers', 'Vijayalakshmi.V', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'VIJAYALAKSHMIV',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '7bd6b254-1663-4ee6-811a-0b94e466f347', 'VERIFIED-ORION-S0053', 'Vijayalakshmi.V', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'b7d7d7c7-115e-4069-8ed4-a8af2941b678', 'VERIFIED-ORION-S0053', 'Vijayalakshmi.V', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '7bd6b254-1663-4ee6-811a-0b94e466f347', 1, 'HendryPualDhinaka', 'Team Rogers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b7d7d7c7-115e-4069-8ed4-a8af2941b678', 1, null, 'Team Rogers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '7bd6b254-1663-4ee6-811a-0b94e466f347', 2, 'Faazilah A.L.', 'Team Rogers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b7d7d7c7-115e-4069-8ed4-a8af2941b678', 2, null, 'Team Rogers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '7bd6b254-1663-4ee6-811a-0b94e466f347', 3, 'Thirumalini.S', 'Team Rogers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b7d7d7c7-115e-4069-8ed4-a8af2941b678', 3, null, 'Team Rogers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '7bd6b254-1663-4ee6-811a-0b94e466f347', 4, 'Hemachandran S', 'Team Rogers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b7d7d7c7-115e-4069-8ed4-a8af2941b678', 4, null, 'Team Rogers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '7bd6b254-1663-4ee6-811a-0b94e466f347', 5, 'Nitesh kumaar V', 'Team Rogers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b7d7d7c7-115e-4069-8ed4-a8af2941b678', 5, null, 'Team Rogers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -1677,43 +1677,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '8066719a-0af9-475d-8d45-d9bafd7ea8aa', 'ORION-S0055', 'Cyber Warrier', 'cyberwarrier', 'Jaya Suriya k', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'JAYASURIYAK',
+  '710c024e-0052-498b-8fe3-d654f713920f', 'ORION-S0055', 'Cyber Warrier', 'cyberwarrier', 'Jaya Suriya k', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'JAYASURIYAK',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '8066719a-0af9-475d-8d45-d9bafd7ea8aa', 'VERIFIED-ORION-S0055', 'Jaya Suriya k', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '710c024e-0052-498b-8fe3-d654f713920f', 'VERIFIED-ORION-S0055', 'Jaya Suriya k', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8066719a-0af9-475d-8d45-d9bafd7ea8aa', 1, 'Soorya', 'Cyber Warrier', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '710c024e-0052-498b-8fe3-d654f713920f', 1, null, 'Cyber Warrier', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8066719a-0af9-475d-8d45-d9bafd7ea8aa', 2, 'Subash', 'Cyber Warrier', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '710c024e-0052-498b-8fe3-d654f713920f', 2, null, 'Cyber Warrier', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8066719a-0af9-475d-8d45-d9bafd7ea8aa', 3, 'KATHIJA.M', 'Cyber Warrier', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '710c024e-0052-498b-8fe3-d654f713920f', 3, null, 'Cyber Warrier', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8066719a-0af9-475d-8d45-d9bafd7ea8aa', 4, 'R.Renuga Devi', 'Cyber Warrier', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '710c024e-0052-498b-8fe3-d654f713920f', 4, null, 'Cyber Warrier', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8066719a-0af9-475d-8d45-d9bafd7ea8aa', 5, 'RIGASHINI.s', 'Cyber Warrier', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '710c024e-0052-498b-8fe3-d654f713920f', 5, null, 'Cyber Warrier', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -1722,43 +1722,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '7396927c-7f4c-4e2d-890d-be02bcb54c62', 'ORION-S0056', 'Interstellar', 'interstellar', 'Farhan Ur Rahman M', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'FARHANURRAHMANM',
+  '68ef91ae-f9da-49b3-a9c0-df4635427bfe', 'ORION-S0056', 'Interstellar', 'interstellar', 'Farhan Ur Rahman M', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'FARHANURRAHMANM',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '7396927c-7f4c-4e2d-890d-be02bcb54c62', 'VERIFIED-ORION-S0056', 'Farhan Ur Rahman M', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '68ef91ae-f9da-49b3-a9c0-df4635427bfe', 'VERIFIED-ORION-S0056', 'Farhan Ur Rahman M', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '7396927c-7f4c-4e2d-890d-be02bcb54c62', 1, 'Aiman Zulaiha M M', 'Interstellar', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '68ef91ae-f9da-49b3-a9c0-df4635427bfe', 1, null, 'Interstellar', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '7396927c-7f4c-4e2d-890d-be02bcb54c62', 2, 'Adithyan Benoy V', 'Interstellar', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '68ef91ae-f9da-49b3-a9c0-df4635427bfe', 2, null, 'Interstellar', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '7396927c-7f4c-4e2d-890d-be02bcb54c62', 3, 'Rathna Priya S', 'Interstellar', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '68ef91ae-f9da-49b3-a9c0-df4635427bfe', 3, null, 'Interstellar', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '7396927c-7f4c-4e2d-890d-be02bcb54c62', 4, 'Srikar B V', 'Interstellar', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '68ef91ae-f9da-49b3-a9c0-df4635427bfe', 4, null, 'Interstellar', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '7396927c-7f4c-4e2d-890d-be02bcb54c62', 5, 'Sushmitha E', 'Interstellar', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '68ef91ae-f9da-49b3-a9c0-df4635427bfe', 5, null, 'Interstellar', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -1767,43 +1767,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '136064f2-2192-405b-a7f0-3854c7786c5b', 'ORION-S0058', 'Codeflux', 'codeflux', 'Praveena S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'PRAVEENAS',
+  '88d5a2b0-bae9-4901-aa8e-bc2f46df200f', 'ORION-S0058', 'Codeflux', 'codeflux', 'Praveena S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'PRAVEENAS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '136064f2-2192-405b-a7f0-3854c7786c5b', 'VERIFIED-ORION-S0058', 'Praveena S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '88d5a2b0-bae9-4901-aa8e-bc2f46df200f', 'VERIFIED-ORION-S0058', 'Praveena S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '136064f2-2192-405b-a7f0-3854c7786c5b', 1, 'T Vignesh', 'Codeflux', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '88d5a2b0-bae9-4901-aa8e-bc2f46df200f', 1, null, 'Codeflux', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '136064f2-2192-405b-a7f0-3854c7786c5b', 2, 'Tamizharasi K', 'Codeflux', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '88d5a2b0-bae9-4901-aa8e-bc2f46df200f', 2, null, 'Codeflux', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '136064f2-2192-405b-a7f0-3854c7786c5b', 3, 'Yuvathi P', 'Codeflux', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '88d5a2b0-bae9-4901-aa8e-bc2f46df200f', 3, null, 'Codeflux', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '136064f2-2192-405b-a7f0-3854c7786c5b', 4, 'Sathiya nishka', 'Codeflux', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '88d5a2b0-bae9-4901-aa8e-bc2f46df200f', 4, null, 'Codeflux', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '136064f2-2192-405b-a7f0-3854c7786c5b', 5, 'Srinivasan V', 'Codeflux', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '88d5a2b0-bae9-4901-aa8e-bc2f46df200f', 5, null, 'Codeflux', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -1812,23 +1812,23 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '7481fad0-623c-4880-947c-20d61802f350', 'ORION-S0059', 'Elite', 'elite', 'Madhumitha Manivannan', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'MADHUMITHAMANIVANNAN',
+  'ff5ea078-dc63-4fcd-8984-a07c6c68f017', 'ORION-S0059', 'Elite', 'elite', 'Madhumitha Manivannan', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'MADHUMITHAMANIVANNAN',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '7481fad0-623c-4880-947c-20d61802f350', 'VERIFIED-ORION-S0059', 'Madhumitha Manivannan', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'ff5ea078-dc63-4fcd-8984-a07c6c68f017', 'VERIFIED-ORION-S0059', 'Madhumitha Manivannan', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '7481fad0-623c-4880-947c-20d61802f350', 1, 'Devatharshini J', 'Elite', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'ff5ea078-dc63-4fcd-8984-a07c6c68f017', 1, null, 'Elite', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -1837,38 +1837,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'e062db9c-4ba0-4062-85cf-81b34f59a602', 'ORION-S0060', 'Scarlet force', 'scarletforce', 'Madhumitha S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'MADHUMITHAS',
+  '5b34d073-80ea-49e0-972a-b76946e78ef2', 'ORION-S0060', 'Scarlet force', 'scarletforce', 'Madhumitha S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'MADHUMITHAS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'e062db9c-4ba0-4062-85cf-81b34f59a602', 'VERIFIED-ORION-S0060', 'Madhumitha S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '5b34d073-80ea-49e0-972a-b76946e78ef2', 'VERIFIED-ORION-S0060', 'Madhumitha S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'e062db9c-4ba0-4062-85cf-81b34f59a602', 1, 'Janani R', 'Scarlet force', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5b34d073-80ea-49e0-972a-b76946e78ef2', 1, null, 'Scarlet force', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'e062db9c-4ba0-4062-85cf-81b34f59a602', 2, 'Archaya U', 'Scarlet force', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5b34d073-80ea-49e0-972a-b76946e78ef2', 2, null, 'Scarlet force', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'e062db9c-4ba0-4062-85cf-81b34f59a602', 3, 'Harini S', 'Scarlet force', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5b34d073-80ea-49e0-972a-b76946e78ef2', 3, null, 'Scarlet force', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'e062db9c-4ba0-4062-85cf-81b34f59a602', 4, 'Brindhasri S', 'Scarlet force', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5b34d073-80ea-49e0-972a-b76946e78ef2', 4, null, 'Scarlet force', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -1877,33 +1877,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '60b5716c-aa86-456e-b669-6b59964ecbe0', 'ORION-S0061', 'Aquasense', 'aquasense', 'Ratheesh M', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'RATHEESHM',
+  '8087022d-cea7-4f65-8bc7-22ce597bfe38', 'ORION-S0061', 'Aquasense', 'aquasense', 'Ratheesh M', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'RATHEESHM',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '60b5716c-aa86-456e-b669-6b59964ecbe0', 'VERIFIED-ORION-S0061', 'Ratheesh M', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '8087022d-cea7-4f65-8bc7-22ce597bfe38', 'VERIFIED-ORION-S0061', 'Ratheesh M', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '60b5716c-aa86-456e-b669-6b59964ecbe0', 1, 'Ravindran G', 'Aquasense', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8087022d-cea7-4f65-8bc7-22ce597bfe38', 1, null, 'Aquasense', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '60b5716c-aa86-456e-b669-6b59964ecbe0', 2, 'RishiKumar', 'Aquasense', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8087022d-cea7-4f65-8bc7-22ce597bfe38', 2, null, 'Aquasense', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '60b5716c-aa86-456e-b669-6b59964ecbe0', 3, 'Raajavarshan S.M', 'Aquasense', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8087022d-cea7-4f65-8bc7-22ce597bfe38', 3, null, 'Aquasense', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -1912,28 +1912,28 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'b656dac6-3570-43b9-bef8-ca5a83abb626', 'ORION-S0062', 'OPTIPARK SYSTEMS', 'optiparksystems', 'GOMATAM TRISHNA HAASINI', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'GOMATAMTRISHNAHAASINI',
+  '37d00ffa-4bd2-425b-a585-faa945031a6a', 'ORION-S0062', 'OPTIPARK SYSTEMS', 'optiparksystems', 'GOMATAM TRISHNA HAASINI', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'GOMATAMTRISHNAHAASINI',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'b656dac6-3570-43b9-bef8-ca5a83abb626', 'VERIFIED-ORION-S0062', 'GOMATAM TRISHNA HAASINI', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '37d00ffa-4bd2-425b-a585-faa945031a6a', 'VERIFIED-ORION-S0062', 'GOMATAM TRISHNA HAASINI', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'b656dac6-3570-43b9-bef8-ca5a83abb626', 1, 'TULIKA JAISWAL', 'OPTIPARK SYSTEMS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '37d00ffa-4bd2-425b-a585-faa945031a6a', 1, null, 'OPTIPARK SYSTEMS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'b656dac6-3570-43b9-bef8-ca5a83abb626', 2, 'MOKSHITHA KAKARLA', 'OPTIPARK SYSTEMS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '37d00ffa-4bd2-425b-a585-faa945031a6a', 2, null, 'OPTIPARK SYSTEMS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -1942,43 +1942,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '838381d6-32de-4849-b8b4-e225be1e1f5c', 'ORION-S0063', 'TECH TITANS', 'techtitans', 'Ram Prakash S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'RAMPRAKASHS',
+  '28c4c942-c9ef-491d-8488-0ff8e743c470', 'ORION-S0063', 'TECH TITANS', 'techtitans', 'Ram Prakash S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'RAMPRAKASHS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '838381d6-32de-4849-b8b4-e225be1e1f5c', 'VERIFIED-ORION-S0063', 'Ram Prakash S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '28c4c942-c9ef-491d-8488-0ff8e743c470', 'VERIFIED-ORION-S0063', 'Ram Prakash S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '838381d6-32de-4849-b8b4-e225be1e1f5c', 1, 'Indhar A', 'TECH TITANS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '28c4c942-c9ef-491d-8488-0ff8e743c470', 1, null, 'TECH TITANS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '838381d6-32de-4849-b8b4-e225be1e1f5c', 2, 'SANJAY S', 'TECH TITANS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '28c4c942-c9ef-491d-8488-0ff8e743c470', 2, null, 'TECH TITANS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '838381d6-32de-4849-b8b4-e225be1e1f5c', 3, 'SHRI SANTH SUBAS', 'TECH TITANS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '28c4c942-c9ef-491d-8488-0ff8e743c470', 3, null, 'TECH TITANS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '838381d6-32de-4849-b8b4-e225be1e1f5c', 4, 'Rajathiruvarasu v', 'TECH TITANS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '28c4c942-c9ef-491d-8488-0ff8e743c470', 4, null, 'TECH TITANS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '838381d6-32de-4849-b8b4-e225be1e1f5c', 5, 'Sriharan A', 'TECH TITANS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '28c4c942-c9ef-491d-8488-0ff8e743c470', 5, null, 'TECH TITANS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -1987,38 +1987,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'ba0b6604-35b7-4d1a-bfa5-2506c9cac2ab', 'ORION-S0064', 'STACKS', 'stacks', 'Praveen R', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'PRAVEENR',
+  '3ea3d852-85c7-4a3e-8456-24a8e8082b89', 'ORION-S0064', 'STACKS', 'stacks', 'Praveen R', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'PRAVEENR',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'ba0b6604-35b7-4d1a-bfa5-2506c9cac2ab', 'VERIFIED-ORION-S0064', 'Praveen R', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '3ea3d852-85c7-4a3e-8456-24a8e8082b89', 'VERIFIED-ORION-S0064', 'Praveen R', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ba0b6604-35b7-4d1a-bfa5-2506c9cac2ab', 1, 'Rithikka P', 'STACKS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3ea3d852-85c7-4a3e-8456-24a8e8082b89', 1, null, 'STACKS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ba0b6604-35b7-4d1a-bfa5-2506c9cac2ab', 2, 'Ramya R', 'STACKS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3ea3d852-85c7-4a3e-8456-24a8e8082b89', 2, null, 'STACKS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ba0b6604-35b7-4d1a-bfa5-2506c9cac2ab', 3, 'Ranjeet P.I', 'STACKS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3ea3d852-85c7-4a3e-8456-24a8e8082b89', 3, null, 'STACKS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ba0b6604-35b7-4d1a-bfa5-2506c9cac2ab', 4, 'Akash S', 'STACKS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3ea3d852-85c7-4a3e-8456-24a8e8082b89', 4, null, 'STACKS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -2027,43 +2027,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'f5fcd38b-163e-4f11-a810-3df8c1cc7666', 'ORION-S0065', 'LeafLogic', 'leaflogic', 'Swathika S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SWATHIKAS',
+  'b3cf2f2f-0491-420b-906d-55e8bd89c9dd', 'ORION-S0065', 'LeafLogic', 'leaflogic', 'Swathika S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'SWATHIKAS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'f5fcd38b-163e-4f11-a810-3df8c1cc7666', 'VERIFIED-ORION-S0065', 'Swathika S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'b3cf2f2f-0491-420b-906d-55e8bd89c9dd', 'VERIFIED-ORION-S0065', 'Swathika S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f5fcd38b-163e-4f11-a810-3df8c1cc7666', 1, 'P Dhivyasri', 'LeafLogic', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b3cf2f2f-0491-420b-906d-55e8bd89c9dd', 1, null, 'LeafLogic', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f5fcd38b-163e-4f11-a810-3df8c1cc7666', 2, 'Irfanaa Parveen M', 'LeafLogic', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b3cf2f2f-0491-420b-906d-55e8bd89c9dd', 2, null, 'LeafLogic', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f5fcd38b-163e-4f11-a810-3df8c1cc7666', 3, 'Yoga Varshini M', 'LeafLogic', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b3cf2f2f-0491-420b-906d-55e8bd89c9dd', 3, null, 'LeafLogic', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f5fcd38b-163e-4f11-a810-3df8c1cc7666', 4, 'Nandanaa devi A N', 'LeafLogic', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b3cf2f2f-0491-420b-906d-55e8bd89c9dd', 4, null, 'LeafLogic', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f5fcd38b-163e-4f11-a810-3df8c1cc7666', 5, 'Keerthana M', 'LeafLogic', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b3cf2f2f-0491-420b-906d-55e8bd89c9dd', 5, null, 'LeafLogic', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -2072,38 +2072,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '7b1357b2-071f-4b96-be51-59d12027b68a', 'ORION-S0066', 'DeeBug', 'deebug', 'Ronak. N', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'RONAKN',
+  '5bdfd4f6-67b1-4e3c-9bc1-be258169f02c', 'ORION-S0066', 'DeeBug', 'deebug', 'Ronak. N', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'RONAKN',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '7b1357b2-071f-4b96-be51-59d12027b68a', 'VERIFIED-ORION-S0066', 'Ronak. N', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '5bdfd4f6-67b1-4e3c-9bc1-be258169f02c', 'VERIFIED-ORION-S0066', 'Ronak. N', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '7b1357b2-071f-4b96-be51-59d12027b68a', 1, 'Faheem Udheen', 'DeeBug', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5bdfd4f6-67b1-4e3c-9bc1-be258169f02c', 1, null, 'DeeBug', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '7b1357b2-071f-4b96-be51-59d12027b68a', 2, 'Lokesh Kumar', 'DeeBug', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5bdfd4f6-67b1-4e3c-9bc1-be258169f02c', 2, null, 'DeeBug', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '7b1357b2-071f-4b96-be51-59d12027b68a', 3, 'Aravindakshan', 'DeeBug', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5bdfd4f6-67b1-4e3c-9bc1-be258169f02c', 3, null, 'DeeBug', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '7b1357b2-071f-4b96-be51-59d12027b68a', 4, 'Thamilelelan', 'DeeBug', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5bdfd4f6-67b1-4e3c-9bc1-be258169f02c', 4, null, 'DeeBug', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -2112,33 +2112,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '2bfd43a0-7671-4312-a68f-cb6ebdc80f8b', 'ORION-S0067', 'NEXERA', 'nexera', 'Akshay Kumar P.V.', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'AKSHAYKUMARPV',
+  '84c50818-50b3-45fc-8f26-da171a3e5b7e', 'ORION-S0067', 'NEXERA', 'nexera', 'Akshay Kumar P.V.', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'AKSHAYKUMARPV',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '2bfd43a0-7671-4312-a68f-cb6ebdc80f8b', 'VERIFIED-ORION-S0067', 'Akshay Kumar P.V.', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '84c50818-50b3-45fc-8f26-da171a3e5b7e', 'VERIFIED-ORION-S0067', 'Akshay Kumar P.V.', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '2bfd43a0-7671-4312-a68f-cb6ebdc80f8b', 1, 'Trinab Shan', 'NEXERA', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '84c50818-50b3-45fc-8f26-da171a3e5b7e', 1, null, 'NEXERA', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '2bfd43a0-7671-4312-a68f-cb6ebdc80f8b', 2, 'Harish K.', 'NEXERA', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '84c50818-50b3-45fc-8f26-da171a3e5b7e', 2, null, 'NEXERA', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '2bfd43a0-7671-4312-a68f-cb6ebdc80f8b', 3, 'Seyon Ann Shibu', 'NEXERA', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '84c50818-50b3-45fc-8f26-da171a3e5b7e', 3, null, 'NEXERA', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -2147,43 +2147,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '78311358-fd2f-4dc0-b583-078c1e5f29df', 'ORION-S0068', 'Tech Titan', 'techtitan', 'M.HARSHINI', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'MHARSHINI',
+  'acf9cf06-f48b-4023-8cc8-d7dc7114cc98', 'ORION-S0068', 'Tech Titan', 'techtitan', 'M.HARSHINI', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'MHARSHINI',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '78311358-fd2f-4dc0-b583-078c1e5f29df', 'VERIFIED-ORION-S0068', 'M.HARSHINI', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'acf9cf06-f48b-4023-8cc8-d7dc7114cc98', 'VERIFIED-ORION-S0068', 'M.HARSHINI', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '78311358-fd2f-4dc0-b583-078c1e5f29df', 1, 'Harini P', 'Tech Titan', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'acf9cf06-f48b-4023-8cc8-d7dc7114cc98', 1, null, 'Tech Titan', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '78311358-fd2f-4dc0-b583-078c1e5f29df', 2, 'Iniya Alies Rasma M', 'Tech Titan', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'acf9cf06-f48b-4023-8cc8-d7dc7114cc98', 2, null, 'Tech Titan', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '78311358-fd2f-4dc0-b583-078c1e5f29df', 3, 'Jeyashree S', 'Tech Titan', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'acf9cf06-f48b-4023-8cc8-d7dc7114cc98', 3, null, 'Tech Titan', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '78311358-fd2f-4dc0-b583-078c1e5f29df', 4, 'Kanika A I', 'Tech Titan', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'acf9cf06-f48b-4023-8cc8-d7dc7114cc98', 4, null, 'Tech Titan', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '78311358-fd2f-4dc0-b583-078c1e5f29df', 5, 'Jai Shree M', 'Tech Titan', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'acf9cf06-f48b-4023-8cc8-d7dc7114cc98', 5, null, 'Tech Titan', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -2192,43 +2192,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '3ed387b8-2339-4181-b153-62add76bd760', 'ORION-S0069', 'TECHNO BRATS', 'technobrats', 'Sruthi R', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SRUTHIR',
+  '6411aafa-443b-47d1-a03e-5343c7895613', 'ORION-S0069', 'TECHNO BRATS', 'technobrats', 'Sruthi R', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SRUTHIR',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '3ed387b8-2339-4181-b153-62add76bd760', 'VERIFIED-ORION-S0069', 'Sruthi R', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '6411aafa-443b-47d1-a03e-5343c7895613', 'VERIFIED-ORION-S0069', 'Sruthi R', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '3ed387b8-2339-4181-b153-62add76bd760', 1, 'Thridev V M', 'TECHNO BRATS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6411aafa-443b-47d1-a03e-5343c7895613', 1, null, 'TECHNO BRATS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '3ed387b8-2339-4181-b153-62add76bd760', 2, 'Srinidhi kruthiha G', 'TECHNO BRATS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6411aafa-443b-47d1-a03e-5343c7895613', 2, null, 'TECHNO BRATS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '3ed387b8-2339-4181-b153-62add76bd760', 3, 'Vishnu Vedant Deva', 'TECHNO BRATS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6411aafa-443b-47d1-a03e-5343c7895613', 3, null, 'TECHNO BRATS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '3ed387b8-2339-4181-b153-62add76bd760', 4, 'Sriram V', 'TECHNO BRATS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6411aafa-443b-47d1-a03e-5343c7895613', 4, null, 'TECHNO BRATS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '3ed387b8-2339-4181-b153-62add76bd760', 5, 'Sudarshan A J', 'TECHNO BRATS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6411aafa-443b-47d1-a03e-5343c7895613', 5, null, 'TECHNO BRATS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -2237,33 +2237,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '279d0917-59a1-4d83-a027-2c28678a5bfb', 'ORION-S0070', 'Team_Name_26', 'teamname26', 'Sai Krishna K J', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SAIKRISHNAKJ',
+  '66084544-8961-409e-8132-51cdb972e863', 'ORION-S0070', 'Team_Name_26', 'teamname26', 'Sai Krishna K J', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SAIKRISHNAKJ',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '279d0917-59a1-4d83-a027-2c28678a5bfb', 'VERIFIED-ORION-S0070', 'Sai Krishna K J', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '66084544-8961-409e-8132-51cdb972e863', 'VERIFIED-ORION-S0070', 'Sai Krishna K J', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '279d0917-59a1-4d83-a027-2c28678a5bfb', 1, 'Shreya Sivakumar', 'Team_Name_26', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '66084544-8961-409e-8132-51cdb972e863', 1, null, 'Team_Name_26', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '279d0917-59a1-4d83-a027-2c28678a5bfb', 2, 'Ananthika S', 'Team_Name_26', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '66084544-8961-409e-8132-51cdb972e863', 2, null, 'Team_Name_26', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '279d0917-59a1-4d83-a027-2c28678a5bfb', 3, 'Nilavadhani GS', 'Team_Name_26', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '66084544-8961-409e-8132-51cdb972e863', 3, null, 'Team_Name_26', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -2272,43 +2272,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'c0f0fa8a-386d-4b76-8ad5-3a7fb18a6974', 'ORION-S0071', 'Bama Boyz', 'bamaboyz', 'Arjun', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'ARJUN',
+  '14fbb860-afe5-4ce0-9b59-61908007781c', 'ORION-S0071', 'Bama Boyz', 'bamaboyz', 'Arjun', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'ARJUN',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'c0f0fa8a-386d-4b76-8ad5-3a7fb18a6974', 'VERIFIED-ORION-S0071', 'Arjun', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '14fbb860-afe5-4ce0-9b59-61908007781c', 'VERIFIED-ORION-S0071', 'Arjun', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c0f0fa8a-386d-4b76-8ad5-3a7fb18a6974', 1, 'Afnan Hussain k', 'Bama Boyz', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '14fbb860-afe5-4ce0-9b59-61908007781c', 1, null, 'Bama Boyz', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c0f0fa8a-386d-4b76-8ad5-3a7fb18a6974', 2, 'Pranay', 'Bama Boyz', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '14fbb860-afe5-4ce0-9b59-61908007781c', 2, null, 'Bama Boyz', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c0f0fa8a-386d-4b76-8ad5-3a7fb18a6974', 3, 'Sarvesh', 'Bama Boyz', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '14fbb860-afe5-4ce0-9b59-61908007781c', 3, null, 'Bama Boyz', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c0f0fa8a-386d-4b76-8ad5-3a7fb18a6974', 4, 'Hasim', 'Bama Boyz', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '14fbb860-afe5-4ce0-9b59-61908007781c', 4, null, 'Bama Boyz', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c0f0fa8a-386d-4b76-8ad5-3a7fb18a6974', 5, 'Guru prasath', 'Bama Boyz', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '14fbb860-afe5-4ce0-9b59-61908007781c', 5, null, 'Bama Boyz', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -2317,43 +2317,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'f9ed9e0f-32f2-4450-9360-1eafa50ec253', 'ORION-S0072', 'Femmora', 'femmora', 'Vaibhavashakthi R', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'VAIBHAVASHAKTHIR',
+  'de5cf4c8-3940-4691-8490-757e30150c18', 'ORION-S0072', 'Femmora', 'femmora', 'Vaibhavashakthi R', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'VAIBHAVASHAKTHIR',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'f9ed9e0f-32f2-4450-9360-1eafa50ec253', 'VERIFIED-ORION-S0072', 'Vaibhavashakthi R', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'de5cf4c8-3940-4691-8490-757e30150c18', 'VERIFIED-ORION-S0072', 'Vaibhavashakthi R', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f9ed9e0f-32f2-4450-9360-1eafa50ec253', 1, 'Varshitha R', 'Femmora', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'de5cf4c8-3940-4691-8490-757e30150c18', 1, null, 'Femmora', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f9ed9e0f-32f2-4450-9360-1eafa50ec253', 2, 'Sherlin Neha A J', 'Femmora', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'de5cf4c8-3940-4691-8490-757e30150c18', 2, null, 'Femmora', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f9ed9e0f-32f2-4450-9360-1eafa50ec253', 3, 'Suryapriya A G', 'Femmora', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'de5cf4c8-3940-4691-8490-757e30150c18', 3, null, 'Femmora', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f9ed9e0f-32f2-4450-9360-1eafa50ec253', 4, 'Harini S', 'Femmora', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'de5cf4c8-3940-4691-8490-757e30150c18', 4, null, 'Femmora', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f9ed9e0f-32f2-4450-9360-1eafa50ec253', 5, 'Sornambiga S', 'Femmora', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'de5cf4c8-3940-4691-8490-757e30150c18', 5, null, 'Femmora', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -2362,43 +2362,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'eebf5779-537d-4318-8248-efc4f895eebd', 'ORION-S0073', 'LOGIC LEGIONS', 'logiclegions', 'SIVAM P', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SIVAMP',
+  '99acf916-b3a0-4f4a-8757-a152b5e7c2c6', 'ORION-S0073', 'LOGIC LEGIONS', 'logiclegions', 'SIVAM P', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SIVAMP',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'eebf5779-537d-4318-8248-efc4f895eebd', 'VERIFIED-ORION-S0073', 'SIVAM P', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '99acf916-b3a0-4f4a-8757-a152b5e7c2c6', 'VERIFIED-ORION-S0073', 'SIVAM P', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'eebf5779-537d-4318-8248-efc4f895eebd', 1, 'MOHITHRA', 'LOGIC LEGIONS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '99acf916-b3a0-4f4a-8757-a152b5e7c2c6', 1, null, 'LOGIC LEGIONS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'eebf5779-537d-4318-8248-efc4f895eebd', 2, 'Srivachan c s', 'LOGIC LEGIONS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '99acf916-b3a0-4f4a-8757-a152b5e7c2c6', 2, null, 'LOGIC LEGIONS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'eebf5779-537d-4318-8248-efc4f895eebd', 3, 'Siva Ranjan S', 'LOGIC LEGIONS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '99acf916-b3a0-4f4a-8757-a152b5e7c2c6', 3, null, 'LOGIC LEGIONS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'eebf5779-537d-4318-8248-efc4f895eebd', 4, 'Anika', 'LOGIC LEGIONS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '99acf916-b3a0-4f4a-8757-a152b5e7c2c6', 4, null, 'LOGIC LEGIONS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'eebf5779-537d-4318-8248-efc4f895eebd', 5, 'Ambika', 'LOGIC LEGIONS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '99acf916-b3a0-4f4a-8757-a152b5e7c2c6', 5, null, 'LOGIC LEGIONS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -2407,43 +2407,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'f7e8d471-21da-4f37-8e4e-813b60788326', 'ORION-S0074', 'VisionX', 'visionx', 'Yazhini B', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'YAZHINIB',
+  '69e032cb-a732-4683-83ce-ea0e5fdd534d', 'ORION-S0074', 'VisionX', 'visionx', 'Yazhini B', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'YAZHINIB',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'f7e8d471-21da-4f37-8e4e-813b60788326', 'VERIFIED-ORION-S0074', 'Yazhini B', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '69e032cb-a732-4683-83ce-ea0e5fdd534d', 'VERIFIED-ORION-S0074', 'Yazhini B', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f7e8d471-21da-4f37-8e4e-813b60788326', 1, 'Dharshini P', 'VisionX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '69e032cb-a732-4683-83ce-ea0e5fdd534d', 1, null, 'VisionX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f7e8d471-21da-4f37-8e4e-813b60788326', 2, 'Bhavana Y', 'VisionX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '69e032cb-a732-4683-83ce-ea0e5fdd534d', 2, null, 'VisionX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f7e8d471-21da-4f37-8e4e-813b60788326', 3, 'Kanuri Manobhi Abh', 'VisionX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '69e032cb-a732-4683-83ce-ea0e5fdd534d', 3, null, 'VisionX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f7e8d471-21da-4f37-8e4e-813b60788326', 4, 'Poojitha G', 'VisionX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '69e032cb-a732-4683-83ce-ea0e5fdd534d', 4, null, 'VisionX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f7e8d471-21da-4f37-8e4e-813b60788326', 5, 'Nandhini Y', 'VisionX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '69e032cb-a732-4683-83ce-ea0e5fdd534d', 5, null, 'VisionX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -2452,38 +2452,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '270a16c3-5a60-4c9f-a129-2b1b169e5694', 'ORION-S0075', 'The imposter', 'theimposter', 'Likith Krishna J', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'LIKITHKRISHNAJ',
+  'a26dc427-9448-41ad-9a8c-5c854b3ea774', 'ORION-S0075', 'The imposter', 'theimposter', 'Likith Krishna J', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'LIKITHKRISHNAJ',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '270a16c3-5a60-4c9f-a129-2b1b169e5694', 'VERIFIED-ORION-S0075', 'Likith Krishna J', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'a26dc427-9448-41ad-9a8c-5c854b3ea774', 'VERIFIED-ORION-S0075', 'Likith Krishna J', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '270a16c3-5a60-4c9f-a129-2b1b169e5694', 1, 'B Lakshman', 'The imposter', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'a26dc427-9448-41ad-9a8c-5c854b3ea774', 1, null, 'The imposter', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '270a16c3-5a60-4c9f-a129-2b1b169e5694', 2, 'Rishi S', 'The imposter', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'a26dc427-9448-41ad-9a8c-5c854b3ea774', 2, null, 'The imposter', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '270a16c3-5a60-4c9f-a129-2b1b169e5694', 3, 'Charan Josh A', 'The imposter', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'a26dc427-9448-41ad-9a8c-5c854b3ea774', 3, null, 'The imposter', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '270a16c3-5a60-4c9f-a129-2b1b169e5694', 4, 'Jagadhiswaran K', 'The imposter', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'a26dc427-9448-41ad-9a8c-5c854b3ea774', 4, null, 'The imposter', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -2492,43 +2492,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '09c1b111-9058-4579-8fa7-3d258a9c5b05', 'ORION-S0076', 'Kalephor', 'kalephor', 'Shivani SK', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SHIVANISK',
+  'eb09f953-a48d-4fea-b7db-4e2fc141b833', 'ORION-S0076', 'Kalephor', 'kalephor', 'Shivani SK', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-02: LEXVAULT', 'SHIVANISK',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '09c1b111-9058-4579-8fa7-3d258a9c5b05', 'VERIFIED-ORION-S0076', 'Shivani SK', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'eb09f953-a48d-4fea-b7db-4e2fc141b833', 'VERIFIED-ORION-S0076', 'Shivani SK', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '09c1b111-9058-4579-8fa7-3d258a9c5b05', 1, 'Rakhesh Anand RA', 'Kalephor', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'eb09f953-a48d-4fea-b7db-4e2fc141b833', 1, null, 'Kalephor', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '09c1b111-9058-4579-8fa7-3d258a9c5b05', 2, 'paul bryton raj', 'Kalephor', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'eb09f953-a48d-4fea-b7db-4e2fc141b833', 2, null, 'Kalephor', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '09c1b111-9058-4579-8fa7-3d258a9c5b05', 3, 'Pon Vijayalakshmi', 'Kalephor', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'eb09f953-a48d-4fea-b7db-4e2fc141b833', 3, null, 'Kalephor', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '09c1b111-9058-4579-8fa7-3d258a9c5b05', 4, 'Ramya KN', 'Kalephor', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'eb09f953-a48d-4fea-b7db-4e2fc141b833', 4, null, 'Kalephor', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '09c1b111-9058-4579-8fa7-3d258a9c5b05', 5, 'Padmavathy', 'Kalephor', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'eb09f953-a48d-4fea-b7db-4e2fc141b833', 5, null, 'Kalephor', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -2537,38 +2537,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '39b07835-6eca-4f53-9ea3-59f4a5d83c96', 'ORION-S0077', 'AgriVanguard', 'agrivanguard', 'Thodupunuri Sai Charan', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'THODUPUNURISAICHARAN',
+  '19640852-9cb9-4e24-b411-bc6ee3b41ec2', 'ORION-S0077', 'AgriVanguard', 'agrivanguard', 'Thodupunuri Sai Charan', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'THODUPUNURISAICHARAN',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '39b07835-6eca-4f53-9ea3-59f4a5d83c96', 'VERIFIED-ORION-S0077', 'Thodupunuri Sai Charan', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '19640852-9cb9-4e24-b411-bc6ee3b41ec2', 'VERIFIED-ORION-S0077', 'Thodupunuri Sai Charan', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '39b07835-6eca-4f53-9ea3-59f4a5d83c96', 1, 'Akkala Rahul Reddy', 'AgriVanguard', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '19640852-9cb9-4e24-b411-bc6ee3b41ec2', 1, null, 'AgriVanguard', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '39b07835-6eca-4f53-9ea3-59f4a5d83c96', 2, 'Nalla Shreekar', 'AgriVanguard', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '19640852-9cb9-4e24-b411-bc6ee3b41ec2', 2, null, 'AgriVanguard', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '39b07835-6eca-4f53-9ea3-59f4a5d83c96', 3, 'Maramreddy Aakash', 'AgriVanguard', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '19640852-9cb9-4e24-b411-bc6ee3b41ec2', 3, null, 'AgriVanguard', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '39b07835-6eca-4f53-9ea3-59f4a5d83c96', 4, 'Podugu Harish', 'AgriVanguard', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '19640852-9cb9-4e24-b411-bc6ee3b41ec2', 4, null, 'AgriVanguard', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -2577,43 +2577,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'd53ba544-e928-4ae8-bbaa-86b8317bcad0', 'ORION-S0078', 'Team Synergy', 'teamsynergy', 'Nirmala Devi NS', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'NIRMALADEVINS',
+  'eaa62d58-d4f1-4f46-abe0-c56cb16df051', 'ORION-S0078', 'Team Synergy', 'teamsynergy', 'Nirmala Devi NS', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'NIRMALADEVINS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'd53ba544-e928-4ae8-bbaa-86b8317bcad0', 'VERIFIED-ORION-S0078', 'Nirmala Devi NS', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'eaa62d58-d4f1-4f46-abe0-c56cb16df051', 'VERIFIED-ORION-S0078', 'Nirmala Devi NS', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd53ba544-e928-4ae8-bbaa-86b8317bcad0', 1, 'E Divya', 'Team Synergy', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'eaa62d58-d4f1-4f46-abe0-c56cb16df051', 1, null, 'Team Synergy', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd53ba544-e928-4ae8-bbaa-86b8317bcad0', 2, 'Mithra A', 'Team Synergy', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'eaa62d58-d4f1-4f46-abe0-c56cb16df051', 2, null, 'Team Synergy', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd53ba544-e928-4ae8-bbaa-86b8317bcad0', 3, 'Sanjay', 'Team Synergy', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'eaa62d58-d4f1-4f46-abe0-c56cb16df051', 3, null, 'Team Synergy', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd53ba544-e928-4ae8-bbaa-86b8317bcad0', 4, 'Jeswin Samuel P', 'Team Synergy', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'eaa62d58-d4f1-4f46-abe0-c56cb16df051', 4, null, 'Team Synergy', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd53ba544-e928-4ae8-bbaa-86b8317bcad0', 5, 'Nirmal Kumar N S', 'Team Synergy', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'eaa62d58-d4f1-4f46-abe0-c56cb16df051', 5, null, 'Team Synergy', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -2622,43 +2622,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'c474e07d-9925-49ef-8e60-039b05fb7064', 'ORION-S0079', 'Biobytes', 'biobytes', 'S A Srikanth', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SASRIKANTH',
+  '691b2189-3a4e-4e9f-bce5-ba21cd471f6e', 'ORION-S0079', 'Biobytes', 'biobytes', 'S A Srikanth', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SASRIKANTH',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'c474e07d-9925-49ef-8e60-039b05fb7064', 'VERIFIED-ORION-S0079', 'S A Srikanth', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '691b2189-3a4e-4e9f-bce5-ba21cd471f6e', 'VERIFIED-ORION-S0079', 'S A Srikanth', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c474e07d-9925-49ef-8e60-039b05fb7064', 1, 'Sherina K S', 'Biobytes', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '691b2189-3a4e-4e9f-bce5-ba21cd471f6e', 1, null, 'Biobytes', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c474e07d-9925-49ef-8e60-039b05fb7064', 2, 'Haniya.T', 'Biobytes', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '691b2189-3a4e-4e9f-bce5-ba21cd471f6e', 2, null, 'Biobytes', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c474e07d-9925-49ef-8e60-039b05fb7064', 3, 'Rakshana A', 'Biobytes', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '691b2189-3a4e-4e9f-bce5-ba21cd471f6e', 3, null, 'Biobytes', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c474e07d-9925-49ef-8e60-039b05fb7064', 4, 'Velu.E', 'Biobytes', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '691b2189-3a4e-4e9f-bce5-ba21cd471f6e', 4, null, 'Biobytes', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c474e07d-9925-49ef-8e60-039b05fb7064', 5, 'Taranesh S', 'Biobytes', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '691b2189-3a4e-4e9f-bce5-ba21cd471f6e', 5, null, 'Biobytes', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -2667,38 +2667,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '5410dedd-0150-497a-b632-400aff351816', 'ORION-S0080', 'JACK HACKROV', 'jackhackrov', 'VISHWA I', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'VISHWAI',
+  '3d09e17f-7911-4c83-a20c-321fd4b2056b', 'ORION-S0080', 'JACK HACKROV', 'jackhackrov', 'VISHWA I', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'VISHWAI',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '5410dedd-0150-497a-b632-400aff351816', 'VERIFIED-ORION-S0080', 'VISHWA I', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '3d09e17f-7911-4c83-a20c-321fd4b2056b', 'VERIFIED-ORION-S0080', 'VISHWA I', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5410dedd-0150-497a-b632-400aff351816', 1, 'SURYA BC', 'JACK HACKROV', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3d09e17f-7911-4c83-a20c-321fd4b2056b', 1, null, 'JACK HACKROV', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5410dedd-0150-497a-b632-400aff351816', 2, 'KILLIVALAVAN V', 'JACK HACKROV', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3d09e17f-7911-4c83-a20c-321fd4b2056b', 2, null, 'JACK HACKROV', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5410dedd-0150-497a-b632-400aff351816', 3, 'MOHAMMED ASIK T', 'JACK HACKROV', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3d09e17f-7911-4c83-a20c-321fd4b2056b', 3, null, 'JACK HACKROV', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5410dedd-0150-497a-b632-400aff351816', 4, 'SAKTHIVEL S', 'JACK HACKROV', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3d09e17f-7911-4c83-a20c-321fd4b2056b', 4, null, 'JACK HACKROV', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -2707,43 +2707,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'ed2b6828-21f4-4833-af9a-b34b17d686c7', 'ORION-S0081', 'IMPACT CODERS', 'impactcoders', 'Mohamed Aaseef M', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'MOHAMEDAASEEFM',
+  '0e41fcd9-a447-48bb-9159-cbd386b549c1', 'ORION-S0081', 'IMPACT CODERS', 'impactcoders', 'Mohamed Aaseef M', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'MOHAMEDAASEEFM',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'ed2b6828-21f4-4833-af9a-b34b17d686c7', 'VERIFIED-ORION-S0081', 'Mohamed Aaseef M', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '0e41fcd9-a447-48bb-9159-cbd386b549c1', 'VERIFIED-ORION-S0081', 'Mohamed Aaseef M', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ed2b6828-21f4-4833-af9a-b34b17d686c7', 1, 'Manoj R', 'IMPACT CODERS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0e41fcd9-a447-48bb-9159-cbd386b549c1', 1, null, 'IMPACT CODERS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ed2b6828-21f4-4833-af9a-b34b17d686c7', 2, 'Saravanakumar G', 'IMPACT CODERS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0e41fcd9-a447-48bb-9159-cbd386b549c1', 2, null, 'IMPACT CODERS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ed2b6828-21f4-4833-af9a-b34b17d686c7', 3, 'Sabarish J', 'IMPACT CODERS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0e41fcd9-a447-48bb-9159-cbd386b549c1', 3, null, 'IMPACT CODERS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ed2b6828-21f4-4833-af9a-b34b17d686c7', 4, 'Shafeeq S', 'IMPACT CODERS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0e41fcd9-a447-48bb-9159-cbd386b549c1', 4, null, 'IMPACT CODERS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ed2b6828-21f4-4833-af9a-b34b17d686c7', 5, 'Rohith V K', 'IMPACT CODERS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0e41fcd9-a447-48bb-9159-cbd386b549c1', 5, null, 'IMPACT CODERS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -2752,33 +2752,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '35183132-1dc9-4282-bc98-44e1882bbb5c', 'ORION-S0082', 'Brain Byte', 'brainbyte', 'Aditi Phulre', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'ADITIPHULRE',
+  '41eeea01-7911-4e3a-bdf9-68c1f8346e61', 'ORION-S0082', 'Brain Byte', 'brainbyte', 'Aditi Phulre', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'ADITIPHULRE',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '35183132-1dc9-4282-bc98-44e1882bbb5c', 'VERIFIED-ORION-S0082', 'Aditi Phulre', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '41eeea01-7911-4e3a-bdf9-68c1f8346e61', 'VERIFIED-ORION-S0082', 'Aditi Phulre', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '35183132-1dc9-4282-bc98-44e1882bbb5c', 1, 'Aditya Swaroop', 'Brain Byte', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '41eeea01-7911-4e3a-bdf9-68c1f8346e61', 1, null, 'Brain Byte', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '35183132-1dc9-4282-bc98-44e1882bbb5c', 2, 'Kavya Singh', 'Brain Byte', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '41eeea01-7911-4e3a-bdf9-68c1f8346e61', 2, null, 'Brain Byte', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '35183132-1dc9-4282-bc98-44e1882bbb5c', 3, 'Bhavay Mittal', 'Brain Byte', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '41eeea01-7911-4e3a-bdf9-68c1f8346e61', 3, null, 'Brain Byte', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -2787,33 +2787,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '7c01c413-3fc3-4983-a9bf-23b3815ace9f', 'ORION-S0083', '404 Brain Not Found', '404brainnotfound', 'HARISH R', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'HARISHR',
+  '029b17a0-7de5-4581-9f49-7adadb20f806', 'ORION-S0083', '404 Brain Not Found', '404brainnotfound', 'HARISH R', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'HARISHR',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '7c01c413-3fc3-4983-a9bf-23b3815ace9f', 'VERIFIED-ORION-S0083', 'HARISH R', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '029b17a0-7de5-4581-9f49-7adadb20f806', 'VERIFIED-ORION-S0083', 'HARISH R', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '7c01c413-3fc3-4983-a9bf-23b3815ace9f', 1, 'DINESH RAJ B', '404 Brain Not Found', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '029b17a0-7de5-4581-9f49-7adadb20f806', 1, null, '404 Brain Not Found', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '7c01c413-3fc3-4983-a9bf-23b3815ace9f', 2, 'RITHIN RS', '404 Brain Not Found', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '029b17a0-7de5-4581-9f49-7adadb20f806', 2, null, '404 Brain Not Found', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '7c01c413-3fc3-4983-a9bf-23b3815ace9f', 3, 'AJAY PRABU RK', '404 Brain Not Found', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '029b17a0-7de5-4581-9f49-7adadb20f806', 3, null, '404 Brain Not Found', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -2822,28 +2822,28 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '1c4caa8f-e6a3-4b8c-842c-6d7b3c205460', 'ORION-S0084', 'TOOTHPASTE EATERS', 'toothpasteeaters', 'RAJDEEP MAHADEV KULKARNI', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'RAJDEEPMAHADEVKULKARNI',
+  '85e58894-3334-4eee-8e01-f5c07df42632', 'ORION-S0084', 'TOOTHPASTE EATERS', 'toothpasteeaters', 'RAJDEEP MAHADEV KULKARNI', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'RAJDEEPMAHADEVKULKARNI',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '1c4caa8f-e6a3-4b8c-842c-6d7b3c205460', 'VERIFIED-ORION-S0084', 'RAJDEEP MAHADEV KULKARNI', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '85e58894-3334-4eee-8e01-f5c07df42632', 'VERIFIED-ORION-S0084', 'RAJDEEP MAHADEV KULKARNI', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '1c4caa8f-e6a3-4b8c-842c-6d7b3c205460', 1, 'Ayush Bidwai', 'TOOTHPASTE EATERS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '85e58894-3334-4eee-8e01-f5c07df42632', 1, null, 'TOOTHPASTE EATERS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '1c4caa8f-e6a3-4b8c-842c-6d7b3c205460', 2, 'Madhur Grover', 'TOOTHPASTE EATERS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '85e58894-3334-4eee-8e01-f5c07df42632', 2, null, 'TOOTHPASTE EATERS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -2852,38 +2852,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '63e7dfdc-da70-493a-b869-9bd60cfbc375', 'ORION-S0085', 'Mission:I''m-Possible Oxygen', 'missionimpossibleoxygen', 'Jai ganapathi.S.B', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'JAIGANAPATHISB',
+  'ba1d712f-00bd-4e13-9998-562b2f66276b', 'ORION-S0085', 'Mission:I''m-Possible Oxygen', 'missionimpossibleoxygen', 'Jai ganapathi.S.B', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'JAIGANAPATHISB',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '63e7dfdc-da70-493a-b869-9bd60cfbc375', 'VERIFIED-ORION-S0085', 'Jai ganapathi.S.B', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'ba1d712f-00bd-4e13-9998-562b2f66276b', 'VERIFIED-ORION-S0085', 'Jai ganapathi.S.B', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '63e7dfdc-da70-493a-b869-9bd60cfbc375', 1, 'Harish.T', 'Mission:I''m-Possible Oxygen', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'ba1d712f-00bd-4e13-9998-562b2f66276b', 1, null, 'Mission:I''m-Possible Oxygen', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '63e7dfdc-da70-493a-b869-9bd60cfbc375', 2, 'Bolleboina Yashashwini Yada', 'Mission:I''m-Possible Oxygen', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'ba1d712f-00bd-4e13-9998-562b2f66276b', 2, null, 'Mission:I''m-Possible Oxygen', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '63e7dfdc-da70-493a-b869-9bd60cfbc375', 3, 'Anya Angel', 'Mission:I''m-Possible Oxygen', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'ba1d712f-00bd-4e13-9998-562b2f66276b', 3, null, 'Mission:I''m-Possible Oxygen', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '63e7dfdc-da70-493a-b869-9bd60cfbc375', 4, 'Abinaya S', 'Mission:I''m-Possible Oxygen', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'ba1d712f-00bd-4e13-9998-562b2f66276b', 4, null, 'Mission:I''m-Possible Oxygen', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -2892,38 +2892,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'faec3575-aa3c-4b98-b7c1-9ab2abcb05f2', 'ORION-S0086', 'SHERLOCK', 'sherlock', 'Sai Aditiyaa R S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SAIADITIYAARS',
+  '8a5060c1-7c77-4ad5-b69b-a84381bdcecc', 'ORION-S0086', 'SHERLOCK', 'sherlock', 'Sai Aditiyaa R S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'SAIADITIYAARS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'faec3575-aa3c-4b98-b7c1-9ab2abcb05f2', 'VERIFIED-ORION-S0086', 'Sai Aditiyaa R S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '8a5060c1-7c77-4ad5-b69b-a84381bdcecc', 'VERIFIED-ORION-S0086', 'Sai Aditiyaa R S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'faec3575-aa3c-4b98-b7c1-9ab2abcb05f2', 1, 'Saravana Prasath P', 'SHERLOCK', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8a5060c1-7c77-4ad5-b69b-a84381bdcecc', 1, null, 'SHERLOCK', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'faec3575-aa3c-4b98-b7c1-9ab2abcb05f2', 2, 'Elakkiya K', 'SHERLOCK', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8a5060c1-7c77-4ad5-b69b-a84381bdcecc', 2, null, 'SHERLOCK', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'faec3575-aa3c-4b98-b7c1-9ab2abcb05f2', 3, 'Vrithika Sri', 'SHERLOCK', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8a5060c1-7c77-4ad5-b69b-a84381bdcecc', 3, null, 'SHERLOCK', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'faec3575-aa3c-4b98-b7c1-9ab2abcb05f2', 4, 'Sarath Chander M', 'SHERLOCK', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8a5060c1-7c77-4ad5-b69b-a84381bdcecc', 4, null, 'SHERLOCK', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -2932,43 +2932,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'c1b40479-0397-4384-a0e9-eddf9bd12bb4', 'ORION-S0087', 'PERCEPTRON', 'perceptron', 'Sanjai R', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SANJAIR',
+  '2d9edf22-21db-415d-b1d7-914cea530a46', 'ORION-S0087', 'PERCEPTRON', 'perceptron', 'Sanjai R', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SANJAIR',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'c1b40479-0397-4384-a0e9-eddf9bd12bb4', 'VERIFIED-ORION-S0087', 'Sanjai R', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '2d9edf22-21db-415d-b1d7-914cea530a46', 'VERIFIED-ORION-S0087', 'Sanjai R', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c1b40479-0397-4384-a0e9-eddf9bd12bb4', 1, 'Yogapradeep B', 'PERCEPTRON', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '2d9edf22-21db-415d-b1d7-914cea530a46', 1, null, 'PERCEPTRON', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c1b40479-0397-4384-a0e9-eddf9bd12bb4', 2, 'Sabarish R', 'PERCEPTRON', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '2d9edf22-21db-415d-b1d7-914cea530a46', 2, null, 'PERCEPTRON', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c1b40479-0397-4384-a0e9-eddf9bd12bb4', 3, 'Sengan s', 'PERCEPTRON', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '2d9edf22-21db-415d-b1d7-914cea530a46', 3, null, 'PERCEPTRON', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c1b40479-0397-4384-a0e9-eddf9bd12bb4', 4, 'Vignesh R', 'PERCEPTRON', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '2d9edf22-21db-415d-b1d7-914cea530a46', 4, null, 'PERCEPTRON', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c1b40479-0397-4384-a0e9-eddf9bd12bb4', 5, 'Suriya M', 'PERCEPTRON', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '2d9edf22-21db-415d-b1d7-914cea530a46', 5, null, 'PERCEPTRON', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -2977,43 +2977,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '490ad1f1-8ff7-4cb9-81c0-643c2fe3b537', 'ORION-S0088', 'core signal', 'coresignal', 'prasanna kumar', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'PRASANNAKUMAR',
+  'ccd64586-466d-49b5-bc31-f1694f8ad364', 'ORION-S0088', 'core signal', 'coresignal', 'prasanna kumar', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'PRASANNAKUMAR',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '490ad1f1-8ff7-4cb9-81c0-643c2fe3b537', 'VERIFIED-ORION-S0088', 'prasanna kumar', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'ccd64586-466d-49b5-bc31-f1694f8ad364', 'VERIFIED-ORION-S0088', 'prasanna kumar', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '490ad1f1-8ff7-4cb9-81c0-643c2fe3b537', 1, 'praveen kumar', 'core signal', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'ccd64586-466d-49b5-bc31-f1694f8ad364', 1, null, 'core signal', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '490ad1f1-8ff7-4cb9-81c0-643c2fe3b537', 2, 'Sanjeeth', 'core signal', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'ccd64586-466d-49b5-bc31-f1694f8ad364', 2, null, 'core signal', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '490ad1f1-8ff7-4cb9-81c0-643c2fe3b537', 3, 'Nivetha', 'core signal', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'ccd64586-466d-49b5-bc31-f1694f8ad364', 3, null, 'core signal', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '490ad1f1-8ff7-4cb9-81c0-643c2fe3b537', 4, 'Monika', 'core signal', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'ccd64586-466d-49b5-bc31-f1694f8ad364', 4, null, 'core signal', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '490ad1f1-8ff7-4cb9-81c0-643c2fe3b537', 5, 'Sabharish', 'core signal', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'ccd64586-466d-49b5-bc31-f1694f8ad364', 5, null, 'core signal', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -3022,33 +3022,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'a2f53ce5-0953-44a5-82d3-a32f7ab02524', 'ORION-S0089', 'Technova', 'technova', 'S.Lakshaya', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SLAKSHAYA',
+  'b855c875-7edd-4b77-86b8-857bcbfbf286', 'ORION-S0089', 'Technova', 'technova', 'S.Lakshaya', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SLAKSHAYA',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'a2f53ce5-0953-44a5-82d3-a32f7ab02524', 'VERIFIED-ORION-S0089', 'S.Lakshaya', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'b855c875-7edd-4b77-86b8-857bcbfbf286', 'VERIFIED-ORION-S0089', 'S.Lakshaya', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a2f53ce5-0953-44a5-82d3-a32f7ab02524', 1, 'Maha Lakshmi. G', 'Technova', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b855c875-7edd-4b77-86b8-857bcbfbf286', 1, null, 'Technova', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a2f53ce5-0953-44a5-82d3-a32f7ab02524', 2, 'Raevan karthik', 'Technova', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b855c875-7edd-4b77-86b8-857bcbfbf286', 2, null, 'Technova', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a2f53ce5-0953-44a5-82d3-a32f7ab02524', 3, 'Padmashree E K', 'Technova', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b855c875-7edd-4b77-86b8-857bcbfbf286', 3, null, 'Technova', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -3057,43 +3057,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'f972a88a-f06b-4022-8f2f-7ea6800be298', 'ORION-S0090', 'Fight club', 'fightclub', 'M. SHEIK SHAHIN', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'MSHEIKSHAHIN',
+  '55c806d8-d86c-4947-ac1b-b2d85379ebc4', 'ORION-S0090', 'Fight club', 'fightclub', 'M. SHEIK SHAHIN', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'MSHEIKSHAHIN',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'f972a88a-f06b-4022-8f2f-7ea6800be298', 'VERIFIED-ORION-S0090', 'M. SHEIK SHAHIN', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '55c806d8-d86c-4947-ac1b-b2d85379ebc4', 'VERIFIED-ORION-S0090', 'M. SHEIK SHAHIN', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f972a88a-f06b-4022-8f2f-7ea6800be298', 1, 'VINAYAK YUDHANU', 'Fight club', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '55c806d8-d86c-4947-ac1b-b2d85379ebc4', 1, null, 'Fight club', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f972a88a-f06b-4022-8f2f-7ea6800be298', 2, 'STEFIN SURYA R', 'Fight club', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '55c806d8-d86c-4947-ac1b-b2d85379ebc4', 2, null, 'Fight club', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f972a88a-f06b-4022-8f2f-7ea6800be298', 3, 'SANJAY MURUGAN', 'Fight club', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '55c806d8-d86c-4947-ac1b-b2d85379ebc4', 3, null, 'Fight club', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f972a88a-f06b-4022-8f2f-7ea6800be298', 4, 'TEJASWINI', 'Fight club', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '55c806d8-d86c-4947-ac1b-b2d85379ebc4', 4, null, 'Fight club', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f972a88a-f06b-4022-8f2f-7ea6800be298', 5, 'VINOTHINI', 'Fight club', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '55c806d8-d86c-4947-ac1b-b2d85379ebc4', 5, null, 'Fight club', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -3102,43 +3102,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'e90bbeee-e2f3-4855-9338-8c93731971dc', 'ORION-S0091', 'NEXORA', 'nexora', 'AGILESH M', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'AGILESHM',
+  '0461f57d-4000-4bf7-a369-a07790d9be5a', 'ORION-S0091', 'NEXORA', 'nexora', 'AGILESH M', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'AGILESHM',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'e90bbeee-e2f3-4855-9338-8c93731971dc', 'VERIFIED-ORION-S0091', 'AGILESH M', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '0461f57d-4000-4bf7-a369-a07790d9be5a', 'VERIFIED-ORION-S0091', 'AGILESH M', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'e90bbeee-e2f3-4855-9338-8c93731971dc', 1, 'GOWTHAM A', 'NEXORA', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0461f57d-4000-4bf7-a369-a07790d9be5a', 1, null, 'NEXORA', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'e90bbeee-e2f3-4855-9338-8c93731971dc', 2, 'Mohammad tharif', 'NEXORA', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0461f57d-4000-4bf7-a369-a07790d9be5a', 2, null, 'NEXORA', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'e90bbeee-e2f3-4855-9338-8c93731971dc', 3, 'THOTA YUVASENA', 'NEXORA', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0461f57d-4000-4bf7-a369-a07790d9be5a', 3, null, 'NEXORA', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'e90bbeee-e2f3-4855-9338-8c93731971dc', 4, 'Sakthipriya B', 'NEXORA', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0461f57d-4000-4bf7-a369-a07790d9be5a', 4, null, 'NEXORA', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'e90bbeee-e2f3-4855-9338-8c93731971dc', 5, 'Indujaa k', 'NEXORA', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0461f57d-4000-4bf7-a369-a07790d9be5a', 5, null, 'NEXORA', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -3147,33 +3147,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'd2723c32-cc88-4542-9b5c-162d0fde59cf', 'ORION-S0092', 'Impact warriors', 'impactwarriors', 'V DIVYESH', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'VDIVYESH',
+  '09a19b19-1f32-4b55-99e9-3108adc7139a', 'ORION-S0092', 'Impact warriors', 'impactwarriors', 'V DIVYESH', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'VDIVYESH',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'd2723c32-cc88-4542-9b5c-162d0fde59cf', 'VERIFIED-ORION-S0092', 'V DIVYESH', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '09a19b19-1f32-4b55-99e9-3108adc7139a', 'VERIFIED-ORION-S0092', 'V DIVYESH', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd2723c32-cc88-4542-9b5c-162d0fde59cf', 1, 'R V SENA VARSHAN', 'Impact warriors', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '09a19b19-1f32-4b55-99e9-3108adc7139a', 1, null, 'Impact warriors', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd2723c32-cc88-4542-9b5c-162d0fde59cf', 2, 'GOWTHAM S', 'Impact warriors', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '09a19b19-1f32-4b55-99e9-3108adc7139a', 2, null, 'Impact warriors', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd2723c32-cc88-4542-9b5c-162d0fde59cf', 3, 'YESHWANT C', 'Impact warriors', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '09a19b19-1f32-4b55-99e9-3108adc7139a', 3, null, 'Impact warriors', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -3182,38 +3182,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '1b0eb0c2-b3dc-421b-9ffb-3ea9c7042e03', 'ORION-S0093', 'CodeMonkeys', 'codemonkeys', 'Hari Vishva S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'HARIVISHVAS',
+  '8d716f08-5154-468f-b635-765fdbf2339b', 'ORION-S0093', 'CodeMonkeys', 'codemonkeys', 'Hari Vishva S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'HARIVISHVAS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '1b0eb0c2-b3dc-421b-9ffb-3ea9c7042e03', 'VERIFIED-ORION-S0093', 'Hari Vishva S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '8d716f08-5154-468f-b635-765fdbf2339b', 'VERIFIED-ORION-S0093', 'Hari Vishva S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '1b0eb0c2-b3dc-421b-9ffb-3ea9c7042e03', 1, 'Yuvaraj H', 'CodeMonkeys', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8d716f08-5154-468f-b635-765fdbf2339b', 1, null, 'CodeMonkeys', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '1b0eb0c2-b3dc-421b-9ffb-3ea9c7042e03', 2, 'Ahilesh Guru S', 'CodeMonkeys', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8d716f08-5154-468f-b635-765fdbf2339b', 2, null, 'CodeMonkeys', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '1b0eb0c2-b3dc-421b-9ffb-3ea9c7042e03', 3, 'K Monasri', 'CodeMonkeys', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8d716f08-5154-468f-b635-765fdbf2339b', 3, null, 'CodeMonkeys', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '1b0eb0c2-b3dc-421b-9ffb-3ea9c7042e03', 4, 'Devisri K', 'CodeMonkeys', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8d716f08-5154-468f-b635-765fdbf2339b', 4, null, 'CodeMonkeys', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -3222,28 +3222,28 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'c9a1c35e-563d-4976-b4ca-ccc47f08e73f', 'ORION-S0094', 'Techmates', 'techmates', 'Samitha. K', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SAMITHAK',
+  '76fb816a-f336-4a14-8cb3-81a29a67f384', 'ORION-S0094', 'Techmates', 'techmates', 'Samitha. K', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SAMITHAK',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'c9a1c35e-563d-4976-b4ca-ccc47f08e73f', 'VERIFIED-ORION-S0094', 'Samitha. K', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '76fb816a-f336-4a14-8cb3-81a29a67f384', 'VERIFIED-ORION-S0094', 'Samitha. K', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c9a1c35e-563d-4976-b4ca-ccc47f08e73f', 1, 'Nandhini. V', 'Techmates', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '76fb816a-f336-4a14-8cb3-81a29a67f384', 1, null, 'Techmates', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c9a1c35e-563d-4976-b4ca-ccc47f08e73f', 2, 'Sreenidhi. S', 'Techmates', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '76fb816a-f336-4a14-8cb3-81a29a67f384', 2, null, 'Techmates', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -3252,33 +3252,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '02e32e87-8ae3-42e7-9c5a-2e79ebe900de', 'ORION-S0095', 'SALTVISIONAI', 'saltvisionai', 'Mohammed Emtheyas S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'MOHAMMEDEMTHEYASS',
+  '496631a6-c422-4994-b9d5-5c4e00b99c7f', 'ORION-S0095', 'SALTVISIONAI', 'saltvisionai', 'Mohammed Emtheyas S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'MOHAMMEDEMTHEYASS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '02e32e87-8ae3-42e7-9c5a-2e79ebe900de', 'VERIFIED-ORION-S0095', 'Mohammed Emtheyas S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '496631a6-c422-4994-b9d5-5c4e00b99c7f', 'VERIFIED-ORION-S0095', 'Mohammed Emtheyas S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '02e32e87-8ae3-42e7-9c5a-2e79ebe900de', 1, 'DHANALAKSHMI K', 'SALTVISIONAI', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '496631a6-c422-4994-b9d5-5c4e00b99c7f', 1, null, 'SALTVISIONAI', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '02e32e87-8ae3-42e7-9c5a-2e79ebe900de', 2, 'Benadict thomas O.J', 'SALTVISIONAI', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '496631a6-c422-4994-b9d5-5c4e00b99c7f', 2, null, 'SALTVISIONAI', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '02e32e87-8ae3-42e7-9c5a-2e79ebe900de', 3, 'Lingesh M', 'SALTVISIONAI', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '496631a6-c422-4994-b9d5-5c4e00b99c7f', 3, null, 'SALTVISIONAI', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -3287,43 +3287,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'cf9c0fce-aa8d-4eaf-bf85-f5efda5067ed', 'ORION-S0096', 'Nex 6', 'nex6', 'DILIPAN P', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'DILIPANP',
+  'd711bcf6-c4b1-49d9-993b-a2e056bf9998', 'ORION-S0096', 'Nex 6', 'nex6', 'DILIPAN P', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'DILIPANP',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'cf9c0fce-aa8d-4eaf-bf85-f5efda5067ed', 'VERIFIED-ORION-S0096', 'DILIPAN P', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'd711bcf6-c4b1-49d9-993b-a2e056bf9998', 'VERIFIED-ORION-S0096', 'DILIPAN P', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'cf9c0fce-aa8d-4eaf-bf85-f5efda5067ed', 1, 'Sadhish R', 'Nex 6', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd711bcf6-c4b1-49d9-993b-a2e056bf9998', 1, null, 'Nex 6', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'cf9c0fce-aa8d-4eaf-bf85-f5efda5067ed', 2, 'Rashena l', 'Nex 6', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd711bcf6-c4b1-49d9-993b-a2e056bf9998', 2, null, 'Nex 6', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'cf9c0fce-aa8d-4eaf-bf85-f5efda5067ed', 3, 'Kalaimathi G', 'Nex 6', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd711bcf6-c4b1-49d9-993b-a2e056bf9998', 3, null, 'Nex 6', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'cf9c0fce-aa8d-4eaf-bf85-f5efda5067ed', 4, 'Keerthisha R', 'Nex 6', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd711bcf6-c4b1-49d9-993b-a2e056bf9998', 4, null, 'Nex 6', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'cf9c0fce-aa8d-4eaf-bf85-f5efda5067ed', 5, 'Joshitha S', 'Nex 6', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd711bcf6-c4b1-49d9-993b-a2e056bf9998', 5, null, 'Nex 6', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -3332,33 +3332,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '7acfc750-6024-45f2-b178-b05c5fb3d6ad', 'ORION-S0097', 'SPIDEYVERSE', 'spideyverse', 'Hemamalini K', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'HEMAMALINIK',
+  '986c856c-d60e-49d3-a9d2-3c3177282ed6', 'ORION-S0097', 'SPIDEYVERSE', 'spideyverse', 'Hemamalini K', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'HEMAMALINIK',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '7acfc750-6024-45f2-b178-b05c5fb3d6ad', 'VERIFIED-ORION-S0097', 'Hemamalini K', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '986c856c-d60e-49d3-a9d2-3c3177282ed6', 'VERIFIED-ORION-S0097', 'Hemamalini K', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '7acfc750-6024-45f2-b178-b05c5fb3d6ad', 1, 'Venkat Yokash K', 'SPIDEYVERSE', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '986c856c-d60e-49d3-a9d2-3c3177282ed6', 1, null, 'SPIDEYVERSE', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '7acfc750-6024-45f2-b178-b05c5fb3d6ad', 2, 'PUGAZHARASI K', 'SPIDEYVERSE', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '986c856c-d60e-49d3-a9d2-3c3177282ed6', 2, null, 'SPIDEYVERSE', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '7acfc750-6024-45f2-b178-b05c5fb3d6ad', 3, 'Sandhya B', 'SPIDEYVERSE', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '986c856c-d60e-49d3-a9d2-3c3177282ed6', 3, null, 'SPIDEYVERSE', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -3367,43 +3367,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '424fedaf-98d8-4a6b-9f53-459e1284ec32', 'ORION-S0098', 'Quantum Force', 'quantumforce', 'B Gopinath', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'BGOPINATH',
+  '0d90ee6c-e917-4b23-bd9a-9671bab8a772', 'ORION-S0098', 'Quantum Force', 'quantumforce', 'B Gopinath', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'BGOPINATH',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '424fedaf-98d8-4a6b-9f53-459e1284ec32', 'VERIFIED-ORION-S0098', 'B Gopinath', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '0d90ee6c-e917-4b23-bd9a-9671bab8a772', 'VERIFIED-ORION-S0098', 'B Gopinath', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '424fedaf-98d8-4a6b-9f53-459e1284ec32', 1, 'Kumaran S', 'Quantum Force', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0d90ee6c-e917-4b23-bd9a-9671bab8a772', 1, null, 'Quantum Force', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '424fedaf-98d8-4a6b-9f53-459e1284ec32', 2, 'Kathikeyan A', 'Quantum Force', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0d90ee6c-e917-4b23-bd9a-9671bab8a772', 2, null, 'Quantum Force', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '424fedaf-98d8-4a6b-9f53-459e1284ec32', 3, 'Kawsik M', 'Quantum Force', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0d90ee6c-e917-4b23-bd9a-9671bab8a772', 3, null, 'Quantum Force', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '424fedaf-98d8-4a6b-9f53-459e1284ec32', 4, 'Jitenra Rajan V', 'Quantum Force', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0d90ee6c-e917-4b23-bd9a-9671bab8a772', 4, null, 'Quantum Force', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '424fedaf-98d8-4a6b-9f53-459e1284ec32', 5, 'Jones Abhishek', 'Quantum Force', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0d90ee6c-e917-4b23-bd9a-9671bab8a772', 5, null, 'Quantum Force', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -3412,33 +3412,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'bba17eb2-8a9b-4ff2-a34b-b465d64c86b4', 'ORION-S0099', 'Riot', 'riot', 'P. Pragathy', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'PPRAGATHY',
+  '77655324-35c3-4a5f-bf7b-9f5f695ef50f', 'ORION-S0099', 'Riot', 'riot', 'P. Pragathy', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'PPRAGATHY',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'bba17eb2-8a9b-4ff2-a34b-b465d64c86b4', 'VERIFIED-ORION-S0099', 'P. Pragathy', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '77655324-35c3-4a5f-bf7b-9f5f695ef50f', 'VERIFIED-ORION-S0099', 'P. Pragathy', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'bba17eb2-8a9b-4ff2-a34b-b465d64c86b4', 1, 'Lohit', 'Riot', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '77655324-35c3-4a5f-bf7b-9f5f695ef50f', 1, null, 'Riot', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'bba17eb2-8a9b-4ff2-a34b-b465d64c86b4', 2, 'Aadhil shajahan', 'Riot', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '77655324-35c3-4a5f-bf7b-9f5f695ef50f', 2, null, 'Riot', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'bba17eb2-8a9b-4ff2-a34b-b465d64c86b4', 3, 'Siddhi vinayak', 'Riot', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '77655324-35c3-4a5f-bf7b-9f5f695ef50f', 3, null, 'Riot', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -3447,38 +3447,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '07e45dca-29ec-41f3-bec7-dcdbd9c631ac', 'ORION-S0101', 'FLOWPILOT', 'flowpilot', 'Pranosh M', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'PRANOSHM',
+  'c10ee97e-b7ca-4419-8abd-5c568887d01b', 'ORION-S0101', 'FLOWPILOT', 'flowpilot', 'Pranosh M', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'PRANOSHM',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '07e45dca-29ec-41f3-bec7-dcdbd9c631ac', 'VERIFIED-ORION-S0101', 'Pranosh M', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'c10ee97e-b7ca-4419-8abd-5c568887d01b', 'VERIFIED-ORION-S0101', 'Pranosh M', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '07e45dca-29ec-41f3-bec7-dcdbd9c631ac', 1, 'Praveen S', 'FLOWPILOT', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'c10ee97e-b7ca-4419-8abd-5c568887d01b', 1, null, 'FLOWPILOT', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '07e45dca-29ec-41f3-bec7-dcdbd9c631ac', 2, 'Rahim Khan S', 'FLOWPILOT', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'c10ee97e-b7ca-4419-8abd-5c568887d01b', 2, null, 'FLOWPILOT', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '07e45dca-29ec-41f3-bec7-dcdbd9c631ac', 3, 'Prajan M', 'FLOWPILOT', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'c10ee97e-b7ca-4419-8abd-5c568887d01b', 3, null, 'FLOWPILOT', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '07e45dca-29ec-41f3-bec7-dcdbd9c631ac', 4, 'Rahul S', 'FLOWPILOT', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'c10ee97e-b7ca-4419-8abd-5c568887d01b', 4, null, 'FLOWPILOT', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -3487,43 +3487,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '9fe27e8a-b303-4461-86c0-a0290fd866e9', 'ORION-S0102', 'SYNC SQUAD', 'syncsquad', 'MOHAMED RIYASDEEN I', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'MOHAMEDRIYASDEENI',
+  '961cb284-3013-47c5-9564-67fbda8cdec6', 'ORION-S0102', 'SYNC SQUAD', 'syncsquad', 'MOHAMED RIYASDEEN I', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'MOHAMEDRIYASDEENI',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '9fe27e8a-b303-4461-86c0-a0290fd866e9', 'VERIFIED-ORION-S0102', 'MOHAMED RIYASDEEN I', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '961cb284-3013-47c5-9564-67fbda8cdec6', 'VERIFIED-ORION-S0102', 'MOHAMED RIYASDEEN I', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '9fe27e8a-b303-4461-86c0-a0290fd866e9', 1, 'MOHAMMED ASIF N', 'SYNC SQUAD', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '961cb284-3013-47c5-9564-67fbda8cdec6', 1, null, 'SYNC SQUAD', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '9fe27e8a-b303-4461-86c0-a0290fd866e9', 2, 'VARSHINI S', 'SYNC SQUAD', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '961cb284-3013-47c5-9564-67fbda8cdec6', 2, null, 'SYNC SQUAD', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '9fe27e8a-b303-4461-86c0-a0290fd866e9', 3, 'ANSHIGA R', 'SYNC SQUAD', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '961cb284-3013-47c5-9564-67fbda8cdec6', 3, null, 'SYNC SQUAD', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '9fe27e8a-b303-4461-86c0-a0290fd866e9', 4, 'PREMA LATHA E V', 'SYNC SQUAD', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '961cb284-3013-47c5-9564-67fbda8cdec6', 4, null, 'SYNC SQUAD', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '9fe27e8a-b303-4461-86c0-a0290fd866e9', 5, 'JEEVAN S', 'SYNC SQUAD', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '961cb284-3013-47c5-9564-67fbda8cdec6', 5, null, 'SYNC SQUAD', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -3532,38 +3532,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'e401b585-e6ef-449c-a5f1-83a6dc7204bd', 'ORION-S0103', 'TENSOR TITANS', 'tensortitans', 'Jessica J', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'JESSICAJ',
+  'd740f524-686d-47b9-a879-38cc4463e7cb', 'ORION-S0103', 'TENSOR TITANS', 'tensortitans', 'Jessica J', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'JESSICAJ',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'e401b585-e6ef-449c-a5f1-83a6dc7204bd', 'VERIFIED-ORION-S0103', 'Jessica J', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'd740f524-686d-47b9-a879-38cc4463e7cb', 'VERIFIED-ORION-S0103', 'Jessica J', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'e401b585-e6ef-449c-a5f1-83a6dc7204bd', 1, 'Kanisha Devi S', 'TENSOR TITANS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd740f524-686d-47b9-a879-38cc4463e7cb', 1, null, 'TENSOR TITANS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'e401b585-e6ef-449c-a5f1-83a6dc7204bd', 2, 'Harsha S', 'TENSOR TITANS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd740f524-686d-47b9-a879-38cc4463e7cb', 2, null, 'TENSOR TITANS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'e401b585-e6ef-449c-a5f1-83a6dc7204bd', 3, 'Meena Raj M.G', 'TENSOR TITANS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd740f524-686d-47b9-a879-38cc4463e7cb', 3, null, 'TENSOR TITANS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'e401b585-e6ef-449c-a5f1-83a6dc7204bd', 4, 'Kavya A', 'TENSOR TITANS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd740f524-686d-47b9-a879-38cc4463e7cb', 4, null, 'TENSOR TITANS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -3572,43 +3572,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '63b86f9d-3aac-4c72-b652-0e20690d9394', 'ORION-S0104', 'KernelPanic', 'kernelpanic', 'Aaruran. K', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'AARURANK',
+  'd5051e77-ec3b-4d30-aa47-dc566fbecb16', 'ORION-S0104', 'KernelPanic', 'kernelpanic', 'Aaruran. K', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'AARURANK',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '63b86f9d-3aac-4c72-b652-0e20690d9394', 'VERIFIED-ORION-S0104', 'Aaruran. K', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'd5051e77-ec3b-4d30-aa47-dc566fbecb16', 'VERIFIED-ORION-S0104', 'Aaruran. K', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '63b86f9d-3aac-4c72-b652-0e20690d9394', 1, 'Abiraj.K', 'KernelPanic', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd5051e77-ec3b-4d30-aa47-dc566fbecb16', 1, null, 'KernelPanic', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '63b86f9d-3aac-4c72-b652-0e20690d9394', 2, 'Ajay.S', 'KernelPanic', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd5051e77-ec3b-4d30-aa47-dc566fbecb16', 2, null, 'KernelPanic', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '63b86f9d-3aac-4c72-b652-0e20690d9394', 3, 'Balamurugan.S', 'KernelPanic', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd5051e77-ec3b-4d30-aa47-dc566fbecb16', 3, null, 'KernelPanic', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '63b86f9d-3aac-4c72-b652-0e20690d9394', 4, 'Dhinesh.N', 'KernelPanic', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd5051e77-ec3b-4d30-aa47-dc566fbecb16', 4, null, 'KernelPanic', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '63b86f9d-3aac-4c72-b652-0e20690d9394', 5, 'Devavarnine.M', 'KernelPanic', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd5051e77-ec3b-4d30-aa47-dc566fbecb16', 5, null, 'KernelPanic', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -3617,28 +3617,28 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '75b15063-6bd5-41fb-8418-843c6ba9fff2', 'ORION-S0105', 'OMEGA', 'omega', 'R RITHWIK', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'RRITHWIK',
+  '6b14a71b-1170-4d9f-802f-949253a94cae', 'ORION-S0105', 'OMEGA', 'omega', 'R RITHWIK', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'RRITHWIK',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '75b15063-6bd5-41fb-8418-843c6ba9fff2', 'VERIFIED-ORION-S0105', 'R RITHWIK', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '6b14a71b-1170-4d9f-802f-949253a94cae', 'VERIFIED-ORION-S0105', 'R RITHWIK', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '75b15063-6bd5-41fb-8418-843c6ba9fff2', 1, 'C SHRAVAN KHANA', 'OMEGA', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6b14a71b-1170-4d9f-802f-949253a94cae', 1, null, 'OMEGA', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '75b15063-6bd5-41fb-8418-843c6ba9fff2', 2, 'T kirthik', 'OMEGA', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6b14a71b-1170-4d9f-802f-949253a94cae', 2, null, 'OMEGA', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -3647,23 +3647,23 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'c5c75657-6ff2-4a78-b93e-711419fa9b16', 'ORION-S0106', 'Binary Titans', 'binarytitans', 'M.Madhuri', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'MMADHURI',
+  'dc0ed8fb-bf1f-441d-bb30-f62352021ca4', 'ORION-S0106', 'Binary Titans', 'binarytitans', 'M.Madhuri', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'MMADHURI',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'c5c75657-6ff2-4a78-b93e-711419fa9b16', 'VERIFIED-ORION-S0106', 'M.Madhuri', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'dc0ed8fb-bf1f-441d-bb30-f62352021ca4', 'VERIFIED-ORION-S0106', 'M.Madhuri', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c5c75657-6ff2-4a78-b93e-711419fa9b16', 1, 'R. Shivaram', 'Binary Titans', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'dc0ed8fb-bf1f-441d-bb30-f62352021ca4', 1, null, 'Binary Titans', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -3672,23 +3672,23 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'c54004e9-461c-4c40-b02d-456c4c3746db', 'ORION-S0107', 'NEXO', 'nexo', 'Ashwath M', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'ASHWATHM',
+  '998015aa-1edf-4ca9-99c3-196ec1e68c79', 'ORION-S0107', 'NEXO', 'nexo', 'Ashwath M', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'ASHWATHM',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'c54004e9-461c-4c40-b02d-456c4c3746db', 'VERIFIED-ORION-S0107', 'Ashwath M', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '998015aa-1edf-4ca9-99c3-196ec1e68c79', 'VERIFIED-ORION-S0107', 'Ashwath M', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c54004e9-461c-4c40-b02d-456c4c3746db', 1, 'G Dhanalakshmi', 'NEXO', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '998015aa-1edf-4ca9-99c3-196ec1e68c79', 1, null, 'NEXO', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -3697,43 +3697,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '5736ab44-0901-4b93-91b0-a8fe4de7125d', 'ORION-S0108', 'FNATIC', 'fnatic', 'Leema S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'LEEMAS',
+  '9b2b593d-8aea-4af3-95ce-bbabe0cbfa22', 'ORION-S0108', 'FNATIC', 'fnatic', 'Leema S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'LEEMAS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '5736ab44-0901-4b93-91b0-a8fe4de7125d', 'VERIFIED-ORION-S0108', 'Leema S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '9b2b593d-8aea-4af3-95ce-bbabe0cbfa22', 'VERIFIED-ORION-S0108', 'Leema S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5736ab44-0901-4b93-91b0-a8fe4de7125d', 1, 'Divesh N', 'FNATIC', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '9b2b593d-8aea-4af3-95ce-bbabe0cbfa22', 1, null, 'FNATIC', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5736ab44-0901-4b93-91b0-a8fe4de7125d', 2, 'Mrudhula B', 'FNATIC', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '9b2b593d-8aea-4af3-95ce-bbabe0cbfa22', 2, null, 'FNATIC', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5736ab44-0901-4b93-91b0-a8fe4de7125d', 3, 'Abhinava Ashwin R', 'FNATIC', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '9b2b593d-8aea-4af3-95ce-bbabe0cbfa22', 3, null, 'FNATIC', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5736ab44-0901-4b93-91b0-a8fe4de7125d', 4, 'Mohammad Ejaz M', 'FNATIC', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '9b2b593d-8aea-4af3-95ce-bbabe0cbfa22', 4, null, 'FNATIC', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5736ab44-0901-4b93-91b0-a8fe4de7125d', 5, 'Mukeshkumar S', 'FNATIC', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '9b2b593d-8aea-4af3-95ce-bbabe0cbfa22', 5, null, 'FNATIC', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -3742,43 +3742,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '52153fb4-b5ed-46b0-9f90-7353865bb16e', 'ORION-S0109', 'TOUCH GRASS', 'touchgrass', 'TK DHARMESH KUMAR', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'TKDHARMESHKUMAR',
+  '7f89b781-1bff-4177-b082-daf3cd9dd094', 'ORION-S0109', 'TOUCH GRASS', 'touchgrass', 'TK DHARMESH KUMAR', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'TKDHARMESHKUMAR',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '52153fb4-b5ed-46b0-9f90-7353865bb16e', 'VERIFIED-ORION-S0109', 'TK DHARMESH KUMAR', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '7f89b781-1bff-4177-b082-daf3cd9dd094', 'VERIFIED-ORION-S0109', 'TK DHARMESH KUMAR', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '52153fb4-b5ed-46b0-9f90-7353865bb16e', 1, 'SAMYUKTHA.V', 'TOUCH GRASS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7f89b781-1bff-4177-b082-daf3cd9dd094', 1, null, 'TOUCH GRASS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '52153fb4-b5ed-46b0-9f90-7353865bb16e', 2, 'SRUTHI.S', 'TOUCH GRASS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7f89b781-1bff-4177-b082-daf3cd9dd094', 2, null, 'TOUCH GRASS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '52153fb4-b5ed-46b0-9f90-7353865bb16e', 3, 'M.BHAVESH NATH', 'TOUCH GRASS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7f89b781-1bff-4177-b082-daf3cd9dd094', 3, null, 'TOUCH GRASS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '52153fb4-b5ed-46b0-9f90-7353865bb16e', 4, 'PB PRANAV RAM', 'TOUCH GRASS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7f89b781-1bff-4177-b082-daf3cd9dd094', 4, null, 'TOUCH GRASS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '52153fb4-b5ed-46b0-9f90-7353865bb16e', 5, 'P.SRI PRIYAN', 'TOUCH GRASS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7f89b781-1bff-4177-b082-daf3cd9dd094', 5, null, 'TOUCH GRASS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -3787,43 +3787,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '72675ed4-74eb-441f-84f2-474d595e615a', 'ORION-S0110', 'Codex', 'codex', 'Praveen S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'PRAVEENS',
+  'eace2565-a520-485c-89a5-871ae52c272f', 'ORION-S0110', 'Codex', 'codex', 'Praveen S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'PRAVEENS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '72675ed4-74eb-441f-84f2-474d595e615a', 'VERIFIED-ORION-S0110', 'Praveen S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'eace2565-a520-485c-89a5-871ae52c272f', 'VERIFIED-ORION-S0110', 'Praveen S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '72675ed4-74eb-441f-84f2-474d595e615a', 1, 'Mohammed Thamz', 'Codex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'eace2565-a520-485c-89a5-871ae52c272f', 1, null, 'Codex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '72675ed4-74eb-441f-84f2-474d595e615a', 2, 'Monish M', 'Codex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'eace2565-a520-485c-89a5-871ae52c272f', 2, null, 'Codex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '72675ed4-74eb-441f-84f2-474d595e615a', 3, 'Nirubanraaj J', 'Codex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'eace2565-a520-485c-89a5-871ae52c272f', 3, null, 'Codex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '72675ed4-74eb-441f-84f2-474d595e615a', 4, 'Muthu durai S', 'Codex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'eace2565-a520-485c-89a5-871ae52c272f', 4, null, 'Codex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '72675ed4-74eb-441f-84f2-474d595e615a', 5, 'Mohamed Aathif Jailani S', 'Codex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'eace2565-a520-485c-89a5-871ae52c272f', 5, null, 'Codex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -3832,43 +3832,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'd11b64f7-cf1a-4412-aeb1-0d8c1d344eb5', 'ORION-S0111', 'Arvion', 'arvion', 'Pranesh Mithun G S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'PRANESHMITHUNGS',
+  '560a6f13-7034-4b35-8516-0a2d2c07a967', 'ORION-S0111', 'Arvion', 'arvion', 'Pranesh Mithun G S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'PRANESHMITHUNGS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'd11b64f7-cf1a-4412-aeb1-0d8c1d344eb5', 'VERIFIED-ORION-S0111', 'Pranesh Mithun G S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '560a6f13-7034-4b35-8516-0a2d2c07a967', 'VERIFIED-ORION-S0111', 'Pranesh Mithun G S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd11b64f7-cf1a-4412-aeb1-0d8c1d344eb5', 1, 'Nishmitha JS', 'Arvion', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '560a6f13-7034-4b35-8516-0a2d2c07a967', 1, null, 'Arvion', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd11b64f7-cf1a-4412-aeb1-0d8c1d344eb5', 2, 'NithyaShree T', 'Arvion', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '560a6f13-7034-4b35-8516-0a2d2c07a967', 2, null, 'Arvion', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd11b64f7-cf1a-4412-aeb1-0d8c1d344eb5', 3, 'Prithvi Kumaran R', 'Arvion', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '560a6f13-7034-4b35-8516-0a2d2c07a967', 3, null, 'Arvion', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd11b64f7-cf1a-4412-aeb1-0d8c1d344eb5', 4, 'Nivetha S', 'Arvion', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '560a6f13-7034-4b35-8516-0a2d2c07a967', 4, null, 'Arvion', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd11b64f7-cf1a-4412-aeb1-0d8c1d344eb5', 5, 'Prasanna Venkat G', 'Arvion', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '560a6f13-7034-4b35-8516-0a2d2c07a967', 5, null, 'Arvion', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -3877,28 +3877,28 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '4a4890d9-8df1-4852-9d7f-ada4f7eaad89', 'ORION-S0112', 'Vaishnavi devi G', 'vaishnavidevig', 'Vaishnavi devi G', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'VAISHNAVIDEVIG',
+  'e27c3bef-f869-4be0-836d-71a3e403e460', 'ORION-S0112', 'Vaishnavi devi G', 'vaishnavidevig', 'Vaishnavi devi G', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'VAISHNAVIDEVIG',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '4a4890d9-8df1-4852-9d7f-ada4f7eaad89', 'VERIFIED-ORION-S0112', 'Vaishnavi devi G', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'e27c3bef-f869-4be0-836d-71a3e403e460', 'VERIFIED-ORION-S0112', 'Vaishnavi devi G', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4a4890d9-8df1-4852-9d7f-ada4f7eaad89', 1, 'Thejesvani S', 'Vaishnavi devi G', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e27c3bef-f869-4be0-836d-71a3e403e460', 1, null, 'Vaishnavi devi G', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4a4890d9-8df1-4852-9d7f-ada4f7eaad89', 2, 'S G Yogitha', 'Vaishnavi devi G', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e27c3bef-f869-4be0-836d-71a3e403e460', 2, null, 'Vaishnavi devi G', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -3907,38 +3907,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '0ec30237-9ec6-44e7-b131-2f305c597582', 'ORION-S0113', 'NOVARYN', 'novaryn', 'Barathi Sankar M', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'BARATHISANKARM',
+  '95cec263-f53d-47de-8018-50dc4afbcc85', 'ORION-S0113', 'NOVARYN', 'novaryn', 'Barathi Sankar M', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'BARATHISANKARM',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '0ec30237-9ec6-44e7-b131-2f305c597582', 'VERIFIED-ORION-S0113', 'Barathi Sankar M', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '95cec263-f53d-47de-8018-50dc4afbcc85', 'VERIFIED-ORION-S0113', 'Barathi Sankar M', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0ec30237-9ec6-44e7-b131-2f305c597582', 1, 'Jeevadharani VG', 'NOVARYN', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '95cec263-f53d-47de-8018-50dc4afbcc85', 1, null, 'NOVARYN', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0ec30237-9ec6-44e7-b131-2f305c597582', 2, 'Janani C', 'NOVARYN', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '95cec263-f53d-47de-8018-50dc4afbcc85', 2, null, 'NOVARYN', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0ec30237-9ec6-44e7-b131-2f305c597582', 3, 'Jeevitha V', 'NOVARYN', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '95cec263-f53d-47de-8018-50dc4afbcc85', 3, null, 'NOVARYN', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0ec30237-9ec6-44e7-b131-2f305c597582', 4, 'Dhanalakshmi S', 'NOVARYN', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '95cec263-f53d-47de-8018-50dc4afbcc85', 4, null, 'NOVARYN', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -3947,38 +3947,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '4f144dac-0acb-481a-b536-a789c95f98e0', 'ORION-S0114', 'THE HEXA GEN', 'thehexagen', 'HRITHISHVAR', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'HRITHISHVAR',
+  'f26bf519-8cb7-46ab-adb4-311ffcacaf32', 'ORION-S0114', 'THE HEXA GEN', 'thehexagen', 'HRITHISHVAR', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'HRITHISHVAR',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '4f144dac-0acb-481a-b536-a789c95f98e0', 'VERIFIED-ORION-S0114', 'HRITHISHVAR', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'f26bf519-8cb7-46ab-adb4-311ffcacaf32', 'VERIFIED-ORION-S0114', 'HRITHISHVAR', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4f144dac-0acb-481a-b536-a789c95f98e0', 1, 'LOKESHWARAN', 'THE HEXA GEN', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f26bf519-8cb7-46ab-adb4-311ffcacaf32', 1, null, 'THE HEXA GEN', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4f144dac-0acb-481a-b536-a789c95f98e0', 2, 'KAVYASRI', 'THE HEXA GEN', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f26bf519-8cb7-46ab-adb4-311ffcacaf32', 2, null, 'THE HEXA GEN', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4f144dac-0acb-481a-b536-a789c95f98e0', 3, 'RITHIKASRI', 'THE HEXA GEN', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f26bf519-8cb7-46ab-adb4-311ffcacaf32', 3, null, 'THE HEXA GEN', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4f144dac-0acb-481a-b536-a789c95f98e0', 4, 'HARINI JAISHANKAR', 'THE HEXA GEN', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f26bf519-8cb7-46ab-adb4-311ffcacaf32', 4, null, 'THE HEXA GEN', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -3987,43 +3987,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '842f624c-8f7b-4ddc-b2f5-6f47692983f2', 'ORION-S0115', 'KernelZero', 'kernelzero', 'Priyan', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'PRIYAN',
+  'a8540c68-fac2-49d0-a40a-7447887a4091', 'ORION-S0115', 'KernelZero', 'kernelzero', 'Priyan', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'PRIYAN',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '842f624c-8f7b-4ddc-b2f5-6f47692983f2', 'VERIFIED-ORION-S0115', 'Priyan', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'a8540c68-fac2-49d0-a40a-7447887a4091', 'VERIFIED-ORION-S0115', 'Priyan', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '842f624c-8f7b-4ddc-b2f5-6f47692983f2', 1, 'Arjjun S', 'KernelZero', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'a8540c68-fac2-49d0-a40a-7447887a4091', 1, null, 'KernelZero', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '842f624c-8f7b-4ddc-b2f5-6f47692983f2', 2, 'Sathappan PL', 'KernelZero', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'a8540c68-fac2-49d0-a40a-7447887a4091', 2, null, 'KernelZero', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '842f624c-8f7b-4ddc-b2f5-6f47692983f2', 3, 'Bala Tharun S', 'KernelZero', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'a8540c68-fac2-49d0-a40a-7447887a4091', 3, null, 'KernelZero', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '842f624c-8f7b-4ddc-b2f5-6f47692983f2', 4, 'Saarvin GP', 'KernelZero', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'a8540c68-fac2-49d0-a40a-7447887a4091', 4, null, 'KernelZero', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '842f624c-8f7b-4ddc-b2f5-6f47692983f2', 5, 'Raghul S', 'KernelZero', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'a8540c68-fac2-49d0-a40a-7447887a4091', 5, null, 'KernelZero', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -4032,38 +4032,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'ac61a482-cb4e-4bc2-b04a-2da9437a60b7', 'ORION-S0116', 'Codenova', 'codenova', 'Praveena k', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'PRAVEENAK',
+  '5afb0f7c-772e-4269-b317-1a8d97b52200', 'ORION-S0116', 'Codenova', 'codenova', 'Praveena k', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'PRAVEENAK',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'ac61a482-cb4e-4bc2-b04a-2da9437a60b7', 'VERIFIED-ORION-S0116', 'Praveena k', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '5afb0f7c-772e-4269-b317-1a8d97b52200', 'VERIFIED-ORION-S0116', 'Praveena k', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ac61a482-cb4e-4bc2-b04a-2da9437a60b7', 1, 'Prithika p', 'Codenova', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5afb0f7c-772e-4269-b317-1a8d97b52200', 1, null, 'Codenova', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ac61a482-cb4e-4bc2-b04a-2da9437a60b7', 2, 'Ponmathi i', 'Codenova', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5afb0f7c-772e-4269-b317-1a8d97b52200', 2, null, 'Codenova', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ac61a482-cb4e-4bc2-b04a-2da9437a60b7', 3, 'Ponmani M', 'Codenova', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5afb0f7c-772e-4269-b317-1a8d97b52200', 3, null, 'Codenova', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ac61a482-cb4e-4bc2-b04a-2da9437a60b7', 4, 'Janani S', 'Codenova', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5afb0f7c-772e-4269-b317-1a8d97b52200', 4, null, 'Codenova', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -4072,33 +4072,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '8a8e5436-b372-4dfd-9060-a9d3301f921a', 'ORION-S0117', 'Masterminds', 'masterminds', 'Greeshma tarlana', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'GREESHMATARLANA',
+  '36853465-889e-4b12-b12a-4804e974ffd4', 'ORION-S0117', 'Masterminds', 'masterminds', 'Greeshma tarlana', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'GREESHMATARLANA',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '8a8e5436-b372-4dfd-9060-a9d3301f921a', 'VERIFIED-ORION-S0117', 'Greeshma tarlana', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '36853465-889e-4b12-b12a-4804e974ffd4', 'VERIFIED-ORION-S0117', 'Greeshma tarlana', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8a8e5436-b372-4dfd-9060-a9d3301f921a', 1, 'Pragna boddu', 'Masterminds', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '36853465-889e-4b12-b12a-4804e974ffd4', 1, null, 'Masterminds', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8a8e5436-b372-4dfd-9060-a9d3301f921a', 2, 'Haripriya', 'Masterminds', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '36853465-889e-4b12-b12a-4804e974ffd4', 2, null, 'Masterminds', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8a8e5436-b372-4dfd-9060-a9d3301f921a', 3, 'Manikanta.G', 'Masterminds', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '36853465-889e-4b12-b12a-4804e974ffd4', 3, null, 'Masterminds', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -4107,38 +4107,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'd3355112-5d9e-4789-bce4-9127f278e22b', 'ORION-S0118', 'Jarvis 6.O', 'jarvis6o', 'Roshan G', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'ROSHANG',
+  '3f568b2f-76d3-4d7e-af58-bdcfe72f941e', 'ORION-S0118', 'Jarvis 6.O', 'jarvis6o', 'Roshan G', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'ROSHANG',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'd3355112-5d9e-4789-bce4-9127f278e22b', 'VERIFIED-ORION-S0118', 'Roshan G', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '3f568b2f-76d3-4d7e-af58-bdcfe72f941e', 'VERIFIED-ORION-S0118', 'Roshan G', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd3355112-5d9e-4789-bce4-9127f278e22b', 1, 'Sriabirami V', 'Jarvis 6.O', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3f568b2f-76d3-4d7e-af58-bdcfe72f941e', 1, null, 'Jarvis 6.O', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd3355112-5d9e-4789-bce4-9127f278e22b', 2, 'Saran E', 'Jarvis 6.O', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3f568b2f-76d3-4d7e-af58-bdcfe72f941e', 2, null, 'Jarvis 6.O', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd3355112-5d9e-4789-bce4-9127f278e22b', 3, 'Praveen raj V', 'Jarvis 6.O', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3f568b2f-76d3-4d7e-af58-bdcfe72f941e', 3, null, 'Jarvis 6.O', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd3355112-5d9e-4789-bce4-9127f278e22b', 4, 'Vidula C', 'Jarvis 6.O', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3f568b2f-76d3-4d7e-af58-bdcfe72f941e', 4, null, 'Jarvis 6.O', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -4147,33 +4147,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'e10592d3-ace9-46aa-b474-a766491b0dd0', 'ORION-S0119', 'Veridia', 'veridia', 'Nadhiv Karuppuswamy', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'NADHIVKARUPPUSWAMY',
+  '0581cb8a-1709-481f-8da0-2e8d9f586f2b', 'ORION-S0119', 'Veridia', 'veridia', 'Nadhiv Karuppuswamy', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'NADHIVKARUPPUSWAMY',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'e10592d3-ace9-46aa-b474-a766491b0dd0', 'VERIFIED-ORION-S0119', 'Nadhiv Karuppuswamy', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '0581cb8a-1709-481f-8da0-2e8d9f586f2b', 'VERIFIED-ORION-S0119', 'Nadhiv Karuppuswamy', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'e10592d3-ace9-46aa-b474-a766491b0dd0', 1, 'Mohammed Anas', 'Veridia', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0581cb8a-1709-481f-8da0-2e8d9f586f2b', 1, null, 'Veridia', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'e10592d3-ace9-46aa-b474-a766491b0dd0', 2, 'M.A ROSHAN', 'Veridia', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0581cb8a-1709-481f-8da0-2e8d9f586f2b', 2, null, 'Veridia', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'e10592d3-ace9-46aa-b474-a766491b0dd0', 3, 'SANTHOSH K', 'Veridia', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0581cb8a-1709-481f-8da0-2e8d9f586f2b', 3, null, 'Veridia', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -4182,28 +4182,28 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'ece9c25a-d71c-4a76-8b16-9b96c18a60e3', 'ORION-S0120', 'FutureCode', 'futurecode', 'Kevin Harris', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'KEVINHARRIS',
+  '3066208a-ce43-4271-b1fe-249ab87fd4bf', 'ORION-S0120', 'FutureCode', 'futurecode', 'Kevin Harris', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'KEVINHARRIS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'ece9c25a-d71c-4a76-8b16-9b96c18a60e3', 'VERIFIED-ORION-S0120', 'Kevin Harris', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '3066208a-ce43-4271-b1fe-249ab87fd4bf', 'VERIFIED-ORION-S0120', 'Kevin Harris', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ece9c25a-d71c-4a76-8b16-9b96c18a60e3', 1, 'Keerthi Shri', 'FutureCode', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3066208a-ce43-4271-b1fe-249ab87fd4bf', 1, null, 'FutureCode', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ece9c25a-d71c-4a76-8b16-9b96c18a60e3', 2, 'Lakshikanth', 'FutureCode', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3066208a-ce43-4271-b1fe-249ab87fd4bf', 2, null, 'FutureCode', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -4212,38 +4212,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '9e5bb7a9-2a28-4426-af91-1d331c99fa6c', 'ORION-S0121', 'Team trinity', 'teamtrinity', 'Sudharsan R', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SUDHARSANR',
+  '133f81dd-ce07-4f70-b2b6-c325833038a9', 'ORION-S0121', 'Team trinity', 'teamtrinity', 'Sudharsan R', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SUDHARSANR',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '9e5bb7a9-2a28-4426-af91-1d331c99fa6c', 'VERIFIED-ORION-S0121', 'Sudharsan R', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '133f81dd-ce07-4f70-b2b6-c325833038a9', 'VERIFIED-ORION-S0121', 'Sudharsan R', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '9e5bb7a9-2a28-4426-af91-1d331c99fa6c', 1, 'Kavyasri P', 'Team trinity', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '133f81dd-ce07-4f70-b2b6-c325833038a9', 1, null, 'Team trinity', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '9e5bb7a9-2a28-4426-af91-1d331c99fa6c', 2, 'Bavasree R', 'Team trinity', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '133f81dd-ce07-4f70-b2b6-c325833038a9', 2, null, 'Team trinity', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '9e5bb7a9-2a28-4426-af91-1d331c99fa6c', 3, 'Pravin kumar D', 'Team trinity', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '133f81dd-ce07-4f70-b2b6-c325833038a9', 3, null, 'Team trinity', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '9e5bb7a9-2a28-4426-af91-1d331c99fa6c', 4, 'Jeganath Kumar S', 'Team trinity', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '133f81dd-ce07-4f70-b2b6-c325833038a9', 4, null, 'Team trinity', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -4252,38 +4252,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '6b3d9931-50a2-4a1a-a1d3-e55a57f18874', 'ORION-S0122', 'Byteforce', 'byteforce', 'Kishorekumar', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'KISHOREKUMAR',
+  '29a5c720-cd01-4f56-a60e-52ac4b98a51a', 'ORION-S0122', 'Byteforce', 'byteforce', 'Kishorekumar', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'KISHOREKUMAR',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '6b3d9931-50a2-4a1a-a1d3-e55a57f18874', 'VERIFIED-ORION-S0122', 'Kishorekumar', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '29a5c720-cd01-4f56-a60e-52ac4b98a51a', 'VERIFIED-ORION-S0122', 'Kishorekumar', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '6b3d9931-50a2-4a1a-a1d3-e55a57f18874', 1, 'Yogavin', 'Byteforce', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '29a5c720-cd01-4f56-a60e-52ac4b98a51a', 1, null, 'Byteforce', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '6b3d9931-50a2-4a1a-a1d3-e55a57f18874', 2, 'Rishiraj', 'Byteforce', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '29a5c720-cd01-4f56-a60e-52ac4b98a51a', 2, null, 'Byteforce', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '6b3d9931-50a2-4a1a-a1d3-e55a57f18874', 3, 'Rajeshwar', 'Byteforce', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '29a5c720-cd01-4f56-a60e-52ac4b98a51a', 3, null, 'Byteforce', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '6b3d9931-50a2-4a1a-a1d3-e55a57f18874', 4, 'Divagar', 'Byteforce', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '29a5c720-cd01-4f56-a60e-52ac4b98a51a', 4, null, 'Byteforce', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -4292,23 +4292,23 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '436f1041-5855-4873-9bb9-9856f253aaa7', 'ORION-S0123', 'KNIGHT CODERS', 'knightcoders', 'Hareesh VN', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'HAREESHVN',
+  'ba5277a8-2888-4fdf-a401-98921733760f', 'ORION-S0123', 'KNIGHT CODERS', 'knightcoders', 'Hareesh VN', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'HAREESHVN',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '436f1041-5855-4873-9bb9-9856f253aaa7', 'VERIFIED-ORION-S0123', 'Hareesh VN', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'ba5277a8-2888-4fdf-a401-98921733760f', 'VERIFIED-ORION-S0123', 'Hareesh VN', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '436f1041-5855-4873-9bb9-9856f253aaa7', 1, 'Hevan Harish LM', 'KNIGHT CODERS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'ba5277a8-2888-4fdf-a401-98921733760f', 1, null, 'KNIGHT CODERS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -4317,28 +4317,28 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'ee575dbb-c6bc-4af7-82c5-3473fa7cb59f', 'ORION-S0124', 'Hack Elite', 'hackelite', 'OMSAIVAMSI V', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'OMSAIVAMSIV',
+  '45e2ae76-285e-4fcb-ab17-dac1b5318a3e', 'ORION-S0124', 'Hack Elite', 'hackelite', 'OMSAIVAMSI V', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'OMSAIVAMSIV',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'ee575dbb-c6bc-4af7-82c5-3473fa7cb59f', 'VERIFIED-ORION-S0124', 'OMSAIVAMSI V', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '45e2ae76-285e-4fcb-ab17-dac1b5318a3e', 'VERIFIED-ORION-S0124', 'OMSAIVAMSI V', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ee575dbb-c6bc-4af7-82c5-3473fa7cb59f', 1, 'Bala Adithya S U', 'Hack Elite', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '45e2ae76-285e-4fcb-ab17-dac1b5318a3e', 1, null, 'Hack Elite', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ee575dbb-c6bc-4af7-82c5-3473fa7cb59f', 2, 'Gnanaprakasam C', 'Hack Elite', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '45e2ae76-285e-4fcb-ab17-dac1b5318a3e', 2, null, 'Hack Elite', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -4347,38 +4347,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '19c1b2ac-34f4-42af-90b7-9e74caff6864', 'ORION-S0125', 'Neural Ninjas', 'neuralninjas', 'Theshna R', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'THESHNAR',
+  '4ca3bd39-2332-44f2-9275-aa9e74762579', 'ORION-S0125', 'Neural Ninjas', 'neuralninjas', 'Theshna R', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'THESHNAR',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '19c1b2ac-34f4-42af-90b7-9e74caff6864', 'VERIFIED-ORION-S0125', 'Theshna R', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '4ca3bd39-2332-44f2-9275-aa9e74762579', 'VERIFIED-ORION-S0125', 'Theshna R', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '19c1b2ac-34f4-42af-90b7-9e74caff6864', 1, 'Amala abisha J', 'Neural Ninjas', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4ca3bd39-2332-44f2-9275-aa9e74762579', 1, null, 'Neural Ninjas', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '19c1b2ac-34f4-42af-90b7-9e74caff6864', 2, 'Rithika V', 'Neural Ninjas', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4ca3bd39-2332-44f2-9275-aa9e74762579', 2, null, 'Neural Ninjas', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '19c1b2ac-34f4-42af-90b7-9e74caff6864', 3, 'Shahel Netha M', 'Neural Ninjas', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4ca3bd39-2332-44f2-9275-aa9e74762579', 3, null, 'Neural Ninjas', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '19c1b2ac-34f4-42af-90b7-9e74caff6864', 4, 'Jennet Pauline D', 'Neural Ninjas', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4ca3bd39-2332-44f2-9275-aa9e74762579', 4, null, 'Neural Ninjas', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -4387,28 +4387,28 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '85f4accb-36db-45bb-b03b-6e6e756731d1', 'ORION-S0126', 'Astrivex', 'astrivex', 'Sree Harsana K K', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SREEHARSANAKK',
+  '6c9731ef-b168-4201-92a9-f6f61305cfab', 'ORION-S0126', 'Astrivex', 'astrivex', 'Sree Harsana K K', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SREEHARSANAKK',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '85f4accb-36db-45bb-b03b-6e6e756731d1', 'VERIFIED-ORION-S0126', 'Sree Harsana K K', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '6c9731ef-b168-4201-92a9-f6f61305cfab', 'VERIFIED-ORION-S0126', 'Sree Harsana K K', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '85f4accb-36db-45bb-b03b-6e6e756731d1', 1, 'Rhaghav C', 'Astrivex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6c9731ef-b168-4201-92a9-f6f61305cfab', 1, null, 'Astrivex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '85f4accb-36db-45bb-b03b-6e6e756731d1', 2, 'Pon Nivetha M', 'Astrivex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6c9731ef-b168-4201-92a9-f6f61305cfab', 2, null, 'Astrivex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -4417,43 +4417,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'bd91918c-6bce-44bb-a511-799036392c9a', 'ORION-S0127', 'HEXAverse', 'hexaverse', 'Pooja Kumar', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'POOJAKUMAR',
+  '5ca0d9b4-5891-4234-bbeb-d84d5ea85b52', 'ORION-S0127', 'HEXAverse', 'hexaverse', 'Pooja Kumar', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'POOJAKUMAR',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'bd91918c-6bce-44bb-a511-799036392c9a', 'VERIFIED-ORION-S0127', 'Pooja Kumar', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '5ca0d9b4-5891-4234-bbeb-d84d5ea85b52', 'VERIFIED-ORION-S0127', 'Pooja Kumar', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'bd91918c-6bce-44bb-a511-799036392c9a', 1, 'Jeffrin M', 'HEXAverse', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5ca0d9b4-5891-4234-bbeb-d84d5ea85b52', 1, null, 'HEXAverse', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'bd91918c-6bce-44bb-a511-799036392c9a', 2, 'Kaneska S M', 'HEXAverse', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5ca0d9b4-5891-4234-bbeb-d84d5ea85b52', 2, null, 'HEXAverse', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'bd91918c-6bce-44bb-a511-799036392c9a', 3, 'Kaviya sri V', 'HEXAverse', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5ca0d9b4-5891-4234-bbeb-d84d5ea85b52', 3, null, 'HEXAverse', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'bd91918c-6bce-44bb-a511-799036392c9a', 4, 'Kaniga P R', 'HEXAverse', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5ca0d9b4-5891-4234-bbeb-d84d5ea85b52', 4, null, 'HEXAverse', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'bd91918c-6bce-44bb-a511-799036392c9a', 5, 'Kaviarasi D', 'HEXAverse', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5ca0d9b4-5891-4234-bbeb-d84d5ea85b52', 5, null, 'HEXAverse', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -4462,43 +4462,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '83fe4881-f410-4148-8788-cc50af133496', 'ORION-S0128', 'Forged In Code', 'forgedincode', 'Hareeni Pavendan', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'HAREENIPAVENDAN',
+  '99054e78-7b6a-47b0-87de-5dde02d5222d', 'ORION-S0128', 'Forged In Code', 'forgedincode', 'Hareeni Pavendan', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'HAREENIPAVENDAN',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '83fe4881-f410-4148-8788-cc50af133496', 'VERIFIED-ORION-S0128', 'Hareeni Pavendan', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '99054e78-7b6a-47b0-87de-5dde02d5222d', 'VERIFIED-ORION-S0128', 'Hareeni Pavendan', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '83fe4881-f410-4148-8788-cc50af133496', 1, 'Deepika Shivani V', 'Forged In Code', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '99054e78-7b6a-47b0-87de-5dde02d5222d', 1, null, 'Forged In Code', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '83fe4881-f410-4148-8788-cc50af133496', 2, 'M.JAYASHRI', 'Forged In Code', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '99054e78-7b6a-47b0-87de-5dde02d5222d', 2, null, 'Forged In Code', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '83fe4881-f410-4148-8788-cc50af133496', 3, 'BA GURUPRIYA', 'Forged In Code', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '99054e78-7b6a-47b0-87de-5dde02d5222d', 3, null, 'Forged In Code', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '83fe4881-f410-4148-8788-cc50af133496', 4, 'Arulmozhi S', 'Forged In Code', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '99054e78-7b6a-47b0-87de-5dde02d5222d', 4, null, 'Forged In Code', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '83fe4881-f410-4148-8788-cc50af133496', 5, 'Ranjith S', 'Forged In Code', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '99054e78-7b6a-47b0-87de-5dde02d5222d', 5, null, 'Forged In Code', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -4507,43 +4507,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '429e9906-6895-4145-993e-ee917505f074', 'ORION-S0129', 'Zoro', 'zoro', 'Gayathri.K', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'GAYATHRIK',
+  'f8cc55b3-d44f-4213-a86a-587422051c5e', 'ORION-S0129', 'Zoro', 'zoro', 'Gayathri.K', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'GAYATHRIK',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '429e9906-6895-4145-993e-ee917505f074', 'VERIFIED-ORION-S0129', 'Gayathri.K', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'f8cc55b3-d44f-4213-a86a-587422051c5e', 'VERIFIED-ORION-S0129', 'Gayathri.K', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '429e9906-6895-4145-993e-ee917505f074', 1, 'Keerthiga.O', 'Zoro', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f8cc55b3-d44f-4213-a86a-587422051c5e', 1, null, 'Zoro', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '429e9906-6895-4145-993e-ee917505f074', 2, 'Kotteeswari.R', 'Zoro', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f8cc55b3-d44f-4213-a86a-587422051c5e', 2, null, 'Zoro', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '429e9906-6895-4145-993e-ee917505f074', 3, 'Balaji Aravind .R', 'Zoro', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f8cc55b3-d44f-4213-a86a-587422051c5e', 3, null, 'Zoro', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '429e9906-6895-4145-993e-ee917505f074', 4, 'Nitheshkumaran.S', 'Zoro', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f8cc55b3-d44f-4213-a86a-587422051c5e', 4, null, 'Zoro', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '429e9906-6895-4145-993e-ee917505f074', 5, 'Lalitha.M.J', 'Zoro', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f8cc55b3-d44f-4213-a86a-587422051c5e', 5, null, 'Zoro', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -4552,28 +4552,28 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'a85858aa-6af2-4c2d-b172-dc5f1ed52d2f', 'ORION-S0130', 'Cyber Rookies', 'cyberrookies', 'Yuvaraj K', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'YUVARAJK',
+  'ba8a996d-d558-41d0-ab12-373c5d2afccb', 'ORION-S0130', 'Cyber Rookies', 'cyberrookies', 'Yuvaraj K', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'YUVARAJK',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'a85858aa-6af2-4c2d-b172-dc5f1ed52d2f', 'VERIFIED-ORION-S0130', 'Yuvaraj K', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'ba8a996d-d558-41d0-ab12-373c5d2afccb', 'VERIFIED-ORION-S0130', 'Yuvaraj K', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a85858aa-6af2-4c2d-b172-dc5f1ed52d2f', 1, 'Subabalan S', 'Cyber Rookies', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'ba8a996d-d558-41d0-ab12-373c5d2afccb', 1, null, 'Cyber Rookies', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a85858aa-6af2-4c2d-b172-dc5f1ed52d2f', 2, 'Sanjay D', 'Cyber Rookies', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'ba8a996d-d558-41d0-ab12-373c5d2afccb', 2, null, 'Cyber Rookies', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -4582,43 +4582,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '0354e736-f505-4852-b584-2fcf75181e1f', 'ORION-S0131', 'Neuroforge', 'neuroforge', 'Hashvant S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'HASHVANTS',
+  'bbbeb71d-ef21-4389-ac4d-14a260d71afc', 'ORION-S0131', 'Neuroforge', 'neuroforge', 'Hashvant S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'HASHVANTS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '0354e736-f505-4852-b584-2fcf75181e1f', 'VERIFIED-ORION-S0131', 'Hashvant S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'bbbeb71d-ef21-4389-ac4d-14a260d71afc', 'VERIFIED-ORION-S0131', 'Hashvant S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0354e736-f505-4852-b584-2fcf75181e1f', 1, 'S Bhavana Shree', 'Neuroforge', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'bbbeb71d-ef21-4389-ac4d-14a260d71afc', 1, null, 'Neuroforge', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0354e736-f505-4852-b584-2fcf75181e1f', 2, 'Mahalakshmi V', 'Neuroforge', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'bbbeb71d-ef21-4389-ac4d-14a260d71afc', 2, null, 'Neuroforge', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0354e736-f505-4852-b584-2fcf75181e1f', 3, 'Mithra K', 'Neuroforge', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'bbbeb71d-ef21-4389-ac4d-14a260d71afc', 3, null, 'Neuroforge', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0354e736-f505-4852-b584-2fcf75181e1f', 4, 'Logitha L', 'Neuroforge', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'bbbeb71d-ef21-4389-ac4d-14a260d71afc', 4, null, 'Neuroforge', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0354e736-f505-4852-b584-2fcf75181e1f', 5, 'T MADHESH KUMAR', 'Neuroforge', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'bbbeb71d-ef21-4389-ac4d-14a260d71afc', 5, null, 'Neuroforge', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -4627,43 +4627,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'b8e3a8ac-ea30-4ad6-ac7e-998d65a85ea4', 'ORION-S0132', 'Varns', 'varns', 'A.Harshith', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'AHARSHITH',
+  'e610026e-5d64-49aa-8a8f-0c07cd9ba895', 'ORION-S0132', 'Varns', 'varns', 'A.Harshith', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'AHARSHITH',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'b8e3a8ac-ea30-4ad6-ac7e-998d65a85ea4', 'VERIFIED-ORION-S0132', 'A.Harshith', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'e610026e-5d64-49aa-8a8f-0c07cd9ba895', 'VERIFIED-ORION-S0132', 'A.Harshith', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'b8e3a8ac-ea30-4ad6-ac7e-998d65a85ea4', 1, 'M Lokeswara', 'Varns', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e610026e-5d64-49aa-8a8f-0c07cd9ba895', 1, null, 'Varns', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'b8e3a8ac-ea30-4ad6-ac7e-998d65a85ea4', 2, 'Mukesh Chowdary', 'Varns', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e610026e-5d64-49aa-8a8f-0c07cd9ba895', 2, null, 'Varns', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'b8e3a8ac-ea30-4ad6-ac7e-998d65a85ea4', 3, 'Kamal', 'Varns', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e610026e-5d64-49aa-8a8f-0c07cd9ba895', 3, null, 'Varns', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'b8e3a8ac-ea30-4ad6-ac7e-998d65a85ea4', 4, 'Vamsi', 'Varns', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e610026e-5d64-49aa-8a8f-0c07cd9ba895', 4, null, 'Varns', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'b8e3a8ac-ea30-4ad6-ac7e-998d65a85ea4', 5, 'Thoufiq', 'Varns', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e610026e-5d64-49aa-8a8f-0c07cd9ba895', 5, null, 'Varns', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -4672,43 +4672,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '019cf409-e5dd-4606-92c1-6abb596acb3d', 'ORION-S0133', 'PHOENIX PROTOCOL', 'phoenixprotocol', 'SRI LAKSHMI V J', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SRILAKSHMIVJ',
+  '8988b32a-217f-4d18-99c3-38cfb52f7cc2', 'ORION-S0133', 'PHOENIX PROTOCOL', 'phoenixprotocol', 'SRI LAKSHMI V J', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'SRILAKSHMIVJ',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '019cf409-e5dd-4606-92c1-6abb596acb3d', 'VERIFIED-ORION-S0133', 'SRI LAKSHMI V J', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '8988b32a-217f-4d18-99c3-38cfb52f7cc2', 'VERIFIED-ORION-S0133', 'SRI LAKSHMI V J', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '019cf409-e5dd-4606-92c1-6abb596acb3d', 1, 'DEVIPRIYA R', 'PHOENIX PROTOCOL', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8988b32a-217f-4d18-99c3-38cfb52f7cc2', 1, null, 'PHOENIX PROTOCOL', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '019cf409-e5dd-4606-92c1-6abb596acb3d', 2, 'THANVITHA DOMMARAJU C', 'PHOENIX PROTOCOL', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8988b32a-217f-4d18-99c3-38cfb52f7cc2', 2, null, 'PHOENIX PROTOCOL', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '019cf409-e5dd-4606-92c1-6abb596acb3d', 3, 'VALERIN BRUCE', 'PHOENIX PROTOCOL', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8988b32a-217f-4d18-99c3-38cfb52f7cc2', 3, null, 'PHOENIX PROTOCOL', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '019cf409-e5dd-4606-92c1-6abb596acb3d', 4, 'SATHYA K', 'PHOENIX PROTOCOL', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8988b32a-217f-4d18-99c3-38cfb52f7cc2', 4, null, 'PHOENIX PROTOCOL', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '019cf409-e5dd-4606-92c1-6abb596acb3d', 5, 'SHARMISTHA K', 'PHOENIX PROTOCOL', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8988b32a-217f-4d18-99c3-38cfb52f7cc2', 5, null, 'PHOENIX PROTOCOL', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -4717,23 +4717,23 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'e444602e-235d-4457-8407-39cc437b7627', 'ORION-S0134', 'STRAW HATS', 'strawhats', 'Roshan Anto W', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'ROSHANANTOW',
+  'b54b2d76-eb18-4e7e-b1ce-7c6b071f8f57', 'ORION-S0134', 'STRAW HATS', 'strawhats', 'Roshan Anto W', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'ROSHANANTOW',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'e444602e-235d-4457-8407-39cc437b7627', 'VERIFIED-ORION-S0134', 'Roshan Anto W', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'b54b2d76-eb18-4e7e-b1ce-7c6b071f8f57', 'VERIFIED-ORION-S0134', 'Roshan Anto W', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'e444602e-235d-4457-8407-39cc437b7627', 1, 'Prabakar M', 'STRAW HATS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b54b2d76-eb18-4e7e-b1ce-7c6b071f8f57', 1, null, 'STRAW HATS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -4742,38 +4742,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '07a2fc10-0be6-4358-88ba-99ad8a87036c', 'ORION-S0135', 'Tech Space', 'techspace', 'Saran S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SARANS',
+  'b4548168-961f-4ac7-a053-0fb4d94eacd5', 'ORION-S0135', 'Tech Space', 'techspace', 'Saran S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'SARANS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '07a2fc10-0be6-4358-88ba-99ad8a87036c', 'VERIFIED-ORION-S0135', 'Saran S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'b4548168-961f-4ac7-a053-0fb4d94eacd5', 'VERIFIED-ORION-S0135', 'Saran S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '07a2fc10-0be6-4358-88ba-99ad8a87036c', 1, 'Shree Ram', 'Tech Space', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b4548168-961f-4ac7-a053-0fb4d94eacd5', 1, null, 'Tech Space', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '07a2fc10-0be6-4358-88ba-99ad8a87036c', 2, 'VARUN J', 'Tech Space', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b4548168-961f-4ac7-a053-0fb4d94eacd5', 2, null, 'Tech Space', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '07a2fc10-0be6-4358-88ba-99ad8a87036c', 3, 'VETRIVIGNESH', 'Tech Space', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b4548168-961f-4ac7-a053-0fb4d94eacd5', 3, null, 'Tech Space', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '07a2fc10-0be6-4358-88ba-99ad8a87036c', 4, 'Manoj', 'Tech Space', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b4548168-961f-4ac7-a053-0fb4d94eacd5', 4, null, 'Tech Space', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -4782,38 +4782,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '0df23838-f29c-452e-bcc5-4d8f9d8f7202', 'ORION-S0136', 'Breaking Code', 'breakingcode', 'Isaac Jacksonraj J', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'ISAACJACKSONRAJJ',
+  '8114fe4a-b462-4971-a8b2-5efd14d3c8ba', 'ORION-S0136', 'Breaking Code', 'breakingcode', 'Isaac Jacksonraj J', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'ISAACJACKSONRAJJ',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '0df23838-f29c-452e-bcc5-4d8f9d8f7202', 'VERIFIED-ORION-S0136', 'Isaac Jacksonraj J', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '8114fe4a-b462-4971-a8b2-5efd14d3c8ba', 'VERIFIED-ORION-S0136', 'Isaac Jacksonraj J', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0df23838-f29c-452e-bcc5-4d8f9d8f7202', 1, 'Kavinaya Bhaskaran', 'Breaking Code', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8114fe4a-b462-4971-a8b2-5efd14d3c8ba', 1, null, 'Breaking Code', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0df23838-f29c-452e-bcc5-4d8f9d8f7202', 2, 'Jaya Joshna W', 'Breaking Code', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8114fe4a-b462-4971-a8b2-5efd14d3c8ba', 2, null, 'Breaking Code', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0df23838-f29c-452e-bcc5-4d8f9d8f7202', 3, 'Jayaraj Rijan S', 'Breaking Code', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8114fe4a-b462-4971-a8b2-5efd14d3c8ba', 3, null, 'Breaking Code', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0df23838-f29c-452e-bcc5-4d8f9d8f7202', 4, 'Indira M', 'Breaking Code', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8114fe4a-b462-4971-a8b2-5efd14d3c8ba', 4, null, 'Breaking Code', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -4822,28 +4822,28 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '9c94a519-9ffa-46bc-af8e-f3cbf15f64b3', 'ORION-S0137', 'Claxon AI', 'claxonai', 'SARRVESH J R', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SARRVESHJR',
+  '08899986-cc98-431d-8eae-450da4374136', 'ORION-S0137', 'Claxon AI', 'claxonai', 'SARRVESH J R', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'SARRVESHJR',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '9c94a519-9ffa-46bc-af8e-f3cbf15f64b3', 'VERIFIED-ORION-S0137', 'SARRVESH J R', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '08899986-cc98-431d-8eae-450da4374136', 'VERIFIED-ORION-S0137', 'SARRVESH J R', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '9c94a519-9ffa-46bc-af8e-f3cbf15f64b3', 1, 'Sharulatha s', 'Claxon AI', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '08899986-cc98-431d-8eae-450da4374136', 1, null, 'Claxon AI', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '9c94a519-9ffa-46bc-af8e-f3cbf15f64b3', 2, 'J Stevin jones', 'Claxon AI', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '08899986-cc98-431d-8eae-450da4374136', 2, null, 'Claxon AI', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -4852,33 +4852,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '8963bb34-145e-4490-b88e-6ec8e93ceb0c', 'ORION-S0138', 'Project Hail Mary', 'projecthailmary', 'Dharani Karthikeyan', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'DHARANIKARTHIKEYAN',
+  'caf115de-6702-4866-b708-42ebecf0c302', 'ORION-S0138', 'Project Hail Mary', 'projecthailmary', 'Dharani Karthikeyan', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-02: LEXVAULT', 'DHARANIKARTHIKEYAN',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '8963bb34-145e-4490-b88e-6ec8e93ceb0c', 'VERIFIED-ORION-S0138', 'Dharani Karthikeyan', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'caf115de-6702-4866-b708-42ebecf0c302', 'VERIFIED-ORION-S0138', 'Dharani Karthikeyan', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8963bb34-145e-4490-b88e-6ec8e93ceb0c', 1, 'Larshikha Krishnan', 'Project Hail Mary', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'caf115de-6702-4866-b708-42ebecf0c302', 1, null, 'Project Hail Mary', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8963bb34-145e-4490-b88e-6ec8e93ceb0c', 2, 'Divya Dharshini K S', 'Project Hail Mary', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'caf115de-6702-4866-b708-42ebecf0c302', 2, null, 'Project Hail Mary', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8963bb34-145e-4490-b88e-6ec8e93ceb0c', 3, 'Hemapreiya Vijayaka', 'Project Hail Mary', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'caf115de-6702-4866-b708-42ebecf0c302', 3, null, 'Project Hail Mary', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -4887,43 +4887,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'b8747e8e-a6be-4007-9377-cbe6f523cb0b', 'ORION-S0139', 'HexaCore', 'hexacore', 'SACHIN G S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SACHINGS',
+  '4f02aae2-8176-431b-bd54-fcaf1f99ae3e', 'ORION-S0139', 'HexaCore', 'hexacore', 'SACHIN G S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'SACHINGS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'b8747e8e-a6be-4007-9377-cbe6f523cb0b', 'VERIFIED-ORION-S0139', 'SACHIN G S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '4f02aae2-8176-431b-bd54-fcaf1f99ae3e', 'VERIFIED-ORION-S0139', 'SACHIN G S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'b8747e8e-a6be-4007-9377-cbe6f523cb0b', 1, 'Sanjeeve Rajan C R', 'HexaCore', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4f02aae2-8176-431b-bd54-fcaf1f99ae3e', 1, null, 'HexaCore', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'b8747e8e-a6be-4007-9377-cbe6f523cb0b', 2, 'Vuppalapati Vedesh', 'HexaCore', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4f02aae2-8176-431b-bd54-fcaf1f99ae3e', 2, null, 'HexaCore', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'b8747e8e-a6be-4007-9377-cbe6f523cb0b', 3, 'Hannish K', 'HexaCore', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4f02aae2-8176-431b-bd54-fcaf1f99ae3e', 3, null, 'HexaCore', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'b8747e8e-a6be-4007-9377-cbe6f523cb0b', 4, 'Aishwarya S', 'HexaCore', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4f02aae2-8176-431b-bd54-fcaf1f99ae3e', 4, null, 'HexaCore', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'b8747e8e-a6be-4007-9377-cbe6f523cb0b', 5, 'Roshini G', 'HexaCore', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4f02aae2-8176-431b-bd54-fcaf1f99ae3e', 5, null, 'HexaCore', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -4932,23 +4932,23 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '95b7a332-e464-412b-a5f8-7a992b3b4347', 'ORION-S0140', 'PROTOTHON', 'protothon', 'BALIREDDI V V N S ABHISHEK', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'BALIREDDIVVNSABHISHEK',
+  '11798887-5e06-4c8e-bea1-08fcd9a2027e', 'ORION-S0140', 'PROTOTHON', 'protothon', 'BALIREDDI V V N S ABHISHEK', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'BALIREDDIVVNSABHISHEK',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '95b7a332-e464-412b-a5f8-7a992b3b4347', 'VERIFIED-ORION-S0140', 'BALIREDDI V V N S ABHISHEK', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '11798887-5e06-4c8e-bea1-08fcd9a2027e', 'VERIFIED-ORION-S0140', 'BALIREDDI V V N S ABHISHEK', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '95b7a332-e464-412b-a5f8-7a992b3b4347', 1, 'VIMAL RAJ A', 'PROTOTHON', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '11798887-5e06-4c8e-bea1-08fcd9a2027e', 1, null, 'PROTOTHON', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -4957,23 +4957,23 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '093a2d41-5f71-403b-bfb0-4c98ee93b6fb', 'ORION-S0141', 'RunTime Error', 'runtimeerror', 'Charen', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'CHAREN',
+  'e12dc57d-c9f1-4698-a055-3785ba4f24a6', 'ORION-S0141', 'RunTime Error', 'runtimeerror', 'Charen', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'CHAREN',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '093a2d41-5f71-403b-bfb0-4c98ee93b6fb', 'VERIFIED-ORION-S0141', 'Charen', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'e12dc57d-c9f1-4698-a055-3785ba4f24a6', 'VERIFIED-ORION-S0141', 'Charen', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '093a2d41-5f71-403b-bfb0-4c98ee93b6fb', 1, 'Sai Sri Vathsan', 'RunTime Error', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e12dc57d-c9f1-4698-a055-3785ba4f24a6', 1, null, 'RunTime Error', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -4982,38 +4982,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '99131fe1-7a23-455b-a277-a6d8957b49f0', 'ORION-S0142', 'Hi-Tech', 'hitech', 'Irina Charis B', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'IRINACHARISB',
+  '7473b9bf-c0fe-4150-a357-673442472965', 'ORION-S0142', 'Hi-Tech', 'hitech', 'Irina Charis B', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'IRINACHARISB',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '99131fe1-7a23-455b-a277-a6d8957b49f0', 'VERIFIED-ORION-S0142', 'Irina Charis B', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '7473b9bf-c0fe-4150-a357-673442472965', 'VERIFIED-ORION-S0142', 'Irina Charis B', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '99131fe1-7a23-455b-a277-a6d8957b49f0', 1, 'Harish S', 'Hi-Tech', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7473b9bf-c0fe-4150-a357-673442472965', 1, null, 'Hi-Tech', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '99131fe1-7a23-455b-a277-a6d8957b49f0', 2, 'Krithika A M', 'Hi-Tech', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7473b9bf-c0fe-4150-a357-673442472965', 2, null, 'Hi-Tech', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '99131fe1-7a23-455b-a277-a6d8957b49f0', 3, 'Jaya Surya S G', 'Hi-Tech', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7473b9bf-c0fe-4150-a357-673442472965', 3, null, 'Hi-Tech', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '99131fe1-7a23-455b-a277-a6d8957b49f0', 4, 'Hemanth Raju', 'Hi-Tech', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7473b9bf-c0fe-4150-a357-673442472965', 4, null, 'Hi-Tech', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -5022,43 +5022,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '97a60d87-0f10-4d90-ba5d-286c40420d2e', 'ORION-S0143', 'FineWorks', 'fineworks', 'Praveen Balaji G', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'PRAVEENBALAJIG',
+  '8ceba7d9-926c-4dfc-ac3f-8391ca43ff6c', 'ORION-S0143', 'FineWorks', 'fineworks', 'Praveen Balaji G', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'PRAVEENBALAJIG',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '97a60d87-0f10-4d90-ba5d-286c40420d2e', 'VERIFIED-ORION-S0143', 'Praveen Balaji G', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '8ceba7d9-926c-4dfc-ac3f-8391ca43ff6c', 'VERIFIED-ORION-S0143', 'Praveen Balaji G', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '97a60d87-0f10-4d90-ba5d-286c40420d2e', 1, 'Saranesh S', 'FineWorks', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8ceba7d9-926c-4dfc-ac3f-8391ca43ff6c', 1, null, 'FineWorks', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '97a60d87-0f10-4d90-ba5d-286c40420d2e', 2, 'Nitish M', 'FineWorks', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8ceba7d9-926c-4dfc-ac3f-8391ca43ff6c', 2, null, 'FineWorks', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '97a60d87-0f10-4d90-ba5d-286c40420d2e', 3, 'Sakthi Saran G', 'FineWorks', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8ceba7d9-926c-4dfc-ac3f-8391ca43ff6c', 3, null, 'FineWorks', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '97a60d87-0f10-4d90-ba5d-286c40420d2e', 4, 'Seerthi Adhavan', 'FineWorks', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8ceba7d9-926c-4dfc-ac3f-8391ca43ff6c', 4, null, 'FineWorks', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '97a60d87-0f10-4d90-ba5d-286c40420d2e', 5, 'Tazim Sheriff R', 'FineWorks', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8ceba7d9-926c-4dfc-ac3f-8391ca43ff6c', 5, null, 'FineWorks', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -5067,43 +5067,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '737e6f21-2dfb-4fdc-ace2-f14d880df625', 'ORION-S0144', 'Rebellions', 'rebellions', 'Lokesh S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'LOKESHS',
+  'e9fc1438-bf05-490c-b4dc-8a9d33cbff45', 'ORION-S0144', 'Rebellions', 'rebellions', 'Lokesh S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'LOKESHS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '737e6f21-2dfb-4fdc-ace2-f14d880df625', 'VERIFIED-ORION-S0144', 'Lokesh S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'e9fc1438-bf05-490c-b4dc-8a9d33cbff45', 'VERIFIED-ORION-S0144', 'Lokesh S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '737e6f21-2dfb-4fdc-ace2-f14d880df625', 1, 'M Mohamed Rasool', 'Rebellions', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e9fc1438-bf05-490c-b4dc-8a9d33cbff45', 1, null, 'Rebellions', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '737e6f21-2dfb-4fdc-ace2-f14d880df625', 2, 'Darsan G R', 'Rebellions', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e9fc1438-bf05-490c-b4dc-8a9d33cbff45', 2, null, 'Rebellions', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '737e6f21-2dfb-4fdc-ace2-f14d880df625', 3, 'Giridharan M', 'Rebellions', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e9fc1438-bf05-490c-b4dc-8a9d33cbff45', 3, null, 'Rebellions', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '737e6f21-2dfb-4fdc-ace2-f14d880df625', 4, 'Abdul Majeed A', 'Rebellions', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e9fc1438-bf05-490c-b4dc-8a9d33cbff45', 4, null, 'Rebellions', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '737e6f21-2dfb-4fdc-ace2-f14d880df625', 5, 'Dhinesh', 'Rebellions', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e9fc1438-bf05-490c-b4dc-8a9d33cbff45', 5, null, 'Rebellions', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -5112,33 +5112,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'bbc9277d-3007-410d-a940-060a5e1700b4', 'ORION-S0145', 'SylvaAI', 'sylvaai', 'Pooja S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'POOJAS',
+  'bf94b5b9-0c53-4347-b42f-a0e9ea4b0f4c', 'ORION-S0145', 'SylvaAI', 'sylvaai', 'Pooja S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'POOJAS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'bbc9277d-3007-410d-a940-060a5e1700b4', 'VERIFIED-ORION-S0145', 'Pooja S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'bf94b5b9-0c53-4347-b42f-a0e9ea4b0f4c', 'VERIFIED-ORION-S0145', 'Pooja S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'bbc9277d-3007-410d-a940-060a5e1700b4', 1, 'Vani S', 'SylvaAI', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'bf94b5b9-0c53-4347-b42f-a0e9ea4b0f4c', 1, null, 'SylvaAI', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'bbc9277d-3007-410d-a940-060a5e1700b4', 2, 'Meiram R', 'SylvaAI', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'bf94b5b9-0c53-4347-b42f-a0e9ea4b0f4c', 2, null, 'SylvaAI', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'bbc9277d-3007-410d-a940-060a5e1700b4', 3, 'Ramamoorthy K', 'SylvaAI', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'bf94b5b9-0c53-4347-b42f-a0e9ea4b0f4c', 3, null, 'SylvaAI', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -5147,43 +5147,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '78b769a6-3dc9-4e13-9ff2-86e4db409de0', 'ORION-S0146', 'Tech Hackers', 'techhackers', 'DIVYA T', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'DIVYAT',
+  '65439029-1fcc-46eb-ba10-f8204989f73b', 'ORION-S0146', 'Tech Hackers', 'techhackers', 'DIVYA T', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'DIVYAT',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '78b769a6-3dc9-4e13-9ff2-86e4db409de0', 'VERIFIED-ORION-S0146', 'DIVYA T', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '65439029-1fcc-46eb-ba10-f8204989f73b', 'VERIFIED-ORION-S0146', 'DIVYA T', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '78b769a6-3dc9-4e13-9ff2-86e4db409de0', 1, 'Geethalakshmi B', 'Tech Hackers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '65439029-1fcc-46eb-ba10-f8204989f73b', 1, null, 'Tech Hackers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '78b769a6-3dc9-4e13-9ff2-86e4db409de0', 2, 'Jahnavi R', 'Tech Hackers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '65439029-1fcc-46eb-ba10-f8204989f73b', 2, null, 'Tech Hackers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '78b769a6-3dc9-4e13-9ff2-86e4db409de0', 3, 'Giri P', 'Tech Hackers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '65439029-1fcc-46eb-ba10-f8204989f73b', 3, null, 'Tech Hackers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '78b769a6-3dc9-4e13-9ff2-86e4db409de0', 4, 'Deepak N S', 'Tech Hackers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '65439029-1fcc-46eb-ba10-f8204989f73b', 4, null, 'Tech Hackers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '78b769a6-3dc9-4e13-9ff2-86e4db409de0', 5, 'Hariharasuthan N', 'Tech Hackers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '65439029-1fcc-46eb-ba10-f8204989f73b', 5, null, 'Tech Hackers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -5192,43 +5192,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '1c8f7088-5242-4d27-ab9a-ebdb67cceb18', 'ORION-S0147', 'Code Charms', 'codecharms', 'Elakkiya.R', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'ELAKKIYAR',
+  '3b03da2b-5689-4016-88b4-1629e71cd781', 'ORION-S0147', 'Code Charms', 'codecharms', 'Elakkiya.R', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'ELAKKIYAR',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '1c8f7088-5242-4d27-ab9a-ebdb67cceb18', 'VERIFIED-ORION-S0147', 'Elakkiya.R', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '3b03da2b-5689-4016-88b4-1629e71cd781', 'VERIFIED-ORION-S0147', 'Elakkiya.R', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '1c8f7088-5242-4d27-ab9a-ebdb67cceb18', 1, 'Devadharshini.S', 'Code Charms', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3b03da2b-5689-4016-88b4-1629e71cd781', 1, null, 'Code Charms', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '1c8f7088-5242-4d27-ab9a-ebdb67cceb18', 2, 'ANANYA.R', 'Code Charms', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3b03da2b-5689-4016-88b4-1629e71cd781', 2, null, 'Code Charms', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '1c8f7088-5242-4d27-ab9a-ebdb67cceb18', 3, 'Keerthana.S', 'Code Charms', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3b03da2b-5689-4016-88b4-1629e71cd781', 3, null, 'Code Charms', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '1c8f7088-5242-4d27-ab9a-ebdb67cceb18', 4, 'GAAYATHRI DEVI R', 'Code Charms', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3b03da2b-5689-4016-88b4-1629e71cd781', 4, null, 'Code Charms', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '1c8f7088-5242-4d27-ab9a-ebdb67cceb18', 5, 'BILLU SHARIKA', 'Code Charms', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3b03da2b-5689-4016-88b4-1629e71cd781', 5, null, 'Code Charms', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -5237,43 +5237,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '3372df31-ec38-4788-9ab8-13d4cb99d0ab', 'ORION-S0148', 'Voro', 'voro', 'Lalith Aditiya T A', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'LALITHADITIYATA',
+  '5e6f6e00-b63a-4288-aae5-3626bbdfa9e2', 'ORION-S0148', 'Voro', 'voro', 'Lalith Aditiya T A', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'LALITHADITIYATA',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '3372df31-ec38-4788-9ab8-13d4cb99d0ab', 'VERIFIED-ORION-S0148', 'Lalith Aditiya T A', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '5e6f6e00-b63a-4288-aae5-3626bbdfa9e2', 'VERIFIED-ORION-S0148', 'Lalith Aditiya T A', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '3372df31-ec38-4788-9ab8-13d4cb99d0ab', 1, 'Kumaran R', 'Voro', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5e6f6e00-b63a-4288-aae5-3626bbdfa9e2', 1, null, 'Voro', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '3372df31-ec38-4788-9ab8-13d4cb99d0ab', 2, 'Likesh R', 'Voro', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5e6f6e00-b63a-4288-aae5-3626bbdfa9e2', 2, null, 'Voro', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '3372df31-ec38-4788-9ab8-13d4cb99d0ab', 3, 'Kishor J', 'Voro', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5e6f6e00-b63a-4288-aae5-3626bbdfa9e2', 3, null, 'Voro', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '3372df31-ec38-4788-9ab8-13d4cb99d0ab', 4, 'Krishna megha K S', 'Voro', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5e6f6e00-b63a-4288-aae5-3626bbdfa9e2', 4, null, 'Voro', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '3372df31-ec38-4788-9ab8-13d4cb99d0ab', 5, 'Kavi priya A', 'Voro', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5e6f6e00-b63a-4288-aae5-3626bbdfa9e2', 5, null, 'Voro', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -5282,43 +5282,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '272a0944-6d12-44f8-8e85-b1d3558a3375', 'ORION-S0149', 'Mesh Minds', 'meshminds', 'Tejasvini S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'TEJASVINIS',
+  '6036d05e-c167-4f65-afe1-8f14d1f98209', 'ORION-S0149', 'Mesh Minds', 'meshminds', 'Tejasvini S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'TEJASVINIS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '272a0944-6d12-44f8-8e85-b1d3558a3375', 'VERIFIED-ORION-S0149', 'Tejasvini S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '6036d05e-c167-4f65-afe1-8f14d1f98209', 'VERIFIED-ORION-S0149', 'Tejasvini S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '272a0944-6d12-44f8-8e85-b1d3558a3375', 1, 'Syed Amrullah S A', 'Mesh Minds', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6036d05e-c167-4f65-afe1-8f14d1f98209', 1, null, 'Mesh Minds', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '272a0944-6d12-44f8-8e85-b1d3558a3375', 2, 'Chitra Devi R', 'Mesh Minds', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6036d05e-c167-4f65-afe1-8f14d1f98209', 2, null, 'Mesh Minds', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '272a0944-6d12-44f8-8e85-b1d3558a3375', 3, 'Praveen B', 'Mesh Minds', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6036d05e-c167-4f65-afe1-8f14d1f98209', 3, null, 'Mesh Minds', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '272a0944-6d12-44f8-8e85-b1d3558a3375', 4, 'Anoob S', 'Mesh Minds', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6036d05e-c167-4f65-afe1-8f14d1f98209', 4, null, 'Mesh Minds', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '272a0944-6d12-44f8-8e85-b1d3558a3375', 5, 'Jagadeesh R', 'Mesh Minds', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6036d05e-c167-4f65-afe1-8f14d1f98209', 5, null, 'Mesh Minds', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -5327,33 +5327,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '8ca58aa8-c3cb-43fd-bb20-4073fdc9a6ac', 'ORION-S0150', 'NexQ', 'nexq', 'Ananya Sridhar', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'ANANYASRIDHAR',
+  '59b7b29e-6fa2-45a6-a2d8-0dd66760b968', 'ORION-S0150', 'NexQ', 'nexq', 'Ananya Sridhar', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'ANANYASRIDHAR',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '8ca58aa8-c3cb-43fd-bb20-4073fdc9a6ac', 'VERIFIED-ORION-S0150', 'Ananya Sridhar', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '59b7b29e-6fa2-45a6-a2d8-0dd66760b968', 'VERIFIED-ORION-S0150', 'Ananya Sridhar', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8ca58aa8-c3cb-43fd-bb20-4073fdc9a6ac', 1, 'Anantha Kumar B', 'NexQ', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '59b7b29e-6fa2-45a6-a2d8-0dd66760b968', 1, null, 'NexQ', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8ca58aa8-c3cb-43fd-bb20-4073fdc9a6ac', 2, 'Avinash S', 'NexQ', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '59b7b29e-6fa2-45a6-a2d8-0dd66760b968', 2, null, 'NexQ', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8ca58aa8-c3cb-43fd-bb20-4073fdc9a6ac', 3, 'Devikala M', 'NexQ', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '59b7b29e-6fa2-45a6-a2d8-0dd66760b968', 3, null, 'NexQ', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -5362,38 +5362,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '8d5e4acf-80f5-45c4-99c7-c9ad736a1e11', 'ORION-S0151', 'DoomCoders', 'doomcoders', 'C Balaji Mohan', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'CBALAJIMOHAN',
+  '8df83eb0-fb39-4e55-9500-9b8db9113752', 'ORION-S0151', 'DoomCoders', 'doomcoders', 'C Balaji Mohan', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'CBALAJIMOHAN',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '8d5e4acf-80f5-45c4-99c7-c9ad736a1e11', 'VERIFIED-ORION-S0151', 'C Balaji Mohan', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '8df83eb0-fb39-4e55-9500-9b8db9113752', 'VERIFIED-ORION-S0151', 'C Balaji Mohan', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8d5e4acf-80f5-45c4-99c7-c9ad736a1e11', 1, 'Abhikash S', 'DoomCoders', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8df83eb0-fb39-4e55-9500-9b8db9113752', 1, null, 'DoomCoders', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8d5e4acf-80f5-45c4-99c7-c9ad736a1e11', 2, 'Adheep S', 'DoomCoders', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8df83eb0-fb39-4e55-9500-9b8db9113752', 2, null, 'DoomCoders', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8d5e4acf-80f5-45c4-99c7-c9ad736a1e11', 3, 'Avinash V', 'DoomCoders', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8df83eb0-fb39-4e55-9500-9b8db9113752', 3, null, 'DoomCoders', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8d5e4acf-80f5-45c4-99c7-c9ad736a1e11', 4, 'Siva Sitharthan N', 'DoomCoders', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8df83eb0-fb39-4e55-9500-9b8db9113752', 4, null, 'DoomCoders', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -5402,43 +5402,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'de8ae1e7-c1ef-45d1-a966-b786c353dc8a', 'ORION-S0152', 'Tech Titans', 'techtitans', 'R R Jaiwanth', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'RRJAIWANTH',
+  'caca9c85-3e5e-423f-8be3-7f3e8a94e35f', 'ORION-S0152', 'Tech Titans', 'techtitans', 'R R Jaiwanth', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'RRJAIWANTH',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'de8ae1e7-c1ef-45d1-a966-b786c353dc8a', 'VERIFIED-ORION-S0152', 'R R Jaiwanth', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'caca9c85-3e5e-423f-8be3-7f3e8a94e35f', 'VERIFIED-ORION-S0152', 'R R Jaiwanth', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'de8ae1e7-c1ef-45d1-a966-b786c353dc8a', 1, 'A Sai Hariharan', 'Tech Titans', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'caca9c85-3e5e-423f-8be3-7f3e8a94e35f', 1, null, 'Tech Titans', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'de8ae1e7-c1ef-45d1-a966-b786c353dc8a', 2, 'N.Mughilan', 'Tech Titans', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'caca9c85-3e5e-423f-8be3-7f3e8a94e35f', 2, null, 'Tech Titans', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'de8ae1e7-c1ef-45d1-a966-b786c353dc8a', 3, 'P.Jane Merlin', 'Tech Titans', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'caca9c85-3e5e-423f-8be3-7f3e8a94e35f', 3, null, 'Tech Titans', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'de8ae1e7-c1ef-45d1-a966-b786c353dc8a', 4, 'A.Jayavarshini', 'Tech Titans', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'caca9c85-3e5e-423f-8be3-7f3e8a94e35f', 4, null, 'Tech Titans', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'de8ae1e7-c1ef-45d1-a966-b786c353dc8a', 5, 'M.Rakshana', 'Tech Titans', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'caca9c85-3e5e-423f-8be3-7f3e8a94e35f', 5, null, 'Tech Titans', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -5447,33 +5447,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'a429419b-09c6-4cf3-8176-b84f4e259c57', 'ORION-S0153', 'TechCode', 'techcode', 'Devipriya B', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'DEVIPRIYAB',
+  '5eef80db-0ffc-4fdc-a5fe-4d54ded94571', 'ORION-S0153', 'TechCode', 'techcode', 'Devipriya B', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'DEVIPRIYAB',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'a429419b-09c6-4cf3-8176-b84f4e259c57', 'VERIFIED-ORION-S0153', 'Devipriya B', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '5eef80db-0ffc-4fdc-a5fe-4d54ded94571', 'VERIFIED-ORION-S0153', 'Devipriya B', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a429419b-09c6-4cf3-8176-b84f4e259c57', 1, 'Sakthi Devi L', 'TechCode', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5eef80db-0ffc-4fdc-a5fe-4d54ded94571', 1, null, 'TechCode', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a429419b-09c6-4cf3-8176-b84f4e259c57', 2, 'Naveen K', 'TechCode', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5eef80db-0ffc-4fdc-a5fe-4d54ded94571', 2, null, 'TechCode', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a429419b-09c6-4cf3-8176-b84f4e259c57', 3, 'Thulasi raman M', 'TechCode', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5eef80db-0ffc-4fdc-a5fe-4d54ded94571', 3, null, 'TechCode', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -5482,43 +5482,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '37210685-5dce-4ba6-8ea1-aade21f295d8', 'ORION-S0154', 'MotwaGuard', 'motwaguard', 'Monica V', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'MONICAV',
+  '0c82ff93-66d5-4934-85e0-8977c8255ed9', 'ORION-S0154', 'MotwaGuard', 'motwaguard', 'Monica V', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'MONICAV',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '37210685-5dce-4ba6-8ea1-aade21f295d8', 'VERIFIED-ORION-S0154', 'Monica V', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '0c82ff93-66d5-4934-85e0-8977c8255ed9', 'VERIFIED-ORION-S0154', 'Monica V', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '37210685-5dce-4ba6-8ea1-aade21f295d8', 1, 'Karthikeyan B', 'MotwaGuard', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0c82ff93-66d5-4934-85e0-8977c8255ed9', 1, null, 'MotwaGuard', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '37210685-5dce-4ba6-8ea1-aade21f295d8', 2, 'Velvizhi K', 'MotwaGuard', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0c82ff93-66d5-4934-85e0-8977c8255ed9', 2, null, 'MotwaGuard', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '37210685-5dce-4ba6-8ea1-aade21f295d8', 3, 'Deepika M', 'MotwaGuard', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0c82ff93-66d5-4934-85e0-8977c8255ed9', 3, null, 'MotwaGuard', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '37210685-5dce-4ba6-8ea1-aade21f295d8', 4, 'Ram Prasath G', 'MotwaGuard', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0c82ff93-66d5-4934-85e0-8977c8255ed9', 4, null, 'MotwaGuard', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '37210685-5dce-4ba6-8ea1-aade21f295d8', 5, 'Dhinesh Kumar V', 'MotwaGuard', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0c82ff93-66d5-4934-85e0-8977c8255ed9', 5, null, 'MotwaGuard', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -5527,28 +5527,28 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '14d1ea2d-b809-43b0-9d0c-1469d4784a0c', 'ORION-S0155', 'StarByte', 'starbyte', 'Jaidev S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'JAIDEVS',
+  'd4abf8e4-6a89-444d-9e7f-b8d3532109c6', 'ORION-S0155', 'StarByte', 'starbyte', 'Jaidev S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'JAIDEVS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '14d1ea2d-b809-43b0-9d0c-1469d4784a0c', 'VERIFIED-ORION-S0155', 'Jaidev S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'd4abf8e4-6a89-444d-9e7f-b8d3532109c6', 'VERIFIED-ORION-S0155', 'Jaidev S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '14d1ea2d-b809-43b0-9d0c-1469d4784a0c', 1, 'Karthikeyan S', 'StarByte', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd4abf8e4-6a89-444d-9e7f-b8d3532109c6', 1, null, 'StarByte', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '14d1ea2d-b809-43b0-9d0c-1469d4784a0c', 2, 'Senthamizharan V', 'StarByte', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd4abf8e4-6a89-444d-9e7f-b8d3532109c6', 2, null, 'StarByte', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -5557,38 +5557,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '85138543-7cd8-41c3-83c2-257c800fe39b', 'ORION-S0156', 'O[1]', 'o1', 'M. Shirish', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'MSHIRISH',
+  '79c35f6a-8a55-44a4-9b9e-5cc4f0c560ed', 'ORION-S0156', 'O[1]', 'o1', 'M. Shirish', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'MSHIRISH',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '85138543-7cd8-41c3-83c2-257c800fe39b', 'VERIFIED-ORION-S0156', 'M. Shirish', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '79c35f6a-8a55-44a4-9b9e-5cc4f0c560ed', 'VERIFIED-ORION-S0156', 'M. Shirish', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '85138543-7cd8-41c3-83c2-257c800fe39b', 1, 'Shanjana s v', 'O[1]', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '79c35f6a-8a55-44a4-9b9e-5cc4f0c560ed', 1, null, 'O[1]', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '85138543-7cd8-41c3-83c2-257c800fe39b', 2, 'Akilesh B', 'O[1]', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '79c35f6a-8a55-44a4-9b9e-5cc4f0c560ed', 2, null, 'O[1]', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '85138543-7cd8-41c3-83c2-257c800fe39b', 3, 'Akshaya Beena', 'O[1]', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '79c35f6a-8a55-44a4-9b9e-5cc4f0c560ed', 3, null, 'O[1]', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '85138543-7cd8-41c3-83c2-257c800fe39b', 4, 'Ben', 'O[1]', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '79c35f6a-8a55-44a4-9b9e-5cc4f0c560ed', 4, null, 'O[1]', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -5597,33 +5597,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '340c97f7-5932-4b90-8012-1a9fe36919a7', 'ORION-S0157', 'Astralis', 'astralis', 'yaathesh', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'YAATHESH',
+  'c366edac-4b12-40b2-b608-f43679e23466', 'ORION-S0157', 'Astralis', 'astralis', 'yaathesh', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-02: LEXVAULT', 'YAATHESH',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '340c97f7-5932-4b90-8012-1a9fe36919a7', 'VERIFIED-ORION-S0157', 'yaathesh', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'c366edac-4b12-40b2-b608-f43679e23466', 'VERIFIED-ORION-S0157', 'yaathesh', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '340c97f7-5932-4b90-8012-1a9fe36919a7', 1, 'Senthur pandian', 'Astralis', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'c366edac-4b12-40b2-b608-f43679e23466', 1, null, 'Astralis', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '340c97f7-5932-4b90-8012-1a9fe36919a7', 2, 'Aruthran', 'Astralis', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'c366edac-4b12-40b2-b608-f43679e23466', 2, null, 'Astralis', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '340c97f7-5932-4b90-8012-1a9fe36919a7', 3, 'Ponvel.G', 'Astralis', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'c366edac-4b12-40b2-b608-f43679e23466', 3, null, 'Astralis', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -5632,38 +5632,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '74b8c0e1-0924-489d-a68e-01b09b1ce6a0', 'ORION-S0158', 'Mindsprint', 'mindsprint', 'Frezha Angeline A', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'FREZHAANGELINEA',
+  '7162c41c-d6e9-4bfd-850a-4efe78d68f3e', 'ORION-S0158', 'Mindsprint', 'mindsprint', 'Frezha Angeline A', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'FREZHAANGELINEA',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '74b8c0e1-0924-489d-a68e-01b09b1ce6a0', 'VERIFIED-ORION-S0158', 'Frezha Angeline A', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '7162c41c-d6e9-4bfd-850a-4efe78d68f3e', 'VERIFIED-ORION-S0158', 'Frezha Angeline A', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '74b8c0e1-0924-489d-a68e-01b09b1ce6a0', 1, 'Dhanalakshmi K', 'Mindsprint', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7162c41c-d6e9-4bfd-850a-4efe78d68f3e', 1, null, 'Mindsprint', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '74b8c0e1-0924-489d-a68e-01b09b1ce6a0', 2, 'Nidhya Shree U', 'Mindsprint', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7162c41c-d6e9-4bfd-850a-4efe78d68f3e', 2, null, 'Mindsprint', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '74b8c0e1-0924-489d-a68e-01b09b1ce6a0', 3, 'Reya S', 'Mindsprint', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7162c41c-d6e9-4bfd-850a-4efe78d68f3e', 3, null, 'Mindsprint', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '74b8c0e1-0924-489d-a68e-01b09b1ce6a0', 4, 'Janani S', 'Mindsprint', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7162c41c-d6e9-4bfd-850a-4efe78d68f3e', 4, null, 'Mindsprint', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -5672,38 +5672,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '34300bba-9918-4688-b3d1-48451f6f61f6', 'ORION-S0159', 'Technocrats', 'technocrats', 'Gunanithi M', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'GUNANITHIM',
+  'f76e84ed-2261-49a4-b657-2710e0eb351e', 'ORION-S0159', 'Technocrats', 'technocrats', 'Gunanithi M', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'GUNANITHIM',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '34300bba-9918-4688-b3d1-48451f6f61f6', 'VERIFIED-ORION-S0159', 'Gunanithi M', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'f76e84ed-2261-49a4-b657-2710e0eb351e', 'VERIFIED-ORION-S0159', 'Gunanithi M', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '34300bba-9918-4688-b3d1-48451f6f61f6', 1, 'Balarishikesh B S', 'Technocrats', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f76e84ed-2261-49a4-b657-2710e0eb351e', 1, null, 'Technocrats', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '34300bba-9918-4688-b3d1-48451f6f61f6', 2, 'Hari Krishna V', 'Technocrats', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f76e84ed-2261-49a4-b657-2710e0eb351e', 2, null, 'Technocrats', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '34300bba-9918-4688-b3d1-48451f6f61f6', 3, 'Bala Murali S', 'Technocrats', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f76e84ed-2261-49a4-b657-2710e0eb351e', 3, null, 'Technocrats', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '34300bba-9918-4688-b3d1-48451f6f61f6', 4, 'Aswindh Kumar R', 'Technocrats', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f76e84ed-2261-49a4-b657-2710e0eb351e', 4, null, 'Technocrats', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -5712,28 +5712,28 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '94ebbdaa-aa58-4754-982f-d2fea3ff5738', 'ORION-S0160', 'ProofForge', 'proofforge', 'Jerlin Goldia.J', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'JERLINGOLDIAJ',
+  'f52edf46-c4cf-452b-89fc-0d0f4f87e46a', 'ORION-S0160', 'ProofForge', 'proofforge', 'Jerlin Goldia.J', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-02: LEXVAULT', 'JERLINGOLDIAJ',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '94ebbdaa-aa58-4754-982f-d2fea3ff5738', 'VERIFIED-ORION-S0160', 'Jerlin Goldia.J', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'f52edf46-c4cf-452b-89fc-0d0f4f87e46a', 'VERIFIED-ORION-S0160', 'Jerlin Goldia.J', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '94ebbdaa-aa58-4754-982f-d2fea3ff5738', 1, 'Nandhini R', 'ProofForge', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f52edf46-c4cf-452b-89fc-0d0f4f87e46a', 1, null, 'ProofForge', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '94ebbdaa-aa58-4754-982f-d2fea3ff5738', 2, 'Jessica T', 'ProofForge', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f52edf46-c4cf-452b-89fc-0d0f4f87e46a', 2, null, 'ProofForge', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -5742,43 +5742,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '53fa6512-8e73-4b9e-8038-0d05b45d489b', 'ORION-S0162', 'avengers codesday', 'avengerscodesday', 'M J Dhurgesh', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'MJDHURGESH',
+  '77ca493b-cf49-422d-8f1f-df505a2c0f4d', 'ORION-S0162', 'avengers codesday', 'avengerscodesday', 'M J Dhurgesh', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'MJDHURGESH',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '53fa6512-8e73-4b9e-8038-0d05b45d489b', 'VERIFIED-ORION-S0162', 'M J Dhurgesh', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '77ca493b-cf49-422d-8f1f-df505a2c0f4d', 'VERIFIED-ORION-S0162', 'M J Dhurgesh', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '53fa6512-8e73-4b9e-8038-0d05b45d489b', 1, 'Harisudhan', 'avengers codesday', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '77ca493b-cf49-422d-8f1f-df505a2c0f4d', 1, null, 'avengers codesday', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '53fa6512-8e73-4b9e-8038-0d05b45d489b', 2, 'Sanjaidharshan s', 'avengers codesday', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '77ca493b-cf49-422d-8f1f-df505a2c0f4d', 2, null, 'avengers codesday', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '53fa6512-8e73-4b9e-8038-0d05b45d489b', 3, 'Tharun S', 'avengers codesday', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '77ca493b-cf49-422d-8f1f-df505a2c0f4d', 3, null, 'avengers codesday', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '53fa6512-8e73-4b9e-8038-0d05b45d489b', 4, 'Kabilan', 'avengers codesday', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '77ca493b-cf49-422d-8f1f-df505a2c0f4d', 4, null, 'avengers codesday', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '53fa6512-8e73-4b9e-8038-0d05b45d489b', 5, 'Shakeel irfan A r', 'avengers codesday', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '77ca493b-cf49-422d-8f1f-df505a2c0f4d', 5, null, 'avengers codesday', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -5787,43 +5787,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '6572ae27-97c9-4a4e-bcc9-c276680a4f37', 'ORION-S0163', 'NOVERA', 'novera', 'SUDHARSAN B', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SUDHARSANB',
+  '1918fae5-0224-4c05-96ff-589ccab68d8b', 'ORION-S0163', 'NOVERA', 'novera', 'SUDHARSAN B', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'SUDHARSANB',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '6572ae27-97c9-4a4e-bcc9-c276680a4f37', 'VERIFIED-ORION-S0163', 'SUDHARSAN B', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '1918fae5-0224-4c05-96ff-589ccab68d8b', 'VERIFIED-ORION-S0163', 'SUDHARSAN B', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '6572ae27-97c9-4a4e-bcc9-c276680a4f37', 1, 'GANESH A S', 'NOVERA', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1918fae5-0224-4c05-96ff-589ccab68d8b', 1, null, 'NOVERA', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '6572ae27-97c9-4a4e-bcc9-c276680a4f37', 2, 'MOHAMED ROSHAN S', 'NOVERA', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1918fae5-0224-4c05-96ff-589ccab68d8b', 2, null, 'NOVERA', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '6572ae27-97c9-4a4e-bcc9-c276680a4f37', 3, 'SANJEEV J', 'NOVERA', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1918fae5-0224-4c05-96ff-589ccab68d8b', 3, null, 'NOVERA', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '6572ae27-97c9-4a4e-bcc9-c276680a4f37', 4, 'SAI NIKITHA', 'NOVERA', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1918fae5-0224-4c05-96ff-589ccab68d8b', 4, null, 'NOVERA', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '6572ae27-97c9-4a4e-bcc9-c276680a4f37', 5, 'SAI HARIKA NANU', 'NOVERA', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1918fae5-0224-4c05-96ff-589ccab68d8b', 5, null, 'NOVERA', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -5832,43 +5832,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'ce7b7c52-ff17-4517-b2ca-efd0f5e0757a', 'ORION-S0164', 'Clarabella', 'clarabella', 'K SHALINI', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'KSHALINI',
+  '472ce158-0d6e-4257-8ad8-6cf1797940ba', 'ORION-S0164', 'Clarabella', 'clarabella', 'K SHALINI', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'KSHALINI',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'ce7b7c52-ff17-4517-b2ca-efd0f5e0757a', 'VERIFIED-ORION-S0164', 'K SHALINI', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '472ce158-0d6e-4257-8ad8-6cf1797940ba', 'VERIFIED-ORION-S0164', 'K SHALINI', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ce7b7c52-ff17-4517-b2ca-efd0f5e0757a', 1, 'SRINITHA G P', 'Clarabella', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '472ce158-0d6e-4257-8ad8-6cf1797940ba', 1, null, 'Clarabella', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ce7b7c52-ff17-4517-b2ca-efd0f5e0757a', 2, 'ANBU SELVAN S', 'Clarabella', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '472ce158-0d6e-4257-8ad8-6cf1797940ba', 2, null, 'Clarabella', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ce7b7c52-ff17-4517-b2ca-efd0f5e0757a', 3, 'Aravind .R', 'Clarabella', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '472ce158-0d6e-4257-8ad8-6cf1797940ba', 3, null, 'Clarabella', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ce7b7c52-ff17-4517-b2ca-efd0f5e0757a', 4, 'Arjun.p', 'Clarabella', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '472ce158-0d6e-4257-8ad8-6cf1797940ba', 4, null, 'Clarabella', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ce7b7c52-ff17-4517-b2ca-efd0f5e0757a', 5, 'Venureddy', 'Clarabella', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '472ce158-0d6e-4257-8ad8-6cf1797940ba', 5, null, 'Clarabella', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -5877,33 +5877,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '1f8eff35-0742-4a92-8acc-6f3696aad0db', 'ORION-S0165', 'DR DOOM', 'drdoom', 'KRITHIKAA B', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'KRITHIKAAB',
+  '4267a93b-6049-44e7-ad2f-6570053f1592', 'ORION-S0165', 'DR DOOM', 'drdoom', 'KRITHIKAA B', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'KRITHIKAAB',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '1f8eff35-0742-4a92-8acc-6f3696aad0db', 'VERIFIED-ORION-S0165', 'KRITHIKAA B', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '4267a93b-6049-44e7-ad2f-6570053f1592', 'VERIFIED-ORION-S0165', 'KRITHIKAA B', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '1f8eff35-0742-4a92-8acc-6f3696aad0db', 1, 'ADITHYA S', 'DR DOOM', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4267a93b-6049-44e7-ad2f-6570053f1592', 1, null, 'DR DOOM', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '1f8eff35-0742-4a92-8acc-6f3696aad0db', 2, 'S JISHNUMUGUNTH', 'DR DOOM', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4267a93b-6049-44e7-ad2f-6570053f1592', 2, null, 'DR DOOM', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '1f8eff35-0742-4a92-8acc-6f3696aad0db', 3, 'MANIESWARI M V', 'DR DOOM', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4267a93b-6049-44e7-ad2f-6570053f1592', 3, null, 'DR DOOM', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -5912,43 +5912,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '5fc35123-bf94-4f0f-b879-d442e48255cd', 'ORION-S0166', 'CODE CRACKERS', 'codecrackers', 'Monish R', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'MONISHR',
+  'bf01a147-be80-4666-9c2c-dc883d1ec8ca', 'ORION-S0166', 'CODE CRACKERS', 'codecrackers', 'Monish R', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'MONISHR',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '5fc35123-bf94-4f0f-b879-d442e48255cd', 'VERIFIED-ORION-S0166', 'Monish R', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'bf01a147-be80-4666-9c2c-dc883d1ec8ca', 'VERIFIED-ORION-S0166', 'Monish R', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5fc35123-bf94-4f0f-b879-d442e48255cd', 1, 'Vasantharaj M', 'CODE CRACKERS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'bf01a147-be80-4666-9c2c-dc883d1ec8ca', 1, null, 'CODE CRACKERS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5fc35123-bf94-4f0f-b879-d442e48255cd', 2, 'Harishankar E', 'CODE CRACKERS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'bf01a147-be80-4666-9c2c-dc883d1ec8ca', 2, null, 'CODE CRACKERS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5fc35123-bf94-4f0f-b879-d442e48255cd', 3, 'Kaavinesh K', 'CODE CRACKERS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'bf01a147-be80-4666-9c2c-dc883d1ec8ca', 3, null, 'CODE CRACKERS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5fc35123-bf94-4f0f-b879-d442e48255cd', 4, 'Roshan B', 'CODE CRACKERS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'bf01a147-be80-4666-9c2c-dc883d1ec8ca', 4, null, 'CODE CRACKERS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5fc35123-bf94-4f0f-b879-d442e48255cd', 5, 'Mohan K', 'CODE CRACKERS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'bf01a147-be80-4666-9c2c-dc883d1ec8ca', 5, null, 'CODE CRACKERS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -5957,43 +5957,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'bde34839-20f3-48da-b2f3-8878f147059a', 'ORION-S0167', 'GAITHUB', 'gaithub', 'Santosh Raghavendra Y S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SANTOSHRAGHAVENDRAYS',
+  'da47f9cd-d924-46c4-8fc3-4d9b238b7d06', 'ORION-S0167', 'GAITHUB', 'gaithub', 'Santosh Raghavendra Y S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SANTOSHRAGHAVENDRAYS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'bde34839-20f3-48da-b2f3-8878f147059a', 'VERIFIED-ORION-S0167', 'Santosh Raghavendra Y S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'da47f9cd-d924-46c4-8fc3-4d9b238b7d06', 'VERIFIED-ORION-S0167', 'Santosh Raghavendra Y S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'bde34839-20f3-48da-b2f3-8878f147059a', 1, 'RAKSHAN RS', 'GAITHUB', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'da47f9cd-d924-46c4-8fc3-4d9b238b7d06', 1, null, 'GAITHUB', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'bde34839-20f3-48da-b2f3-8878f147059a', 2, 'Yuvan krishnan', 'GAITHUB', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'da47f9cd-d924-46c4-8fc3-4d9b238b7d06', 2, null, 'GAITHUB', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'bde34839-20f3-48da-b2f3-8878f147059a', 3, 'Mario Ralph Baxter', 'GAITHUB', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'da47f9cd-d924-46c4-8fc3-4d9b238b7d06', 3, null, 'GAITHUB', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'bde34839-20f3-48da-b2f3-8878f147059a', 4, 'Udhaya', 'GAITHUB', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'da47f9cd-d924-46c4-8fc3-4d9b238b7d06', 4, null, 'GAITHUB', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'bde34839-20f3-48da-b2f3-8878f147059a', 5, 'Mithran', 'GAITHUB', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'da47f9cd-d924-46c4-8fc3-4d9b238b7d06', 5, null, 'GAITHUB', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -6002,43 +6002,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'bc9b643e-a7a9-4913-aad8-7931b20fe435', 'ORION-S0168', 'NOVATRIX', 'novatrix', 'PRAVEEN KUMAR M', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'PRAVEENKUMARM',
+  '0d6982ac-2fef-4840-b2bf-ca6b9d632ac5', 'ORION-S0168', 'NOVATRIX', 'novatrix', 'PRAVEEN KUMAR M', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'PRAVEENKUMARM',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'bc9b643e-a7a9-4913-aad8-7931b20fe435', 'VERIFIED-ORION-S0168', 'PRAVEEN KUMAR M', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '0d6982ac-2fef-4840-b2bf-ca6b9d632ac5', 'VERIFIED-ORION-S0168', 'PRAVEEN KUMAR M', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'bc9b643e-a7a9-4913-aad8-7931b20fe435', 1, 'RAGURAM.A', 'NOVATRIX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0d6982ac-2fef-4840-b2bf-ca6b9d632ac5', 1, null, 'NOVATRIX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'bc9b643e-a7a9-4913-aad8-7931b20fe435', 2, 'SACHIN RAJA.R', 'NOVATRIX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0d6982ac-2fef-4840-b2bf-ca6b9d632ac5', 2, null, 'NOVATRIX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'bc9b643e-a7a9-4913-aad8-7931b20fe435', 3, 'Rithish Barath N', 'NOVATRIX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0d6982ac-2fef-4840-b2bf-ca6b9d632ac5', 3, null, 'NOVATRIX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'bc9b643e-a7a9-4913-aad8-7931b20fe435', 4, 'SACHIV.R', 'NOVATRIX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0d6982ac-2fef-4840-b2bf-ca6b9d632ac5', 4, null, 'NOVATRIX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'bc9b643e-a7a9-4913-aad8-7931b20fe435', 5, 'SAKTHI.T C', 'NOVATRIX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0d6982ac-2fef-4840-b2bf-ca6b9d632ac5', 5, null, 'NOVATRIX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -6047,33 +6047,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '41159f11-f20b-4508-959d-4b35d4f9566b', 'ORION-S0169', 'Hack Aspirants', 'hackaspirants', 'keerthaesh kumar M', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'KEERTHAESHKUMARM',
+  '017cf0e7-4c03-472a-89ae-e2599a21d6c4', 'ORION-S0169', 'Hack Aspirants', 'hackaspirants', 'keerthaesh kumar M', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'KEERTHAESHKUMARM',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '41159f11-f20b-4508-959d-4b35d4f9566b', 'VERIFIED-ORION-S0169', 'keerthaesh kumar M', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '017cf0e7-4c03-472a-89ae-e2599a21d6c4', 'VERIFIED-ORION-S0169', 'keerthaesh kumar M', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '41159f11-f20b-4508-959d-4b35d4f9566b', 1, 'kavya S', 'Hack Aspirants', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '017cf0e7-4c03-472a-89ae-e2599a21d6c4', 1, null, 'Hack Aspirants', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '41159f11-f20b-4508-959d-4b35d4f9566b', 2, 'karishma D', 'Hack Aspirants', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '017cf0e7-4c03-472a-89ae-e2599a21d6c4', 2, null, 'Hack Aspirants', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '41159f11-f20b-4508-959d-4b35d4f9566b', 3, 'bharath N', 'Hack Aspirants', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '017cf0e7-4c03-472a-89ae-e2599a21d6c4', 3, null, 'Hack Aspirants', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -6082,43 +6082,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '5cc9e6db-4796-455d-a6c2-71550f77614e', 'ORION-S0170', 'Bhairav', 'bhairav', 'Vinish Vinoth', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'VINISHVINOTH',
+  'd8acaff6-9328-4ec5-b7f4-f4692e6c77fa', 'ORION-S0170', 'Bhairav', 'bhairav', 'Vinish Vinoth', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'VINISHVINOTH',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '5cc9e6db-4796-455d-a6c2-71550f77614e', 'VERIFIED-ORION-S0170', 'Vinish Vinoth', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'd8acaff6-9328-4ec5-b7f4-f4692e6c77fa', 'VERIFIED-ORION-S0170', 'Vinish Vinoth', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5cc9e6db-4796-455d-a6c2-71550f77614e', 1, 'BARATH D', 'Bhairav', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd8acaff6-9328-4ec5-b7f4-f4692e6c77fa', 1, null, 'Bhairav', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5cc9e6db-4796-455d-a6c2-71550f77614e', 2, 'SANTHOSH KUMAR V', 'Bhairav', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd8acaff6-9328-4ec5-b7f4-f4692e6c77fa', 2, null, 'Bhairav', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5cc9e6db-4796-455d-a6c2-71550f77614e', 3, 'SAI SANTHOSH T', 'Bhairav', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd8acaff6-9328-4ec5-b7f4-f4692e6c77fa', 3, null, 'Bhairav', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5cc9e6db-4796-455d-a6c2-71550f77614e', 4, 'Janani sri', 'Bhairav', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd8acaff6-9328-4ec5-b7f4-f4692e6c77fa', 4, null, 'Bhairav', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5cc9e6db-4796-455d-a6c2-71550f77614e', 5, 'Pooja Laxmi', 'Bhairav', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd8acaff6-9328-4ec5-b7f4-f4692e6c77fa', 5, null, 'Bhairav', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -6127,38 +6127,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'feecc836-a17e-4a2b-be1f-11e264132964', 'ORION-S0171', 'Change Making engineers', 'changemakingengineers', 'Suthakar P', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SUTHAKARP',
+  'e908bdf9-5d61-45f3-bbdd-a08d46f702a0', 'ORION-S0171', 'Change Making engineers', 'changemakingengineers', 'Suthakar P', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SUTHAKARP',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'feecc836-a17e-4a2b-be1f-11e264132964', 'VERIFIED-ORION-S0171', 'Suthakar P', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'e908bdf9-5d61-45f3-bbdd-a08d46f702a0', 'VERIFIED-ORION-S0171', 'Suthakar P', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'feecc836-a17e-4a2b-be1f-11e264132964', 1, 'Devadharshini R', 'Change Making engineers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e908bdf9-5d61-45f3-bbdd-a08d46f702a0', 1, null, 'Change Making engineers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'feecc836-a17e-4a2b-be1f-11e264132964', 2, 'Deepa G', 'Change Making engineers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e908bdf9-5d61-45f3-bbdd-a08d46f702a0', 2, null, 'Change Making engineers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'feecc836-a17e-4a2b-be1f-11e264132964', 3, 'Aravind I', 'Change Making engineers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e908bdf9-5d61-45f3-bbdd-a08d46f702a0', 3, null, 'Change Making engineers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'feecc836-a17e-4a2b-be1f-11e264132964', 4, 'A.DHANUSRI', 'Change Making engineers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e908bdf9-5d61-45f3-bbdd-a08d46f702a0', 4, null, 'Change Making engineers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -6167,43 +6167,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '534b6293-813c-424f-a79e-3c9cb79139f6', 'ORION-S0172', 'FastLane Devs', 'fastlanedevs', 'K.Harshith', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'KHARSHITH',
+  '0c26364b-b59f-462d-b31d-6d13a75796ac', 'ORION-S0172', 'FastLane Devs', 'fastlanedevs', 'K.Harshith', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'KHARSHITH',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '534b6293-813c-424f-a79e-3c9cb79139f6', 'VERIFIED-ORION-S0172', 'K.Harshith', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '0c26364b-b59f-462d-b31d-6d13a75796ac', 'VERIFIED-ORION-S0172', 'K.Harshith', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '534b6293-813c-424f-a79e-3c9cb79139f6', 1, 'M.Srikanth', 'FastLane Devs', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0c26364b-b59f-462d-b31d-6d13a75796ac', 1, null, 'FastLane Devs', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '534b6293-813c-424f-a79e-3c9cb79139f6', 2, 'U.Veerendra', 'FastLane Devs', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0c26364b-b59f-462d-b31d-6d13a75796ac', 2, null, 'FastLane Devs', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '534b6293-813c-424f-a79e-3c9cb79139f6', 3, 'J.Rasmitha sai', 'FastLane Devs', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0c26364b-b59f-462d-b31d-6d13a75796ac', 3, null, 'FastLane Devs', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '534b6293-813c-424f-a79e-3c9cb79139f6', 4, 'K.nikhil reddy', 'FastLane Devs', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0c26364b-b59f-462d-b31d-6d13a75796ac', 4, null, 'FastLane Devs', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '534b6293-813c-424f-a79e-3c9cb79139f6', 5, 'S.Bharath', 'FastLane Devs', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0c26364b-b59f-462d-b31d-6d13a75796ac', 5, null, 'FastLane Devs', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -6212,43 +6212,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '47208be8-8c75-4318-95c0-81b53f55e684', 'ORION-S0173', 'Crypto knights', 'cryptoknights', 'Udhaya Raghavi S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'UDHAYARAGHAVIS',
+  '20133bce-4aea-481e-9b59-e81c24f84295', 'ORION-S0173', 'Crypto knights', 'cryptoknights', 'Udhaya Raghavi S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'UDHAYARAGHAVIS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '47208be8-8c75-4318-95c0-81b53f55e684', 'VERIFIED-ORION-S0173', 'Udhaya Raghavi S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '20133bce-4aea-481e-9b59-e81c24f84295', 'VERIFIED-ORION-S0173', 'Udhaya Raghavi S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '47208be8-8c75-4318-95c0-81b53f55e684', 1, 'Shruthilaya RP', 'Crypto knights', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '20133bce-4aea-481e-9b59-e81c24f84295', 1, null, 'Crypto knights', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '47208be8-8c75-4318-95c0-81b53f55e684', 2, 'Sindhya sridharan', 'Crypto knights', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '20133bce-4aea-481e-9b59-e81c24f84295', 2, null, 'Crypto knights', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '47208be8-8c75-4318-95c0-81b53f55e684', 3, 'Varnikha sri', 'Crypto knights', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '20133bce-4aea-481e-9b59-e81c24f84295', 3, null, 'Crypto knights', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '47208be8-8c75-4318-95c0-81b53f55e684', 4, 'Shreya S', 'Crypto knights', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '20133bce-4aea-481e-9b59-e81c24f84295', 4, null, 'Crypto knights', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '47208be8-8c75-4318-95c0-81b53f55e684', 5, 'Shadhana', 'Crypto knights', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '20133bce-4aea-481e-9b59-e81c24f84295', 5, null, 'Crypto knights', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -6257,33 +6257,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'c8b48a32-a99c-437e-919a-4950f6ef1d44', 'ORION-S0174', 'Techno sist', 'technosist', 'Aathimaduran. S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'AATHIMADURANS',
+  '03afc782-6f24-474b-8938-646e9710aab1', 'ORION-S0174', 'Techno sist', 'technosist', 'Aathimaduran. S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'AATHIMADURANS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'c8b48a32-a99c-437e-919a-4950f6ef1d44', 'VERIFIED-ORION-S0174', 'Aathimaduran. S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '03afc782-6f24-474b-8938-646e9710aab1', 'VERIFIED-ORION-S0174', 'Aathimaduran. S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c8b48a32-a99c-437e-919a-4950f6ef1d44', 1, 'Ahmed Azeer. A', 'Techno sist', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '03afc782-6f24-474b-8938-646e9710aab1', 1, null, 'Techno sist', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c8b48a32-a99c-437e-919a-4950f6ef1d44', 2, 'Charan. G', 'Techno sist', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '03afc782-6f24-474b-8938-646e9710aab1', 2, null, 'Techno sist', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c8b48a32-a99c-437e-919a-4950f6ef1d44', 3, 'Vijayan. S. K', 'Techno sist', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '03afc782-6f24-474b-8938-646e9710aab1', 3, null, 'Techno sist', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -6292,43 +6292,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'f044adb9-15bc-4a90-8310-a39177cbd4f8', 'ORION-S0175', 'MADMAXX', 'madmaxx', 'Abinandhana A', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'ABINANDHANAA',
+  'df72d3f6-8758-44f9-b89d-9779f9e64b30', 'ORION-S0175', 'MADMAXX', 'madmaxx', 'Abinandhana A', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'ABINANDHANAA',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'f044adb9-15bc-4a90-8310-a39177cbd4f8', 'VERIFIED-ORION-S0175', 'Abinandhana A', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'df72d3f6-8758-44f9-b89d-9779f9e64b30', 'VERIFIED-ORION-S0175', 'Abinandhana A', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f044adb9-15bc-4a90-8310-a39177cbd4f8', 1, 'ANIKASRI.B', 'MADMAXX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'df72d3f6-8758-44f9-b89d-9779f9e64b30', 1, null, 'MADMAXX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f044adb9-15bc-4a90-8310-a39177cbd4f8', 2, 'PRIYADHARSHINI S', 'MADMAXX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'df72d3f6-8758-44f9-b89d-9779f9e64b30', 2, null, 'MADMAXX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f044adb9-15bc-4a90-8310-a39177cbd4f8', 3, 'Aarthi S', 'MADMAXX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'df72d3f6-8758-44f9-b89d-9779f9e64b30', 3, null, 'MADMAXX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f044adb9-15bc-4a90-8310-a39177cbd4f8', 4, 'Sunethra J', 'MADMAXX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'df72d3f6-8758-44f9-b89d-9779f9e64b30', 4, null, 'MADMAXX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f044adb9-15bc-4a90-8310-a39177cbd4f8', 5, 'Jerusha W', 'MADMAXX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'df72d3f6-8758-44f9-b89d-9779f9e64b30', 5, null, 'MADMAXX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -6337,43 +6337,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'fb9b86f1-2f72-41f8-9652-db7155822c74', 'ORION-S0176', 'VIBRANT', 'vibrant', 'HARIHARAN D', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'HARIHARAND',
+  '7d0a7eb4-00af-451d-87fa-fde1ece4da8a', 'ORION-S0176', 'VIBRANT', 'vibrant', 'HARIHARAN D', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'HARIHARAND',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'fb9b86f1-2f72-41f8-9652-db7155822c74', 'VERIFIED-ORION-S0176', 'HARIHARAN D', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '7d0a7eb4-00af-451d-87fa-fde1ece4da8a', 'VERIFIED-ORION-S0176', 'HARIHARAN D', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'fb9b86f1-2f72-41f8-9652-db7155822c74', 1, 'Dhanush S', 'VIBRANT', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7d0a7eb4-00af-451d-87fa-fde1ece4da8a', 1, null, 'VIBRANT', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'fb9b86f1-2f72-41f8-9652-db7155822c74', 2, 'Julian Steve Anban', 'VIBRANT', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7d0a7eb4-00af-451d-87fa-fde1ece4da8a', 2, null, 'VIBRANT', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'fb9b86f1-2f72-41f8-9652-db7155822c74', 3, 'R Sanjay', 'VIBRANT', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7d0a7eb4-00af-451d-87fa-fde1ece4da8a', 3, null, 'VIBRANT', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'fb9b86f1-2f72-41f8-9652-db7155822c74', 4, 'Aanish Nithin', 'VIBRANT', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7d0a7eb4-00af-451d-87fa-fde1ece4da8a', 4, null, 'VIBRANT', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'fb9b86f1-2f72-41f8-9652-db7155822c74', 5, 'T R Ajay Dharrsan', 'VIBRANT', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7d0a7eb4-00af-451d-87fa-fde1ece4da8a', 5, null, 'VIBRANT', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -6382,43 +6382,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'd478e4e9-676e-4e1c-b80d-951d111060ff', 'ORION-S0177', 'Team swam', 'teamswam', 'Yamini. S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'YAMINIS',
+  '81690aad-37aa-4467-aead-aab03835720f', 'ORION-S0177', 'Team swam', 'teamswam', 'Yamini. S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'YAMINIS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'd478e4e9-676e-4e1c-b80d-951d111060ff', 'VERIFIED-ORION-S0177', 'Yamini. S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '81690aad-37aa-4467-aead-aab03835720f', 'VERIFIED-ORION-S0177', 'Yamini. S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd478e4e9-676e-4e1c-b80d-951d111060ff', 1, 'Priyadharshini. H', 'Team swam', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '81690aad-37aa-4467-aead-aab03835720f', 1, null, 'Team swam', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd478e4e9-676e-4e1c-b80d-951d111060ff', 2, 'Padma Priya. R', 'Team swam', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '81690aad-37aa-4467-aead-aab03835720f', 2, null, 'Team swam', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd478e4e9-676e-4e1c-b80d-951d111060ff', 3, 'Sabishree. R', 'Team swam', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '81690aad-37aa-4467-aead-aab03835720f', 3, null, 'Team swam', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd478e4e9-676e-4e1c-b80d-951d111060ff', 4, 'Dharun. M', 'Team swam', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '81690aad-37aa-4467-aead-aab03835720f', 4, null, 'Team swam', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd478e4e9-676e-4e1c-b80d-951d111060ff', 5, 'Philips Gabriel B', 'Team swam', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '81690aad-37aa-4467-aead-aab03835720f', 5, null, 'Team swam', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -6427,43 +6427,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'c6be6faa-a8f8-491d-bdce-b83ed6fd3cfd', 'ORION-S0178', 'Null exceptions', 'nullexceptions', 'S MONIKA', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SMONIKA',
+  'c3961de9-b552-41ec-856b-dce8f0b85ee1', 'ORION-S0178', 'Null exceptions', 'nullexceptions', 'S MONIKA', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'SMONIKA',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'c6be6faa-a8f8-491d-bdce-b83ed6fd3cfd', 'VERIFIED-ORION-S0178', 'S MONIKA', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'c3961de9-b552-41ec-856b-dce8f0b85ee1', 'VERIFIED-ORION-S0178', 'S MONIKA', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c6be6faa-a8f8-491d-bdce-b83ed6fd3cfd', 1, 'Sheik abdhulla', 'Null exceptions', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'c3961de9-b552-41ec-856b-dce8f0b85ee1', 1, null, 'Null exceptions', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c6be6faa-a8f8-491d-bdce-b83ed6fd3cfd', 2, 'Yuvanesh', 'Null exceptions', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'c3961de9-b552-41ec-856b-dce8f0b85ee1', 2, null, 'Null exceptions', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c6be6faa-a8f8-491d-bdce-b83ed6fd3cfd', 3, 'Rahul', 'Null exceptions', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'c3961de9-b552-41ec-856b-dce8f0b85ee1', 3, null, 'Null exceptions', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c6be6faa-a8f8-491d-bdce-b83ed6fd3cfd', 4, 'Harshini', 'Null exceptions', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'c3961de9-b552-41ec-856b-dce8f0b85ee1', 4, null, 'Null exceptions', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c6be6faa-a8f8-491d-bdce-b83ed6fd3cfd', 5, 'Aswathy', 'Null exceptions', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'c3961de9-b552-41ec-856b-dce8f0b85ee1', 5, null, 'Null exceptions', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -6472,38 +6472,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '0fb750c6-24b6-4a10-b905-a084dbd42c03', 'ORION-S0179', 'CODECREW', 'codecrew', 'Nithiya Sri G', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'NITHIYASRIG',
+  '5fc786a6-0478-42e6-847c-8b83dc2febb0', 'ORION-S0179', 'CODECREW', 'codecrew', 'Nithiya Sri G', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'NITHIYASRIG',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '0fb750c6-24b6-4a10-b905-a084dbd42c03', 'VERIFIED-ORION-S0179', 'Nithiya Sri G', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '5fc786a6-0478-42e6-847c-8b83dc2febb0', 'VERIFIED-ORION-S0179', 'Nithiya Sri G', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0fb750c6-24b6-4a10-b905-a084dbd42c03', 1, 'Logeswari A', 'CODECREW', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5fc786a6-0478-42e6-847c-8b83dc2febb0', 1, null, 'CODECREW', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0fb750c6-24b6-4a10-b905-a084dbd42c03', 2, 'Nivetha S', 'CODECREW', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5fc786a6-0478-42e6-847c-8b83dc2febb0', 2, null, 'CODECREW', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0fb750c6-24b6-4a10-b905-a084dbd42c03', 3, 'Lekkala Pranathi', 'CODECREW', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5fc786a6-0478-42e6-847c-8b83dc2febb0', 3, null, 'CODECREW', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0fb750c6-24b6-4a10-b905-a084dbd42c03', 4, 'Kanimozhi', 'CODECREW', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5fc786a6-0478-42e6-847c-8b83dc2febb0', 4, null, 'CODECREW', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -6512,38 +6512,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'f95eaf1d-b58d-4be0-98e2-2699964b996e', 'ORION-S0180', 'cyber crew', 'cybercrew', 'Lithesh B', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'LITHESHB',
+  'd0181de7-10fe-498f-b00f-4c08a7d67ce1', 'ORION-S0180', 'cyber crew', 'cybercrew', 'Lithesh B', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'LITHESHB',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'f95eaf1d-b58d-4be0-98e2-2699964b996e', 'VERIFIED-ORION-S0180', 'Lithesh B', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'd0181de7-10fe-498f-b00f-4c08a7d67ce1', 'VERIFIED-ORION-S0180', 'Lithesh B', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f95eaf1d-b58d-4be0-98e2-2699964b996e', 1, 'lohendra C', 'cyber crew', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd0181de7-10fe-498f-b00f-4c08a7d67ce1', 1, null, 'cyber crew', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f95eaf1d-b58d-4be0-98e2-2699964b996e', 2, 'Kirankumar P', 'cyber crew', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd0181de7-10fe-498f-b00f-4c08a7d67ce1', 2, null, 'cyber crew', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f95eaf1d-b58d-4be0-98e2-2699964b996e', 3, 'Karthick S', 'cyber crew', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd0181de7-10fe-498f-b00f-4c08a7d67ce1', 3, null, 'cyber crew', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f95eaf1d-b58d-4be0-98e2-2699964b996e', 4, 'Sri abinandhan S', 'cyber crew', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd0181de7-10fe-498f-b00f-4c08a7d67ce1', 4, null, 'cyber crew', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -6552,33 +6552,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'c3fcdef8-11d7-4e73-bde6-81361c29d2a5', 'ORION-S0181', 'Techaura', 'techaura', 'Harini A', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'HARINIA',
+  '48f93678-d90a-4871-b5b9-069e7a9a885a', 'ORION-S0181', 'Techaura', 'techaura', 'Harini A', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-02: LEXVAULT', 'HARINIA',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'c3fcdef8-11d7-4e73-bde6-81361c29d2a5', 'VERIFIED-ORION-S0181', 'Harini A', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '48f93678-d90a-4871-b5b9-069e7a9a885a', 'VERIFIED-ORION-S0181', 'Harini A', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c3fcdef8-11d7-4e73-bde6-81361c29d2a5', 1, 'Nandhini V', 'Techaura', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '48f93678-d90a-4871-b5b9-069e7a9a885a', 1, null, 'Techaura', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c3fcdef8-11d7-4e73-bde6-81361c29d2a5', 2, 'Ramya D', 'Techaura', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '48f93678-d90a-4871-b5b9-069e7a9a885a', 2, null, 'Techaura', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c3fcdef8-11d7-4e73-bde6-81361c29d2a5', 3, 'Amirthavarshini P', 'Techaura', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '48f93678-d90a-4871-b5b9-069e7a9a885a', 3, null, 'Techaura', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -6587,43 +6587,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'a3f7166f-6fdf-4861-a813-f471ef1e89ed', 'ORION-S0182', 'Phoenix coders', 'phoenixcoders', 'Sameer C', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SAMEERC',
+  'cd79878f-1bd4-47c6-8e8e-22e1a7f32d6d', 'ORION-S0182', 'Phoenix coders', 'phoenixcoders', 'Sameer C', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SAMEERC',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'a3f7166f-6fdf-4861-a813-f471ef1e89ed', 'VERIFIED-ORION-S0182', 'Sameer C', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'cd79878f-1bd4-47c6-8e8e-22e1a7f32d6d', 'VERIFIED-ORION-S0182', 'Sameer C', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a3f7166f-6fdf-4861-a813-f471ef1e89ed', 1, 'M.R.Magdalene', 'Phoenix coders', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'cd79878f-1bd4-47c6-8e8e-22e1a7f32d6d', 1, null, 'Phoenix coders', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a3f7166f-6fdf-4861-a813-f471ef1e89ed', 2, 'Aakshy Sharon J R', 'Phoenix coders', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'cd79878f-1bd4-47c6-8e8e-22e1a7f32d6d', 2, null, 'Phoenix coders', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a3f7166f-6fdf-4861-a813-f471ef1e89ed', 3, 'Chinthaamani R M', 'Phoenix coders', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'cd79878f-1bd4-47c6-8e8e-22e1a7f32d6d', 3, null, 'Phoenix coders', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a3f7166f-6fdf-4861-a813-f471ef1e89ed', 4, 'SATHIYA NARAYANAN S', 'Phoenix coders', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'cd79878f-1bd4-47c6-8e8e-22e1a7f32d6d', 4, null, 'Phoenix coders', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a3f7166f-6fdf-4861-a813-f471ef1e89ed', 5, 'B.jayanth swamy', 'Phoenix coders', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'cd79878f-1bd4-47c6-8e8e-22e1a7f32d6d', 5, null, 'Phoenix coders', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -6632,43 +6632,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '6c7ab220-7476-4cb6-a702-363c671e599e', 'ORION-S0183', '_ENDEAVOUR_', 'endeavour', 'RAGHUL T', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'RAGHULT',
+  'ab33410a-e3c7-4f5f-bcf9-dd9edd90699d', 'ORION-S0183', '_ENDEAVOUR_', 'endeavour', 'RAGHUL T', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'RAGHULT',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '6c7ab220-7476-4cb6-a702-363c671e599e', 'VERIFIED-ORION-S0183', 'RAGHUL T', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'ab33410a-e3c7-4f5f-bcf9-dd9edd90699d', 'VERIFIED-ORION-S0183', 'RAGHUL T', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '6c7ab220-7476-4cb6-a702-363c671e599e', 1, 'AJAY P', '_ENDEAVOUR_', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'ab33410a-e3c7-4f5f-bcf9-dd9edd90699d', 1, null, '_ENDEAVOUR_', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '6c7ab220-7476-4cb6-a702-363c671e599e', 2, 'RAGHAV S', '_ENDEAVOUR_', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'ab33410a-e3c7-4f5f-bcf9-dd9edd90699d', 2, null, '_ENDEAVOUR_', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '6c7ab220-7476-4cb6-a702-363c671e599e', 3, 'RAGHUL K', '_ENDEAVOUR_', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'ab33410a-e3c7-4f5f-bcf9-dd9edd90699d', 3, null, '_ENDEAVOUR_', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '6c7ab220-7476-4cb6-a702-363c671e599e', 4, 'MOVIN T', '_ENDEAVOUR_', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'ab33410a-e3c7-4f5f-bcf9-dd9edd90699d', 4, null, '_ENDEAVOUR_', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '6c7ab220-7476-4cb6-a702-363c671e599e', 5, 'SHARVESH S', '_ENDEAVOUR_', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'ab33410a-e3c7-4f5f-bcf9-dd9edd90699d', 5, null, '_ENDEAVOUR_', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -6677,43 +6677,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '860d45d1-b267-48ad-a3db-e736978e63e6', 'ORION-S0184', 'Compilers', 'compilers', 'Sasikumar S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SASIKUMARS',
+  '15f8726e-80a9-49a8-afb8-f9f807a43825', 'ORION-S0184', 'Compilers', 'compilers', 'Sasikumar S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SASIKUMARS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '860d45d1-b267-48ad-a3db-e736978e63e6', 'VERIFIED-ORION-S0184', 'Sasikumar S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '15f8726e-80a9-49a8-afb8-f9f807a43825', 'VERIFIED-ORION-S0184', 'Sasikumar S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '860d45d1-b267-48ad-a3db-e736978e63e6', 1, 'Gowtham Thirumuru', 'Compilers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '15f8726e-80a9-49a8-afb8-f9f807a43825', 1, null, 'Compilers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '860d45d1-b267-48ad-a3db-e736978e63e6', 2, 'Sachin Rao', 'Compilers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '15f8726e-80a9-49a8-afb8-f9f807a43825', 2, null, 'Compilers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '860d45d1-b267-48ad-a3db-e736978e63e6', 3, 'Sreeja R', 'Compilers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '15f8726e-80a9-49a8-afb8-f9f807a43825', 3, null, 'Compilers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '860d45d1-b267-48ad-a3db-e736978e63e6', 4, 'Rakesh D', 'Compilers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '15f8726e-80a9-49a8-afb8-f9f807a43825', 4, null, 'Compilers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '860d45d1-b267-48ad-a3db-e736978e63e6', 5, 'Ram P', 'Compilers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '15f8726e-80a9-49a8-afb8-f9f807a43825', 5, null, 'Compilers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -6722,33 +6722,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'dc3d2636-2945-42d4-92ac-5ab526f20f18', 'ORION-S0185', 'Codespark', 'codespark', 'Keerthana K', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'KEERTHANAK',
+  '4ea41376-cac3-4884-b836-150ec44da92f', 'ORION-S0185', 'Codespark', 'codespark', 'Keerthana K', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'KEERTHANAK',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'dc3d2636-2945-42d4-92ac-5ab526f20f18', 'VERIFIED-ORION-S0185', 'Keerthana K', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '4ea41376-cac3-4884-b836-150ec44da92f', 'VERIFIED-ORION-S0185', 'Keerthana K', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'dc3d2636-2945-42d4-92ac-5ab526f20f18', 1, 'Muthu Prabha', 'Codespark', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4ea41376-cac3-4884-b836-150ec44da92f', 1, null, 'Codespark', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'dc3d2636-2945-42d4-92ac-5ab526f20f18', 2, 'Dharshana S', 'Codespark', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4ea41376-cac3-4884-b836-150ec44da92f', 2, null, 'Codespark', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'dc3d2636-2945-42d4-92ac-5ab526f20f18', 3, 'Gifta Alice', 'Codespark', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4ea41376-cac3-4884-b836-150ec44da92f', 3, null, 'Codespark', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -6757,38 +6757,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'aae66a9e-2c46-4905-8353-1ebf785405b8', 'ORION-S0186', 'Espiron', 'espiron', 'Vishhwa vasudevan', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'VISHHWAVASUDEVAN',
+  'f0811e6f-c98d-4ae8-9f8e-aca714a71df7', 'ORION-S0186', 'Espiron', 'espiron', 'Vishhwa vasudevan', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'VISHHWAVASUDEVAN',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'aae66a9e-2c46-4905-8353-1ebf785405b8', 'VERIFIED-ORION-S0186', 'Vishhwa vasudevan', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'f0811e6f-c98d-4ae8-9f8e-aca714a71df7', 'VERIFIED-ORION-S0186', 'Vishhwa vasudevan', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'aae66a9e-2c46-4905-8353-1ebf785405b8', 1, 'Yogitha M', 'Espiron', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f0811e6f-c98d-4ae8-9f8e-aca714a71df7', 1, null, 'Espiron', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'aae66a9e-2c46-4905-8353-1ebf785405b8', 2, 'Gautham K', 'Espiron', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f0811e6f-c98d-4ae8-9f8e-aca714a71df7', 2, null, 'Espiron', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'aae66a9e-2c46-4905-8353-1ebf785405b8', 3, 'Jeyandhana Amirthi', 'Espiron', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f0811e6f-c98d-4ae8-9f8e-aca714a71df7', 3, null, 'Espiron', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'aae66a9e-2c46-4905-8353-1ebf785405b8', 4, 'Yogeshwaran M', 'Espiron', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f0811e6f-c98d-4ae8-9f8e-aca714a71df7', 4, null, 'Espiron', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -6797,38 +6797,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '71080963-952a-4d4f-8bf9-6f321852410a', 'ORION-S0187', 'Sleepless Knight', 'sleeplessknight', 'Lynton Oreb', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'LYNTONOREB',
+  '64b0b11a-c616-48fb-831f-8269eb5515c8', 'ORION-S0187', 'Sleepless Knight', 'sleeplessknight', 'Lynton Oreb', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-02: LEXVAULT', 'LYNTONOREB',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '71080963-952a-4d4f-8bf9-6f321852410a', 'VERIFIED-ORION-S0187', 'Lynton Oreb', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '64b0b11a-c616-48fb-831f-8269eb5515c8', 'VERIFIED-ORION-S0187', 'Lynton Oreb', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '71080963-952a-4d4f-8bf9-6f321852410a', 1, 'Dharshini V', 'Sleepless Knight', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '64b0b11a-c616-48fb-831f-8269eb5515c8', 1, null, 'Sleepless Knight', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '71080963-952a-4d4f-8bf9-6f321852410a', 2, 'Hemamalini V', 'Sleepless Knight', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '64b0b11a-c616-48fb-831f-8269eb5515c8', 2, null, 'Sleepless Knight', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '71080963-952a-4d4f-8bf9-6f321852410a', 3, 'Mukilan S', 'Sleepless Knight', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '64b0b11a-c616-48fb-831f-8269eb5515c8', 3, null, 'Sleepless Knight', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '71080963-952a-4d4f-8bf9-6f321852410a', 4, 'Prithiviraj S', 'Sleepless Knight', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '64b0b11a-c616-48fb-831f-8269eb5515c8', 4, null, 'Sleepless Knight', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -6837,38 +6837,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '4682efbf-c4b7-4971-9ed0-2575327101ce', 'ORION-S0188', 'NexGen', 'nexgen', 'ERIN RAICHEAL JUVENAL', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'ERINRAICHEALJUVENAL',
+  'd85f6f25-1808-47f7-ac07-947519e72b1a', 'ORION-S0188', 'NexGen', 'nexgen', 'ERIN RAICHEAL JUVENAL', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'ERINRAICHEALJUVENAL',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '4682efbf-c4b7-4971-9ed0-2575327101ce', 'VERIFIED-ORION-S0188', 'ERIN RAICHEAL JUVENAL', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'd85f6f25-1808-47f7-ac07-947519e72b1a', 'VERIFIED-ORION-S0188', 'ERIN RAICHEAL JUVENAL', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4682efbf-c4b7-4971-9ed0-2575327101ce', 1, 'Antony Jernaus J', 'NexGen', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd85f6f25-1808-47f7-ac07-947519e72b1a', 1, null, 'NexGen', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4682efbf-c4b7-4971-9ed0-2575327101ce', 2, 'Haashini M', 'NexGen', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd85f6f25-1808-47f7-ac07-947519e72b1a', 2, null, 'NexGen', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4682efbf-c4b7-4971-9ed0-2575327101ce', 3, 'Vishal V M', 'NexGen', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd85f6f25-1808-47f7-ac07-947519e72b1a', 3, null, 'NexGen', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4682efbf-c4b7-4971-9ed0-2575327101ce', 4, 'Yokeshkumar S', 'NexGen', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd85f6f25-1808-47f7-ac07-947519e72b1a', 4, null, 'NexGen', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -6877,38 +6877,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '950f1c76-ba73-4285-be27-7a42f9269f97', 'ORION-S0189', 'B NIRANJAN', 'bniranjan', 'NIRANJAN', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'NIRANJAN',
+  '1f5df595-ba04-48e8-9e6b-438f056d1076', 'ORION-S0189', 'B NIRANJAN', 'bniranjan', 'NIRANJAN', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-02: LEXVAULT', 'NIRANJAN',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '950f1c76-ba73-4285-be27-7a42f9269f97', 'VERIFIED-ORION-S0189', 'NIRANJAN', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '1f5df595-ba04-48e8-9e6b-438f056d1076', 'VERIFIED-ORION-S0189', 'NIRANJAN', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '950f1c76-ba73-4285-be27-7a42f9269f97', 1, 'NITISH P', 'B NIRANJAN', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1f5df595-ba04-48e8-9e6b-438f056d1076', 1, null, 'B NIRANJAN', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '950f1c76-ba73-4285-be27-7a42f9269f97', 2, 'Pranov P', 'B NIRANJAN', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1f5df595-ba04-48e8-9e6b-438f056d1076', 2, null, 'B NIRANJAN', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '950f1c76-ba73-4285-be27-7a42f9269f97', 3, 'Nithivalavan D', 'B NIRANJAN', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1f5df595-ba04-48e8-9e6b-438f056d1076', 3, null, 'B NIRANJAN', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '950f1c76-ba73-4285-be27-7a42f9269f97', 4, 'Navin SD', 'B NIRANJAN', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1f5df595-ba04-48e8-9e6b-438f056d1076', 4, null, 'B NIRANJAN', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -6917,43 +6917,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'fd75f4f4-3fa5-4c21-84d9-1f93438a6487', 'ORION-S0190', 'ARIV — AI & Research Innovators with Vision', 'arivairesearchinnovatorswithvision', 'SHAPTHAGIRI G', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SHAPTHAGIRIG',
+  '3b6f293f-40a5-4bd5-8a98-c92cbeadee2d', 'ORION-S0190', 'ARIV — AI & Research Innovators with Vision', 'arivairesearchinnovatorswithvision', 'SHAPTHAGIRI G', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SHAPTHAGIRIG',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'fd75f4f4-3fa5-4c21-84d9-1f93438a6487', 'VERIFIED-ORION-S0190', 'SHAPTHAGIRI G', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '3b6f293f-40a5-4bd5-8a98-c92cbeadee2d', 'VERIFIED-ORION-S0190', 'SHAPTHAGIRI G', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'fd75f4f4-3fa5-4c21-84d9-1f93438a6487', 1, 'UMAIRA FATHIMA Z', 'ARIV — AI & Research Innovators with Vision', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3b6f293f-40a5-4bd5-8a98-c92cbeadee2d', 1, null, 'ARIV — AI & Research Innovators with Vision', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'fd75f4f4-3fa5-4c21-84d9-1f93438a6487', 2, 'SHAHIRA M', 'ARIV — AI & Research Innovators with Vision', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3b6f293f-40a5-4bd5-8a98-c92cbeadee2d', 2, null, 'ARIV — AI & Research Innovators with Vision', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'fd75f4f4-3fa5-4c21-84d9-1f93438a6487', 3, 'RENGESH M', 'ARIV — AI & Research Innovators with Vision', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3b6f293f-40a5-4bd5-8a98-c92cbeadee2d', 3, null, 'ARIV — AI & Research Innovators with Vision', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'fd75f4f4-3fa5-4c21-84d9-1f93438a6487', 4, 'SAI SARAN N', 'ARIV — AI & Research Innovators with Vision', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3b6f293f-40a5-4bd5-8a98-c92cbeadee2d', 4, null, 'ARIV — AI & Research Innovators with Vision', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'fd75f4f4-3fa5-4c21-84d9-1f93438a6487', 5, 'SAHANA E', 'ARIV — AI & Research Innovators with Vision', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3b6f293f-40a5-4bd5-8a98-c92cbeadee2d', 5, null, 'ARIV — AI & Research Innovators with Vision', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -6962,38 +6962,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'bb25b4a5-eff1-46df-9327-9871004a765a', 'ORION-S0191', 'Bytebros', 'bytebros', 'Santhosh S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SANTHOSHS',
+  '9bc245ed-da75-454b-bd9c-e883cdac9704', 'ORION-S0191', 'Bytebros', 'bytebros', 'Santhosh S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SANTHOSHS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'bb25b4a5-eff1-46df-9327-9871004a765a', 'VERIFIED-ORION-S0191', 'Santhosh S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '9bc245ed-da75-454b-bd9c-e883cdac9704', 'VERIFIED-ORION-S0191', 'Santhosh S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'bb25b4a5-eff1-46df-9327-9871004a765a', 1, 'Sharpika M', 'Bytebros', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '9bc245ed-da75-454b-bd9c-e883cdac9704', 1, null, 'Bytebros', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'bb25b4a5-eff1-46df-9327-9871004a765a', 2, 'Sravani L A', 'Bytebros', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '9bc245ed-da75-454b-bd9c-e883cdac9704', 2, null, 'Bytebros', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'bb25b4a5-eff1-46df-9327-9871004a765a', 3, 'Riya Denio J', 'Bytebros', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '9bc245ed-da75-454b-bd9c-e883cdac9704', 3, null, 'Bytebros', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'bb25b4a5-eff1-46df-9327-9871004a765a', 4, 'Ragavendhra G', 'Bytebros', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '9bc245ed-da75-454b-bd9c-e883cdac9704', 4, null, 'Bytebros', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -7002,43 +7002,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'f3086463-c65b-4283-a928-3d8fc0b6ec2f', 'ORION-S0192', 'NextGen Innovators', 'nextgeninnovators', 'Yazhini SP', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'YAZHINISP',
+  '4aa92871-621f-4dd9-9e46-b7610b78bf2e', 'ORION-S0192', 'NextGen Innovators', 'nextgeninnovators', 'Yazhini SP', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'YAZHINISP',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'f3086463-c65b-4283-a928-3d8fc0b6ec2f', 'VERIFIED-ORION-S0192', 'Yazhini SP', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '4aa92871-621f-4dd9-9e46-b7610b78bf2e', 'VERIFIED-ORION-S0192', 'Yazhini SP', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f3086463-c65b-4283-a928-3d8fc0b6ec2f', 1, 'Shakthi Priya B', 'NextGen Innovators', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4aa92871-621f-4dd9-9e46-b7610b78bf2e', 1, null, 'NextGen Innovators', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f3086463-c65b-4283-a928-3d8fc0b6ec2f', 2, 'Dhanushree A', 'NextGen Innovators', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4aa92871-621f-4dd9-9e46-b7610b78bf2e', 2, null, 'NextGen Innovators', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f3086463-c65b-4283-a928-3d8fc0b6ec2f', 3, 'Livasha M', 'NextGen Innovators', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4aa92871-621f-4dd9-9e46-b7610b78bf2e', 3, null, 'NextGen Innovators', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f3086463-c65b-4283-a928-3d8fc0b6ec2f', 4, 'Kirubhanandham S G', 'NextGen Innovators', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4aa92871-621f-4dd9-9e46-b7610b78bf2e', 4, null, 'NextGen Innovators', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f3086463-c65b-4283-a928-3d8fc0b6ec2f', 5, 'Santhosh Udaiyar', 'NextGen Innovators', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4aa92871-621f-4dd9-9e46-b7610b78bf2e', 5, null, 'NextGen Innovators', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -7047,38 +7047,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'd9c1441c-b3b1-4f1d-9430-236f2e2d7752', 'ORION-S0193', 'TEAM VOID', 'teamvoid', 'Antony Xavier J M', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'ANTONYXAVIERJM',
+  '90bf0657-8e59-465e-8535-34724aa5fdad', 'ORION-S0193', 'TEAM VOID', 'teamvoid', 'Antony Xavier J M', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-02: LEXVAULT', 'ANTONYXAVIERJM',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'd9c1441c-b3b1-4f1d-9430-236f2e2d7752', 'VERIFIED-ORION-S0193', 'Antony Xavier J M', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '90bf0657-8e59-465e-8535-34724aa5fdad', 'VERIFIED-ORION-S0193', 'Antony Xavier J M', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd9c1441c-b3b1-4f1d-9430-236f2e2d7752', 1, 'Rahul V', 'TEAM VOID', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '90bf0657-8e59-465e-8535-34724aa5fdad', 1, null, 'TEAM VOID', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd9c1441c-b3b1-4f1d-9430-236f2e2d7752', 2, 'Kavya P', 'TEAM VOID', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '90bf0657-8e59-465e-8535-34724aa5fdad', 2, null, 'TEAM VOID', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd9c1441c-b3b1-4f1d-9430-236f2e2d7752', 3, 'Harshini S', 'TEAM VOID', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '90bf0657-8e59-465e-8535-34724aa5fdad', 3, null, 'TEAM VOID', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd9c1441c-b3b1-4f1d-9430-236f2e2d7752', 4, 'Mathivadani A', 'TEAM VOID', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '90bf0657-8e59-465e-8535-34724aa5fdad', 4, null, 'TEAM VOID', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -7087,43 +7087,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '8f6eee36-447f-440f-b043-039862fe06e6', 'ORION-S0194', 'alpha safety', 'alphasafety', 'Bhuvan K', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'BHUVANK',
+  'b240a54c-c2de-4823-8a7d-2e361340c145', 'ORION-S0194', 'alpha safety', 'alphasafety', 'Bhuvan K', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'BHUVANK',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '8f6eee36-447f-440f-b043-039862fe06e6', 'VERIFIED-ORION-S0194', 'Bhuvan K', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'b240a54c-c2de-4823-8a7d-2e361340c145', 'VERIFIED-ORION-S0194', 'Bhuvan K', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8f6eee36-447f-440f-b043-039862fe06e6', 1, 'selva kumaran P', 'alpha safety', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b240a54c-c2de-4823-8a7d-2e361340c145', 1, null, 'alpha safety', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8f6eee36-447f-440f-b043-039862fe06e6', 2, 'Bavya S', 'alpha safety', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b240a54c-c2de-4823-8a7d-2e361340c145', 2, null, 'alpha safety', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8f6eee36-447f-440f-b043-039862fe06e6', 3, 'Rubika P', 'alpha safety', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b240a54c-c2de-4823-8a7d-2e361340c145', 3, null, 'alpha safety', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8f6eee36-447f-440f-b043-039862fe06e6', 4, 'sathya priya P', 'alpha safety', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b240a54c-c2de-4823-8a7d-2e361340c145', 4, null, 'alpha safety', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8f6eee36-447f-440f-b043-039862fe06e6', 5, 'kishore B', 'alpha safety', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b240a54c-c2de-4823-8a7d-2e361340c145', 5, null, 'alpha safety', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -7132,43 +7132,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '57255d06-1712-4552-8cc1-416e309b5151', 'ORION-S0195', 'Ctrl freaks', 'ctrlfreaks', 'KAVIYA B', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'KAVIYAB',
+  '5c335148-da5a-4f39-abeb-a9d536d7386a', 'ORION-S0195', 'Ctrl freaks', 'ctrlfreaks', 'KAVIYA B', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-02: LEXVAULT', 'KAVIYAB',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '57255d06-1712-4552-8cc1-416e309b5151', 'VERIFIED-ORION-S0195', 'KAVIYA B', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '5c335148-da5a-4f39-abeb-a9d536d7386a', 'VERIFIED-ORION-S0195', 'KAVIYA B', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '57255d06-1712-4552-8cc1-416e309b5151', 1, 'KANISHKA V S', 'Ctrl freaks', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5c335148-da5a-4f39-abeb-a9d536d7386a', 1, null, 'Ctrl freaks', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '57255d06-1712-4552-8cc1-416e309b5151', 2, 'KARTHIKEYAN M', 'Ctrl freaks', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5c335148-da5a-4f39-abeb-a9d536d7386a', 2, null, 'Ctrl freaks', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '57255d06-1712-4552-8cc1-416e309b5151', 3, 'KEERTHIKA J', 'Ctrl freaks', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5c335148-da5a-4f39-abeb-a9d536d7386a', 3, null, 'Ctrl freaks', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '57255d06-1712-4552-8cc1-416e309b5151', 4, 'KARTHIGAENI SINGARAV', 'Ctrl freaks', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5c335148-da5a-4f39-abeb-a9d536d7386a', 4, null, 'Ctrl freaks', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '57255d06-1712-4552-8cc1-416e309b5151', 5, 'KEERTHANAA G', 'Ctrl freaks', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5c335148-da5a-4f39-abeb-a9d536d7386a', 5, null, 'Ctrl freaks', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -7177,43 +7177,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'eec00385-4a1d-4ade-9f82-f8fe3633f169', 'ORION-S0196', 'TerraVision AI', 'terravisionai', 'Sudharshan', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SUDHARSHAN',
+  '7f95e3dc-9922-49db-a20e-043fe9b8cef4', 'ORION-S0196', 'TerraVision AI', 'terravisionai', 'Sudharshan', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'SUDHARSHAN',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'eec00385-4a1d-4ade-9f82-f8fe3633f169', 'VERIFIED-ORION-S0196', 'Sudharshan', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '7f95e3dc-9922-49db-a20e-043fe9b8cef4', 'VERIFIED-ORION-S0196', 'Sudharshan', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'eec00385-4a1d-4ade-9f82-f8fe3633f169', 1, 'Wilson Christhu dos', 'TerraVision AI', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7f95e3dc-9922-49db-a20e-043fe9b8cef4', 1, null, 'TerraVision AI', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'eec00385-4a1d-4ade-9f82-f8fe3633f169', 2, 'Rajesh', 'TerraVision AI', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7f95e3dc-9922-49db-a20e-043fe9b8cef4', 2, null, 'TerraVision AI', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'eec00385-4a1d-4ade-9f82-f8fe3633f169', 3, 'Yogasree', 'TerraVision AI', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7f95e3dc-9922-49db-a20e-043fe9b8cef4', 3, null, 'TerraVision AI', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'eec00385-4a1d-4ade-9f82-f8fe3633f169', 4, 'Santhosh', 'TerraVision AI', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7f95e3dc-9922-49db-a20e-043fe9b8cef4', 4, null, 'TerraVision AI', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'eec00385-4a1d-4ade-9f82-f8fe3633f169', 5, 'Beulah', 'TerraVision AI', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7f95e3dc-9922-49db-a20e-043fe9b8cef4', 5, null, 'TerraVision AI', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -7222,43 +7222,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '0d78d1fc-13a7-4b3e-a5d1-7ff3ad1712ca', 'ORION-S0197', 'Top gun', 'topgun', 'deepak', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'DEEPAK',
+  '7e51906e-8214-4dbf-8de6-e440210aea64', 'ORION-S0197', 'Top gun', 'topgun', 'deepak', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'DEEPAK',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '0d78d1fc-13a7-4b3e-a5d1-7ff3ad1712ca', 'VERIFIED-ORION-S0197', 'deepak', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '7e51906e-8214-4dbf-8de6-e440210aea64', 'VERIFIED-ORION-S0197', 'deepak', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0d78d1fc-13a7-4b3e-a5d1-7ff3ad1712ca', 1, 'GOWTAM ADITYA', 'Top gun', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7e51906e-8214-4dbf-8de6-e440210aea64', 1, null, 'Top gun', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0d78d1fc-13a7-4b3e-a5d1-7ff3ad1712ca', 2, 'KAMLESH ADITHYA', 'Top gun', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7e51906e-8214-4dbf-8de6-e440210aea64', 2, null, 'Top gun', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0d78d1fc-13a7-4b3e-a5d1-7ff3ad1712ca', 3, 'KRITHIK NITHIN S T', 'Top gun', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7e51906e-8214-4dbf-8de6-e440210aea64', 3, null, 'Top gun', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0d78d1fc-13a7-4b3e-a5d1-7ff3ad1712ca', 4, 'SHREESHANTH', 'Top gun', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7e51906e-8214-4dbf-8de6-e440210aea64', 4, null, 'Top gun', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0d78d1fc-13a7-4b3e-a5d1-7ff3ad1712ca', 5, 'PURJITH KRISHNA', 'Top gun', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7e51906e-8214-4dbf-8de6-e440210aea64', 5, null, 'Top gun', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -7267,43 +7267,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'ffcd8b61-a063-44d7-88b4-179670c23501', 'ORION-S0198', 'Cyber Kiddies', 'cyberkiddies', 'Jesin Milesh M', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'JESINMILESHM',
+  '77705dd4-2bb4-4b3f-a10a-0fb4d4f14e42', 'ORION-S0198', 'Cyber Kiddies', 'cyberkiddies', 'Jesin Milesh M', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-02: LEXVAULT', 'JESINMILESHM',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'ffcd8b61-a063-44d7-88b4-179670c23501', 'VERIFIED-ORION-S0198', 'Jesin Milesh M', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '77705dd4-2bb4-4b3f-a10a-0fb4d4f14e42', 'VERIFIED-ORION-S0198', 'Jesin Milesh M', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ffcd8b61-a063-44d7-88b4-179670c23501', 1, 'Libinesh R U', 'Cyber Kiddies', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '77705dd4-2bb4-4b3f-a10a-0fb4d4f14e42', 1, null, 'Cyber Kiddies', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ffcd8b61-a063-44d7-88b4-179670c23501', 2, 'Jeshwanth V', 'Cyber Kiddies', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '77705dd4-2bb4-4b3f-a10a-0fb4d4f14e42', 2, null, 'Cyber Kiddies', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ffcd8b61-a063-44d7-88b4-179670c23501', 3, 'Jeeva D', 'Cyber Kiddies', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '77705dd4-2bb4-4b3f-a10a-0fb4d4f14e42', 3, null, 'Cyber Kiddies', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ffcd8b61-a063-44d7-88b4-179670c23501', 4, 'Madeshwaran P', 'Cyber Kiddies', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '77705dd4-2bb4-4b3f-a10a-0fb4d4f14e42', 4, null, 'Cyber Kiddies', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ffcd8b61-a063-44d7-88b4-179670c23501', 5, 'Ashish N', 'Cyber Kiddies', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '77705dd4-2bb4-4b3f-a10a-0fb4d4f14e42', 5, null, 'Cyber Kiddies', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -7312,28 +7312,28 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'bdec7382-f603-4ff2-b733-c29fe10419a6', 'ORION-S0199', 'PREETHI A', 'preethia', 'PREETHI A', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'PREETHIA',
+  'bd16b969-458c-488d-be41-2c040b1bb699', 'ORION-S0199', 'PREETHI A', 'preethia', 'PREETHI A', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'PREETHIA',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'bdec7382-f603-4ff2-b733-c29fe10419a6', 'VERIFIED-ORION-S0199', 'PREETHI A', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'bd16b969-458c-488d-be41-2c040b1bb699', 'VERIFIED-ORION-S0199', 'PREETHI A', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'bdec7382-f603-4ff2-b733-c29fe10419a6', 1, 'VINOTHINI T', 'PREETHI A', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'bd16b969-458c-488d-be41-2c040b1bb699', 1, null, 'PREETHI A', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'bdec7382-f603-4ff2-b733-c29fe10419a6', 2, 'MOHANA P Y', 'PREETHI A', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'bd16b969-458c-488d-be41-2c040b1bb699', 2, null, 'PREETHI A', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -7342,33 +7342,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '996713f3-bd7d-4bc0-b0af-427647d7a9eb', 'ORION-S0200', 'Binary Brains', 'binarybrains', 'Naveena R', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'NAVEENAR',
+  'f8d47e42-ec8d-45ca-adde-da906e096d32', 'ORION-S0200', 'Binary Brains', 'binarybrains', 'Naveena R', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'NAVEENAR',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '996713f3-bd7d-4bc0-b0af-427647d7a9eb', 'VERIFIED-ORION-S0200', 'Naveena R', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'f8d47e42-ec8d-45ca-adde-da906e096d32', 'VERIFIED-ORION-S0200', 'Naveena R', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '996713f3-bd7d-4bc0-b0af-427647d7a9eb', 1, 'Pranav A', 'Binary Brains', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f8d47e42-ec8d-45ca-adde-da906e096d32', 1, null, 'Binary Brains', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '996713f3-bd7d-4bc0-b0af-427647d7a9eb', 2, 'Praveen L R', 'Binary Brains', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f8d47e42-ec8d-45ca-adde-da906e096d32', 2, null, 'Binary Brains', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '996713f3-bd7d-4bc0-b0af-427647d7a9eb', 3, 'Pooja R', 'Binary Brains', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f8d47e42-ec8d-45ca-adde-da906e096d32', 3, null, 'Binary Brains', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -7377,33 +7377,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '19603089-8f12-44aa-b10d-e48ac4f54514', 'ORION-S0201', 'Hackhive', 'hackhive', 'JEYASHREE V', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'JEYASHREEV',
+  '3e4467dd-3975-4eff-a153-718ece2869ce', 'ORION-S0201', 'Hackhive', 'hackhive', 'JEYASHREE V', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'JEYASHREEV',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '19603089-8f12-44aa-b10d-e48ac4f54514', 'VERIFIED-ORION-S0201', 'JEYASHREE V', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '3e4467dd-3975-4eff-a153-718ece2869ce', 'VERIFIED-ORION-S0201', 'JEYASHREE V', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '19603089-8f12-44aa-b10d-e48ac4f54514', 1, 'HARSITHA C', 'Hackhive', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3e4467dd-3975-4eff-a153-718ece2869ce', 1, null, 'Hackhive', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '19603089-8f12-44aa-b10d-e48ac4f54514', 2, 'KAVIBHARATHI M', 'Hackhive', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3e4467dd-3975-4eff-a153-718ece2869ce', 2, null, 'Hackhive', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '19603089-8f12-44aa-b10d-e48ac4f54514', 3, 'JENITHAASRI M', 'Hackhive', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3e4467dd-3975-4eff-a153-718ece2869ce', 3, null, 'Hackhive', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -7412,33 +7412,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '686230de-5801-4a6f-9321-6cecebe6e26c', 'ORION-S0202', 'Yokeshwaran', 'yokeshwaran', 'Yokeshwaran', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'YOKESHWARAN',
+  'd0603862-9a44-44bf-b19e-8d2207f83b34', 'ORION-S0202', 'Yokeshwaran', 'yokeshwaran', 'Yokeshwaran', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'YOKESHWARAN',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '686230de-5801-4a6f-9321-6cecebe6e26c', 'VERIFIED-ORION-S0202', 'Yokeshwaran', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'd0603862-9a44-44bf-b19e-8d2207f83b34', 'VERIFIED-ORION-S0202', 'Yokeshwaran', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '686230de-5801-4a6f-9321-6cecebe6e26c', 1, 'Sudharshan R', 'Yokeshwaran', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd0603862-9a44-44bf-b19e-8d2207f83b34', 1, null, 'Yokeshwaran', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '686230de-5801-4a6f-9321-6cecebe6e26c', 2, 'Sudesh pranav E.S', 'Yokeshwaran', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd0603862-9a44-44bf-b19e-8d2207f83b34', 2, null, 'Yokeshwaran', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '686230de-5801-4a6f-9321-6cecebe6e26c', 3, 'Sateendar H', 'Yokeshwaran', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd0603862-9a44-44bf-b19e-8d2207f83b34', 3, null, 'Yokeshwaran', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -7447,28 +7447,28 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'd64f3d3b-8444-4910-8454-e2d2aa91466a', 'ORION-S0203', 'elytra tech', 'elytratech', 'samuel joel ponraj', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SAMUELJOELPONRAJ',
+  '7d4afd6b-5201-4106-9299-0a4a7910143b', 'ORION-S0203', 'elytra tech', 'elytratech', 'samuel joel ponraj', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'SAMUELJOELPONRAJ',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'd64f3d3b-8444-4910-8454-e2d2aa91466a', 'VERIFIED-ORION-S0203', 'samuel joel ponraj', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '7d4afd6b-5201-4106-9299-0a4a7910143b', 'VERIFIED-ORION-S0203', 'samuel joel ponraj', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd64f3d3b-8444-4910-8454-e2d2aa91466a', 1, 'samuel varghese', 'elytra tech', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7d4afd6b-5201-4106-9299-0a4a7910143b', 1, null, 'elytra tech', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd64f3d3b-8444-4910-8454-e2d2aa91466a', 2, 'paul jeromae', 'elytra tech', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '7d4afd6b-5201-4106-9299-0a4a7910143b', 2, null, 'elytra tech', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -7477,28 +7477,28 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '6d2e19a5-acc7-4c1a-a27e-058270d78b1f', 'ORION-S0204', 'Dronai', 'dronai', 'Rannadeer kumar seetha', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'RANNADEERKUMARSEETHA',
+  '0c481b90-6eec-4cf0-9166-2200f14b0814', 'ORION-S0204', 'Dronai', 'dronai', 'Rannadeer kumar seetha', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'RANNADEERKUMARSEETHA',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '6d2e19a5-acc7-4c1a-a27e-058270d78b1f', 'VERIFIED-ORION-S0204', 'Rannadeer kumar seetha', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '0c481b90-6eec-4cf0-9166-2200f14b0814', 'VERIFIED-ORION-S0204', 'Rannadeer kumar seetha', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '6d2e19a5-acc7-4c1a-a27e-058270d78b1f', 1, 'Nanda Kishore Chav', 'Dronai', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0c481b90-6eec-4cf0-9166-2200f14b0814', 1, null, 'Dronai', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '6d2e19a5-acc7-4c1a-a27e-058270d78b1f', 2, 'Arshad s', 'Dronai', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0c481b90-6eec-4cf0-9166-2200f14b0814', 2, null, 'Dronai', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -7507,43 +7507,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '80be1576-81ef-447e-84f0-eec929c0a617', 'ORION-S0205', 'CrackAura', 'crackaura', 'SRIRAM M', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SRIRAMM',
+  'b1342394-d291-4341-a432-93bb9efc0c55', 'ORION-S0205', 'CrackAura', 'crackaura', 'SRIRAM M', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SRIRAMM',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '80be1576-81ef-447e-84f0-eec929c0a617', 'VERIFIED-ORION-S0205', 'SRIRAM M', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'b1342394-d291-4341-a432-93bb9efc0c55', 'VERIFIED-ORION-S0205', 'SRIRAM M', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '80be1576-81ef-447e-84f0-eec929c0a617', 1, 'Vandhana Murugan', 'CrackAura', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b1342394-d291-4341-a432-93bb9efc0c55', 1, null, 'CrackAura', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '80be1576-81ef-447e-84f0-eec929c0a617', 2, 'Vimaladhithya C V', 'CrackAura', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b1342394-d291-4341-a432-93bb9efc0c55', 2, null, 'CrackAura', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '80be1576-81ef-447e-84f0-eec929c0a617', 3, 'Vedhika N', 'CrackAura', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b1342394-d291-4341-a432-93bb9efc0c55', 3, null, 'CrackAura', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '80be1576-81ef-447e-84f0-eec929c0a617', 4, 'Thuthiksha bhavana', 'CrackAura', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b1342394-d291-4341-a432-93bb9efc0c55', 4, null, 'CrackAura', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '80be1576-81ef-447e-84f0-eec929c0a617', 5, 'Janani S', 'CrackAura', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b1342394-d291-4341-a432-93bb9efc0c55', 5, null, 'CrackAura', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -7552,43 +7552,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'f3b80a41-4abb-4803-ba00-341b4321cfdf', 'ORION-S0206', 'The Creators', 'thecreators', 'Sweety Vincent', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SWEETYVINCENT',
+  'f3b4f30a-689a-4a12-9740-a3b651b0ab82', 'ORION-S0206', 'The Creators', 'thecreators', 'Sweety Vincent', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SWEETYVINCENT',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'f3b80a41-4abb-4803-ba00-341b4321cfdf', 'VERIFIED-ORION-S0206', 'Sweety Vincent', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'f3b4f30a-689a-4a12-9740-a3b651b0ab82', 'VERIFIED-ORION-S0206', 'Sweety Vincent', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f3b80a41-4abb-4803-ba00-341b4321cfdf', 1, 'Swapna R V', 'The Creators', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f3b4f30a-689a-4a12-9740-a3b651b0ab82', 1, null, 'The Creators', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f3b80a41-4abb-4803-ba00-341b4321cfdf', 2, 'Ruba Darshni J', 'The Creators', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f3b4f30a-689a-4a12-9740-a3b651b0ab82', 2, null, 'The Creators', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f3b80a41-4abb-4803-ba00-341b4321cfdf', 3, 'Srinitharaj', 'The Creators', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f3b4f30a-689a-4a12-9740-a3b651b0ab82', 3, null, 'The Creators', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f3b80a41-4abb-4803-ba00-341b4321cfdf', 4, 'Sruthi Krishnan', 'The Creators', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f3b4f30a-689a-4a12-9740-a3b651b0ab82', 4, null, 'The Creators', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f3b80a41-4abb-4803-ba00-341b4321cfdf', 5, 'Kavivarshni G', 'The Creators', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f3b4f30a-689a-4a12-9740-a3b651b0ab82', 5, null, 'The Creators', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -7597,33 +7597,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '57883e25-eba6-4654-afab-7586f68a1184', 'ORION-S0207', 'Quantum Minds', 'quantumminds', 'manasvi sachin jagtap', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'MANASVISACHINJAGTAP',
+  'b07e9d5a-fe05-4dfe-943e-10d0d5f7d4dc', 'ORION-S0207', 'Quantum Minds', 'quantumminds', 'manasvi sachin jagtap', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'MANASVISACHINJAGTAP',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '57883e25-eba6-4654-afab-7586f68a1184', 'VERIFIED-ORION-S0207', 'manasvi sachin jagtap', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'b07e9d5a-fe05-4dfe-943e-10d0d5f7d4dc', 'VERIFIED-ORION-S0207', 'manasvi sachin jagtap', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '57883e25-eba6-4654-afab-7586f68a1184', 1, 'madhura sunil pawa', 'Quantum Minds', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b07e9d5a-fe05-4dfe-943e-10d0d5f7d4dc', 1, null, 'Quantum Minds', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '57883e25-eba6-4654-afab-7586f68a1184', 2, 'shivani appa vyavahare', 'Quantum Minds', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b07e9d5a-fe05-4dfe-943e-10d0d5f7d4dc', 2, null, 'Quantum Minds', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '57883e25-eba6-4654-afab-7586f68a1184', 3, 'Sandesh shivaji bong', 'Quantum Minds', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b07e9d5a-fe05-4dfe-943e-10d0d5f7d4dc', 3, null, 'Quantum Minds', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -7632,33 +7632,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'ead6a0fe-dd16-4ff5-87b7-24f6ed210b26', 'ORION-S0208', 'git commit -m "Victory"', 'gitcommitmvictory', 'Daniel Sebastin A', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'DANIELSEBASTINA',
+  'efb9d528-3cc3-4701-b051-4422b4225d86', 'ORION-S0208', 'git commit -m "Victory"', 'gitcommitmvictory', 'Daniel Sebastin A', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'DANIELSEBASTINA',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'ead6a0fe-dd16-4ff5-87b7-24f6ed210b26', 'VERIFIED-ORION-S0208', 'Daniel Sebastin A', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'efb9d528-3cc3-4701-b051-4422b4225d86', 'VERIFIED-ORION-S0208', 'Daniel Sebastin A', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ead6a0fe-dd16-4ff5-87b7-24f6ed210b26', 1, 'Ramya Clemenceau', 'git commit -m "Victory"', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'efb9d528-3cc3-4701-b051-4422b4225d86', 1, null, 'git commit -m "Victory"', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ead6a0fe-dd16-4ff5-87b7-24f6ed210b26', 2, 'Javid Ali A', 'git commit -m "Victory"', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'efb9d528-3cc3-4701-b051-4422b4225d86', 2, null, 'git commit -m "Victory"', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ead6a0fe-dd16-4ff5-87b7-24f6ed210b26', 3, 'Gokhul A', 'git commit -m "Victory"', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'efb9d528-3cc3-4701-b051-4422b4225d86', 3, null, 'git commit -m "Victory"', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -7667,38 +7667,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '4b78ca0d-fb7d-49aa-9831-824f8c55d5cc', 'ORION-S0209', 'Binary Brains', 'binarybrains', 'GONEDA Tushar Karthik', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'GONEDATUSHARKARTHIK',
+  'c4251f3f-8ce4-4b95-be84-2557953d9b6b', 'ORION-S0209', 'Binary Brains', 'binarybrains', 'GONEDA Tushar Karthik', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'GONEDATUSHARKARTHIK',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '4b78ca0d-fb7d-49aa-9831-824f8c55d5cc', 'VERIFIED-ORION-S0209', 'GONEDA Tushar Karthik', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'c4251f3f-8ce4-4b95-be84-2557953d9b6b', 'VERIFIED-ORION-S0209', 'GONEDA Tushar Karthik', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4b78ca0d-fb7d-49aa-9831-824f8c55d5cc', 1, 'Mallipeddi omsaitej', 'Binary Brains', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'c4251f3f-8ce4-4b95-be84-2557953d9b6b', 1, null, 'Binary Brains', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4b78ca0d-fb7d-49aa-9831-824f8c55d5cc', 2, 'Challapareddy Ram Charan', 'Binary Brains', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'c4251f3f-8ce4-4b95-be84-2557953d9b6b', 2, null, 'Binary Brains', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4b78ca0d-fb7d-49aa-9831-824f8c55d5cc', 3, 'M S N V Chandra Mo', 'Binary Brains', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'c4251f3f-8ce4-4b95-be84-2557953d9b6b', 3, null, 'Binary Brains', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4b78ca0d-fb7d-49aa-9831-824f8c55d5cc', 4, 'Akkineni Sai Venkat', 'Binary Brains', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'c4251f3f-8ce4-4b95-be84-2557953d9b6b', 4, null, 'Binary Brains', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -7707,43 +7707,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'a5b41bc0-b2d4-4297-a37d-1294ae1cc855', 'ORION-S0210', 'Hack Hype', 'hackhype', 'Nandhini', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'NANDHINI',
+  'f2a1b4eb-7c90-469a-8338-4fe1c8dfc126', 'ORION-S0210', 'Hack Hype', 'hackhype', 'Nandhini', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'NANDHINI',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'a5b41bc0-b2d4-4297-a37d-1294ae1cc855', 'VERIFIED-ORION-S0210', 'Nandhini', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'f2a1b4eb-7c90-469a-8338-4fe1c8dfc126', 'VERIFIED-ORION-S0210', 'Nandhini', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a5b41bc0-b2d4-4297-a37d-1294ae1cc855', 1, 'Harshini D', 'Hack Hype', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f2a1b4eb-7c90-469a-8338-4fe1c8dfc126', 1, null, 'Hack Hype', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a5b41bc0-b2d4-4297-a37d-1294ae1cc855', 2, 'Kirithika. A', 'Hack Hype', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f2a1b4eb-7c90-469a-8338-4fe1c8dfc126', 2, null, 'Hack Hype', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a5b41bc0-b2d4-4297-a37d-1294ae1cc855', 3, 'Roshith O', 'Hack Hype', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f2a1b4eb-7c90-469a-8338-4fe1c8dfc126', 3, null, 'Hack Hype', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a5b41bc0-b2d4-4297-a37d-1294ae1cc855', 4, 'Sastha S', 'Hack Hype', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f2a1b4eb-7c90-469a-8338-4fe1c8dfc126', 4, null, 'Hack Hype', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a5b41bc0-b2d4-4297-a37d-1294ae1cc855', 5, 'Nirmalkumar M', 'Hack Hype', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f2a1b4eb-7c90-469a-8338-4fe1c8dfc126', 5, null, 'Hack Hype', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -7752,43 +7752,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '4ccfcb7f-6b9e-4099-b038-16c13f5f8b83', 'ORION-S0211', 'LinkupLaps', 'linkuplaps', 'Prakash R', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'PRAKASHR',
+  '5086f39b-1206-431b-be05-aeb6901d285a', 'ORION-S0211', 'LinkupLaps', 'linkuplaps', 'Prakash R', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'PRAKASHR',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '4ccfcb7f-6b9e-4099-b038-16c13f5f8b83', 'VERIFIED-ORION-S0211', 'Prakash R', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '5086f39b-1206-431b-be05-aeb6901d285a', 'VERIFIED-ORION-S0211', 'Prakash R', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4ccfcb7f-6b9e-4099-b038-16c13f5f8b83', 1, 'Prasanna K', 'LinkupLaps', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5086f39b-1206-431b-be05-aeb6901d285a', 1, null, 'LinkupLaps', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4ccfcb7f-6b9e-4099-b038-16c13f5f8b83', 2, 'Pranav GS', 'LinkupLaps', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5086f39b-1206-431b-be05-aeb6901d285a', 2, null, 'LinkupLaps', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4ccfcb7f-6b9e-4099-b038-16c13f5f8b83', 3, 'Piraisoodan R', 'LinkupLaps', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5086f39b-1206-431b-be05-aeb6901d285a', 3, null, 'LinkupLaps', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4ccfcb7f-6b9e-4099-b038-16c13f5f8b83', 4, 'Nithyanandh BS', 'LinkupLaps', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5086f39b-1206-431b-be05-aeb6901d285a', 4, null, 'LinkupLaps', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '4ccfcb7f-6b9e-4099-b038-16c13f5f8b83', 5, 'Rajeshwar S', 'LinkupLaps', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5086f39b-1206-431b-be05-aeb6901d285a', 5, null, 'LinkupLaps', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -7797,43 +7797,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'ebd13a54-0279-401e-b770-fe85c155389d', 'ORION-S0212', 'Debug Divas', 'debugdivas', 'Atchaya M S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'ATCHAYAMS',
+  '6ee1f76c-5738-4384-bee0-ffd821f21f58', 'ORION-S0212', 'Debug Divas', 'debugdivas', 'Atchaya M S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'ATCHAYAMS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'ebd13a54-0279-401e-b770-fe85c155389d', 'VERIFIED-ORION-S0212', 'Atchaya M S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '6ee1f76c-5738-4384-bee0-ffd821f21f58', 'VERIFIED-ORION-S0212', 'Atchaya M S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ebd13a54-0279-401e-b770-fe85c155389d', 1, 'priyadharshini J', 'Debug Divas', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6ee1f76c-5738-4384-bee0-ffd821f21f58', 1, null, 'Debug Divas', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ebd13a54-0279-401e-b770-fe85c155389d', 2, 'Aarthi V', 'Debug Divas', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6ee1f76c-5738-4384-bee0-ffd821f21f58', 2, null, 'Debug Divas', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ebd13a54-0279-401e-b770-fe85c155389d', 3, 'Harini J', 'Debug Divas', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6ee1f76c-5738-4384-bee0-ffd821f21f58', 3, null, 'Debug Divas', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ebd13a54-0279-401e-b770-fe85c155389d', 4, 'Renuka R', 'Debug Divas', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6ee1f76c-5738-4384-bee0-ffd821f21f58', 4, null, 'Debug Divas', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ebd13a54-0279-401e-b770-fe85c155389d', 5, 'suriyakala S', 'Debug Divas', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6ee1f76c-5738-4384-bee0-ffd821f21f58', 5, null, 'Debug Divas', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -7842,33 +7842,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '532eb6f1-8ae4-4936-a6b0-08f6cecec44c', 'ORION-S0213', 'AquaByte', 'aquabyte', 'MOHAMED RIYASKHAN S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'MOHAMEDRIYASKHANS',
+  '406907b0-8a11-448d-8d51-b45edccb3bd4', 'ORION-S0213', 'AquaByte', 'aquabyte', 'MOHAMED RIYASKHAN S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'MOHAMEDRIYASKHANS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '532eb6f1-8ae4-4936-a6b0-08f6cecec44c', 'VERIFIED-ORION-S0213', 'MOHAMED RIYASKHAN S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '406907b0-8a11-448d-8d51-b45edccb3bd4', 'VERIFIED-ORION-S0213', 'MOHAMED RIYASKHAN S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '532eb6f1-8ae4-4936-a6b0-08f6cecec44c', 1, 'Santhosh S', 'AquaByte', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '406907b0-8a11-448d-8d51-b45edccb3bd4', 1, null, 'AquaByte', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '532eb6f1-8ae4-4936-a6b0-08f6cecec44c', 2, 'Ramkumar K', 'AquaByte', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '406907b0-8a11-448d-8d51-b45edccb3bd4', 2, null, 'AquaByte', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '532eb6f1-8ae4-4936-a6b0-08f6cecec44c', 3, 'Rohit R S', 'AquaByte', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '406907b0-8a11-448d-8d51-b45edccb3bd4', 3, null, 'AquaByte', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -7877,38 +7877,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '8e7d1e87-c8db-46e0-a572-e11d12c7bfdd', 'ORION-S0214', 'Code Forge', 'codeforge', 'Vaarshini B', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'VAARSHINIB',
+  '1f7e4bb8-aaed-48d3-b8e5-a07ffca3e8e2', 'ORION-S0214', 'Code Forge', 'codeforge', 'Vaarshini B', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'VAARSHINIB',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '8e7d1e87-c8db-46e0-a572-e11d12c7bfdd', 'VERIFIED-ORION-S0214', 'Vaarshini B', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '1f7e4bb8-aaed-48d3-b8e5-a07ffca3e8e2', 'VERIFIED-ORION-S0214', 'Vaarshini B', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8e7d1e87-c8db-46e0-a572-e11d12c7bfdd', 1, 'Palaneappan M', 'Code Forge', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1f7e4bb8-aaed-48d3-b8e5-a07ffca3e8e2', 1, null, 'Code Forge', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8e7d1e87-c8db-46e0-a572-e11d12c7bfdd', 2, 'Harini B', 'Code Forge', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1f7e4bb8-aaed-48d3-b8e5-a07ffca3e8e2', 2, null, 'Code Forge', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8e7d1e87-c8db-46e0-a572-e11d12c7bfdd', 3, 'Sumurthaa V', 'Code Forge', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1f7e4bb8-aaed-48d3-b8e5-a07ffca3e8e2', 3, null, 'Code Forge', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8e7d1e87-c8db-46e0-a572-e11d12c7bfdd', 4, 'Mutthu M', 'Code Forge', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1f7e4bb8-aaed-48d3-b8e5-a07ffca3e8e2', 4, null, 'Code Forge', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -7917,38 +7917,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '3a1cfb2a-8421-4a61-b3a8-7fe411181bee', 'ORION-S0215', 'ALGOS', 'algos', 'Vishnu D', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'VISHNUD',
+  '930b21ac-18ef-45ad-b35c-1743d6c7ff67', 'ORION-S0215', 'ALGOS', 'algos', 'Vishnu D', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'VISHNUD',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '3a1cfb2a-8421-4a61-b3a8-7fe411181bee', 'VERIFIED-ORION-S0215', 'Vishnu D', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '930b21ac-18ef-45ad-b35c-1743d6c7ff67', 'VERIFIED-ORION-S0215', 'Vishnu D', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '3a1cfb2a-8421-4a61-b3a8-7fe411181bee', 1, 'Raja Thinakaran V', 'ALGOS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '930b21ac-18ef-45ad-b35c-1743d6c7ff67', 1, null, 'ALGOS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '3a1cfb2a-8421-4a61-b3a8-7fe411181bee', 2, 'Riya R', 'ALGOS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '930b21ac-18ef-45ad-b35c-1743d6c7ff67', 2, null, 'ALGOS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '3a1cfb2a-8421-4a61-b3a8-7fe411181bee', 3, 'Tharika Nayaki S', 'ALGOS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '930b21ac-18ef-45ad-b35c-1743d6c7ff67', 3, null, 'ALGOS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '3a1cfb2a-8421-4a61-b3a8-7fe411181bee', 4, 'Yuvaraj C', 'ALGOS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '930b21ac-18ef-45ad-b35c-1743d6c7ff67', 4, null, 'ALGOS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -7957,33 +7957,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '29e7dc9b-076e-4944-b240-66ebaae68cd6', 'ORION-S0216', 'C0DE RED', 'c0dered', 'Sagaar suresh', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SAGAARSURESH',
+  '5d46ceee-4112-4051-93e5-371ceda1a6ad', 'ORION-S0216', 'C0DE RED', 'c0dered', 'Sagaar suresh', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SAGAARSURESH',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '29e7dc9b-076e-4944-b240-66ebaae68cd6', 'VERIFIED-ORION-S0216', 'Sagaar suresh', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '5d46ceee-4112-4051-93e5-371ceda1a6ad', 'VERIFIED-ORION-S0216', 'Sagaar suresh', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '29e7dc9b-076e-4944-b240-66ebaae68cd6', 1, 'Ritthiga B', 'C0DE RED', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5d46ceee-4112-4051-93e5-371ceda1a6ad', 1, null, 'C0DE RED', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '29e7dc9b-076e-4944-b240-66ebaae68cd6', 2, 'Venkatesan R', 'C0DE RED', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5d46ceee-4112-4051-93e5-371ceda1a6ad', 2, null, 'C0DE RED', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '29e7dc9b-076e-4944-b240-66ebaae68cd6', 3, 'Rithika V', 'C0DE RED', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5d46ceee-4112-4051-93e5-371ceda1a6ad', 3, null, 'C0DE RED', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -7992,33 +7992,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'd05b69d8-3a82-4121-8216-b2511e59a63d', 'ORION-S0217', 'TechAura', 'techaura', 'K.Shri vijaya harini', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'KSHRIVIJAYAHARINI',
+  '69aa660d-edb4-48b6-be54-e6f8455e2335', 'ORION-S0217', 'TechAura', 'techaura', 'K.Shri vijaya harini', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'KSHRIVIJAYAHARINI',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'd05b69d8-3a82-4121-8216-b2511e59a63d', 'VERIFIED-ORION-S0217', 'K.Shri vijaya harini', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '69aa660d-edb4-48b6-be54-e6f8455e2335', 'VERIFIED-ORION-S0217', 'K.Shri vijaya harini', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd05b69d8-3a82-4121-8216-b2511e59a63d', 1, 'Roshini A', 'TechAura', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '69aa660d-edb4-48b6-be54-e6f8455e2335', 1, null, 'TechAura', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd05b69d8-3a82-4121-8216-b2511e59a63d', 2, 'Nasiba', 'TechAura', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '69aa660d-edb4-48b6-be54-e6f8455e2335', 2, null, 'TechAura', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd05b69d8-3a82-4121-8216-b2511e59a63d', 3, 'Nusurath fathima', 'TechAura', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '69aa660d-edb4-48b6-be54-e6f8455e2335', 3, null, 'TechAura', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -8027,43 +8027,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '32ccede4-aad8-46a0-ae20-a626f443d6dc', 'ORION-S0218', 'Sparks', 'sparks', 'Vilina K', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'VILINAK',
+  'ea2f3920-149a-4a81-b68e-efc1f74c6d1f', 'ORION-S0218', 'Sparks', 'sparks', 'Vilina K', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'VILINAK',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '32ccede4-aad8-46a0-ae20-a626f443d6dc', 'VERIFIED-ORION-S0218', 'Vilina K', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'ea2f3920-149a-4a81-b68e-efc1f74c6d1f', 'VERIFIED-ORION-S0218', 'Vilina K', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '32ccede4-aad8-46a0-ae20-a626f443d6dc', 1, 'Varuna V', 'Sparks', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'ea2f3920-149a-4a81-b68e-efc1f74c6d1f', 1, null, 'Sparks', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '32ccede4-aad8-46a0-ae20-a626f443d6dc', 2, 'Varshini R', 'Sparks', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'ea2f3920-149a-4a81-b68e-efc1f74c6d1f', 2, null, 'Sparks', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '32ccede4-aad8-46a0-ae20-a626f443d6dc', 3, 'Sriharini K', 'Sparks', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'ea2f3920-149a-4a81-b68e-efc1f74c6d1f', 3, null, 'Sparks', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '32ccede4-aad8-46a0-ae20-a626f443d6dc', 4, 'Stephy Alice Christy D', 'Sparks', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'ea2f3920-149a-4a81-b68e-efc1f74c6d1f', 4, null, 'Sparks', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '32ccede4-aad8-46a0-ae20-a626f443d6dc', 5, 'Sri Varshini V', 'Sparks', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'ea2f3920-149a-4a81-b68e-efc1f74c6d1f', 5, null, 'Sparks', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -8072,43 +8072,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'dc3ff2a1-8392-44a7-a4ba-a85cd879d182', 'ORION-S0219', 'INQORA', 'inqora', 'X.KRECENCIA', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'XKRECENCIA',
+  '5bb5ec9c-54ca-405d-94ba-9a2cef6e9e41', 'ORION-S0219', 'INQORA', 'inqora', 'X.KRECENCIA', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'XKRECENCIA',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'dc3ff2a1-8392-44a7-a4ba-a85cd879d182', 'VERIFIED-ORION-S0219', 'X.KRECENCIA', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '5bb5ec9c-54ca-405d-94ba-9a2cef6e9e41', 'VERIFIED-ORION-S0219', 'X.KRECENCIA', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'dc3ff2a1-8392-44a7-a4ba-a85cd879d182', 1, 'HARISH BABU M', 'INQORA', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5bb5ec9c-54ca-405d-94ba-9a2cef6e9e41', 1, null, 'INQORA', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'dc3ff2a1-8392-44a7-a4ba-a85cd879d182', 2, 'SURYA G V', 'INQORA', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5bb5ec9c-54ca-405d-94ba-9a2cef6e9e41', 2, null, 'INQORA', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'dc3ff2a1-8392-44a7-a4ba-a85cd879d182', 3, 'THANUSHREE K S', 'INQORA', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5bb5ec9c-54ca-405d-94ba-9a2cef6e9e41', 3, null, 'INQORA', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'dc3ff2a1-8392-44a7-a4ba-a85cd879d182', 4, 'ANUGRAHA SAJI', 'INQORA', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5bb5ec9c-54ca-405d-94ba-9a2cef6e9e41', 4, null, 'INQORA', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'dc3ff2a1-8392-44a7-a4ba-a85cd879d182', 5, 'Shaai Ganesh P', 'INQORA', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5bb5ec9c-54ca-405d-94ba-9a2cef6e9e41', 5, null, 'INQORA', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -8117,43 +8117,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'c2963bfc-51a3-4b35-b8f4-77c0fe493f4b', 'ORION-S0220', 'The Quantum Coders', 'thequantumcoders', 'Sivanandham G', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SIVANANDHAMG',
+  '1fe48d18-edf6-404d-9bf9-c4251a7cd9ce', 'ORION-S0220', 'The Quantum Coders', 'thequantumcoders', 'Sivanandham G', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-02: LEXVAULT', 'SIVANANDHAMG',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'c2963bfc-51a3-4b35-b8f4-77c0fe493f4b', 'VERIFIED-ORION-S0220', 'Sivanandham G', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '1fe48d18-edf6-404d-9bf9-c4251a7cd9ce', 'VERIFIED-ORION-S0220', 'Sivanandham G', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c2963bfc-51a3-4b35-b8f4-77c0fe493f4b', 1, 'Srikanth Y', 'The Quantum Coders', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1fe48d18-edf6-404d-9bf9-c4251a7cd9ce', 1, null, 'The Quantum Coders', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c2963bfc-51a3-4b35-b8f4-77c0fe493f4b', 2, 'Richardson S', 'The Quantum Coders', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1fe48d18-edf6-404d-9bf9-c4251a7cd9ce', 2, null, 'The Quantum Coders', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c2963bfc-51a3-4b35-b8f4-77c0fe493f4b', 3, 'Ukesh Kumar R', 'The Quantum Coders', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1fe48d18-edf6-404d-9bf9-c4251a7cd9ce', 3, null, 'The Quantum Coders', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c2963bfc-51a3-4b35-b8f4-77c0fe493f4b', 4, 'Giridharan V', 'The Quantum Coders', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1fe48d18-edf6-404d-9bf9-c4251a7cd9ce', 4, null, 'The Quantum Coders', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c2963bfc-51a3-4b35-b8f4-77c0fe493f4b', 5, 'Ragav Rathinam V', 'The Quantum Coders', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1fe48d18-edf6-404d-9bf9-c4251a7cd9ce', 5, null, 'The Quantum Coders', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -8162,43 +8162,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '5a8917d6-464c-4842-a185-be3c35930893', 'ORION-S0221', 'Team titans', 'teamtitans', 'AKSHAYA K 111625201005', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'AKSHAYAK111625201005',
+  '8189bce7-c391-4054-9a05-9cca8c614aea', 'ORION-S0221', 'Team titans', 'teamtitans', 'AKSHAYA K 111625201005', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'AKSHAYAK111625201005',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '5a8917d6-464c-4842-a185-be3c35930893', 'VERIFIED-ORION-S0221', 'AKSHAYA K 111625201005', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '8189bce7-c391-4054-9a05-9cca8c614aea', 'VERIFIED-ORION-S0221', 'AKSHAYA K 111625201005', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5a8917d6-464c-4842-a185-be3c35930893', 1, 'Dhiya R', 'Team titans', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8189bce7-c391-4054-9a05-9cca8c614aea', 1, null, 'Team titans', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5a8917d6-464c-4842-a185-be3c35930893', 2, 'Dharshini PV', 'Team titans', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8189bce7-c391-4054-9a05-9cca8c614aea', 2, null, 'Team titans', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5a8917d6-464c-4842-a185-be3c35930893', 3, 'Harshitha V', 'Team titans', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8189bce7-c391-4054-9a05-9cca8c614aea', 3, null, 'Team titans', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5a8917d6-464c-4842-a185-be3c35930893', 4, 'Bhuvana Lakshmi B', 'Team titans', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8189bce7-c391-4054-9a05-9cca8c614aea', 4, null, 'Team titans', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5a8917d6-464c-4842-a185-be3c35930893', 5, 'Heena S.V', 'Team titans', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8189bce7-c391-4054-9a05-9cca8c614aea', 5, null, 'Team titans', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -8207,33 +8207,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '7d82a033-f15b-4bb0-893c-a112a4756028', 'ORION-S0222', 'NeuroFlux', 'neuroflux', 'Madhumitha T K', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'MADHUMITHATK',
+  '80f7e8c4-404f-4319-8a13-4c20b0307e0c', 'ORION-S0222', 'NeuroFlux', 'neuroflux', 'Madhumitha T K', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'MADHUMITHATK',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '7d82a033-f15b-4bb0-893c-a112a4756028', 'VERIFIED-ORION-S0222', 'Madhumitha T K', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '80f7e8c4-404f-4319-8a13-4c20b0307e0c', 'VERIFIED-ORION-S0222', 'Madhumitha T K', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '7d82a033-f15b-4bb0-893c-a112a4756028', 1, 'Malathi S', 'NeuroFlux', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '80f7e8c4-404f-4319-8a13-4c20b0307e0c', 1, null, 'NeuroFlux', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '7d82a033-f15b-4bb0-893c-a112a4756028', 2, 'Nevetha D', 'NeuroFlux', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '80f7e8c4-404f-4319-8a13-4c20b0307e0c', 2, null, 'NeuroFlux', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '7d82a033-f15b-4bb0-893c-a112a4756028', 3, 'Mariammal M', 'NeuroFlux', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '80f7e8c4-404f-4319-8a13-4c20b0307e0c', 3, null, 'NeuroFlux', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -8242,43 +8242,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'a2e6d649-eba7-41f8-b260-4ad54884c559', 'ORION-S0223', 'Deep Matrix', 'deepmatrix', 'V Hari Krishnan', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'VHARIKRISHNAN',
+  'b5d566f1-56f6-416e-9a1c-70d996214879', 'ORION-S0223', 'Deep Matrix', 'deepmatrix', 'V Hari Krishnan', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'VHARIKRISHNAN',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'a2e6d649-eba7-41f8-b260-4ad54884c559', 'VERIFIED-ORION-S0223', 'V Hari Krishnan', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'b5d566f1-56f6-416e-9a1c-70d996214879', 'VERIFIED-ORION-S0223', 'V Hari Krishnan', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a2e6d649-eba7-41f8-b260-4ad54884c559', 1, 'A Lohit', 'Deep Matrix', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b5d566f1-56f6-416e-9a1c-70d996214879', 1, null, 'Deep Matrix', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a2e6d649-eba7-41f8-b260-4ad54884c559', 2, 'Ruhan Prasad S', 'Deep Matrix', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b5d566f1-56f6-416e-9a1c-70d996214879', 2, null, 'Deep Matrix', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a2e6d649-eba7-41f8-b260-4ad54884c559', 3, 'Aravintakshan A L', 'Deep Matrix', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b5d566f1-56f6-416e-9a1c-70d996214879', 3, null, 'Deep Matrix', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a2e6d649-eba7-41f8-b260-4ad54884c559', 4, 'Nithin K', 'Deep Matrix', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b5d566f1-56f6-416e-9a1c-70d996214879', 4, null, 'Deep Matrix', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a2e6d649-eba7-41f8-b260-4ad54884c559', 5, 'Sri Aarush Tej N', 'Deep Matrix', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b5d566f1-56f6-416e-9a1c-70d996214879', 5, null, 'Deep Matrix', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -8287,23 +8287,23 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '313e5753-a3c3-4eb1-afff-56024f4c0baf', 'ORION-S0224', 'Shadow_Monarch', 'shadowmonarch', 'Pavan Kumar', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'PAVANKUMAR',
+  'dd29be6c-7645-4a2d-9551-bc6dac97e04b', 'ORION-S0224', 'Shadow_Monarch', 'shadowmonarch', 'Pavan Kumar', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'PAVANKUMAR',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '313e5753-a3c3-4eb1-afff-56024f4c0baf', 'VERIFIED-ORION-S0224', 'Pavan Kumar', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'dd29be6c-7645-4a2d-9551-bc6dac97e04b', 'VERIFIED-ORION-S0224', 'Pavan Kumar', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '313e5753-a3c3-4eb1-afff-56024f4c0baf', 1, 'Karunya', 'Shadow_Monarch', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'dd29be6c-7645-4a2d-9551-bc6dac97e04b', 1, null, 'Shadow_Monarch', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -8312,43 +8312,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '096ec2d2-d0de-4f2b-b893-d227143fee89', 'ORION-S0225', 'Yeah squad', 'yeahsquad', 'Rubendran V', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'RUBENDRANV',
+  '1617d9b1-5669-4cc2-9ddd-bacf64fc25db', 'ORION-S0225', 'Yeah squad', 'yeahsquad', 'Rubendran V', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'RUBENDRANV',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '096ec2d2-d0de-4f2b-b893-d227143fee89', 'VERIFIED-ORION-S0225', 'Rubendran V', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '1617d9b1-5669-4cc2-9ddd-bacf64fc25db', 'VERIFIED-ORION-S0225', 'Rubendran V', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '096ec2d2-d0de-4f2b-b893-d227143fee89', 1, 'Sanjay K', 'Yeah squad', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1617d9b1-5669-4cc2-9ddd-bacf64fc25db', 1, null, 'Yeah squad', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '096ec2d2-d0de-4f2b-b893-d227143fee89', 2, 'Ravisankar J', 'Yeah squad', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1617d9b1-5669-4cc2-9ddd-bacf64fc25db', 2, null, 'Yeah squad', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '096ec2d2-d0de-4f2b-b893-d227143fee89', 3, 'Sundaresan K', 'Yeah squad', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1617d9b1-5669-4cc2-9ddd-bacf64fc25db', 3, null, 'Yeah squad', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '096ec2d2-d0de-4f2b-b893-d227143fee89', 4, 'Sivaganesh S', 'Yeah squad', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1617d9b1-5669-4cc2-9ddd-bacf64fc25db', 4, null, 'Yeah squad', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '096ec2d2-d0de-4f2b-b893-d227143fee89', 5, 'Sudharshan A', 'Yeah squad', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1617d9b1-5669-4cc2-9ddd-bacf64fc25db', 5, null, 'Yeah squad', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -8357,33 +8357,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '6dc898b2-2cad-44ca-a4d5-ba92fa866155', 'ORION-S0226', 'Doddlebug', 'doddlebug', 'Avinash Venkatraman', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'AVINASHVENKATRAMAN',
+  'd669a0af-5fe8-4e0c-955b-d5abf3dd007c', 'ORION-S0226', 'Doddlebug', 'doddlebug', 'Avinash Venkatraman', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'AVINASHVENKATRAMAN',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '6dc898b2-2cad-44ca-a4d5-ba92fa866155', 'VERIFIED-ORION-S0226', 'Avinash Venkatraman', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'd669a0af-5fe8-4e0c-955b-d5abf3dd007c', 'VERIFIED-ORION-S0226', 'Avinash Venkatraman', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '6dc898b2-2cad-44ca-a4d5-ba92fa866155', 1, 'LAKSHMIPRIYA S', 'Doddlebug', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd669a0af-5fe8-4e0c-955b-d5abf3dd007c', 1, null, 'Doddlebug', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '6dc898b2-2cad-44ca-a4d5-ba92fa866155', 2, 'Dharshini M', 'Doddlebug', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd669a0af-5fe8-4e0c-955b-d5abf3dd007c', 2, null, 'Doddlebug', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '6dc898b2-2cad-44ca-a4d5-ba92fa866155', 3, 'Aravind Kumar P', 'Doddlebug', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd669a0af-5fe8-4e0c-955b-d5abf3dd007c', 3, null, 'Doddlebug', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -8392,28 +8392,28 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '0efc28a7-4729-4188-b32e-f56c3a731d81', 'ORION-S0227', 'Tech innovator', 'techinnovator', 'Pragadeshwaran', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'PRAGADESHWARAN',
+  'a0f26f40-00ee-43ef-a889-aeb01b99d281', 'ORION-S0227', 'Tech innovator', 'techinnovator', 'Pragadeshwaran', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'PRAGADESHWARAN',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '0efc28a7-4729-4188-b32e-f56c3a731d81', 'VERIFIED-ORION-S0227', 'Pragadeshwaran', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'a0f26f40-00ee-43ef-a889-aeb01b99d281', 'VERIFIED-ORION-S0227', 'Pragadeshwaran', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0efc28a7-4729-4188-b32e-f56c3a731d81', 1, 'Priya. S', 'Tech innovator', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'a0f26f40-00ee-43ef-a889-aeb01b99d281', 1, null, 'Tech innovator', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0efc28a7-4729-4188-b32e-f56c3a731d81', 2, 'Varshini. S', 'Tech innovator', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'a0f26f40-00ee-43ef-a889-aeb01b99d281', 2, null, 'Tech innovator', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -8422,43 +8422,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '09386c10-7a56-46b0-92ce-bf7851b7fab1', 'ORION-S0228', 'Eagerists', 'eagerists', 'Deepa Ganesh J', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'DEEPAGANESHJ',
+  '415f79a7-e944-41a5-87eb-8d697dde0e2b', 'ORION-S0228', 'Eagerists', 'eagerists', 'Deepa Ganesh J', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'DEEPAGANESHJ',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '09386c10-7a56-46b0-92ce-bf7851b7fab1', 'VERIFIED-ORION-S0228', 'Deepa Ganesh J', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '415f79a7-e944-41a5-87eb-8d697dde0e2b', 'VERIFIED-ORION-S0228', 'Deepa Ganesh J', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '09386c10-7a56-46b0-92ce-bf7851b7fab1', 1, 'Elancholan P', 'Eagerists', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '415f79a7-e944-41a5-87eb-8d697dde0e2b', 1, null, 'Eagerists', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '09386c10-7a56-46b0-92ce-bf7851b7fab1', 2, 'Aravindhane VS', 'Eagerists', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '415f79a7-e944-41a5-87eb-8d697dde0e2b', 2, null, 'Eagerists', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '09386c10-7a56-46b0-92ce-bf7851b7fab1', 3, 'Jayakips Antony', 'Eagerists', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '415f79a7-e944-41a5-87eb-8d697dde0e2b', 3, null, 'Eagerists', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '09386c10-7a56-46b0-92ce-bf7851b7fab1', 4, 'Jeevesh M', 'Eagerists', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '415f79a7-e944-41a5-87eb-8d697dde0e2b', 4, null, 'Eagerists', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '09386c10-7a56-46b0-92ce-bf7851b7fab1', 5, 'Rajaneesh', 'Eagerists', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '415f79a7-e944-41a5-87eb-8d697dde0e2b', 5, null, 'Eagerists', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -8467,23 +8467,23 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '8da8ad71-24ab-4c3b-a4f2-c76d066112eb', 'ORION-S0229', 'Coderzz', 'coderzz', 'Sneha J', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SNEHAJ',
+  'a3eed822-f3bc-4bee-9220-450783203819', 'ORION-S0229', 'Coderzz', 'coderzz', 'Sneha J', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'SNEHAJ',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '8da8ad71-24ab-4c3b-a4f2-c76d066112eb', 'VERIFIED-ORION-S0229', 'Sneha J', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'a3eed822-f3bc-4bee-9220-450783203819', 'VERIFIED-ORION-S0229', 'Sneha J', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8da8ad71-24ab-4c3b-a4f2-c76d066112eb', 1, 'Sasidharan K', 'Coderzz', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'a3eed822-f3bc-4bee-9220-450783203819', 1, null, 'Coderzz', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -8492,28 +8492,28 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '13f50811-4047-43ee-a761-f1c2c6834448', 'ORION-S0230', 'PARAGON', 'paragon', 'Sai Sowndiriyaa T', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SAISOWNDIRIYAAT',
+  '08a0696f-4f48-4008-92d2-05f2dfd2949a', 'ORION-S0230', 'PARAGON', 'paragon', 'Sai Sowndiriyaa T', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-02: LEXVAULT', 'SAISOWNDIRIYAAT',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '13f50811-4047-43ee-a761-f1c2c6834448', 'VERIFIED-ORION-S0230', 'Sai Sowndiriyaa T', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '08a0696f-4f48-4008-92d2-05f2dfd2949a', 'VERIFIED-ORION-S0230', 'Sai Sowndiriyaa T', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '13f50811-4047-43ee-a761-f1c2c6834448', 1, 'Sai Sruthi S', 'PARAGON', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '08a0696f-4f48-4008-92d2-05f2dfd2949a', 1, null, 'PARAGON', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '13f50811-4047-43ee-a761-f1c2c6834448', 2, 'Sanjai B', 'PARAGON', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '08a0696f-4f48-4008-92d2-05f2dfd2949a', 2, null, 'PARAGON', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -8522,43 +8522,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '69452a75-1afe-425b-b221-87415b1d1826', 'ORION-S0231', 'Corex', 'corex', 'Parthasarathi M', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'PARTHASARATHIM',
+  '926c4830-b9c3-4dcf-9889-3880a4342743', 'ORION-S0231', 'Corex', 'corex', 'Parthasarathi M', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'PARTHASARATHIM',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '69452a75-1afe-425b-b221-87415b1d1826', 'VERIFIED-ORION-S0231', 'Parthasarathi M', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '926c4830-b9c3-4dcf-9889-3880a4342743', 'VERIFIED-ORION-S0231', 'Parthasarathi M', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '69452a75-1afe-425b-b221-87415b1d1826', 1, 'Muniraja P.M', 'Corex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '926c4830-b9c3-4dcf-9889-3880a4342743', 1, null, 'Corex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '69452a75-1afe-425b-b221-87415b1d1826', 2, 'MUGESHKUMAR M', 'Corex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '926c4830-b9c3-4dcf-9889-3880a4342743', 2, null, 'Corex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '69452a75-1afe-425b-b221-87415b1d1826', 3, 'MUKUNDAN T', 'Corex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '926c4830-b9c3-4dcf-9889-3880a4342743', 3, null, 'Corex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '69452a75-1afe-425b-b221-87415b1d1826', 4, 'Mohan Raj N', 'Corex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '926c4830-b9c3-4dcf-9889-3880a4342743', 4, null, 'Corex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '69452a75-1afe-425b-b221-87415b1d1826', 5, 'PRASHANTH H', 'Corex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '926c4830-b9c3-4dcf-9889-3880a4342743', 5, null, 'Corex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -8567,33 +8567,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '778df2af-4f07-4d15-a595-33604bf38906', 'ORION-S0232', 'Galactic Force', 'galacticforce', 'C.Tarunarayan', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'CTARUNARAYAN',
+  '2bcaa230-c6fb-48e6-ac9e-1237488ebd96', 'ORION-S0232', 'Galactic Force', 'galacticforce', 'C.Tarunarayan', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-02: LEXVAULT', 'CTARUNARAYAN',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '778df2af-4f07-4d15-a595-33604bf38906', 'VERIFIED-ORION-S0232', 'C.Tarunarayan', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '2bcaa230-c6fb-48e6-ac9e-1237488ebd96', 'VERIFIED-ORION-S0232', 'C.Tarunarayan', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '778df2af-4f07-4d15-a595-33604bf38906', 1, 'Guru Varshini', 'Galactic Force', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '2bcaa230-c6fb-48e6-ac9e-1237488ebd96', 1, null, 'Galactic Force', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '778df2af-4f07-4d15-a595-33604bf38906', 2, 'Melvin Prince Rohan', 'Galactic Force', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '2bcaa230-c6fb-48e6-ac9e-1237488ebd96', 2, null, 'Galactic Force', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '778df2af-4f07-4d15-a595-33604bf38906', 3, 'R Mithun Kumar', 'Galactic Force', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '2bcaa230-c6fb-48e6-ac9e-1237488ebd96', 3, null, 'Galactic Force', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -8602,23 +8602,23 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '65381727-7546-4fc9-bca3-22894f113c8a', 'ORION-S0233', 'Code titans', 'codetitans', 'Sabareesh', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SABAREESH',
+  'f10d1443-3af5-44bb-a766-3f759eaa8f9c', 'ORION-S0233', 'Code titans', 'codetitans', 'Sabareesh', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SABAREESH',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '65381727-7546-4fc9-bca3-22894f113c8a', 'VERIFIED-ORION-S0233', 'Sabareesh', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'f10d1443-3af5-44bb-a766-3f759eaa8f9c', 'VERIFIED-ORION-S0233', 'Sabareesh', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '65381727-7546-4fc9-bca3-22894f113c8a', 1, 'Madhumithaa Kathir', 'Code titans', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f10d1443-3af5-44bb-a766-3f759eaa8f9c', 1, null, 'Code titans', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -8627,28 +8627,28 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '3ceca3a0-fe21-4605-8f00-7ae6cfdca63b', 'ORION-S0234', 'Alpha', 'alpha', 'Sharvesh S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SHARVESHS',
+  'e99b8157-fdfb-4b90-b467-98d116623601', 'ORION-S0234', 'Alpha', 'alpha', 'Sharvesh S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'SHARVESHS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '3ceca3a0-fe21-4605-8f00-7ae6cfdca63b', 'VERIFIED-ORION-S0234', 'Sharvesh S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'e99b8157-fdfb-4b90-b467-98d116623601', 'VERIFIED-ORION-S0234', 'Sharvesh S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '3ceca3a0-fe21-4605-8f00-7ae6cfdca63b', 1, 'Siddharth P', 'Alpha', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e99b8157-fdfb-4b90-b467-98d116623601', 1, null, 'Alpha', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '3ceca3a0-fe21-4605-8f00-7ae6cfdca63b', 2, 'Sarveshvijay K', 'Alpha', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e99b8157-fdfb-4b90-b467-98d116623601', 2, null, 'Alpha', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -8657,38 +8657,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '46d6eed2-2331-4722-9ef2-2b924bd2c8ea', 'ORION-S0235', 'Bleach', 'bleach', 'Sriya Bheema', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SRIYABHEEMA',
+  'af8a6bd8-7cc7-4289-9e9e-acdccfa8fd2f', 'ORION-S0235', 'Bleach', 'bleach', 'Sriya Bheema', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SRIYABHEEMA',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '46d6eed2-2331-4722-9ef2-2b924bd2c8ea', 'VERIFIED-ORION-S0235', 'Sriya Bheema', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'af8a6bd8-7cc7-4289-9e9e-acdccfa8fd2f', 'VERIFIED-ORION-S0235', 'Sriya Bheema', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '46d6eed2-2331-4722-9ef2-2b924bd2c8ea', 1, 'Mohan Nikitha', 'Bleach', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'af8a6bd8-7cc7-4289-9e9e-acdccfa8fd2f', 1, null, 'Bleach', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '46d6eed2-2331-4722-9ef2-2b924bd2c8ea', 2, 'N . Sabareesh raam', 'Bleach', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'af8a6bd8-7cc7-4289-9e9e-acdccfa8fd2f', 2, null, 'Bleach', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '46d6eed2-2331-4722-9ef2-2b924bd2c8ea', 3, 'Sabarish. S', 'Bleach', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'af8a6bd8-7cc7-4289-9e9e-acdccfa8fd2f', 3, null, 'Bleach', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '46d6eed2-2331-4722-9ef2-2b924bd2c8ea', 4, 'Sainath P', 'Bleach', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'af8a6bd8-7cc7-4289-9e9e-acdccfa8fd2f', 4, null, 'Bleach', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -8697,23 +8697,23 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '58051de8-e081-487e-848b-5241ddb969e2', 'ORION-S0236', 'Cupid.exe', 'cupidexe', 'Sachin R', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SACHINR',
+  '3840df49-6fc0-4de0-998f-0a4afdf7b24f', 'ORION-S0236', 'Cupid.exe', 'cupidexe', 'Sachin R', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SACHINR',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '58051de8-e081-487e-848b-5241ddb969e2', 'VERIFIED-ORION-S0236', 'Sachin R', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '3840df49-6fc0-4de0-998f-0a4afdf7b24f', 'VERIFIED-ORION-S0236', 'Sachin R', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '58051de8-e081-487e-848b-5241ddb969e2', 1, 'Sangeetha P', 'Cupid.exe', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '3840df49-6fc0-4de0-998f-0a4afdf7b24f', 1, null, 'Cupid.exe', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -8722,23 +8722,23 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '945ae731-5028-4425-bc7a-d3594bc351e7', 'ORION-S0237', 'Team Endeavours', 'teamendeavours', 'Srirangapprasath I', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SRIRANGAPPRASATHI',
+  'f759bd88-67a0-4b43-948a-aea6b5491265', 'ORION-S0237', 'Team Endeavours', 'teamendeavours', 'Srirangapprasath I', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SRIRANGAPPRASATHI',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '945ae731-5028-4425-bc7a-d3594bc351e7', 'VERIFIED-ORION-S0237', 'Srirangapprasath I', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'f759bd88-67a0-4b43-948a-aea6b5491265', 'VERIFIED-ORION-S0237', 'Srirangapprasath I', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '945ae731-5028-4425-bc7a-d3594bc351e7', 1, 'Sudharsan S', 'Team Endeavours', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'f759bd88-67a0-4b43-948a-aea6b5491265', 1, null, 'Team Endeavours', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -8747,43 +8747,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'ac1b98c9-e96f-4bf0-871b-a3029e7b232b', 'ORION-S0238', 'AQUABOTS', 'aquabots', 'DHIVYASHRI S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'DHIVYASHRIS',
+  '53e8ba56-b82c-4732-ac6b-208221328fb0', 'ORION-S0238', 'AQUABOTS', 'aquabots', 'DHIVYASHRI S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'DHIVYASHRIS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'ac1b98c9-e96f-4bf0-871b-a3029e7b232b', 'VERIFIED-ORION-S0238', 'DHIVYASHRI S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '53e8ba56-b82c-4732-ac6b-208221328fb0', 'VERIFIED-ORION-S0238', 'DHIVYASHRI S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ac1b98c9-e96f-4bf0-871b-a3029e7b232b', 1, 'DEVASHRI S', 'AQUABOTS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '53e8ba56-b82c-4732-ac6b-208221328fb0', 1, null, 'AQUABOTS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ac1b98c9-e96f-4bf0-871b-a3029e7b232b', 2, 'FARHANUDIN B', 'AQUABOTS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '53e8ba56-b82c-4732-ac6b-208221328fb0', 2, null, 'AQUABOTS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ac1b98c9-e96f-4bf0-871b-a3029e7b232b', 3, 'SULAKA B', 'AQUABOTS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '53e8ba56-b82c-4732-ac6b-208221328fb0', 3, null, 'AQUABOTS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ac1b98c9-e96f-4bf0-871b-a3029e7b232b', 4, 'NEERAJA S', 'AQUABOTS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '53e8ba56-b82c-4732-ac6b-208221328fb0', 4, null, 'AQUABOTS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ac1b98c9-e96f-4bf0-871b-a3029e7b232b', 5, 'THOLKAPPIYAN Y', 'AQUABOTS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '53e8ba56-b82c-4732-ac6b-208221328fb0', 5, null, 'AQUABOTS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -8792,43 +8792,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '1bc56a3c-4d95-438f-9e3a-87c4b399b7f8', 'ORION-S0239', 'Quinex', 'quinex', 'K.Sabana Banu', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'KSABANABANU',
+  '64e88e6a-568a-4f27-a2fc-72f502aee332', 'ORION-S0239', 'Quinex', 'quinex', 'K.Sabana Banu', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-02: LEXVAULT', 'KSABANABANU',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '1bc56a3c-4d95-438f-9e3a-87c4b399b7f8', 'VERIFIED-ORION-S0239', 'K.Sabana Banu', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '64e88e6a-568a-4f27-a2fc-72f502aee332', 'VERIFIED-ORION-S0239', 'K.Sabana Banu', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '1bc56a3c-4d95-438f-9e3a-87c4b399b7f8', 1, 'R.Pavithra', 'Quinex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '64e88e6a-568a-4f27-a2fc-72f502aee332', 1, null, 'Quinex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '1bc56a3c-4d95-438f-9e3a-87c4b399b7f8', 2, 'M.Muthu Vetha Varshini', 'Quinex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '64e88e6a-568a-4f27-a2fc-72f502aee332', 2, null, 'Quinex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '1bc56a3c-4d95-438f-9e3a-87c4b399b7f8', 3, 'R.Abirami', 'Quinex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '64e88e6a-568a-4f27-a2fc-72f502aee332', 3, null, 'Quinex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '1bc56a3c-4d95-438f-9e3a-87c4b399b7f8', 4, 'S.Aishwarya Lakshmi', 'Quinex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '64e88e6a-568a-4f27-a2fc-72f502aee332', 4, null, 'Quinex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '1bc56a3c-4d95-438f-9e3a-87c4b399b7f8', 5, 'S.Akshaya', 'Quinex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '64e88e6a-568a-4f27-a2fc-72f502aee332', 5, null, 'Quinex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -8837,33 +8837,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'd8ed434b-a930-4cf7-baf4-db1cf38d4260', 'ORION-S0240', 'DSCE', 'dsce', 'Nadin S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'NADINS',
+  'e676a7bb-e2d1-426a-a132-d87014c3d92c', 'ORION-S0240', 'DSCE', 'dsce', 'Nadin S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'NADINS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'd8ed434b-a930-4cf7-baf4-db1cf38d4260', 'VERIFIED-ORION-S0240', 'Nadin S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'e676a7bb-e2d1-426a-a132-d87014c3d92c', 'VERIFIED-ORION-S0240', 'Nadin S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd8ed434b-a930-4cf7-baf4-db1cf38d4260', 1, 'Mokeshwaran G', 'DSCE', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e676a7bb-e2d1-426a-a132-d87014c3d92c', 1, null, 'DSCE', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd8ed434b-a930-4cf7-baf4-db1cf38d4260', 2, 'Mathuravel G', 'DSCE', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e676a7bb-e2d1-426a-a132-d87014c3d92c', 2, null, 'DSCE', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd8ed434b-a930-4cf7-baf4-db1cf38d4260', 3, 'Manojkumar J', 'DSCE', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'e676a7bb-e2d1-426a-a132-d87014c3d92c', 3, null, 'DSCE', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -8872,33 +8872,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '259d8c14-a91d-4861-879a-0cc3ee1c1762', 'ORION-S0241', 'Tech Tetra', 'techtetra', 'Kavisri A', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'KAVISRIA',
+  'b80cf0f6-4ae0-4d6a-be21-2e19f068810f', 'ORION-S0241', 'Tech Tetra', 'techtetra', 'Kavisri A', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'KAVISRIA',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '259d8c14-a91d-4861-879a-0cc3ee1c1762', 'VERIFIED-ORION-S0241', 'Kavisri A', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'b80cf0f6-4ae0-4d6a-be21-2e19f068810f', 'VERIFIED-ORION-S0241', 'Kavisri A', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '259d8c14-a91d-4861-879a-0cc3ee1c1762', 1, 'Janani N', 'Tech Tetra', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b80cf0f6-4ae0-4d6a-be21-2e19f068810f', 1, null, 'Tech Tetra', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '259d8c14-a91d-4861-879a-0cc3ee1c1762', 2, 'Ashni JV', 'Tech Tetra', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b80cf0f6-4ae0-4d6a-be21-2e19f068810f', 2, null, 'Tech Tetra', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '259d8c14-a91d-4861-879a-0cc3ee1c1762', 3, 'Nivi R', 'Tech Tetra', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b80cf0f6-4ae0-4d6a-be21-2e19f068810f', 3, null, 'Tech Tetra', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -8907,43 +8907,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'a395d718-6f8c-498b-9564-14ea14481dc4', 'ORION-S0242', 'Epsilon', 'epsilon', 'Sanchita S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SANCHITAS',
+  'dca9953e-c23c-461c-959c-24ad42dc9cf2', 'ORION-S0242', 'Epsilon', 'epsilon', 'Sanchita S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'SANCHITAS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'a395d718-6f8c-498b-9564-14ea14481dc4', 'VERIFIED-ORION-S0242', 'Sanchita S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'dca9953e-c23c-461c-959c-24ad42dc9cf2', 'VERIFIED-ORION-S0242', 'Sanchita S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a395d718-6f8c-498b-9564-14ea14481dc4', 1, 'Thilak Raj V', 'Epsilon', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'dca9953e-c23c-461c-959c-24ad42dc9cf2', 1, null, 'Epsilon', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a395d718-6f8c-498b-9564-14ea14481dc4', 2, 'Sheniga Sam Robert Jasmine', 'Epsilon', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'dca9953e-c23c-461c-959c-24ad42dc9cf2', 2, null, 'Epsilon', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a395d718-6f8c-498b-9564-14ea14481dc4', 3, 'R Miraculin Rose', 'Epsilon', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'dca9953e-c23c-461c-959c-24ad42dc9cf2', 3, null, 'Epsilon', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a395d718-6f8c-498b-9564-14ea14481dc4', 4, 'Ahmad Faiyaz', 'Epsilon', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'dca9953e-c23c-461c-959c-24ad42dc9cf2', 4, null, 'Epsilon', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'a395d718-6f8c-498b-9564-14ea14481dc4', 5, 'M D Nafiz Ahmed', 'Epsilon', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'dca9953e-c23c-461c-959c-24ad42dc9cf2', 5, null, 'Epsilon', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -8952,43 +8952,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '9333bc76-c1e1-4e26-8d4f-4d7fb5a0231d', 'ORION-S0243', 'AI INFINITY', 'aiinfinity', 'Jibriya Begam A', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'JIBRIYABEGAMA',
+  '036cd9d5-b0ed-44de-8d4b-07e15d4598ea', 'ORION-S0243', 'AI INFINITY', 'aiinfinity', 'Jibriya Begam A', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'JIBRIYABEGAMA',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '9333bc76-c1e1-4e26-8d4f-4d7fb5a0231d', 'VERIFIED-ORION-S0243', 'Jibriya Begam A', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '036cd9d5-b0ed-44de-8d4b-07e15d4598ea', 'VERIFIED-ORION-S0243', 'Jibriya Begam A', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '9333bc76-c1e1-4e26-8d4f-4d7fb5a0231d', 1, 'Lakshayaa', 'AI INFINITY', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '036cd9d5-b0ed-44de-8d4b-07e15d4598ea', 1, null, 'AI INFINITY', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '9333bc76-c1e1-4e26-8d4f-4d7fb5a0231d', 2, 'Nisha', 'AI INFINITY', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '036cd9d5-b0ed-44de-8d4b-07e15d4598ea', 2, null, 'AI INFINITY', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '9333bc76-c1e1-4e26-8d4f-4d7fb5a0231d', 3, 'Logeshwar K', 'AI INFINITY', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '036cd9d5-b0ed-44de-8d4b-07e15d4598ea', 3, null, 'AI INFINITY', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '9333bc76-c1e1-4e26-8d4f-4d7fb5a0231d', 4, 'Janarthanan D', 'AI INFINITY', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '036cd9d5-b0ed-44de-8d4b-07e15d4598ea', 4, null, 'AI INFINITY', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '9333bc76-c1e1-4e26-8d4f-4d7fb5a0231d', 5, 'Nizamudeen S', 'AI INFINITY', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '036cd9d5-b0ed-44de-8d4b-07e15d4598ea', 5, null, 'AI INFINITY', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -8997,43 +8997,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '3fc2d8ec-1236-4374-91f0-51d274f9368e', 'ORION-S0244', 'AXION', 'axion', 'VASANTHAKUMAR S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'VASANTHAKUMARS',
+  '0c2fb3d7-79fa-4b40-a05b-cfd27b5d3435', 'ORION-S0244', 'AXION', 'axion', 'VASANTHAKUMAR S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-02: LEXVAULT', 'VASANTHAKUMARS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '3fc2d8ec-1236-4374-91f0-51d274f9368e', 'VERIFIED-ORION-S0244', 'VASANTHAKUMAR S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '0c2fb3d7-79fa-4b40-a05b-cfd27b5d3435', 'VERIFIED-ORION-S0244', 'VASANTHAKUMAR S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '3fc2d8ec-1236-4374-91f0-51d274f9368e', 1, 'AAKASH K', 'AXION', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0c2fb3d7-79fa-4b40-a05b-cfd27b5d3435', 1, null, 'AXION', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '3fc2d8ec-1236-4374-91f0-51d274f9368e', 2, 'NISMA FATHIMA N', 'AXION', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0c2fb3d7-79fa-4b40-a05b-cfd27b5d3435', 2, null, 'AXION', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '3fc2d8ec-1236-4374-91f0-51d274f9368e', 3, 'BHIBISHA JASMINE', 'AXION', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0c2fb3d7-79fa-4b40-a05b-cfd27b5d3435', 3, null, 'AXION', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '3fc2d8ec-1236-4374-91f0-51d274f9368e', 4, 'KAVIYASHREE T', 'AXION', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0c2fb3d7-79fa-4b40-a05b-cfd27b5d3435', 4, null, 'AXION', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '3fc2d8ec-1236-4374-91f0-51d274f9368e', 5, 'VIJAY SHARMA J', 'AXION', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0c2fb3d7-79fa-4b40-a05b-cfd27b5d3435', 5, null, 'AXION', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -9042,43 +9042,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'f546c1af-f508-4929-8702-41c47b846ade', 'ORION-S0245', 'DayOne', 'dayone', 'R S M Sri Vishnu', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'RSMSRIVISHNU',
+  'd4a3470b-0f31-4b97-8f20-35e915cf35ce', 'ORION-S0245', 'DayOne', 'dayone', 'R S M Sri Vishnu', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'RSMSRIVISHNU',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'f546c1af-f508-4929-8702-41c47b846ade', 'VERIFIED-ORION-S0245', 'R S M Sri Vishnu', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'd4a3470b-0f31-4b97-8f20-35e915cf35ce', 'VERIFIED-ORION-S0245', 'R S M Sri Vishnu', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f546c1af-f508-4929-8702-41c47b846ade', 1, 'Varshen S C', 'DayOne', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd4a3470b-0f31-4b97-8f20-35e915cf35ce', 1, null, 'DayOne', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f546c1af-f508-4929-8702-41c47b846ade', 2, 'Vishnu M', 'DayOne', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd4a3470b-0f31-4b97-8f20-35e915cf35ce', 2, null, 'DayOne', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f546c1af-f508-4929-8702-41c47b846ade', 3, 'Anbu Selvan T', 'DayOne', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd4a3470b-0f31-4b97-8f20-35e915cf35ce', 3, null, 'DayOne', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f546c1af-f508-4929-8702-41c47b846ade', 4, 'Sanjith V', 'DayOne', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd4a3470b-0f31-4b97-8f20-35e915cf35ce', 4, null, 'DayOne', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f546c1af-f508-4929-8702-41c47b846ade', 5, 'Harsshan S', 'DayOne', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd4a3470b-0f31-4b97-8f20-35e915cf35ce', 5, null, 'DayOne', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -9087,38 +9087,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '65fba473-c08d-4798-a909-b3b23a380bd7', 'ORION-S0246', 'Algorise', 'algorise', 'Krishna Karthi', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'KRISHNAKARTHI',
+  'aa75ab94-8437-4ac4-93b0-61b4b58dba2a', 'ORION-S0246', 'Algorise', 'algorise', 'Krishna Karthi', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'KRISHNAKARTHI',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '65fba473-c08d-4798-a909-b3b23a380bd7', 'VERIFIED-ORION-S0246', 'Krishna Karthi', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'aa75ab94-8437-4ac4-93b0-61b4b58dba2a', 'VERIFIED-ORION-S0246', 'Krishna Karthi', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '65fba473-c08d-4798-a909-b3b23a380bd7', 1, 'Dhatshna S', 'Algorise', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'aa75ab94-8437-4ac4-93b0-61b4b58dba2a', 1, null, 'Algorise', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '65fba473-c08d-4798-a909-b3b23a380bd7', 2, 'Kiruba', 'Algorise', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'aa75ab94-8437-4ac4-93b0-61b4b58dba2a', 2, null, 'Algorise', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '65fba473-c08d-4798-a909-b3b23a380bd7', 3, 'Maha lakshmi', 'Algorise', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'aa75ab94-8437-4ac4-93b0-61b4b58dba2a', 3, null, 'Algorise', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '65fba473-c08d-4798-a909-b3b23a380bd7', 4, 'Kiruthika', 'Algorise', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'aa75ab94-8437-4ac4-93b0-61b4b58dba2a', 4, null, 'Algorise', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -9127,38 +9127,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'd1e96f0a-0cfe-4d97-82cf-db6c162c9eed', 'ORION-S0247', 'Syntax Errorist', 'syntaxerrorist', 'Keerthika J', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'KEERTHIKAJ',
+  'deaba5fc-4eb5-4028-b576-851025a4a04d', 'ORION-S0247', 'Syntax Errorist', 'syntaxerrorist', 'Keerthika J', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-02: LEXVAULT', 'KEERTHIKAJ',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'd1e96f0a-0cfe-4d97-82cf-db6c162c9eed', 'VERIFIED-ORION-S0247', 'Keerthika J', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'deaba5fc-4eb5-4028-b576-851025a4a04d', 'VERIFIED-ORION-S0247', 'Keerthika J', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd1e96f0a-0cfe-4d97-82cf-db6c162c9eed', 1, 'Harshini Priya V', 'Syntax Errorist', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'deaba5fc-4eb5-4028-b576-851025a4a04d', 1, null, 'Syntax Errorist', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd1e96f0a-0cfe-4d97-82cf-db6c162c9eed', 2, 'Asvika N', 'Syntax Errorist', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'deaba5fc-4eb5-4028-b576-851025a4a04d', 2, null, 'Syntax Errorist', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd1e96f0a-0cfe-4d97-82cf-db6c162c9eed', 3, 'Dande Varshitha', 'Syntax Errorist', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'deaba5fc-4eb5-4028-b576-851025a4a04d', 3, null, 'Syntax Errorist', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'd1e96f0a-0cfe-4d97-82cf-db6c162c9eed', 4, 'Janani J', 'Syntax Errorist', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'deaba5fc-4eb5-4028-b576-851025a4a04d', 4, null, 'Syntax Errorist', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -9167,28 +9167,28 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'ee0873fb-3fdf-43eb-afbc-b58acb3e50ae', 'ORION-S0248', 'CodeMax', 'codemax', 'Ili. Srinidhi', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'ILISRINIDHI',
+  '4233e1d5-9608-42f0-82e3-73c18fc15b50', 'ORION-S0248', 'CodeMax', 'codemax', 'Ili. Srinidhi', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'ILISRINIDHI',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'ee0873fb-3fdf-43eb-afbc-b58acb3e50ae', 'VERIFIED-ORION-S0248', 'Ili. Srinidhi', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '4233e1d5-9608-42f0-82e3-73c18fc15b50', 'VERIFIED-ORION-S0248', 'Ili. Srinidhi', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ee0873fb-3fdf-43eb-afbc-b58acb3e50ae', 1, 'Suram Varshini', 'CodeMax', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4233e1d5-9608-42f0-82e3-73c18fc15b50', 1, null, 'CodeMax', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ee0873fb-3fdf-43eb-afbc-b58acb3e50ae', 2, 'Gajula Vedhasree', 'CodeMax', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4233e1d5-9608-42f0-82e3-73c18fc15b50', 2, null, 'CodeMax', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -9197,38 +9197,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '784e1563-f047-424d-bb7f-ce8b6b391b36', 'ORION-S0249', 'Technoverse', 'technoverse', 'Lohith kumar R', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'LOHITHKUMARR',
+  'b8259473-b49c-4fbd-b60e-09258e7445da', 'ORION-S0249', 'Technoverse', 'technoverse', 'Lohith kumar R', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'LOHITHKUMARR',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '784e1563-f047-424d-bb7f-ce8b6b391b36', 'VERIFIED-ORION-S0249', 'Lohith kumar R', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'b8259473-b49c-4fbd-b60e-09258e7445da', 'VERIFIED-ORION-S0249', 'Lohith kumar R', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '784e1563-f047-424d-bb7f-ce8b6b391b36', 1, 'GokulJayandan R S', 'Technoverse', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b8259473-b49c-4fbd-b60e-09258e7445da', 1, null, 'Technoverse', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '784e1563-f047-424d-bb7f-ce8b6b391b36', 2, 'Kiranraj M', 'Technoverse', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b8259473-b49c-4fbd-b60e-09258e7445da', 2, null, 'Technoverse', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '784e1563-f047-424d-bb7f-ce8b6b391b36', 3, 'P S kishore', 'Technoverse', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b8259473-b49c-4fbd-b60e-09258e7445da', 3, null, 'Technoverse', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '784e1563-f047-424d-bb7f-ce8b6b391b36', 4, 'Ganapathy B', 'Technoverse', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b8259473-b49c-4fbd-b60e-09258e7445da', 4, null, 'Technoverse', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -9237,43 +9237,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '78362985-33ae-4755-bea2-da398a90b2c5', 'ORION-S0250', 'ADAM', 'adam', 'Archana R', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'ARCHANAR',
+  '28f76bdc-8017-45fa-807b-96167a8a7834', 'ORION-S0250', 'ADAM', 'adam', 'Archana R', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'ARCHANAR',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '78362985-33ae-4755-bea2-da398a90b2c5', 'VERIFIED-ORION-S0250', 'Archana R', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '28f76bdc-8017-45fa-807b-96167a8a7834', 'VERIFIED-ORION-S0250', 'Archana R', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '78362985-33ae-4755-bea2-da398a90b2c5', 1, 'Dhanush Krishna sp', 'ADAM', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '28f76bdc-8017-45fa-807b-96167a8a7834', 1, null, 'ADAM', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '78362985-33ae-4755-bea2-da398a90b2c5', 2, 'mega varsan VE', 'ADAM', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '28f76bdc-8017-45fa-807b-96167a8a7834', 2, null, 'ADAM', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '78362985-33ae-4755-bea2-da398a90b2c5', 3, 'Nandhana H B', 'ADAM', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '28f76bdc-8017-45fa-807b-96167a8a7834', 3, null, 'ADAM', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '78362985-33ae-4755-bea2-da398a90b2c5', 4, 'Atchaya B', 'ADAM', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '28f76bdc-8017-45fa-807b-96167a8a7834', 4, null, 'ADAM', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '78362985-33ae-4755-bea2-da398a90b2c5', 5, 'Jonish Antony A', 'ADAM', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '28f76bdc-8017-45fa-807b-96167a8a7834', 5, null, 'ADAM', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -9282,43 +9282,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'ca286de0-f11c-4792-bc8c-b2f9f573ef50', 'ORION-S0251', 'Tech Morphers', 'techmorphers', 'Naveen Kumar R', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'NAVEENKUMARR',
+  'fc8e9c07-e646-46fc-aac8-a649b6a9bbe4', 'ORION-S0251', 'Tech Morphers', 'techmorphers', 'Naveen Kumar R', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'NAVEENKUMARR',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'ca286de0-f11c-4792-bc8c-b2f9f573ef50', 'VERIFIED-ORION-S0251', 'Naveen Kumar R', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'fc8e9c07-e646-46fc-aac8-a649b6a9bbe4', 'VERIFIED-ORION-S0251', 'Naveen Kumar R', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ca286de0-f11c-4792-bc8c-b2f9f573ef50', 1, 'Sruthi V', 'Tech Morphers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'fc8e9c07-e646-46fc-aac8-a649b6a9bbe4', 1, null, 'Tech Morphers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ca286de0-f11c-4792-bc8c-b2f9f573ef50', 2, 'Thakshinya B', 'Tech Morphers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'fc8e9c07-e646-46fc-aac8-a649b6a9bbe4', 2, null, 'Tech Morphers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ca286de0-f11c-4792-bc8c-b2f9f573ef50', 3, 'Dharaniga K', 'Tech Morphers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'fc8e9c07-e646-46fc-aac8-a649b6a9bbe4', 3, null, 'Tech Morphers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ca286de0-f11c-4792-bc8c-b2f9f573ef50', 4, 'Moses Shaam M J', 'Tech Morphers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'fc8e9c07-e646-46fc-aac8-a649b6a9bbe4', 4, null, 'Tech Morphers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ca286de0-f11c-4792-bc8c-b2f9f573ef50', 5, 'Shrivatsan M', 'Tech Morphers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'fc8e9c07-e646-46fc-aac8-a649b6a9bbe4', 5, null, 'Tech Morphers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -9327,33 +9327,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'e74e71c0-8494-4979-b898-e5fd940e57d0', 'ORION-S0252', 'Ecospectra', 'ecospectra', 'Sri Balaji S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SRIBALAJIS',
+  'd2e28cdd-230d-4cd1-b798-307d135afacc', 'ORION-S0252', 'Ecospectra', 'ecospectra', 'Sri Balaji S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'SRIBALAJIS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'e74e71c0-8494-4979-b898-e5fd940e57d0', 'VERIFIED-ORION-S0252', 'Sri Balaji S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'd2e28cdd-230d-4cd1-b798-307d135afacc', 'VERIFIED-ORION-S0252', 'Sri Balaji S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'e74e71c0-8494-4979-b898-e5fd940e57d0', 1, 'Alfin Isaac', 'Ecospectra', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd2e28cdd-230d-4cd1-b798-307d135afacc', 1, null, 'Ecospectra', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'e74e71c0-8494-4979-b898-e5fd940e57d0', 2, 'Guru Priyan', 'Ecospectra', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd2e28cdd-230d-4cd1-b798-307d135afacc', 2, null, 'Ecospectra', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'e74e71c0-8494-4979-b898-e5fd940e57d0', 3, 'Shri Veeran', 'Ecospectra', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'd2e28cdd-230d-4cd1-b798-307d135afacc', 3, null, 'Ecospectra', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -9362,43 +9362,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'c96201b8-0106-4624-957b-eb0b71514ff7', 'ORION-S0253', 'Alpha coders', 'alphacoders', 'Mohammed abdul muqeet ahmed', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'MOHAMMEDABDULMUQEETAHMED',
+  '4977eff7-e37e-4091-a0c5-a576128a5f4a', 'ORION-S0253', 'Alpha coders', 'alphacoders', 'Mohammed abdul muqeet ahmed', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-02: LEXVAULT', 'MOHAMMEDABDULMUQEETAHMED',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'c96201b8-0106-4624-957b-eb0b71514ff7', 'VERIFIED-ORION-S0253', 'Mohammed abdul muqeet ahmed', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '4977eff7-e37e-4091-a0c5-a576128a5f4a', 'VERIFIED-ORION-S0253', 'Mohammed abdul muqeet ahmed', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c96201b8-0106-4624-957b-eb0b71514ff7', 1, 'Sanjay S', 'Alpha coders', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4977eff7-e37e-4091-a0c5-a576128a5f4a', 1, null, 'Alpha coders', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c96201b8-0106-4624-957b-eb0b71514ff7', 2, 'SHEIK ABDULLAH.N', 'Alpha coders', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4977eff7-e37e-4091-a0c5-a576128a5f4a', 2, null, 'Alpha coders', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c96201b8-0106-4624-957b-eb0b71514ff7', 3, 'Andrey fredrick', 'Alpha coders', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4977eff7-e37e-4091-a0c5-a576128a5f4a', 3, null, 'Alpha coders', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c96201b8-0106-4624-957b-eb0b71514ff7', 4, 'rohit srirajan', 'Alpha coders', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4977eff7-e37e-4091-a0c5-a576128a5f4a', 4, null, 'Alpha coders', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c96201b8-0106-4624-957b-eb0b71514ff7', 5, 'Joseph snowin S', 'Alpha coders', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '4977eff7-e37e-4091-a0c5-a576128a5f4a', 5, null, 'Alpha coders', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -9407,28 +9407,28 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'b4c382fe-deaf-4ed7-a12b-4aeecd0a60e8', 'ORION-S0255', 'WHITE DOTS', 'whitedots', 'Harrish T', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'HARRISHT',
+  '61bdd642-e5e8-4c02-8bf2-0e1fd4bf4d1c', 'ORION-S0255', 'WHITE DOTS', 'whitedots', 'Harrish T', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'HARRISHT',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'b4c382fe-deaf-4ed7-a12b-4aeecd0a60e8', 'VERIFIED-ORION-S0255', 'Harrish T', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '61bdd642-e5e8-4c02-8bf2-0e1fd4bf4d1c', 'VERIFIED-ORION-S0255', 'Harrish T', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'b4c382fe-deaf-4ed7-a12b-4aeecd0a60e8', 1, 'K N ASWIN', 'WHITE DOTS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '61bdd642-e5e8-4c02-8bf2-0e1fd4bf4d1c', 1, null, 'WHITE DOTS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'b4c382fe-deaf-4ed7-a12b-4aeecd0a60e8', 2, 'Barathraj P H', 'WHITE DOTS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '61bdd642-e5e8-4c02-8bf2-0e1fd4bf4d1c', 2, null, 'WHITE DOTS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -9437,23 +9437,23 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '7e198b65-f4c6-4c27-893a-ffd86af3721b', 'ORION-S0256', 'Dual Core', 'dualcore', 'Mohammed Ashiq', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'MOHAMMEDASHIQ',
+  '533f904f-a4c6-42d6-bcf3-b177a7d756a2', 'ORION-S0256', 'Dual Core', 'dualcore', 'Mohammed Ashiq', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'MOHAMMEDASHIQ',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '7e198b65-f4c6-4c27-893a-ffd86af3721b', 'VERIFIED-ORION-S0256', 'Mohammed Ashiq', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '533f904f-a4c6-42d6-bcf3-b177a7d756a2', 'VERIFIED-ORION-S0256', 'Mohammed Ashiq', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '7e198b65-f4c6-4c27-893a-ffd86af3721b', 1, 'Subashini', 'Dual Core', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '533f904f-a4c6-42d6-bcf3-b177a7d756a2', 1, null, 'Dual Core', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -9462,43 +9462,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'fc24b27d-a1fd-4c46-83ae-6f2fc1279939', 'ORION-S0257', 'Apex Heroes', 'apexheroes', 'Abinav Sreenivas M', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'ABINAVSREENIVASM',
+  '24e0e529-34c6-4d17-8b79-b073a2a4af0e', 'ORION-S0257', 'Apex Heroes', 'apexheroes', 'Abinav Sreenivas M', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'ABINAVSREENIVASM',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'fc24b27d-a1fd-4c46-83ae-6f2fc1279939', 'VERIFIED-ORION-S0257', 'Abinav Sreenivas M', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '24e0e529-34c6-4d17-8b79-b073a2a4af0e', 'VERIFIED-ORION-S0257', 'Abinav Sreenivas M', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'fc24b27d-a1fd-4c46-83ae-6f2fc1279939', 1, 'Ashwin Joe R', 'Apex Heroes', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '24e0e529-34c6-4d17-8b79-b073a2a4af0e', 1, null, 'Apex Heroes', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'fc24b27d-a1fd-4c46-83ae-6f2fc1279939', 2, 'Siranjeevikaruppaiyan P', 'Apex Heroes', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '24e0e529-34c6-4d17-8b79-b073a2a4af0e', 2, null, 'Apex Heroes', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'fc24b27d-a1fd-4c46-83ae-6f2fc1279939', 3, 'Divagar S', 'Apex Heroes', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '24e0e529-34c6-4d17-8b79-b073a2a4af0e', 3, null, 'Apex Heroes', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'fc24b27d-a1fd-4c46-83ae-6f2fc1279939', 4, 'Balaji V', 'Apex Heroes', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '24e0e529-34c6-4d17-8b79-b073a2a4af0e', 4, null, 'Apex Heroes', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'fc24b27d-a1fd-4c46-83ae-6f2fc1279939', 5, 'Vishnu P', 'Apex Heroes', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '24e0e529-34c6-4d17-8b79-b073a2a4af0e', 5, null, 'Apex Heroes', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -9507,28 +9507,28 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'c71fb1a1-a46a-4789-8642-58bd0b2b14d9', 'ORION-S0258', 'Crack Dots', 'crackdots', 'aswin kumaragurubaran', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'ASWINKUMARAGURUBARAN',
+  '9b0be484-dab7-4675-bae5-09c6a9754599', 'ORION-S0258', 'Crack Dots', 'crackdots', 'aswin kumaragurubaran', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'ASWINKUMARAGURUBARAN',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'c71fb1a1-a46a-4789-8642-58bd0b2b14d9', 'VERIFIED-ORION-S0258', 'aswin kumaragurubaran', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '9b0be484-dab7-4675-bae5-09c6a9754599', 'VERIFIED-ORION-S0258', 'aswin kumaragurubaran', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c71fb1a1-a46a-4789-8642-58bd0b2b14d9', 1, 'Elamaran A', 'Crack Dots', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '9b0be484-dab7-4675-bae5-09c6a9754599', 1, null, 'Crack Dots', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c71fb1a1-a46a-4789-8642-58bd0b2b14d9', 2, 'Jagadeeshwaran S', 'Crack Dots', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '9b0be484-dab7-4675-bae5-09c6a9754599', 2, null, 'Crack Dots', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -9537,38 +9537,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'f002a32b-91bc-4f41-b981-f1d116cdf947', 'ORION-S0259', 'Obscura', 'obscura', 'BHUVAN BHANDARI B', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'BHUVANBHANDARIB',
+  '71c2f624-4480-4e1f-9285-37e181b8b5b2', 'ORION-S0259', 'Obscura', 'obscura', 'BHUVAN BHANDARI B', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'BHUVANBHANDARIB',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'f002a32b-91bc-4f41-b981-f1d116cdf947', 'VERIFIED-ORION-S0259', 'BHUVAN BHANDARI B', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '71c2f624-4480-4e1f-9285-37e181b8b5b2', 'VERIFIED-ORION-S0259', 'BHUVAN BHANDARI B', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f002a32b-91bc-4f41-b981-f1d116cdf947', 1, 'DHANUSHRI A', 'Obscura', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '71c2f624-4480-4e1f-9285-37e181b8b5b2', 1, null, 'Obscura', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f002a32b-91bc-4f41-b981-f1d116cdf947', 2, 'ASHIF HUSSAIN M', 'Obscura', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '71c2f624-4480-4e1f-9285-37e181b8b5b2', 2, null, 'Obscura', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f002a32b-91bc-4f41-b981-f1d116cdf947', 3, 'JEEVA KUMAAR S', 'Obscura', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '71c2f624-4480-4e1f-9285-37e181b8b5b2', 3, null, 'Obscura', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f002a32b-91bc-4f41-b981-f1d116cdf947', 4, 'ANUSH R', 'Obscura', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '71c2f624-4480-4e1f-9285-37e181b8b5b2', 4, null, 'Obscura', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -9577,43 +9577,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '0e3b93b6-c3b6-4d04-8245-eb82ce84db04', 'ORION-S0260', 'Infinix', 'infinix', 'S Neha', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SNEHA',
+  '6ff91b69-d130-4e51-bcb3-6e3192f4890e', 'ORION-S0260', 'Infinix', 'infinix', 'S Neha', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SNEHA',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '0e3b93b6-c3b6-4d04-8245-eb82ce84db04', 'VERIFIED-ORION-S0260', 'S Neha', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '6ff91b69-d130-4e51-bcb3-6e3192f4890e', 'VERIFIED-ORION-S0260', 'S Neha', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0e3b93b6-c3b6-4d04-8245-eb82ce84db04', 1, 'Ritika S', 'Infinix', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6ff91b69-d130-4e51-bcb3-6e3192f4890e', 1, null, 'Infinix', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0e3b93b6-c3b6-4d04-8245-eb82ce84db04', 2, 'Sugantha G', 'Infinix', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6ff91b69-d130-4e51-bcb3-6e3192f4890e', 2, null, 'Infinix', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0e3b93b6-c3b6-4d04-8245-eb82ce84db04', 3, 'Syed Israr Ahmed G', 'Infinix', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6ff91b69-d130-4e51-bcb3-6e3192f4890e', 3, null, 'Infinix', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0e3b93b6-c3b6-4d04-8245-eb82ce84db04', 4, 'Kishore P', 'Infinix', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6ff91b69-d130-4e51-bcb3-6e3192f4890e', 4, null, 'Infinix', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0e3b93b6-c3b6-4d04-8245-eb82ce84db04', 5, 'C M Sharvesh', 'Infinix', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '6ff91b69-d130-4e51-bcb3-6e3192f4890e', 5, null, 'Infinix', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -9622,43 +9622,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '2eb3720e-164a-4719-9f1e-54c1b94ebb47', 'ORION-S0261', 'Codex', 'codex', 'Sahana M', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SAHANAM',
+  '8f0f5f96-0e68-42a9-a4df-8734e4b5203b', 'ORION-S0261', 'Codex', 'codex', 'Sahana M', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SAHANAM',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '2eb3720e-164a-4719-9f1e-54c1b94ebb47', 'VERIFIED-ORION-S0261', 'Sahana M', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '8f0f5f96-0e68-42a9-a4df-8734e4b5203b', 'VERIFIED-ORION-S0261', 'Sahana M', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '2eb3720e-164a-4719-9f1e-54c1b94ebb47', 1, 'Tarifa Fathima', 'Codex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8f0f5f96-0e68-42a9-a4df-8734e4b5203b', 1, null, 'Codex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '2eb3720e-164a-4719-9f1e-54c1b94ebb47', 2, 'Swetha M', 'Codex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8f0f5f96-0e68-42a9-a4df-8734e4b5203b', 2, null, 'Codex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '2eb3720e-164a-4719-9f1e-54c1b94ebb47', 3, 'Tanushree R', 'Codex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8f0f5f96-0e68-42a9-a4df-8734e4b5203b', 3, null, 'Codex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '2eb3720e-164a-4719-9f1e-54c1b94ebb47', 4, 'Lakshmi K V', 'Codex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8f0f5f96-0e68-42a9-a4df-8734e4b5203b', 4, null, 'Codex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '2eb3720e-164a-4719-9f1e-54c1b94ebb47', 5, 'Yadhana A', 'Codex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '8f0f5f96-0e68-42a9-a4df-8734e4b5203b', 5, null, 'Codex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -9667,43 +9667,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '5c001794-c75f-4dcf-a872-0b3a02904a25', 'ORION-S0262', 'Quantum Coders', 'quantumcoders', 'Kishore B', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'KISHOREB',
+  '66f93474-0f21-47da-8de4-a0087e929fba', 'ORION-S0262', 'Quantum Coders', 'quantumcoders', 'Kishore B', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'KISHOREB',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '5c001794-c75f-4dcf-a872-0b3a02904a25', 'VERIFIED-ORION-S0262', 'Kishore B', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '66f93474-0f21-47da-8de4-a0087e929fba', 'VERIFIED-ORION-S0262', 'Kishore B', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5c001794-c75f-4dcf-a872-0b3a02904a25', 1, 'Tarunika V', 'Quantum Coders', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '66f93474-0f21-47da-8de4-a0087e929fba', 1, null, 'Quantum Coders', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5c001794-c75f-4dcf-a872-0b3a02904a25', 2, 'Vasanth R', 'Quantum Coders', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '66f93474-0f21-47da-8de4-a0087e929fba', 2, null, 'Quantum Coders', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5c001794-c75f-4dcf-a872-0b3a02904a25', 3, 'Gokul Raj K', 'Quantum Coders', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '66f93474-0f21-47da-8de4-a0087e929fba', 3, null, 'Quantum Coders', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5c001794-c75f-4dcf-a872-0b3a02904a25', 4, 'Kameesvar N', 'Quantum Coders', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '66f93474-0f21-47da-8de4-a0087e929fba', 4, null, 'Quantum Coders', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5c001794-c75f-4dcf-a872-0b3a02904a25', 5, 'Saravanan S', 'Quantum Coders', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '66f93474-0f21-47da-8de4-a0087e929fba', 5, null, 'Quantum Coders', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -9712,33 +9712,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'f1279031-eb89-4e82-a6a9-806ee87be988', 'ORION-S0263', 'QuadraX', 'quadrax', 'Aditya Krishnan A', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'ADITYAKRISHNANA',
+  '05c3e6e6-bd87-4bc5-a7e1-cbba645043fc', 'ORION-S0263', 'QuadraX', 'quadrax', 'Aditya Krishnan A', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'ADITYAKRISHNANA',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'f1279031-eb89-4e82-a6a9-806ee87be988', 'VERIFIED-ORION-S0263', 'Aditya Krishnan A', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '05c3e6e6-bd87-4bc5-a7e1-cbba645043fc', 'VERIFIED-ORION-S0263', 'Aditya Krishnan A', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f1279031-eb89-4e82-a6a9-806ee87be988', 1, 'VENKATESH R.P', 'QuadraX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '05c3e6e6-bd87-4bc5-a7e1-cbba645043fc', 1, null, 'QuadraX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f1279031-eb89-4e82-a6a9-806ee87be988', 2, 'JASIM FAREES J', 'QuadraX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '05c3e6e6-bd87-4bc5-a7e1-cbba645043fc', 2, null, 'QuadraX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'f1279031-eb89-4e82-a6a9-806ee87be988', 3, 'DHIVESH A', 'QuadraX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '05c3e6e6-bd87-4bc5-a7e1-cbba645043fc', 3, null, 'QuadraX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -9747,33 +9747,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '859e9505-18e1-4481-8617-9205365ac27d', 'ORION-S0264', 'ERROR404', 'error404', 'Sanjay.C', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SANJAYC',
+  'ba93b278-6714-4e74-b5a3-1adddbf8560a', 'ORION-S0264', 'ERROR404', 'error404', 'Sanjay.C', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'SANJAYC',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '859e9505-18e1-4481-8617-9205365ac27d', 'VERIFIED-ORION-S0264', 'Sanjay.C', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'ba93b278-6714-4e74-b5a3-1adddbf8560a', 'VERIFIED-ORION-S0264', 'Sanjay.C', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '859e9505-18e1-4481-8617-9205365ac27d', 1, 'Satyajith.M', 'ERROR404', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'ba93b278-6714-4e74-b5a3-1adddbf8560a', 1, null, 'ERROR404', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '859e9505-18e1-4481-8617-9205365ac27d', 2, 'Sanjay Udayashankar', 'ERROR404', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'ba93b278-6714-4e74-b5a3-1adddbf8560a', 2, null, 'ERROR404', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '859e9505-18e1-4481-8617-9205365ac27d', 3, 'Sarika.R', 'ERROR404', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'ba93b278-6714-4e74-b5a3-1adddbf8560a', 3, null, 'ERROR404', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -9782,33 +9782,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'cd7ffe16-b6fc-4eb0-ac2d-07f2391410ba', 'ORION-S0265', 'THE DECODERS', 'thedecoders', 'SAI HARISH M', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SAIHARISHM',
+  '2bb24f20-9f91-4662-beff-87059333e963', 'ORION-S0265', 'THE DECODERS', 'thedecoders', 'SAI HARISH M', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01: FLOATCHAT', 'SAIHARISHM',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'cd7ffe16-b6fc-4eb0-ac2d-07f2391410ba', 'VERIFIED-ORION-S0265', 'SAI HARISH M', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '2bb24f20-9f91-4662-beff-87059333e963', 'VERIFIED-ORION-S0265', 'SAI HARISH M', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'cd7ffe16-b6fc-4eb0-ac2d-07f2391410ba', 1, 'SAI NIRMAL N', 'THE DECODERS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '2bb24f20-9f91-4662-beff-87059333e963', 1, null, 'THE DECODERS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'cd7ffe16-b6fc-4eb0-ac2d-07f2391410ba', 2, 'SHAILESH P S', 'THE DECODERS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '2bb24f20-9f91-4662-beff-87059333e963', 2, null, 'THE DECODERS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'cd7ffe16-b6fc-4eb0-ac2d-07f2391410ba', 3, 'PRASANTTH SAI G', 'THE DECODERS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '2bb24f20-9f91-4662-beff-87059333e963', 3, null, 'THE DECODERS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -9817,33 +9817,33 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '85bcef23-ca9e-4633-a95d-60dcfb90b6d1', 'ORION-S0266', 'WHITE DEVILS', 'whitedevils', 'S.KAILASHWAR', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SKAILASHWAR',
+  '83cd4bbd-3649-4ad0-a3be-20e89892ec7f', 'ORION-S0266', 'WHITE DEVILS', 'whitedevils', 'S.KAILASHWAR', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SKAILASHWAR',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '85bcef23-ca9e-4633-a95d-60dcfb90b6d1', 'VERIFIED-ORION-S0266', 'S.KAILASHWAR', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '83cd4bbd-3649-4ad0-a3be-20e89892ec7f', 'VERIFIED-ORION-S0266', 'S.KAILASHWAR', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '85bcef23-ca9e-4633-a95d-60dcfb90b6d1', 1, 'PRABIN PS', 'WHITE DEVILS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '83cd4bbd-3649-4ad0-a3be-20e89892ec7f', 1, null, 'WHITE DEVILS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '85bcef23-ca9e-4633-a95d-60dcfb90b6d1', 2, 'DEEPIKA K', 'WHITE DEVILS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '83cd4bbd-3649-4ad0-a3be-20e89892ec7f', 2, null, 'WHITE DEVILS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '85bcef23-ca9e-4633-a95d-60dcfb90b6d1', 3, 'DEWANSH SINGH', 'WHITE DEVILS', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '83cd4bbd-3649-4ad0-a3be-20e89892ec7f', 3, null, 'WHITE DEVILS', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -9852,43 +9852,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'eefb7ade-9e24-439b-b88d-71f0462a125c', 'ORION-S0267', 'CODEX', 'codex', 'SAM GODWIN A', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'SAMGODWINA',
+  'b16e9153-080a-4782-979f-6e590c5bda58', 'ORION-S0267', 'CODEX', 'codex', 'SAM GODWIN A', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'SAMGODWINA',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'eefb7ade-9e24-439b-b88d-71f0462a125c', 'VERIFIED-ORION-S0267', 'SAM GODWIN A', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'b16e9153-080a-4782-979f-6e590c5bda58', 'VERIFIED-ORION-S0267', 'SAM GODWIN A', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'eefb7ade-9e24-439b-b88d-71f0462a125c', 1, 'Jeffrin Lino Shalom', 'CODEX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b16e9153-080a-4782-979f-6e590c5bda58', 1, null, 'CODEX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'eefb7ade-9e24-439b-b88d-71f0462a125c', 2, 'PARVESH R', 'CODEX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b16e9153-080a-4782-979f-6e590c5bda58', 2, null, 'CODEX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'eefb7ade-9e24-439b-b88d-71f0462a125c', 3, 'CHINTANASRI R', 'CODEX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b16e9153-080a-4782-979f-6e590c5bda58', 3, null, 'CODEX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'eefb7ade-9e24-439b-b88d-71f0462a125c', 4, 'GOKULPATHY L', 'CODEX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b16e9153-080a-4782-979f-6e590c5bda58', 4, null, 'CODEX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'eefb7ade-9e24-439b-b88d-71f0462a125c', 5, 'MATHIYAZHAGI S', 'CODEX', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b16e9153-080a-4782-979f-6e590c5bda58', 5, null, 'CODEX', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -9897,28 +9897,28 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '93b6145e-d7a1-42fb-a216-f36f31cdd5cb', 'ORION-S0268', 'Inglourious Hackers', 'inglourioushackers', 'CHUKISIVAM VS', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'CHUKISIVAMVS',
+  '5e166840-91d7-4161-a571-bc7e18bee7d6', 'ORION-S0268', 'Inglourious Hackers', 'inglourioushackers', 'CHUKISIVAM VS', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-02: LEXVAULT', 'CHUKISIVAMVS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '93b6145e-d7a1-42fb-a216-f36f31cdd5cb', 'VERIFIED-ORION-S0268', 'CHUKISIVAM VS', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '5e166840-91d7-4161-a571-bc7e18bee7d6', 'VERIFIED-ORION-S0268', 'CHUKISIVAM VS', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '93b6145e-d7a1-42fb-a216-f36f31cdd5cb', 1, 'Sivasanjay M', 'Inglourious Hackers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5e166840-91d7-4161-a571-bc7e18bee7d6', 1, null, 'Inglourious Hackers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '93b6145e-d7a1-42fb-a216-f36f31cdd5cb', 2, 'Krithika S', 'Inglourious Hackers', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '5e166840-91d7-4161-a571-bc7e18bee7d6', 2, null, 'Inglourious Hackers', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -9927,43 +9927,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'c35b9d6c-2ec2-45dd-ad54-8084938cc2f9', 'ORION-S0269', 'RENTRO', 'rentro', 'P.S.Abinaya', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'PSABINAYA',
+  '14720096-7d76-447b-9c0d-e68fe0f11c24', 'ORION-S0269', 'RENTRO', 'rentro', 'P.S.Abinaya', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'PSABINAYA',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'c35b9d6c-2ec2-45dd-ad54-8084938cc2f9', 'VERIFIED-ORION-S0269', 'P.S.Abinaya', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '14720096-7d76-447b-9c0d-e68fe0f11c24', 'VERIFIED-ORION-S0269', 'P.S.Abinaya', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c35b9d6c-2ec2-45dd-ad54-8084938cc2f9', 1, 'VARSHA P J', 'RENTRO', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '14720096-7d76-447b-9c0d-e68fe0f11c24', 1, null, 'RENTRO', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c35b9d6c-2ec2-45dd-ad54-8084938cc2f9', 2, 'MADHUMITHA S', 'RENTRO', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '14720096-7d76-447b-9c0d-e68fe0f11c24', 2, null, 'RENTRO', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c35b9d6c-2ec2-45dd-ad54-8084938cc2f9', 3, 'LAKSHITHA S', 'RENTRO', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '14720096-7d76-447b-9c0d-e68fe0f11c24', 3, null, 'RENTRO', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c35b9d6c-2ec2-45dd-ad54-8084938cc2f9', 4, 'R.HARINE', 'RENTRO', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '14720096-7d76-447b-9c0d-e68fe0f11c24', 4, null, 'RENTRO', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'c35b9d6c-2ec2-45dd-ad54-8084938cc2f9', 5, 'B.Divya', 'RENTRO', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '14720096-7d76-447b-9c0d-e68fe0f11c24', 5, null, 'RENTRO', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -9972,43 +9972,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '25c3ce42-3e3d-4bf8-a8e4-ef58ef55e2be', 'ORION-S0270', 'BRAINROT', 'brainrot', 'Gokila kumara chandru S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'GOKILAKUMARACHANDRUS',
+  '1fea5a6d-d975-4bea-883e-bc1654db7b97', 'ORION-S0270', 'BRAINROT', 'brainrot', 'Gokila kumara chandru S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'GOKILAKUMARACHANDRUS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '25c3ce42-3e3d-4bf8-a8e4-ef58ef55e2be', 'VERIFIED-ORION-S0270', 'Gokila kumara chandru S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '1fea5a6d-d975-4bea-883e-bc1654db7b97', 'VERIFIED-ORION-S0270', 'Gokila kumara chandru S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '25c3ce42-3e3d-4bf8-a8e4-ef58ef55e2be', 1, 'Aswin Sharma .S', 'BRAINROT', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1fea5a6d-d975-4bea-883e-bc1654db7b97', 1, null, 'BRAINROT', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '25c3ce42-3e3d-4bf8-a8e4-ef58ef55e2be', 2, 'Amruth S', 'BRAINROT', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1fea5a6d-d975-4bea-883e-bc1654db7b97', 2, null, 'BRAINROT', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '25c3ce42-3e3d-4bf8-a8e4-ef58ef55e2be', 3, 'BEO SJ PRAKASH', 'BRAINROT', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1fea5a6d-d975-4bea-883e-bc1654db7b97', 3, null, 'BRAINROT', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '25c3ce42-3e3d-4bf8-a8e4-ef58ef55e2be', 4, 'Sri Prithviraj RB', 'BRAINROT', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1fea5a6d-d975-4bea-883e-bc1654db7b97', 4, null, 'BRAINROT', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '25c3ce42-3e3d-4bf8-a8e4-ef58ef55e2be', 5, 'Sharathi A', 'BRAINROT', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '1fea5a6d-d975-4bea-883e-bc1654db7b97', 5, null, 'BRAINROT', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -10017,38 +10017,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  'ffda21ef-f7b5-4a00-94c0-8a05601d3887', 'ORION-S0271', 'Team apex', 'teamapex', 'Mani Govindan S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'MANIGOVINDANS',
+  '2dd93021-935a-4c3f-be01-f040c75d2acc', 'ORION-S0271', 'Team apex', 'teamapex', 'Mani Govindan S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'MANIGOVINDANS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  'ffda21ef-f7b5-4a00-94c0-8a05601d3887', 'VERIFIED-ORION-S0271', 'Mani Govindan S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '2dd93021-935a-4c3f-be01-f040c75d2acc', 'VERIFIED-ORION-S0271', 'Mani Govindan S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ffda21ef-f7b5-4a00-94c0-8a05601d3887', 1, 'Sirajan. A', 'Team apex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '2dd93021-935a-4c3f-be01-f040c75d2acc', 1, null, 'Team apex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ffda21ef-f7b5-4a00-94c0-8a05601d3887', 2, 'M. Sakthibalan', 'Team apex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '2dd93021-935a-4c3f-be01-f040c75d2acc', 2, null, 'Team apex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ffda21ef-f7b5-4a00-94c0-8a05601d3887', 3, 'RAJAGUGAN C', 'Team apex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '2dd93021-935a-4c3f-be01-f040c75d2acc', 3, null, 'Team apex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  'ffda21ef-f7b5-4a00-94c0-8a05601d3887', 4, 'Karthigeyan. R', 'Team apex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '2dd93021-935a-4c3f-be01-f040c75d2acc', 4, null, 'Team apex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -10057,28 +10057,28 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '26cf0e70-ed02-419e-910a-f262a3f9c4c6', 'ORION-S0272', 'Syntax', 'syntax', 'Rakshitha Pearlin.F', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'RAKSHITHAPEARLINF',
+  '710c653b-4517-430b-8795-58a1f3dd084d', 'ORION-S0272', 'Syntax', 'syntax', 'Rakshitha Pearlin.F', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-03: SYLVASENSE', 'RAKSHITHAPEARLINF',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '26cf0e70-ed02-419e-910a-f262a3f9c4c6', 'VERIFIED-ORION-S0272', 'Rakshitha Pearlin.F', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '710c653b-4517-430b-8795-58a1f3dd084d', 'VERIFIED-ORION-S0272', 'Rakshitha Pearlin.F', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '26cf0e70-ed02-419e-910a-f262a3f9c4c6', 1, 'Narendra Naidu', 'Syntax', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '710c653b-4517-430b-8795-58a1f3dd084d', 1, null, 'Syntax', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '26cf0e70-ed02-419e-910a-f262a3f9c4c6', 2, 'Laranya', 'Syntax', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '710c653b-4517-430b-8795-58a1f3dd084d', 2, null, 'Syntax', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -10087,43 +10087,43 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '8782f44d-9f78-449b-8e43-256b72f80e5e', 'ORION-S0273', 'Rocks', 'rocks', 'Athi Narayanan', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'ATHINARAYANAN',
+  '2316833e-e14a-459a-b725-22b0e0544321', 'ORION-S0273', 'Rocks', 'rocks', 'Athi Narayanan', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'ATHINARAYANAN',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '8782f44d-9f78-449b-8e43-256b72f80e5e', 'VERIFIED-ORION-S0273', 'Athi Narayanan', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '2316833e-e14a-459a-b725-22b0e0544321', 'VERIFIED-ORION-S0273', 'Athi Narayanan', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8782f44d-9f78-449b-8e43-256b72f80e5e', 1, 'Vimal Varshit V', 'Rocks', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '2316833e-e14a-459a-b725-22b0e0544321', 1, null, 'Rocks', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8782f44d-9f78-449b-8e43-256b72f80e5e', 2, 'Sanjay B', 'Rocks', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '2316833e-e14a-459a-b725-22b0e0544321', 2, null, 'Rocks', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8782f44d-9f78-449b-8e43-256b72f80e5e', 3, 'Mukkeshnarayan JR', 'Rocks', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '2316833e-e14a-459a-b725-22b0e0544321', 3, null, 'Rocks', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8782f44d-9f78-449b-8e43-256b72f80e5e', 4, 'Arulraj sekhar d', 'Rocks', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '2316833e-e14a-459a-b725-22b0e0544321', 4, null, 'Rocks', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '8782f44d-9f78-449b-8e43-256b72f80e5e', 5, 'Ameer K', 'Rocks', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '2316833e-e14a-459a-b725-22b0e0544321', 5, null, 'Rocks', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -10132,38 +10132,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '0ff7f0eb-2d09-4420-b93a-ae97f09d4388', 'ORION-S0274', 'Undefined Behaviour', 'undefinedbehaviour', '312425148034 MISHALI B S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', '312425148034MISHALIBS',
+  '0ae9fbd8-0756-418e-90c5-84ca73083517', 'ORION-S0274', 'Undefined Behaviour', 'undefinedbehaviour', '312425148034 MISHALI B S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', '312425148034MISHALIBS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '0ff7f0eb-2d09-4420-b93a-ae97f09d4388', 'VERIFIED-ORION-S0274', '312425148034 MISHALI B S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  '0ae9fbd8-0756-418e-90c5-84ca73083517', 'VERIFIED-ORION-S0274', '312425148034 MISHALI B S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0ff7f0eb-2d09-4420-b93a-ae97f09d4388', 1, 'Sharvesh S', 'Undefined Behaviour', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0ae9fbd8-0756-418e-90c5-84ca73083517', 1, null, 'Undefined Behaviour', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0ff7f0eb-2d09-4420-b93a-ae97f09d4388', 2, 'Nilofar Banu S', 'Undefined Behaviour', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0ae9fbd8-0756-418e-90c5-84ca73083517', 2, null, 'Undefined Behaviour', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0ff7f0eb-2d09-4420-b93a-ae97f09d4388', 3, 'Arikarthikessan S', 'Undefined Behaviour', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0ae9fbd8-0756-418e-90c5-84ca73083517', 3, null, 'Undefined Behaviour', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '0ff7f0eb-2d09-4420-b93a-ae97f09d4388', 4, 'Kishorr Manickam B', 'Undefined Behaviour', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  '0ae9fbd8-0756-418e-90c5-84ca73083517', 4, null, 'Undefined Behaviour', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -10172,38 +10172,38 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '87164892-2f20-4665-b8fc-f7eaf0777470', 'ORION-S0275', 'BOULT', 'boult', 'YUVARAJ S', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'YUVARAJS',
+  'b0fe525e-a435-4ec2-8128-21bc7cf548e2', 'ORION-S0275', 'BOULT', 'boult', 'YUVARAJ S', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'YUVARAJS',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '87164892-2f20-4665-b8fc-f7eaf0777470', 'VERIFIED-ORION-S0275', 'YUVARAJ S', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'b0fe525e-a435-4ec2-8128-21bc7cf548e2', 'VERIFIED-ORION-S0275', 'YUVARAJ S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '87164892-2f20-4665-b8fc-f7eaf0777470', 1, 'VIJAYABALAJI D', 'BOULT', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b0fe525e-a435-4ec2-8128-21bc7cf548e2', 1, null, 'BOULT', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '87164892-2f20-4665-b8fc-f7eaf0777470', 2, 'GNANDEEP P', 'BOULT', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b0fe525e-a435-4ec2-8128-21bc7cf548e2', 2, null, 'BOULT', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '87164892-2f20-4665-b8fc-f7eaf0777470', 3, 'THIRUKUMARAN V', 'BOULT', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b0fe525e-a435-4ec2-8128-21bc7cf548e2', 3, null, 'BOULT', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '87164892-2f20-4665-b8fc-f7eaf0777470', 4, 'VISHAL R', 'BOULT', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'b0fe525e-a435-4ec2-8128-21bc7cf548e2', 4, null, 'BOULT', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.teams (
@@ -10212,43 +10212,338 @@ insert into public.teams (
   payment_status, amount, registration_status, round_1_status, round_2_status,
   admin_notes, created_at, updated_at
 ) values (
-  '5bde2871-f2f5-4db9-b26e-2bb57506e7bb', 'ORION-S0276', 'NeuroNex', 'neuronex', 'Teja Sri M', '', '',
-  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-01', 'TEJASRIM',
+  'dd542920-91e7-4031-b060-a1f9f69cb921', 'ORION-S0276', 'NeuroNex', 'neuronex', 'Teja Sri M', '', '',
+  'Sathyabama Institute of Science and Technology', 'Engineering', 'Student', 'ORION-PS-04: Open Innovation Track', 'TEJASRIM',
   'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
-  'Official verified roster (2026-09-08)', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z'
+  'Updated official verified roster (2026-09-08)', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z'
 );
 
 insert into public.payments (
   team_id, utr_number, payer_name, payer_upi, amount, payment_status,
   notes, submitted_at, verified_at, verified_by
 ) values (
-  '5bde2871-f2f5-4db9-b26e-2bb57506e7bb', 'VERIFIED-ORION-S0276', 'Teja Sri M', 'official@upi', 100, 'VERIFIED',
-  'Verified from official Secretariat roster', '2026-09-08T04:58:26.136Z', '2026-09-08T04:58:26.136Z', 'Admin Secretariat'
+  'dd542920-91e7-4031-b060-a1f9f69cb921', 'VERIFIED-ORION-S0276', 'Teja Sri M', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:27:39.093Z', '2026-09-08T05:27:39.093Z', 'Admin Secretariat'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5bde2871-f2f5-4db9-b26e-2bb57506e7bb', 1, 'Sakthivel A', 'NeuroNex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'dd542920-91e7-4031-b060-a1f9f69cb921', 1, null, 'NeuroNex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5bde2871-f2f5-4db9-b26e-2bb57506e7bb', 2, 'Saraboji S', 'NeuroNex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'dd542920-91e7-4031-b060-a1f9f69cb921', 2, null, 'NeuroNex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5bde2871-f2f5-4db9-b26e-2bb57506e7bb', 3, 'Sowmiya M', 'NeuroNex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'dd542920-91e7-4031-b060-a1f9f69cb921', 3, null, 'NeuroNex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5bde2871-f2f5-4db9-b26e-2bb57506e7bb', 4, 'Supriya D', 'NeuroNex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'dd542920-91e7-4031-b060-a1f9f69cb921', 4, null, 'NeuroNex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
 );
 insert into public.team_members (
   team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
 ) values (
-  '5bde2871-f2f5-4db9-b26e-2bb57506e7bb', 5, 'Sanjay S', 'NeuroNex', '', '', 'Engineering', 'Student', '2026-09-08T04:58:26.136Z'
+  'dd542920-91e7-4031-b060-a1f9f69cb921', 5, null, 'NeuroNex', '', '', 'Engineering', 'Student', '2026-09-08T05:27:39.093Z'
+);
+
+insert into public.teams (
+  id, registration_id, team_name, username, leader_name, leader_phone, leader_email,
+  institution, department, year, problem_statement, access_token,
+  payment_status, amount, registration_status, round_1_status, round_2_status,
+  admin_notes, created_at, updated_at
+) values (
+  'ca6feff2-30fd-4ea2-be68-08aa067adfe1', 'ORION-S0277', 'Mindforge', 'mindforge', 'Riyasri.P', '', 'riyasweety16024@gmail.com',
+  'Er. Perumal Manimekalai College of Engineering,Hosur', 'B.Tech/ Information Technology', 'Fourth Year', 'ORION-PS-04: Open Innovation Track', 'RIYASRIP',
+  'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
+  'Official verified roster (2026-09-08)', '2026-09-08T05:33:14.809Z', '2026-09-08T05:33:14.809Z'
+);
+
+insert into public.payments (
+  team_id, utr_number, payer_name, payer_upi, amount, payment_status,
+  notes, submitted_at, verified_at, verified_by
+) values (
+  'ca6feff2-30fd-4ea2-be68-08aa067adfe1', 'VERIFIED-ORION-S0277', 'Riyasri.P', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:33:14.809Z', '2026-09-08T05:33:14.809Z', 'Admin Secretariat'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  'ca6feff2-30fd-4ea2-be68-08aa067adfe1', 1, null, 'Mindforge', '', '', 'B.Tech/ Information Technology', 'Fourth Year', '2026-09-08T05:33:14.809Z'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  'ca6feff2-30fd-4ea2-be68-08aa067adfe1', 2, null, 'Mindforge', '', '', 'B.Tech/ Information Technology', 'Fourth Year', '2026-09-08T05:33:14.809Z'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  'ca6feff2-30fd-4ea2-be68-08aa067adfe1', 3, null, 'Mindforge', '', '', 'B.Tech/ Information Technology', 'Fourth Year', '2026-09-08T05:33:14.809Z'
+);
+
+insert into public.teams (
+  id, registration_id, team_name, username, leader_name, leader_phone, leader_email,
+  institution, department, year, problem_statement, access_token,
+  payment_status, amount, registration_status, round_1_status, round_2_status,
+  admin_notes, created_at, updated_at
+) values (
+  '5a0e60da-918d-408b-95a2-e34ceca046ff', 'ORION-S0278', 'CIPHER', 'cipher', 'YOGEESHWARAN C', '', 'yogeeshwaran.c.2025.ece@rajalakshmi.edu.in',
+  'RAJALAKSHMI ENGINEERING COLLEGE', 'B.E ECE', 'Second Year', 'ORION-PS-01: FLOATCHAT', 'YOGEESHWARANC',
+  'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
+  'Official verified roster (2026-09-08)', '2026-09-08T05:33:14.809Z', '2026-09-08T05:33:14.809Z'
+);
+
+insert into public.payments (
+  team_id, utr_number, payer_name, payer_upi, amount, payment_status,
+  notes, submitted_at, verified_at, verified_by
+) values (
+  '5a0e60da-918d-408b-95a2-e34ceca046ff', 'VERIFIED-ORION-S0278', 'YOGEESHWARAN C', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:33:14.809Z', '2026-09-08T05:33:14.809Z', 'Admin Secretariat'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  '5a0e60da-918d-408b-95a2-e34ceca046ff', 1, null, 'CIPHER', '', '', 'B.E ECE', 'Second Year', '2026-09-08T05:33:14.809Z'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  '5a0e60da-918d-408b-95a2-e34ceca046ff', 2, null, 'CIPHER', '', '', 'B.E ECE', 'Second Year', '2026-09-08T05:33:14.809Z'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  '5a0e60da-918d-408b-95a2-e34ceca046ff', 3, null, 'CIPHER', '', '', 'B.E ECE', 'Second Year', '2026-09-08T05:33:14.809Z'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  '5a0e60da-918d-408b-95a2-e34ceca046ff', 4, null, 'CIPHER', '', '', 'B.E ECE', 'Second Year', '2026-09-08T05:33:14.809Z'
+);
+
+insert into public.teams (
+  id, registration_id, team_name, username, leader_name, leader_phone, leader_email,
+  institution, department, year, problem_statement, access_token,
+  payment_status, amount, registration_status, round_1_status, round_2_status,
+  admin_notes, created_at, updated_at
+) values (
+  '3e64b899-1c81-419b-b230-eb95ea80d98b', 'ORION-S0279', 'IGNITE', 'ignite', 'Janani', '', 'jananijai628@gmail.com',
+  'Jeppiaar Institute Technology', 'Information Technology', 'Second Year', 'ORION-PS-04: Open Innovation Track', 'JANANI2026',
+  'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
+  'Official verified roster (2026-09-08)', '2026-09-08T05:33:14.809Z', '2026-09-08T05:33:14.809Z'
+);
+
+insert into public.payments (
+  team_id, utr_number, payer_name, payer_upi, amount, payment_status,
+  notes, submitted_at, verified_at, verified_by
+) values (
+  '3e64b899-1c81-419b-b230-eb95ea80d98b', 'VERIFIED-ORION-S0279', 'Janani', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:33:14.809Z', '2026-09-08T05:33:14.809Z', 'Admin Secretariat'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  '3e64b899-1c81-419b-b230-eb95ea80d98b', 1, null, 'IGNITE', '', '', 'Information Technology', 'Second Year', '2026-09-08T05:33:14.809Z'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  '3e64b899-1c81-419b-b230-eb95ea80d98b', 2, null, 'IGNITE', '', '', 'Information Technology', 'Second Year', '2026-09-08T05:33:14.809Z'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  '3e64b899-1c81-419b-b230-eb95ea80d98b', 3, null, 'IGNITE', '', '', 'Information Technology', 'Second Year', '2026-09-08T05:33:14.809Z'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  '3e64b899-1c81-419b-b230-eb95ea80d98b', 4, null, 'IGNITE', '', '', 'Information Technology', 'Second Year', '2026-09-08T05:33:14.809Z'
+);
+
+insert into public.teams (
+  id, registration_id, team_name, username, leader_name, leader_phone, leader_email,
+  institution, department, year, problem_statement, access_token,
+  payment_status, amount, registration_status, round_1_status, round_2_status,
+  admin_notes, created_at, updated_at
+) values (
+  'ba50384b-529c-41f2-8d21-79f67e19d6d8', 'ORION-S0280', 'ZENTRIX', 'zentrix', 'AFRINA B', '', 'afrinabasheer1111@gmail.com',
+  'DR.N.G.P INSTITUTE OF TECHNOLOGY', 'B.Tech Computer Science and Business Systems', 'Third Year', 'ORION-PS-03: SYLVASENSE', 'AFRINAB2026',
+  'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
+  'Official verified roster (2026-09-08)', '2026-09-08T05:33:14.809Z', '2026-09-08T05:33:14.809Z'
+);
+
+insert into public.payments (
+  team_id, utr_number, payer_name, payer_upi, amount, payment_status,
+  notes, submitted_at, verified_at, verified_by
+) values (
+  'ba50384b-529c-41f2-8d21-79f67e19d6d8', 'VERIFIED-ORION-S0280', 'AFRINA B', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:33:14.809Z', '2026-09-08T05:33:14.809Z', 'Admin Secretariat'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  'ba50384b-529c-41f2-8d21-79f67e19d6d8', 1, null, 'ZENTRIX', '', '', 'B.Tech Computer Science and Business Systems', 'Third Year', '2026-09-08T05:33:14.809Z'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  'ba50384b-529c-41f2-8d21-79f67e19d6d8', 2, null, 'ZENTRIX', '', '', 'B.Tech Computer Science and Business Systems', 'Third Year', '2026-09-08T05:33:14.809Z'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  'ba50384b-529c-41f2-8d21-79f67e19d6d8', 3, null, 'ZENTRIX', '', '', 'B.Tech Computer Science and Business Systems', 'Third Year', '2026-09-08T05:33:14.809Z'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  'ba50384b-529c-41f2-8d21-79f67e19d6d8', 4, null, 'ZENTRIX', '', '', 'B.Tech Computer Science and Business Systems', 'Third Year', '2026-09-08T05:33:14.809Z'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  'ba50384b-529c-41f2-8d21-79f67e19d6d8', 5, null, 'ZENTRIX', '', '', 'B.Tech Computer Science and Business Systems', 'Third Year', '2026-09-08T05:33:14.809Z'
+);
+
+insert into public.teams (
+  id, registration_id, team_name, username, leader_name, leader_phone, leader_email,
+  institution, department, year, problem_statement, access_token,
+  payment_status, amount, registration_status, round_1_status, round_2_status,
+  admin_notes, created_at, updated_at
+) values (
+  '586a17ac-2ea8-4305-8d5e-58b86449619d', 'ORION-S0281', 'NEXOVA', 'nexova', 'Shyam Sundar S', '', 'shyamsundar.s.2025.mech@rajalakshmi.edu.in',
+  'Rajalakshmi Engineering College', 'Mechanical Engineering', 'Second Year', 'ORION-PS-04: Open Innovation Track', 'SHYAMSUNDARS',
+  'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
+  'Official verified roster (2026-09-08)', '2026-09-08T05:33:14.809Z', '2026-09-08T05:33:14.809Z'
+);
+
+insert into public.payments (
+  team_id, utr_number, payer_name, payer_upi, amount, payment_status,
+  notes, submitted_at, verified_at, verified_by
+) values (
+  '586a17ac-2ea8-4305-8d5e-58b86449619d', 'VERIFIED-ORION-S0281', 'Shyam Sundar S', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:33:14.809Z', '2026-09-08T05:33:14.809Z', 'Admin Secretariat'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  '586a17ac-2ea8-4305-8d5e-58b86449619d', 1, null, 'NEXOVA', '', '', 'Mechanical Engineering', 'Second Year', '2026-09-08T05:33:14.809Z'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  '586a17ac-2ea8-4305-8d5e-58b86449619d', 2, null, 'NEXOVA', '', '', 'Mechanical Engineering', 'Second Year', '2026-09-08T05:33:14.809Z'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  '586a17ac-2ea8-4305-8d5e-58b86449619d', 3, null, 'NEXOVA', '', '', 'Mechanical Engineering', 'Second Year', '2026-09-08T05:33:14.809Z'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  '586a17ac-2ea8-4305-8d5e-58b86449619d', 4, null, 'NEXOVA', '', '', 'Mechanical Engineering', 'Second Year', '2026-09-08T05:33:14.809Z'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  '586a17ac-2ea8-4305-8d5e-58b86449619d', 5, null, 'NEXOVA', '', '', 'Mechanical Engineering', 'Second Year', '2026-09-08T05:33:14.809Z'
+);
+
+insert into public.teams (
+  id, registration_id, team_name, username, leader_name, leader_phone, leader_email,
+  institution, department, year, problem_statement, access_token,
+  payment_status, amount, registration_status, round_1_status, round_2_status,
+  admin_notes, created_at, updated_at
+) values (
+  '328fecf9-c85d-4085-bfd1-764d72287dd5', 'ORION-S0282', 'Phantom', 'phantom', 'Abishek Sunil Saraswathy', '', 'abishekss2007@gmail.com',
+  'Dr. MGR EDUCATION AND RESEARCH INSTITUTE', 'B-Tech (CSE DS&AI)', 'Third Year', 'ORION-PS-04: Open Innovation Track', 'ABISHEKSUNILSARASWATHY',
+  'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
+  'Official verified roster (2026-09-08)', '2026-09-08T05:33:14.809Z', '2026-09-08T05:33:14.809Z'
+);
+
+insert into public.payments (
+  team_id, utr_number, payer_name, payer_upi, amount, payment_status,
+  notes, submitted_at, verified_at, verified_by
+) values (
+  '328fecf9-c85d-4085-bfd1-764d72287dd5', 'VERIFIED-ORION-S0282', 'Abishek Sunil Saraswathy', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:33:14.809Z', '2026-09-08T05:33:14.809Z', 'Admin Secretariat'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  '328fecf9-c85d-4085-bfd1-764d72287dd5', 1, null, 'Phantom', '', '', 'B-Tech (CSE DS&AI)', 'Third Year', '2026-09-08T05:33:14.809Z'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  '328fecf9-c85d-4085-bfd1-764d72287dd5', 2, null, 'Phantom', '', '', 'B-Tech (CSE DS&AI)', 'Third Year', '2026-09-08T05:33:14.809Z'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  '328fecf9-c85d-4085-bfd1-764d72287dd5', 3, null, 'Phantom', '', '', 'B-Tech (CSE DS&AI)', 'Third Year', '2026-09-08T05:33:14.809Z'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  '328fecf9-c85d-4085-bfd1-764d72287dd5', 4, null, 'Phantom', '', '', 'B-Tech (CSE DS&AI)', 'Third Year', '2026-09-08T05:33:14.809Z'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  '328fecf9-c85d-4085-bfd1-764d72287dd5', 5, null, 'Phantom', '', '', 'B-Tech (CSE DS&AI)', 'Third Year', '2026-09-08T05:33:14.809Z'
+);
+
+insert into public.teams (
+  id, registration_id, team_name, username, leader_name, leader_phone, leader_email,
+  institution, department, year, problem_statement, access_token,
+  payment_status, amount, registration_status, round_1_status, round_2_status,
+  admin_notes, created_at, updated_at
+) values (
+  '0286f597-3947-450d-adc5-507964d69161', 'ORION-S0283', 'Spartanzz Apex', 'spartanzzapex', 'Suriya GR', '', 'suriyaravi1926@gmail.com',
+  'ADHIPARASAKTHI COLLEGE OF ENGINEERING', 'B.E.Electronics and Communication Engineering (ECE)', 'Third Year', 'ORION-PS-04: Open Innovation Track', 'SURIYAGR',
+  'VERIFIED', 100, 'REGISTERED', 'SUBMISSION_OPEN', 'LOCKED',
+  'Official verified roster (2026-09-08)', '2026-09-08T05:33:14.809Z', '2026-09-08T05:33:14.809Z'
+);
+
+insert into public.payments (
+  team_id, utr_number, payer_name, payer_upi, amount, payment_status,
+  notes, submitted_at, verified_at, verified_by
+) values (
+  '0286f597-3947-450d-adc5-507964d69161', 'VERIFIED-ORION-S0283', 'Suriya GR', 'official@upi', 100, 'VERIFIED',
+  'Verified from official Secretariat roster', '2026-09-08T05:33:14.809Z', '2026-09-08T05:33:14.809Z', 'Admin Secretariat'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  '0286f597-3947-450d-adc5-507964d69161', 1, null, 'Spartanzz Apex', '', '', 'B.E.Electronics and Communication Engineering (ECE)', 'Third Year', '2026-09-08T05:33:14.809Z'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  '0286f597-3947-450d-adc5-507964d69161', 2, null, 'Spartanzz Apex', '', '', 'B.E.Electronics and Communication Engineering (ECE)', 'Third Year', '2026-09-08T05:33:14.809Z'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  '0286f597-3947-450d-adc5-507964d69161', 3, null, 'Spartanzz Apex', '', '', 'B.E.Electronics and Communication Engineering (ECE)', 'Third Year', '2026-09-08T05:33:14.809Z'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  '0286f597-3947-450d-adc5-507964d69161', 4, null, 'Spartanzz Apex', '', '', 'B.E.Electronics and Communication Engineering (ECE)', 'Third Year', '2026-09-08T05:33:14.809Z'
+);
+insert into public.team_members (
+  team_id, member_number, member_name, team_name, member_phone, member_email, department, year, created_at
+) values (
+  '0286f597-3947-450d-adc5-507964d69161', 5, null, 'Spartanzz Apex', '', '', 'B.E.Electronics and Communication Engineering (ECE)', 'Third Year', '2026-09-08T05:33:14.809Z'
 );
 
 commit;
