@@ -86,4 +86,18 @@ for (const team of allNewTeams) {
 }
 memberRepair += `\ncommit;\n`;
 fs.writeFileSync('src/db/migrations/023_populate_all_new_team_members.sql', memberRepair);
+
+for (let offset = 0; offset < allNewTeams.length; offset += 8) {
+  const chunk = allNewTeams.slice(offset, offset + 8);
+  let chunkSql = `-- Chunk ${Math.floor(offset / 8) + 1}: populate non-leader members for ${chunk[0].registration_id}-${chunk.at(-1).registration_id}.\n-- Safe to rerun.\nbegin;\n`;
+  for (const team of chunk) {
+    const nonLeaders = (team.members || []).filter((member) => slug(member.member_name).toLowerCase() !== slug(team.leader_name).toLowerCase());
+    chunkSql += `\ndelete from public.team_members where team_id=(select id from public.teams where registration_id='${esc(team.registration_id)}');\n`;
+    nonLeaders.forEach((member, index) => {
+      chunkSql += `insert into public.team_members (team_id,member_number,member_name,team_name,member_phone,member_email,department,year) select id,${index + 1},'${esc(member.member_name)}','${esc(team.team_name)}','${esc(member.member_phone || '')}','${esc(member.member_email || '')}','${esc(member.department || team.department || '')}','${esc(member.year || team.year || '')}' from public.teams where registration_id='${esc(team.registration_id)}';\n`;
+    });
+  }
+  chunkSql += `\ncommit;\n`;
+  fs.writeFileSync(`src/db/migrations/023_${Math.floor(offset / 8) + 1}_new_team_members.sql`, chunkSql);
+}
 console.log(JSON.stringify({ imported: rows.length, totalTeams: store.teams.length, migrations: ['src/db/migrations/021_import_final_pdf_teams.sql','src/db/migrations/022_remove_new_team_leader_duplicates.sql','src/db/migrations/023_populate_all_new_team_members.sql'] }));
