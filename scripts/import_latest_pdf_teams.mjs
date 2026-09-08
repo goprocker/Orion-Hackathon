@@ -42,10 +42,16 @@ for (const team of store.teams) {
 }
 
 for (const [rid, name, leader, email, department, year, institution, problem, memberNames] of rows) {
-  if (store.teams.some((team) => team.registration_id === rid)) continue;
+  const existing = store.teams.find((team) => team.registration_id === rid);
+  if (existing) {
+    existing.members = (existing.members || [])
+      .filter((member) => slug(member.member_name).toLowerCase() !== slug(leader).toLowerCase())
+      .map((member, index) => ({ ...member, member_number: index + 1 }));
+    continue;
+  }
   const teamId = crypto.randomUUID();
   const payment = { id: crypto.randomUUID(), team_id: teamId, utr_number: `VERIFIED-${rid}`, payer_name: leader, payer_upi: 'official@upi', amount: 100, payment_status: 'VERIFIED', notes: 'Official verified roster PDF import', submitted_at: now, verified_at: now, verified_by: 'system_pdf_importer' };
-  const members = [leader, ...memberNames].map((member_name, index) => ({ id: crypto.randomUUID(), team_id: teamId, member_number: index + 1, member_name, member_phone: '', member_email: index === 0 ? email : '', department, year }));
+  const members = memberNames.map((member_name, index) => ({ id: crypto.randomUUID(), team_id: teamId, member_number: index + 1, member_name, member_phone: '', member_email: '', department, year }));
   store.teams.push({ id: teamId, registration_id: rid, team_name: name, username: slug(name).toLowerCase(), leader_name: leader, leader_phone: '', leader_email: email, institution, department, year, problem_statement: problem, access_token: slug(leader).toUpperCase(), payment_status: 'VERIFIED', payment, amount: 100, registration_status: 'REGISTERED', round_1_status: 'SUBMISSION_OPEN', round_2_status: 'LOCKED', admin_notes: 'Official verified roster (2026-09-08)', members, submissions: [], resubmission_requests: [], audit_logs: [], created_at: now, updated_at: now });
   store.payments.push(payment);
 }
@@ -54,9 +60,17 @@ fs.writeFileSync(storePath, JSON.stringify(store, null, 2));
 let sql = `-- Add the final 24 teams from the 2026-09-08 PDF and normalize credentials.\nbegin;\n\nupdate public.teams set username=lower(regexp_replace(team_name,'[^a-zA-Z0-9]','','g')), access_token=upper(regexp_replace(leader_name,'[^a-zA-Z0-9]','','g')), updated_at=now();\n`;
 for (const [rid,name,leader,email,department,year,institution,problem,members] of rows) {
   sql += `\ninsert into public.teams (registration_id,team_name,username,leader_name,leader_phone,leader_email,institution,department,year,problem_statement,access_token,payment_status,amount,registration_status,round_1_status,round_2_status,admin_notes) values ('${esc(rid)}','${esc(name)}','${esc(slug(name).toLowerCase())}','${esc(leader)}','','${esc(email)}','${esc(institution)}','${esc(department)}','${esc(year)}','${esc(problem)}','${esc(slug(leader).toUpperCase())}','VERIFIED',100,'REGISTERED','SUBMISSION_OPEN','LOCKED','Official verified roster (2026-09-08)') on conflict (registration_id) do update set team_name=excluded.team_name,username=excluded.username,leader_name=excluded.leader_name,leader_email=excluded.leader_email,institution=excluded.institution,department=excluded.department,year=excluded.year,problem_statement=excluded.problem_statement,access_token=excluded.access_token,updated_at=now();\n`;
-  [leader,...members].forEach((member,index) => { sql += `insert into public.team_members (team_id,member_number,member_name,team_name,member_phone,member_email,department,year) select id,${index+1},'${esc(member)}','${esc(name)}','','${index===0?esc(email):''}','${esc(department)}','${esc(year)}' from public.teams where registration_id='${esc(rid)}' on conflict (team_id,member_number) do update set member_name=excluded.member_name,team_name=excluded.team_name,member_email=excluded.member_email,department=excluded.department,year=excluded.year;\n`; });
+  members.forEach((member,index) => { sql += `insert into public.team_members (team_id,member_number,member_name,team_name,member_phone,member_email,department,year) select id,${index+1},'${esc(member)}','${esc(name)}','','','${esc(department)}','${esc(year)}' from public.teams where registration_id='${esc(rid)}' on conflict (team_id,member_number) do update set member_name=excluded.member_name,team_name=excluded.team_name,member_email=excluded.member_email,department=excluded.department,year=excluded.year;\n`; });
   sql += `insert into public.payments (team_id,utr_number,payer_name,payer_upi,amount,payment_status,notes,verified_at,verified_by) select id,'VERIFIED-${esc(rid)}','${esc(leader)}','official@upi',100,'VERIFIED','Official verified roster PDF import',now(),'system_pdf_importer' from public.teams where registration_id='${esc(rid)}' on conflict (team_id) do nothing;\n`;
 }
 sql += `\ncommit;\n`;
 fs.writeFileSync('src/db/migrations/021_import_final_pdf_teams.sql', sql);
-console.log(JSON.stringify({ imported: rows.length, totalTeams: store.teams.length, migration: 'src/db/migrations/021_import_final_pdf_teams.sql' }));
+
+let correction = `-- Remove duplicated leaders from team_members for only S0284-S0307.\n-- Migration 021 originally stored each leader both on teams and in team_members.\nbegin;\n`;
+for (const [rid,name,, ,department,year,,,members] of rows) {
+  correction += `\ndelete from public.team_members where team_id=(select id from public.teams where registration_id='${esc(rid)}');\n`;
+  members.forEach((member,index) => { correction += `insert into public.team_members (team_id,member_number,member_name,team_name,member_phone,member_email,department,year) select id,${index+1},'${esc(member)}','${esc(name)}','','','${esc(department)}','${esc(year)}' from public.teams where registration_id='${esc(rid)}';\n`; });
+}
+correction += `\ncommit;\n`;
+fs.writeFileSync('src/db/migrations/022_remove_new_team_leader_duplicates.sql', correction);
+console.log(JSON.stringify({ imported: rows.length, totalTeams: store.teams.length, migrations: ['src/db/migrations/021_import_final_pdf_teams.sql','src/db/migrations/022_remove_new_team_leader_duplicates.sql'] }));
