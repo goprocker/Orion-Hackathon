@@ -24,11 +24,8 @@ import {
   RefreshCw,
   FileCheck,
   ExternalLink,
-  Globe,
   Send,
-  ShieldCheck,
-  KeyRound,
-  XCircle
+  KeyRound
 } from 'lucide-react';
 import { GlassCard } from '@/components/common/GlassCard';
 import { PaymentReceiptModal } from '@/components/modals/PaymentReceiptModal';
@@ -78,18 +75,6 @@ export default function TeamPortalPage() {
   const [isSubmittingPayment, setIsSubmittingPayment] = useState(false);
   const [paymentMsg, setPaymentMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
-  // File Upload & Project Link State
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [projectUrl, setProjectUrl] = useState('');
-  const [repoUrl, setRepoUrl] = useState('');
-  const [isUploading, setIsUploading] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const [uploadMsg, setUploadMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-
-  // Re-upload Request State — replacing an accepted deck needs organiser approval
-  const [reuploadReason, setReuploadReason] = useState('');
-  const [isRequestingReupload, setIsRequestingReupload] = useState(false);
-  const [reuploadMsg, setReuploadMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   // Forgot-passcode flow — requests a one-time reset link to the registered
   // leader email. Reuses the username field above rather than asking twice.
@@ -318,89 +303,6 @@ export default function TeamPortalPage() {
     }
   };
 
-  // File Upload Handler
-  const handleFileUpload = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!team || !selectedFile) return;
-
-    sound.playClick();
-    setIsUploading(true);
-    setUploadMsg(null);
-
-    try {
-      const formData = new FormData();
-      formData.append('teamId', team.registration_id);
-      formData.append('accessToken', team.access_token);
-      formData.append('file', selectedFile);
-      if (projectUrl.trim()) formData.append('projectUrl', projectUrl.trim());
-      if (repoUrl.trim()) formData.append('repoUrl', repoUrl.trim());
-
-      const res = await fetch('/api/team/submission', {
-        method: 'POST',
-        body: formData
-      });
-
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.error || 'Upload failed');
-      }
-
-      confetti({
-        particleCount: 80,
-        spread: 60,
-        origin: { y: 0.6 }
-      });
-      sound.playSuccessCelebration();
-
-      setUploadMsg({
-        type: 'success',
-        text: latestSubmission
-          ? 'Replacement presentation uploaded and accepted. This is now the version the jury will evaluate.'
-          : 'Round 1 presentation uploaded and accepted. Your payment is verified, so no further approval is needed.'
-      });
-      setSelectedFile(null);
-      handleRefresh();
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Upload failed';
-      setUploadMsg({ type: 'error', text: msg });
-    } finally {
-      setIsUploading(false);
-    }
-  };
-
-  // Ask organisers for permission to replace an already-accepted deck.
-  const handleRequestReupload = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!team) return;
-
-    sound.playClick();
-    setIsRequestingReupload(true);
-    setReuploadMsg(null);
-
-    try {
-      const res = await fetch('/api/team/resubmission', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          teamId: team.registration_id,
-          accessToken: team.access_token,
-          reason: reuploadReason.trim()
-        })
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Could not send the request');
-
-      setReuploadMsg({ type: 'success', text: data.message || 'Request sent to the organisers.' });
-      setReuploadReason('');
-      handleRefresh();
-    } catch (err: unknown) {
-      setReuploadMsg({ type: 'error', text: err instanceof Error ? err.message : 'Could not send the request' });
-    } finally {
-      setIsRequestingReupload(false);
-    }
-  };
-
   const roundOneSubmissions = (team?.submissions || []).filter(s => s.round_number === 1);
 
   // The deck the jury sees: the ACCEPTED one, falling back to the newest for
@@ -408,15 +310,6 @@ export default function TeamPortalPage() {
   const latestSubmission =
     roundOneSubmissions.find(s => s.submission_status === 'ACCEPTED') ||
     (roundOneSubmissions.length > 0 ? roundOneSubmissions[roundOneSubmissions.length - 1] : null);
-
-  const reuploadRequests = (team?.resubmission_requests || []).filter(r => r.round_number === 1);
-  const pendingReuploadRequest = reuploadRequests.find(r => r.status === 'PENDING') || null;
-  const approvedReuploadRequest = reuploadRequests.find(r => r.status === 'APPROVED') || null;
-  // Most recent decision, shown once the request is no longer open.
-  const lastDecidedRequest = reuploadRequests.find(r => r.status === 'REJECTED' || r.status === 'USED') || null;
-
-  // First upload is free; replacing it needs an approval in hand.
-  const canUpload = !latestSubmission || !!approvedReuploadRequest;
 
   const deadlineStr = config?.round1SubmissionDeadline || '2026-09-11T23:59:59+05:30';
   // UI courtesy only — the server independently enforces the deadline on
@@ -1191,7 +1084,7 @@ export default function TeamPortalPage() {
                       ROUND 1 SUBMISSION LOCKED
                     </div>
                     <p className="text-xs text-slate-400 font-sans max-w-xs mx-auto">
-                      Round 1 file upload will unlock automatically once your payment UTR is verified by organizers.
+                      Round 1 submission link will unlock automatically once your payment UTR is verified by organizers.
                     </p>
                   </div>
                 ) : (
@@ -1274,39 +1167,6 @@ export default function TeamPortalPage() {
                               <span>Submitted: {new Date(latestSubmission.submitted_at).toLocaleDateString()}</span>
                             </div>
                           </div>
-
-                          {latestSubmission.project_url && (
-                            <div className="pt-2 border-t border-white/10">
-                              <div className="text-[#38BDF8] text-[10px] uppercase font-mono-hud flex items-center gap-1">
-                                <Globe className="w-3 h-3" />
-                                <span>Project / Prototype Link:</span>
-                              </div>
-                              <a
-                                href={latestSubmission.project_url.startsWith('http') ? latestSubmission.project_url : `https://${latestSubmission.project_url}`}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="text-cyan-300 hover:underline break-all inline-flex items-center gap-1 pt-0.5"
-                              >
-                                <span>{latestSubmission.project_url}</span>
-                                <ExternalLink className="w-3 h-3 shrink-0" />
-                              </a>
-                            </div>
-                          )}
-
-                          {latestSubmission.repo_url && (
-                            <div className="pt-1.5 border-t border-white/10">
-                              <div className="text-slate-400 text-[10px] uppercase font-mono-hud">Code Repository:</div>
-                              <a
-                                href={latestSubmission.repo_url.startsWith('http') ? latestSubmission.repo_url : `https://${latestSubmission.repo_url}`}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="text-[#38BDF8] hover:underline break-all inline-flex items-center gap-1 pt-0.5"
-                              >
-                                <span>{latestSubmission.repo_url}</span>
-                                <ExternalLink className="w-3 h-3 shrink-0" />
-                              </a>
-                            </div>
-                          )}
                         </div>
 
                         <a
@@ -1329,247 +1189,11 @@ export default function TeamPortalPage() {
                       </span>
                     </div>
 
-                    {uploadMsg && (
-                      <div className={`p-3 text-xs font-mono border flex items-center gap-2 ${
-                        uploadMsg.type === 'success'
-                          ? 'bg-emerald-950/80 border-emerald-400 text-emerald-200 shadow-[0_0_15px_rgba(52,211,153,0.3)] animate-in fade-in'
-                          : 'bg-rose-950/80 border-rose-400 text-rose-200'
-                      }`}>
-                        {uploadMsg.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" /> : <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0" />}
-                        <span>{uploadMsg.text}</span>
-                      </div>
-                    )}
-
-                    {/*
-                      Re-upload gate. The first deck uploads freely once payment
-                      is verified; replacing it costs one organiser approval.
-                    */}
-                    {latestSubmission && !isPastDeadline && (
-                      <div className="space-y-3">
-                        {approvedReuploadRequest ? (
-                          <div className="p-3.5 bg-emerald-950/40 border border-emerald-500/50 space-y-1.5">
-                            <div className="flex items-center gap-2 text-emerald-300 font-mono-hud text-xs font-bold">
-                              <ShieldCheck className="w-4 h-4 shrink-0" />
-                              <span>RE-UPLOAD APPROVED — ONE REPLACEMENT UNLOCKED</span>
-                            </div>
-                            <p className="text-[11px] text-emerald-200/80 font-sans leading-relaxed">
-                              Upload your replacement deck below. It becomes the version the jury evaluates,
-                              and this approval is spent once you do — replacing it again needs a new request.
-                            </p>
-                            {approvedReuploadRequest.review_notes && (
-                              <p className="text-[11px] text-slate-300 font-mono pt-1 border-t border-emerald-500/20 mt-2">
-                                <span className="text-emerald-400">Organiser note:</span> {approvedReuploadRequest.review_notes}
-                              </p>
-                            )}
-                          </div>
-                        ) : pendingReuploadRequest ? (
-                          <div className="p-3.5 bg-amber-950/30 border border-amber-500/40 space-y-1.5">
-                            <div className="flex items-center gap-2 text-amber-300 font-mono-hud text-xs font-bold">
-                              <Clock className="w-4 h-4 shrink-0" />
-                              <span>RE-UPLOAD REQUEST AWAITING REVIEW</span>
-                            </div>
-                            <p className="text-[11px] text-amber-200/80 font-sans leading-relaxed">
-                              Organisers are reviewing your request. You will be emailed with their decision —
-                              until then the presentation above stands as your submission.
-                            </p>
-                            <p className="text-[11px] text-slate-400 font-mono pt-1 border-t border-amber-500/20 mt-2">
-                              <span className="text-slate-500">Requested {new Date(pendingReuploadRequest.created_at).toLocaleString()}:</span>{' '}
-                              {pendingReuploadRequest.reason}
-                            </p>
-                          </div>
-                        ) : (
-                          <div className="p-3.5 bg-[#040E24] border border-white/10 space-y-3">
-                            <div className="flex items-center gap-2 text-slate-200 font-mono-hud text-xs font-bold">
-                              <Lock className="w-4 h-4 text-slate-400 shrink-0" />
-                              <span>NEED TO REPLACE THIS DECK?</span>
-                            </div>
-                            <p className="text-[11px] text-slate-400 font-sans leading-relaxed">
-                              Your presentation is locked in as your Round 1 submission. To swap it for a new
-                              file, request organiser approval and explain why. If approved you get exactly one
-                              replacement upload.
-                            </p>
-
-                            {lastDecidedRequest?.status === 'REJECTED' && (
-                              <div className="p-2.5 bg-rose-950/30 border border-rose-500/30 text-[11px] font-mono text-rose-200 flex items-start gap-2">
-                                <XCircle className="w-3.5 h-3.5 shrink-0 mt-0.5 text-rose-400" />
-                                <span>
-                                  <span className="font-bold">Previous request declined.</span>{' '}
-                                  {lastDecidedRequest.review_notes || 'No reason was recorded.'}
-                                </span>
-                              </div>
-                            )}
-
-                            {reuploadMsg && (
-                              <div className={`p-2.5 text-[11px] font-mono border flex items-start gap-2 ${
-                                reuploadMsg.type === 'success'
-                                  ? 'bg-emerald-950/60 border-emerald-500/40 text-emerald-200'
-                                  : 'bg-rose-950/60 border-rose-500/40 text-rose-200'
-                              }`}>
-                                {reuploadMsg.type === 'success'
-                                  ? <CheckCircle2 className="w-3.5 h-3.5 shrink-0 mt-0.5 text-emerald-400" />
-                                  : <AlertTriangle className="w-3.5 h-3.5 shrink-0 mt-0.5 text-rose-400" />}
-                                <span>{reuploadMsg.text}</span>
-                              </div>
-                            )}
-
-                            <form onSubmit={handleRequestReupload} className="space-y-2">
-                              <label className="block text-[11px] font-mono-hud text-[#BAE6FD]">
-                                WHY DO YOU NEED TO RE-UPLOAD?
-                              </label>
-                              <textarea
-                                value={reuploadReason}
-                                onChange={(e) => setReuploadReason(e.target.value)}
-                                rows={3}
-                                maxLength={1000}
-                                required
-                                minLength={15}
-                                placeholder="e.g. We uploaded an outdated draft by mistake — the final deck has the corrected architecture diagram and results."
-                                className="w-full px-3 py-2 bg-[#020817] border border-white/15 text-white text-xs font-mono focus:border-[#38BDF8] focus:outline-none resize-y"
-                              />
-                              <div className="flex items-center justify-between gap-3">
-                                <span className="text-[10px] text-slate-500 font-mono">
-                                  {reuploadReason.trim().length}/1000 · minimum 15 characters
-                                </span>
-                                <button
-                                  type="submit"
-                                  disabled={isRequestingReupload || reuploadReason.trim().length < 15}
-                                  className="px-4 py-2 bg-[#0B2556] border border-[#38BDF8]/40 text-[#38BDF8] hover:bg-[#38BDF8]/20 transition-colors text-[11px] font-mono font-bold flex items-center gap-2 cursor-pointer active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
-                                >
-                                  {isRequestingReupload ? (
-                                    <>
-                                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                                      <span>SENDING...</span>
-                                    </>
-                                  ) : (
-                                    <>
-                                      <Send className="w-3.5 h-3.5" />
-                                      <span>REQUEST RE-UPLOAD</span>
-                                    </>
-                                  )}
-                                </button>
-                              </div>
-                            </form>
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                    {/* Upload Form — hidden while a replacement is not authorised */}
-                    {!isPastDeadline && canUpload ? (
-                      <form onSubmit={handleFileUpload} className="space-y-3.5">
-                        <div 
-                          onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-                          onDragLeave={() => setIsDragging(false)}
-                          onDrop={(e) => {
-                            e.preventDefault();
-                            setIsDragging(false);
-                            if (e.dataTransfer.files?.[0]) {
-                              setSelectedFile(e.dataTransfer.files[0]);
-                              sound.playClick();
-                            }
-                          }}
-                          className={`relative border-2 border-dashed p-6 text-center transition-all cursor-pointer ${
-                            isDragging 
-                              ? 'border-[#00BCF2] bg-[#00BCF2]/10 scale-[1.01] shadow-[0_0_20px_rgba(0,188,242,0.3)]' 
-                              : selectedFile 
-                              ? 'border-emerald-400 bg-emerald-950/30' 
-                              : 'border-[#38BDF8]/40 hover:border-[#38BDF8] bg-[#040E24]/60'
-                          }`}
-                        >
-                          {selectedFile ? (
-                            <div className="space-y-1">
-                              <FileCheck className="w-8 h-8 text-emerald-400 mx-auto" />
-                              <div className="text-xs font-mono-hud text-emerald-300 font-bold">
-                                {selectedFile.name}
-                              </div>
-                              <div className="text-[10px] text-slate-400 font-mono">
-                                {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB • Ready for upload
-                              </div>
-                              <div className="text-[9px] text-[#38BDF8] font-mono pt-1">
-                                Click or drag another file to replace
-                              </div>
-                            </div>
-                          ) : (
-                            <>
-                              <Upload className="w-8 h-8 text-[#38BDF8] mx-auto mb-2 animate-bounce" />
-                              <div className="text-xs font-mono-hud text-white font-bold mb-1">
-                                CLICK TO BROWSE OR DRAG PPT/PDF HERE
-                              </div>
-                              <div className="text-[10px] text-slate-400 font-mono">
-                                Supported: PDF, PPT, PPTX (Max {config?.maxFileSizeMb || 10} MB)
-                              </div>
-                            </>
-                          )}
-                          <input
-                            type="file"
-                            accept=".pdf,.ppt,.pptx"
-                            onChange={(e) => {
-                              if (e.target.files?.[0]) {
-                                setSelectedFile(e.target.files[0]);
-                                sound.playClick();
-                              }
-                            }}
-                            className="absolute inset-0 opacity-0 cursor-pointer"
-                          />
-                        </div>
-
-                        {/* Project Links Input */}
-                        <div className="space-y-2 pt-1 text-xs font-mono">
-                          <div>
-                            <label className="block text-[11px] font-mono-hud text-[#BAE6FD] mb-1">
-                              PROJECT / PROTOTYPE / DEMO LINK (OPTIONAL)
-                            </label>
-                            <input
-                              type="url"
-                              value={projectUrl}
-                              onChange={(e) => setProjectUrl(e.target.value)}
-                              placeholder="https://my-awesome-project.vercel.app or Figma link"
-                              className="w-full px-3 py-2 bg-[#040E24] border border-white/15 text-white text-xs font-mono focus:border-[#38BDF8] focus:outline-none"
-                            />
-                          </div>
-
-                          <div>
-                            <label className="block text-[11px] font-mono-hud text-[#BAE6FD] mb-1">
-                              GITHUB / REPOSITORY LINK (OPTIONAL)
-                            </label>
-                            <input
-                              type="url"
-                              value={repoUrl}
-                              onChange={(e) => setRepoUrl(e.target.value)}
-                              placeholder="https://github.com/myteam/orion-submission"
-                              className="w-full px-3 py-2 bg-[#040E24] border border-white/15 text-white text-xs font-mono focus:border-[#38BDF8] focus:outline-none"
-                            />
-                          </div>
-                        </div>
-
-                        <button
-                          type="submit"
-                          disabled={!selectedFile || isUploading}
-                          className="btn-glow-cyan w-full py-2.5 font-display font-bold text-xs text-[#040E24] bg-gradient-to-r from-[#FFFFFF] via-[#BAE6FD] to-[#38BDF8] flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50 transition-all"
-                        >
-                          {isUploading ? (
-                            <span className="flex items-center gap-2">
-                              <RefreshCw className="w-4 h-4 animate-spin text-[#040E24]" />
-                              <span>ENCRYPTING & UPLOADING PRESENTATION...</span>
-                            </span>
-                          ) : latestSubmission ? (
-                            <>
-                              <Upload className="w-4 h-4 text-[#040E24]" />
-                              <span>UPLOAD APPROVED REPLACEMENT</span>
-                            </>
-                          ) : (
-                            <>
-                              <Upload className="w-4 h-4 text-[#040E24]" />
-                              <span>UPLOAD ROUND 1 PRESENTATION</span>
-                            </>
-                          )}
-                        </button>
-                      </form>
-                    ) : isPastDeadline ? (
+                    {isPastDeadline && (
                       <div className="p-3.5 bg-rose-950/40 border border-rose-500/40 text-rose-300 text-xs font-mono text-center">
                         Round 1 submission window is now closed.
                       </div>
-                    ) : null}
+                    )}
 
                     {/* Template Rules & Download Quick Guide */}
                     <div className="pt-3 border-t border-white/10 space-y-2 text-[11px] text-slate-400">
