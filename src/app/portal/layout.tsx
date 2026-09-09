@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { PORTAL_ENABLED } from '@/data/orionData';
 
 export const metadata: Metadata = {
@@ -29,12 +30,12 @@ export default function PortalLayout({
           The Team Portal is offline while the Round 1 &amp; Grand Finale schedule is being
           revised. It will be back once the new dates are announced.
         </p>
-        <a
+        <Link
           href="/"
           className="mt-6 px-5 py-2.5 font-sans font-bold text-xs text-[#020617] bg-gradient-to-r from-[#FFFFFF] via-[#BAE6FD] to-[#00BCF2] rounded-none"
         >
           Back to Home
-        </a>
+        </Link>
       </div>
     );
   }
