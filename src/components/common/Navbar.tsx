@@ -9,7 +9,7 @@ import {
   ChevronRight 
 } from 'lucide-react';
 import { GooeyNav } from './GooeyNav';
-import { GOOGLE_FORM_REGISTRATION_URL } from '@/data/orionData';
+import { GOOGLE_FORM_REGISTRATION_URL, PORTAL_ENABLED } from '@/data/orionData';
 
 interface NavbarProps {
   onOpenRegister?: () => void;
@@ -111,12 +111,14 @@ export const Navbar: React.FC<NavbarProps> = () => {
 
           {/* Desktop Action Controls */}
           <div className="hidden lg:flex items-center gap-3 shrink-0">
-            <Link
-              href="/portal"
-              className="px-3.5 py-2 rounded-none font-mono-hud font-bold text-xs text-[#BAE6FD] hover:text-white bg-[#07193D] border border-[#38BDF8]/40 hover:border-[#38BDF8] transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
-            >
-              <span>TEAM PORTAL</span>
-            </Link>
+            {PORTAL_ENABLED && (
+              <Link
+                href="/portal"
+                className="px-3.5 py-2 rounded-none font-mono-hud font-bold text-xs text-[#BAE6FD] hover:text-white bg-[#07193D] border border-[#38BDF8]/40 hover:border-[#38BDF8] transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
+              >
+                <span>TEAM PORTAL</span>
+              </Link>
+            )}
 
             {/* Primary CTA */}
             <a
@@ -132,12 +134,14 @@ export const Navbar: React.FC<NavbarProps> = () => {
 
           {/* Mobile Navigation Toggle */}
           <div className="flex items-center gap-2 lg:hidden">
-            <Link
-              href="/portal"
-              className="px-2.5 py-2 rounded-none font-mono-hud text-[11px] text-[#BAE6FD] bg-[#07193D] border border-[#38BDF8]/40"
-            >
-              Portal
-            </Link>
+            {PORTAL_ENABLED && (
+              <Link
+                href="/portal"
+                className="px-2.5 py-2 rounded-none font-mono-hud text-[11px] text-[#BAE6FD] bg-[#07193D] border border-[#38BDF8]/40"
+              >
+                Portal
+              </Link>
+            )}
             <a
               href={GOOGLE_FORM_REGISTRATION_URL}
               target="_blank"
@@ -182,14 +186,16 @@ export const Navbar: React.FC<NavbarProps> = () => {
                 );
               })}
             </div>
-            <div className="grid grid-cols-2 gap-2 pt-2 border-t border-white/10">
-              <Link
-                href="/portal"
-                onClick={() => setMobileMenuOpen(false)}
-                className="p-2.5 text-center text-xs font-mono-hud font-bold text-[#BAE6FD] bg-[#07193D] border border-[#38BDF8]/40"
-              >
-                TEAM PORTAL
-              </Link>
+            <div className={`grid ${PORTAL_ENABLED ? 'grid-cols-2' : 'grid-cols-1'} gap-2 pt-2 border-t border-white/10`}>
+              {PORTAL_ENABLED && (
+                <Link
+                  href="/portal"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-2.5 text-center text-xs font-mono-hud font-bold text-[#BAE6FD] bg-[#07193D] border border-[#38BDF8]/40"
+                >
+                  TEAM PORTAL
+                </Link>
+              )}
               <Link
                 href="/admin"
                 onClick={() => setMobileMenuOpen(false)}
