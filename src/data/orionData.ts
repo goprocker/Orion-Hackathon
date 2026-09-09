@@ -331,6 +331,16 @@ export const IMPORTANT_RULES = [
     notAllowed: "AI-generated problem statements, system architectures, workflows, or slide content exceeding 10%",
     icon: "Bot",
     appliesTo: "Round 1 PPT & Proposal"
+  },
+  {
+    number: "06",
+    title: "Schedule & Date Changes",
+    summary: "All event dates, deadlines, schedules, and timings are subject to change based on organizational requirements or unforeseen circumstances.",
+    detail: "Any revisions will be officially communicated through the designated ORION 1.0 communication channels. Participants are expected to regularly check for updates and comply with the revised schedule.",
+    allowed: "Regularly checking official updates and following the revised schedule",
+    notAllowed: "Ignoring officially communicated schedule revisions",
+    icon: "CalendarClock",
+    appliesTo: "All Participants"
   }
 ];
 
