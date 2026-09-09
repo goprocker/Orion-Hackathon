@@ -31,7 +31,7 @@ import { GlassCard } from '@/components/common/GlassCard';
 import { PaymentReceiptModal } from '@/components/modals/PaymentReceiptModal';
 import type { TeamRecord, SystemConfig } from '@/types/orion';
 import { RESET_TOKEN_TTL_MINUTES } from '@/lib/passcodePolicy';
-import { SUBMISSION_DRIVE_URL } from '@/data/orionData';
+import { SUBMISSION_DRIVE_URL, EVENT_METRICS } from '@/data/orionData';
 import { sound } from '@/audio/soundEffects';
 import confetti from 'canvas-confetti';
 
@@ -771,7 +771,7 @@ export default function TeamPortalPage() {
                       <Calendar className="w-4 h-4" />
                       <span>FINALE DATES & SPRINT</span>
                     </div>
-                    <div className="text-white font-bold text-sm">September 18–19, 2026</div>
+                    <div className="text-white font-bold text-sm">{EVENT_METRICS.datesAnnounced ? 'September 18–19, 2026' : EVENT_METRICS.datesTBA}</div>
                     <div className="text-slate-400 text-[11px]">24-Hour Non-stop Offline Sprint</div>
                   </div>
 

@@ -42,6 +42,28 @@ export const CountdownTimer: React.FC = () => {
     { label: 'SECONDS', value: timeLeft.seconds },
   ];
 
+  if (!EVENT_METRICS.datesAnnounced) {
+    return (
+      <div className="w-full bg-[#0B1220]/75 backdrop-blur-2xl border border-white/15 border-t-white/30 p-3.5 sm:p-6 rounded-none shadow-2xl relative">
+        <div className="flex items-center gap-2 pb-3 mb-3 border-b border-white/10">
+          <Clock className="w-4 h-4 text-[#00BCF2]" />
+          <span className="text-xs font-sans text-[#F8FAFC] font-bold uppercase tracking-wider">
+            ROUND 1 &amp; GRAND FINALE SCHEDULE
+          </span>
+        </div>
+        <div className="flex flex-col items-center justify-center text-center py-4 gap-2">
+          <ShieldAlert className="w-6 h-6 text-[#22D3EE]" />
+          <span className="text-lg sm:text-2xl font-display font-black text-white tracking-tight">
+            NEW DATES ANNOUNCING SOON
+          </span>
+          <span className="text-[10px] sm:text-xs font-sans text-[#94A3B8]">
+            Registrations remain open — watch the official channels for the updated Round 1 &amp; Grand Finale schedule.
+          </span>
+        </div>
+      </div>
+    );
+  }
+
   const ONLINE_DEADLINE_SHORT = formatShortDate(EVENT_METRICS.onlineDeadlineIso);
   const OFFLINE_FINALE_SHORT = formatShortDate(EVENT_METRICS.offlineFinaleIso);
 

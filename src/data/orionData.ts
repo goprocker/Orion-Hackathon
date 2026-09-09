@@ -20,6 +20,9 @@ export const EVENT_METRICS = {
   teamSizeLabel: "Members per team",
   finalistCount: "TOP 70",
   finalistCountLabel: "Teams to Offline Finale",
+  /** Flip to true and restore real dates below once the new schedule is confirmed. */
+  datesAnnounced: false,
+  datesTBA: "Announcing Soon",
   deadlineDate: "September 11, 2026",
   deadlineIso: "2026-09-11T23:59:59+05:30",
   onlineDeadlineDate: "September 11, 2026",
@@ -370,19 +373,19 @@ export const TIMELINE_PHASES: TimelinePhase[] = [
     number: "01",
     title: "MISSION REGISTRATIONS & ONLINE SUBMISSION",
     subtitle: "Round 1 Online Qualifier",
-    date: "Active Now — Closes Sep 11, 2026",
+    date: "Active Now — Closing Date Announcing Soon",
     status: "active",
     highlights: [
       "Flat ₹100 registration fee per team (2–6 members)",
       "Choose from 3 Flagship Problem Statements OR Open Innovation & Student Innovation Projects (AI, Web3, Systems, Cloud, Healthcare, Hardware) — welcome only for Round 1",
-      "Prepare and upload mandatory standardized PPT / PDF blueprint before September 11, 2026"
+      "Prepare your mandatory standardized PPT / PDF blueprint — submission deadline announcing soon"
     ]
   },
   {
     number: "02",
     title: "ONLINE SCREENING & JURY EVALUATION",
     subtitle: "Rigorous Technical Filter",
-    date: "September 12, 2026",
+    date: "Announcing Soon",
     status: "upcoming",
     highlights: [
       "Jury review across Innovation, Feasibility, Technical Depth & Impact",
@@ -394,7 +397,7 @@ export const TIMELINE_PHASES: TimelinePhase[] = [
     number: "03",
     title: "THE CUT — TOP 70 FINALISTS ANNOUNCED",
     subtitle: "Elite Shortlist Notification",
-    date: "September 13, 2026",
+    date: "Announcing Soon",
     status: "upcoming",
     highlights: [
       "Official publication of Top 70 Finalist Teams",
@@ -406,7 +409,7 @@ export const TIMELINE_PHASES: TimelinePhase[] = [
     number: "04",
     title: "PHASE 2 CONFIRMATION & LOGISTICS LOCK",
     subtitle: "Finalist Slot Confirmation",
-    date: "September 14 – September 16, 2026",
+    date: "Announcing Soon",
     status: "upcoming",
     highlights: [
       "₹250 per head finalist confirmation fee",
@@ -418,7 +421,7 @@ export const TIMELINE_PHASES: TimelinePhase[] = [
     number: "05",
     title: "24H OFFLINE GRAND FINALE",
     subtitle: "The Final Frontier at SIST Chennai",
-    date: "September 18, 2026 • SIST Chennai Campus",
+    date: "Announcing Soon • SIST Chennai Campus",
     status: "upcoming",
     highlights: [
       "24-hour continuous coding sprint in dedicated mission arena",
@@ -592,7 +595,7 @@ export const FAQ_DATA: FAQItem[] = [
   {
     category: "Round 1 & PPT Submissions",
     question: "What do we need to submit for Round 1?",
-    answer: "Each team must submit an idea abstract and a pitch deck (PPT), prepared using the official ORION 1.0 template, through the Google Form / Team Portal on or before 11 September 2026. Only the prescribed template will be accepted — using any other format leads to disqualification."
+    answer: "Each team must submit an idea abstract and a pitch deck (PPT), prepared using the official ORION 1.0 template, through the Google Form / Team Portal before the submission deadline (new date announcing soon). Only the prescribed template will be accepted — using any other format leads to disqualification."
   },
   {
     category: "Round 1 & PPT Submissions",
@@ -664,7 +667,7 @@ export const FAQ_DATA: FAQItem[] = [
   {
     category: "Finale & Fees",
     question: "What are the important dates?",
-    answer: "• Registration closes: 11 September 2026\n• Round 1 (online idea submission): on or before 11 September 2026\n• Top 70 Shortlist Announcement: 13 September 2026\n• Grand Finale (offline): 18–19 September 2026 at Sathyabama Institute of Science and Technology, Chennai."
+    answer: "Updated dates for registration closing, Round 1 submission, the Top 70 shortlist, and the offline Grand Finale (at Sathyabama Institute of Science and Technology, Chennai) are being finalized and will be announced soon. Please watch the official WhatsApp community and Instagram page for the announcement."
   },
   {
     category: "Finale & Fees",

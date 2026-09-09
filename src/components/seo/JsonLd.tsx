@@ -15,7 +15,9 @@ export const JsonLd: React.FC = () => {
       'ORION 1.0 is a prestigious 24-hour national offline hackathon organized by Microsoft Club SIST at Sathyabama Institute of Science and Technology, Chennai. Featuring a ₹1,00,000 cash prize pool across FloatChat, LexVault, SylvaSense, and Open Innovation tracks.',
     startDate: '2026-09-18T08:00:00+05:30',
     endDate: '2026-09-19T14:00:00+05:30',
-    eventStatus: 'https://schema.org/EventScheduled',
+    // Previously scheduled dates above are being revised; marked EventPostponed until the new
+    // schedule is confirmed, per Google/schema.org guidance for date changes.
+    eventStatus: 'https://schema.org/EventPostponed',
     eventAttendanceMode: 'https://schema.org/MixedEventAttendanceMode',
     location: {
       '@type': 'Place',
@@ -61,7 +63,7 @@ export const JsonLd: React.FC = () => {
       priceCurrency: 'INR',
       availability: 'https://schema.org/InStock',
       validFrom: '2026-08-01T00:00:00+05:30',
-      validThrough: '2026-09-11T23:59:59+05:30',
+      // validThrough omitted — the Round 1 deadline is being revised and will be re-added once confirmed.
       url: baseUrl,
     },
     performer: {
