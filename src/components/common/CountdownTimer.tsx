@@ -42,7 +42,7 @@ export const CountdownTimer: React.FC = () => {
     { label: 'SECONDS', value: timeLeft.seconds },
   ];
 
-  if (!EVENT_METRICS.datesAnnounced) {
+  if (!EVENT_METRICS.round1DatesAnnounced) {
     return (
       <div className="w-full bg-[#0B1220]/75 backdrop-blur-2xl border border-white/15 border-t-white/30 p-3.5 sm:p-6 rounded-none shadow-2xl relative">
         <div className="flex items-center gap-2 pb-3 mb-3 border-b border-white/10">
@@ -65,7 +65,9 @@ export const CountdownTimer: React.FC = () => {
   }
 
   const ONLINE_DEADLINE_SHORT = formatShortDate(EVENT_METRICS.onlineDeadlineIso);
-  const OFFLINE_FINALE_SHORT = formatShortDate(EVENT_METRICS.offlineFinaleIso);
+  const OFFLINE_FINALE_SHORT = EVENT_METRICS.finaleDateAnnounced
+    ? formatShortDate(EVENT_METRICS.offlineFinaleIso)
+    : EVENT_METRICS.datesTBA;
 
   return (
     <div className="w-full bg-[#0B1220]/75 backdrop-blur-2xl border border-white/15 border-t-white/30 p-3.5 sm:p-6 rounded-none shadow-2xl relative">

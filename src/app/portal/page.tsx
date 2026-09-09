@@ -311,7 +311,7 @@ export default function TeamPortalPage() {
     roundOneSubmissions.find(s => s.submission_status === 'ACCEPTED') ||
     (roundOneSubmissions.length > 0 ? roundOneSubmissions[roundOneSubmissions.length - 1] : null);
 
-  const deadlineStr = config?.round1SubmissionDeadline || '2026-09-11T23:59:59+05:30';
+  const deadlineStr = config?.round1SubmissionDeadline || '2026-09-21T23:59:59+05:30';
   // UI courtesy only — the server independently enforces the deadline on
   // upload. Without this, late participants filled in the whole form and
   // uploaded their deck just to be refused at submit time.
@@ -771,7 +771,7 @@ export default function TeamPortalPage() {
                       <Calendar className="w-4 h-4" />
                       <span>FINALE DATES & SPRINT</span>
                     </div>
-                    <div className="text-white font-bold text-sm">{EVENT_METRICS.datesAnnounced ? 'September 18–19, 2026' : EVENT_METRICS.datesTBA}</div>
+                    <div className="text-white font-bold text-sm">{EVENT_METRICS.finaleDateAnnounced ? 'September 18–19, 2026' : EVENT_METRICS.datesTBA}</div>
                     <div className="text-slate-400 text-[11px]">24-Hour Non-stop Offline Sprint</div>
                   </div>
 

@@ -40,7 +40,7 @@ interface StoreSchema {
 
 const DEFAULT_CONFIG: SystemConfig = {
   registrationOpen: true,
-  round1SubmissionDeadline: '2026-09-11T23:59:59+05:30',
+  round1SubmissionDeadline: '2026-09-21T23:59:59+05:30',
   allowRound1Resubmission: true,
   maxFileSizeMb: 10,
   upiId: '8870227906@upi',

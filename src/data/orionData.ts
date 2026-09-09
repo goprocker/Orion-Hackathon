@@ -20,13 +20,15 @@ export const EVENT_METRICS = {
   teamSizeLabel: "Members per team",
   finalistCount: "TOP 70",
   finalistCountLabel: "Teams to Offline Finale",
-  /** Flip to true and restore real dates below once the new schedule is confirmed. */
-  datesAnnounced: false,
   datesTBA: "Announcing Soon",
-  deadlineDate: "September 11, 2026",
-  deadlineIso: "2026-09-11T23:59:59+05:30",
-  onlineDeadlineDate: "September 11, 2026",
-  onlineDeadlineIso: "2026-09-11T23:59:59+05:30",
+  /** Round 1 / registration deadline — confirmed. */
+  round1DatesAnnounced: true,
+  deadlineDate: "September 21, 2026",
+  deadlineIso: "2026-09-21T23:59:59+05:30",
+  onlineDeadlineDate: "September 21, 2026",
+  onlineDeadlineIso: "2026-09-21T23:59:59+05:30",
+  /** Grand Finale date — flip to true and update the values below once confirmed. */
+  finaleDateAnnounced: false,
   offlineFinaleDate: "September 18, 2026",
   offlineFinaleIso: "2026-09-18T09:00:00+05:30",
   duration: "24-Hour Offline Sprint",
@@ -376,12 +378,12 @@ export const TIMELINE_PHASES: TimelinePhase[] = [
     number: "01",
     title: "MISSION REGISTRATIONS & ONLINE SUBMISSION",
     subtitle: "Round 1 Online Qualifier",
-    date: "Active Now — Closing Date Announcing Soon",
+    date: "Active Now — Closes Sep 21, 2026",
     status: "active",
     highlights: [
       "Flat ₹100 registration fee per team (2–6 members)",
       "Choose from 3 Flagship Problem Statements OR Open Innovation & Student Innovation Projects (AI, Web3, Systems, Cloud, Healthcare, Hardware) — welcome only for Round 1",
-      "Prepare your mandatory standardized PPT / PDF blueprint — submission deadline announcing soon"
+      "Prepare and upload mandatory standardized PPT / PDF blueprint before September 21, 2026"
     ]
   },
   {
@@ -598,7 +600,7 @@ export const FAQ_DATA: FAQItem[] = [
   {
     category: "Round 1 & PPT Submissions",
     question: "What do we need to submit for Round 1?",
-    answer: "Each team must submit an idea abstract and a pitch deck (PPT), prepared using the official ORION 1.0 template, through the Google Form / Team Portal before the submission deadline (new date announcing soon). Only the prescribed template will be accepted — using any other format leads to disqualification."
+    answer: "Each team must submit an idea abstract and a pitch deck (PPT), prepared using the official ORION 1.0 template, through the Google Form / Team Portal on or before 21 September 2026. Only the prescribed template will be accepted — using any other format leads to disqualification."
   },
   {
     category: "Round 1 & PPT Submissions",
@@ -665,12 +667,12 @@ export const FAQ_DATA: FAQItem[] = [
   {
     category: "Finale & Fees",
     question: "How are the Grand Finale problem statements distributed?",
-    answer: "All shortlisted teams receive their problem statements on the spot on 18 September 2026, at the start of the 24-hour offline sprint at SIST Chennai. Teams must build their solution on the problem statement assigned during the event. Open Innovation is not available in the final round."
+    answer: "All shortlisted teams receive their problem statements on the spot at the start of the 24-hour offline sprint at SIST Chennai (Grand Finale date announcing soon). Teams must build their solution on the problem statement assigned during the event. Open Innovation is not available in the final round."
   },
   {
     category: "Finale & Fees",
     question: "What are the important dates?",
-    answer: "Updated dates for registration closing, Round 1 submission, the Top 70 shortlist, and the offline Grand Finale (at Sathyabama Institute of Science and Technology, Chennai) are being finalized and will be announced soon. Please watch the official WhatsApp community and Instagram page for the announcement."
+    answer: "• Registration closes: 21 September 2026\n• Round 1 (online idea submission): on or before 21 September 2026\n• Top 70 Shortlist Announcement: Announcing Soon\n• Grand Finale (offline): Announcing Soon, at Sathyabama Institute of Science and Technology, Chennai.\nPlease watch the official WhatsApp community and Instagram page for the Top 70 and Grand Finale date announcement."
   },
   {
     category: "Finale & Fees",

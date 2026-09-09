@@ -122,7 +122,7 @@ export const GuidelinesSection: React.FC = () => {
               </div>
 
               <div className="pt-4 border-t border-slate-800 text-xs font-sans text-slate-400 flex items-center justify-between">
-                <span>Deadline: {EVENT_METRICS.datesAnnounced ? EVENT_METRICS.deadlineDate : EVENT_METRICS.datesTBA}</span>
+                <span>Deadline: {EVENT_METRICS.round1DatesAnnounced ? EVENT_METRICS.deadlineDate : EVENT_METRICS.datesTBA}</span>
                 <span className="text-white font-semibold">Online Submission</span>
               </div>
             </GlassCard>

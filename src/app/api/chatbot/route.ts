@@ -358,7 +358,7 @@ export async function POST(req: NextRequest) {
     console.error('[chatbot] unexpected error:', err);
     // Always return a helpful answer rather than a 500
     return NextResponse.json({
-      reply: `I'm having a brief connection hitch, but here is what you need to know:\n\n• **Deadline:** September 11, 2026\n• **Prize Pool:** ₹1,00,000\n• **Registration Form:** https://forms.gle/txiRwn9EELUgZvrJ6\n• **Support:** https://chat.whatsapp.com/C76LZLzWkOh3FPC99iXw8f`
+      reply: `I'm having a brief connection hitch, but here is what you need to know:\n\n• **Round 1 Deadline:** September 21, 2026\n• **Prize Pool:** ₹1,00,000\n• **Registration Form:** https://forms.gle/txiRwn9EELUgZvrJ6\n• **Support:** https://chat.whatsapp.com/C76LZLzWkOh3FPC99iXw8f`
     });
   }
 }

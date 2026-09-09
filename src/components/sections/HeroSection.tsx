@@ -29,8 +29,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenStatus, onExplor
   const highlightPills = [
     { label: "PRIZE POOL", value: EVENT_METRICS.prizePool, color: "text-[#00BCF2]" },
     { label: "REGISTRATION FEE", value: `${EVENT_METRICS.round1Fee} / Team`, color: "text-emerald-400" },
-    { label: "ONLINE DEADLINE", value: EVENT_METRICS.datesAnnounced ? formatShortDate(EVENT_METRICS.onlineDeadlineIso) : EVENT_METRICS.datesTBA, color: "text-[#22D3EE]" },
-    { label: "OFFLINE FINALE", value: EVENT_METRICS.datesAnnounced ? formatShortDate(EVENT_METRICS.offlineFinaleIso) : EVENT_METRICS.datesTBA, color: "text-white" }
+    { label: "ONLINE DEADLINE", value: EVENT_METRICS.round1DatesAnnounced ? formatShortDate(EVENT_METRICS.onlineDeadlineIso) : EVENT_METRICS.datesTBA, color: "text-[#22D3EE]" },
+    { label: "OFFLINE FINALE", value: EVENT_METRICS.finaleDateAnnounced ? formatShortDate(EVENT_METRICS.offlineFinaleIso) : EVENT_METRICS.datesTBA, color: "text-white" }
   ];
 
   return (
