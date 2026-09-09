@@ -13,7 +13,10 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
     ".agents/**",
-    ".data/**"
+    ".data/**",
+    // Standalone Node/admin tooling — not part of the deployed Next.js app,
+    // so the app's TypeScript/require() rules don't apply here.
+    "scripts/**"
   ]),
 ]);
 
