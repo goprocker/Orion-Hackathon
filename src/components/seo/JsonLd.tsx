@@ -1,6 +1,7 @@
 import React from 'react';
 import { FAQ_DATA } from '../../data/orionData';
 import type { FAQItem } from '../../types/orion';
+import { features } from '@/lib/features';
 
 export const JsonLd: React.FC = () => {
   const baseUrl = 'https://orion.sathyabama.ac.in';
@@ -140,12 +141,12 @@ export const JsonLd: React.FC = () => {
         name: 'Timeline',
         item: `${baseUrl}/#timeline`,
       },
-      {
+      ...(features.registration ? [{
         '@type': 'ListItem',
         position: 6,
         name: 'Team Portal',
         item: `${baseUrl}/portal`,
-      },
+      }] : []),
     ],
   };
 

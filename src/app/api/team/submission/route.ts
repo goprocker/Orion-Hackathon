@@ -1,27 +1,19 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
 import path from 'path';
 import { serverStore, safeEqualCI } from '@/lib/serverStore';
-import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
 import { validateUploadSignature } from '@/lib/fileValidation';
-import { buildStorageRef, resolveFileUrl, SUBMISSIONS_BUCKET } from '@/lib/storage';
-
-/**
- * True on a platform with an ephemeral, per-invocation filesystem. Writing a
- * participant's deck there "succeeds" and then vanishes with the container,
- * leaving a submission row pointing at a 404 that nobody notices until judging.
- */
-function isServerlessRuntime(): boolean {
-  return Boolean(
-    process.env.VERCEL ||
-    process.env.AWS_LAMBDA_FUNCTION_NAME ||
-    process.env.NETLIFY ||
-    process.env.K_SERVICE
-  );
-}
+import { resolveFileUrl } from '@/lib/storage';
+import { storePrivateFile, deletePrivateFile } from '@/lib/privateFiles';
+import { submissionEligibilityError } from '@/lib/submissionPolicy';
+import { registrationApiGuard } from '@/lib/features';
 
 export async function POST(request: Request) {
+  const disabled = registrationApiGuard();
+  if (disabled) return disabled;
+
+  let allocatedFile = '';
+  let committed = false;
   try {
     const clientIp = getClientIp(request);
     const rate = checkRateLimit(`team-sub-${clientIp}`, 10, 60 * 1000);
@@ -66,6 +58,8 @@ export async function POST(request: Request) {
     }
 
     const config = await serverStore.getConfig();
+    const eligibilityError = submissionEligibilityError(team, config);
+    if (eligibilityError) return NextResponse.json({ error: eligibilityError }, { status: 403 });
 
     // 2. File Type & Extension Validation
     const originalFilename = path.basename(file.name).replace(/[^a-zA-Z0-9._-]/g, '_');
@@ -99,103 +93,28 @@ export async function POST(request: Request) {
       }, { status: 400 });
     }
 
-    // Deadline check BEFORE the storage upload: a late attempt used to upload
-    // the full deck to the bucket first and only then get refused, leaving an
-    // orphaned object with no submission record. (submitRound1File re-checks —
-    // that stays the authority.)
-    if (Date.now() > new Date(config.round1SubmissionDeadline).getTime()) {
-      return NextResponse.json({
-        error: `Round 1 Submission Deadline has passed (${config.round1SubmissionDeadline}). Submissions are locked.`
-      }, { status: 400 });
-    }
-
-    const cleanTeamSlug = team.registration_id.replace(/[^a-zA-Z0-9_-]/g, '_');
-    const timestamp = Date.now();
-    const safeSavedName = `${cleanTeamSlug}_Round1_${timestamp}${fileExt}`;
-    // What gets persisted is an internal reference, not a public URL — the
-    // bucket is private and links are signed per request (see lib/storage.ts).
-    let storedFileRef = '';
-
-    // 5. Upload to Supabase Storage (Production Storage)
-    let uploadedToCloud = false;
-    let cloudError = '';
-    if (isSupabaseConfigured() && supabase) {
-      const objectPath = `round_1/${safeSavedName}`;
-      try {
-        const mimeType = fileExt === '.pdf' 
-          ? 'application/pdf' 
-          : fileExt === '.pptx' 
-            ? 'application/vnd.openxmlformats-officedocument.presentationml.presentation' 
-            : 'application/vnd.ms-powerpoint';
-
-        const { error: uploadErr } = await supabase.storage
-          .from(SUBMISSIONS_BUCKET)
-          .upload(objectPath, buffer, {
-            contentType: mimeType,
-            upsert: true
-          });
-
-        if (!uploadErr) {
-          storedFileRef = buildStorageRef(SUBMISSIONS_BUCKET, objectPath);
-          uploadedToCloud = true;
-        } else {
-          cloudError = uploadErr.message;
-          console.error('[Submission] Supabase storage upload failed:', uploadErr.message);
-        }
-      } catch (sbErr) {
-        cloudError = sbErr instanceof Error ? sbErr.message : 'storage error';
-        console.error('[Submission] Supabase storage upload error:', sbErr);
-      }
-    }
-
-    // Local disk fallback. Only legitimate on a host with a durable
-    // filesystem: this used to run unconditionally, so on serverless a failed
-    // cloud upload silently "succeeded" into a directory that disappears.
-    if (!uploadedToCloud) {
-      if (isServerlessRuntime()) {
-        return NextResponse.json({
-          error: 'Upload storage is temporarily unavailable. Your file was NOT saved — please retry in a few minutes, and contact the organisers if it keeps failing.'
-        }, { status: 503 });
-      }
-      if (isSupabaseConfigured() && cloudError) {
-        console.warn('[Submission] Falling back to local disk after cloud failure:', cloudError);
-      }
-
-      const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'submissions');
-      const filePath = path.join(uploadDir, safeSavedName);
-      try {
-        fs.mkdirSync(uploadDir, { recursive: true });
-        fs.writeFileSync(filePath, buffer);
-        // Confirm the bytes really landed rather than trusting the call.
-        const written = fs.statSync(filePath).size;
-        if (written !== buffer.length) {
-          throw new Error(`wrote ${written} of ${buffer.length} bytes`);
-        }
-      } catch (fsErr) {
-        console.error('[Submission] Local upload write failed:', fsErr);
-        return NextResponse.json({
-          error: 'Could not save your presentation to storage. Your file was NOT saved — please retry, and contact the organisers if it keeps failing.'
-        }, { status: 503 });
-      }
-      storedFileRef = `/uploads/submissions/${safeSavedName}`;
-    }
+    const mimeType = fileExt === '.pdf' ? 'application/pdf' : fileExt === '.pptx'
+      ? 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+      : 'application/vnd.ms-powerpoint';
+    allocatedFile = await storePrivateFile('submissions', fileExt, buffer, mimeType);
 
     // 6. Save Submission Record
-    const mimeType = file.type || (fileExt === '.pdf' ? 'application/pdf' : 'application/vnd.ms-powerpoint');
     const result = await serverStore.submitRound1File(team.id, {
       originalFilename,
       fileSize: file.size,
       fileType: mimeType,
-      fileUrl: storedFileRef,
+      fileUrl: allocatedFile,
       projectUrl: projectUrl || undefined,
       repoUrl: repoUrl || undefined,
       demoUrl: demoUrl || undefined
     });
 
+    committed = result.success || Boolean(result.fileCommitted);
     if (!result.success) {
       return NextResponse.json({ error: result.error || 'Submission failed' }, { status: 400 });
     }
 
+    committed = true;
     // Hand back a signed link, never the internal reference.
     const submission = result.submission
       ? { ...result.submission, file_url: await resolveFileUrl(result.submission.file_url || '') }
@@ -208,7 +127,12 @@ export async function POST(request: Request) {
     });
 
   } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : 'Upload processing error';
+    console.error('[Submission] Upload failed', err);
+    const msg = 'Could not save your presentation. Please retry or contact the organisers.';
     return NextResponse.json({ error: msg }, { status: 500 });
+  } finally {
+    if (allocatedFile && !committed) {
+      await deletePrivateFile(allocatedFile).catch(error => console.error('[Submission] Upload cleanup failed', error));
+    }
   }
 }

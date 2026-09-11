@@ -2,8 +2,12 @@ import { NextResponse } from 'next/server';
 import { serverStore } from '@/lib/serverStore';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
 import { isAdminRequest } from '@/lib/adminAuth';
+import { registrationApiGuard } from '@/lib/features';
 
 export async function GET(request: Request) {
+  const disabled = registrationApiGuard();
+  if (disabled) return disabled;
+
   try {
     const clientIp = getClientIp(request);
     const rate = checkRateLimit(`admin-config-get-${clientIp}`, 30, 60 * 1000);
@@ -20,6 +24,9 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const disabled = registrationApiGuard();
+  if (disabled) return disabled;
+
   try {
     const clientIp = getClientIp(request);
     const rate = checkRateLimit(`admin-config-${clientIp}`, 15, 60 * 1000);

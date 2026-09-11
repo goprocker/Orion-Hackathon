@@ -8,11 +8,15 @@ import {
   verifyAdminPasscode
 } from '@/lib/adminAuth';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
+import { registrationApiGuard } from '@/lib/features';
 
 // Exchanges the admin passcode for an HttpOnly session cookie so the console
 // never has to hold ADMIN_SECRET_KEY in browser-readable storage.
 
 export async function POST(request: Request) {
+  const disabled = registrationApiGuard();
+  if (disabled) return disabled;
+
   try {
     const clientIp = getClientIp(request);
     const rate = checkRateLimit(`admin-session-${clientIp}`, 10, 60 * 1000);
@@ -50,10 +54,16 @@ export async function POST(request: Request) {
 
 /** Cheap probe so the console can restore a session after a page reload. */
 export async function GET(request: Request) {
+  const disabled = registrationApiGuard();
+  if (disabled) return disabled;
+
   return NextResponse.json({ success: true, authenticated: isAdminRequest(request) });
 }
 
 export async function DELETE() {
+  const disabled = registrationApiGuard();
+  if (disabled) return disabled;
+
   const res = NextResponse.json({ success: true });
   res.headers.append('Set-Cookie', buildClearedAdminSessionCookie());
   return res;

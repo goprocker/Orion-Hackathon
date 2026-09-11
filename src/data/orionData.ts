@@ -48,7 +48,6 @@ export const formatShortDate = (iso: string): string =>
 export const GOOGLE_FORM_REGISTRATION_URL = "https://forms.gle/txiRwn9EELUgZvrJ6";
 
 /** Flip to true to bring the Team Portal (nav links + /portal + /portal/reset) back live. */
-export const PORTAL_ENABLED = false;
 
 export const PRIZE_TIERS = [
   {

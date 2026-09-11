@@ -3,6 +3,7 @@ import { serverStore } from '@/lib/serverStore';
 import { sendPasscodeChangedEmail } from '@/lib/email';
 import { PASSCODE_MIN_LENGTH, PASSCODE_MAX_LENGTH } from '@/lib/passcodePolicy';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
+import { registrationApiGuard } from '@/lib/features';
 
 // ==============================================================================
 // POST /api/auth/team/reset — spend a reset link and set the new passcode
@@ -17,6 +18,9 @@ import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
 // the passcode into a log line or a response body, and neither happens below.
 
 export async function POST(request: Request) {
+  const disabled = registrationApiGuard();
+  if (disabled) return disabled;
+
   try {
     const clientIp = getClientIp(request);
     const rate = checkRateLimit(`team-reset-commit-${clientIp}`, 10, 15 * 60 * 1000);

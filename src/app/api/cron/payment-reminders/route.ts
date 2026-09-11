@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { serverStore } from '@/lib/serverStore';
+import { registrationApiGuard } from '@/lib/features';
 
 export const dynamic = 'force-dynamic';
 
@@ -34,6 +35,9 @@ function authorized(request: Request): boolean {
 }
 
 export async function GET(request: Request) {
+  const disabled = registrationApiGuard();
+  if (disabled) return disabled;
+
   if (!authorized(request)) {
     if (!(process.env.CRON_SECRET || '').trim()) {
       console.error('[Cron] CRON_SECRET is not set — the reminder sweep is disabled until it is.');

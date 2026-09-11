@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next';
+import { features } from '@/lib/features';
 
 export default function robots(): MetadataRoute.Robots {
   const baseUrl = 'https://orion.sathyabama.ac.in';
@@ -7,13 +8,13 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: '*',
-        allow: ['/', '/portal'],
-        disallow: ['/admin', '/api/'],
+        allow: features.registration ? ['/', '/portal'] : ['/'],
+        disallow: features.registration ? ['/admin', '/api/'] : ['/portal', '/admin', '/api/'],
       },
       {
         userAgent: 'Googlebot',
-        allow: ['/', '/portal'],
-        disallow: ['/admin', '/api/'],
+        allow: features.registration ? ['/', '/portal'] : ['/'],
+        disallow: features.registration ? ['/admin', '/api/'] : ['/portal', '/admin', '/api/'],
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,

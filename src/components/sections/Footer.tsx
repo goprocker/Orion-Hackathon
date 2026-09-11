@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { 
   ArrowUp, 
@@ -35,9 +36,11 @@ export const Footer: React.FC<FooterProps> = () => {
             <div>
               <div className="flex items-center gap-2.5 mb-4">
                 <div className="w-10 h-10 flex items-center justify-center shrink-0">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img 
-                    src="/logo.png" 
+                  <Image
+                    src="/orion-logo-v1.webp"
+                    width={512}
+                    height={512}
+                    sizes="40px"
                     alt="ORION 1.0 — Microsoft Club SIST Hackathon" 
                     className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(56,189,248,0.7)]" 
                   />

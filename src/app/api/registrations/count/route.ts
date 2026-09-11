@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { serverStore } from '@/lib/serverStore';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
+import { registrationApiGuard } from '@/lib/features';
 
 /**
  * Public counters for the landing page.
@@ -13,6 +14,9 @@ import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
  * turn the homepage into a load generator.
  */
 export async function GET(request: Request) {
+  const disabled = registrationApiGuard();
+  if (disabled) return disabled;
+
   try {
     const clientIp = getClientIp(request);
     const rate = checkRateLimit(`reg-count-${clientIp}`, 60, 60 * 1000);
@@ -25,14 +29,21 @@ export async function GET(request: Request) {
 
     const counts = await serverStore.getPublicCounts();
 
-    return NextResponse.json({
-      success: true,
-      registeredTeams: counts.totalRegistrations,
-      paymentConfirmed: counts.paymentVerified,
-      paymentPending: counts.paymentPending,
-      round1Submissions: counts.round1Submissions,
-      round1Selected: counts.round1Selected
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        registeredTeams: counts.totalRegistrations,
+        paymentConfirmed: counts.paymentVerified,
+        paymentPending: counts.paymentPending,
+        round1Submissions: counts.round1Submissions,
+        round1Selected: counts.round1Selected
+      },
+      {
+        headers: {
+          'Cache-Control': 'public, max-age=30, s-maxage=60, stale-while-revalidate=300'
+        }
+      }
+    );
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : 'Failed to fetch registration count';
     return NextResponse.json({ error: msg }, { status: 500 });

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef } from 'react';
+import Image from 'next/image';
 import { 
   CheckCircle2, 
   Printer, 
@@ -83,10 +84,12 @@ export const PaymentReceiptModal: React.FC<PaymentReceiptModalProps> = ({
           {/* Header Section */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-6 print:border-gray-300">
             <div className="flex items-center gap-3">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img 
-                src="/logo.png" 
+              <Image
+                src="/orion-logo-v1.webp"
                 alt="ORION 1.0" 
+                width={512}
+                height={512}
+                sizes="48px"
                 className="w-12 h-12 object-contain print:invert" 
               />
               <div>

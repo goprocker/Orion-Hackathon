@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { 
   CreditCard, 
   FileText, 
@@ -36,6 +37,8 @@ import { sound } from '@/audio/soundEffects';
 import confetti from 'canvas-confetti';
 
 export default function TeamPortalPage() {
+  const teamRef = useRef<TeamRecord | null>(null);
+  const refreshInFlightRef = useRef(false);
   const [teamIdInput, setTeamIdInput] = useState(() => {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
@@ -62,6 +65,10 @@ export default function TeamPortalPage() {
   const [copiedId, setCopiedId] = useState(false);
   const [copiedPass, setCopiedPass] = useState(false);
   const [isReceiptOpen, setIsReceiptOpen] = useState(false);
+
+  useEffect(() => {
+    teamRef.current = team;
+  }, [team]);
 
   // Payment state
   const [utrInput, setUtrInput] = useState('');
@@ -196,11 +203,13 @@ export default function TeamPortalPage() {
   };
 
   const handleRefresh = useCallback(async () => {
-    if (!team) return;
+    const currentTeam = teamRef.current;
+    if (!currentTeam || refreshInFlightRef.current) return;
+    refreshInFlightRef.current = true;
     try {
       const res = await fetch(
-        `/api/team/portal?teamId=${encodeURIComponent(team.registration_id)}`,
-        { headers: { 'x-team-token': team.access_token } }
+        `/api/team/portal?teamId=${encodeURIComponent(currentTeam.registration_id)}`,
+        { headers: { 'x-team-token': currentTeam.access_token } }
       );
       const data = await res.json();
       if (res.ok && data.team) {
@@ -209,16 +218,35 @@ export default function TeamPortalPage() {
       }
     } catch (err) {
       console.error('Refresh error:', err);
+    } finally {
+      refreshInFlightRef.current = false;
     }
-  }, [team]);
+  }, []);
 
-  // Live polling every 8s when authenticated
+  // Pending/review states need reasonably quick feedback. Stable teams use a
+  // much slower fallback, and hidden tabs perform no network polling at all.
   useEffect(() => {
     if (!team) return;
+
+    const needsFrequentRefresh =
+      ['PENDING', 'RESUBMISSION_REQUIRED'].includes(team.payment_status) ||
+      ['SUBMITTED', 'UNDER_REVIEW'].includes(team.round_1_status) ||
+      (team.resubmission_requests || []).some(request => request.status === 'PENDING');
+    const intervalMs = needsFrequentRefresh ? 30_000 : 120_000;
+    const refreshWhenVisible = () => {
+      if (document.visibilityState === 'visible') handleRefresh();
+    };
     const interval = setInterval(() => {
-      handleRefresh();
-    }, 8000);
-    return () => clearInterval(interval);
+      refreshWhenVisible();
+    }, intervalMs);
+    document.addEventListener('visibilitychange', refreshWhenVisible);
+    window.addEventListener('focus', refreshWhenVisible);
+
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', refreshWhenVisible);
+      window.removeEventListener('focus', refreshWhenVisible);
+    };
   }, [team, handleRefresh]);
 
   const handleLogout = () => {
@@ -330,8 +358,7 @@ export default function TeamPortalPage() {
       <header className="relative z-20 border-b border-white/10 bg-[#0B1220]/80 backdrop-blur-xl sticky top-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5 group">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo.png" alt="ORION 1.0" className="w-8 h-8 object-contain drop-shadow-[0_0_8px_rgba(0,188,242,0.5)]" />
+            <Image src="/orion-logo-v1.webp" alt="ORION 1.0" width={512} height={512} sizes="32px" className="w-8 h-8 object-contain drop-shadow-[0_0_8px_rgba(0,188,242,0.5)]" />
             <div>
               <div className="flex items-center gap-1.5">
                 <span className="font-display font-black text-sm text-white group-hover:text-[#00BCF2] transition-colors">ORION 1.0</span>

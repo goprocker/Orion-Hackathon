@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { 
   ShieldCheck, 
   Search, 
@@ -33,6 +33,7 @@ import {
   Phone
 } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import type { TeamRecord, TeamMember, AuditLogRecord, SystemConfig, EvaluationScores } from '@/types/orion';
 import { sound } from '@/audio/soundEffects';
 import confetti from 'canvas-confetti';
@@ -123,6 +124,7 @@ const RUBRIC_CATEGORIES = [
 ];
 
 export default function AdminDashboard() {
+  const fetchInFlightRef = useRef(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [passcode, setPasscode] = useState('');
   const [authError, setAuthError] = useState('');
@@ -300,6 +302,8 @@ export default function AdminDashboard() {
   // the default for same-origin fetches but is stated explicitly: this request
   // is worthless without the cookie.
   const fetchAdminData = useCallback(async (isSilent = false): Promise<TeamRecord[] | null> => {
+    if (fetchInFlightRef.current) return null;
+    fetchInFlightRef.current = true;
     if (!isSilent) setIsLoading(true);
     try {
       const res = await fetch('/api/admin/registrations', {
@@ -344,6 +348,7 @@ export default function AdminDashboard() {
     } catch (err) {
       console.error('Failed to load admin data:', err);
     } finally {
+      fetchInFlightRef.current = false;
       if (!isSilent) setIsLoading(false);
     }
     return null;
@@ -359,13 +364,26 @@ export default function AdminDashboard() {
     return () => clearTimeout(timer);
   }, [fetchAdminData]);
 
-  // Real-time polling every 6 seconds when authenticated
+  // Keep the operational view fresh without downloading the full overview in
+  // background tabs. Admin actions and the manual refresh button still invoke
+  // fetchAdminData immediately.
   useEffect(() => {
     if (!isAuthenticated) return;
+
+    const refreshWhenVisible = () => {
+      if (document.visibilityState === 'visible') fetchAdminData(true);
+    };
     const interval = setInterval(() => {
-      fetchAdminData(true);
-    }, 6000);
-    return () => clearInterval(interval);
+      refreshWhenVisible();
+    }, 60_000);
+    document.addEventListener('visibilitychange', refreshWhenVisible);
+    window.addEventListener('focus', refreshWhenVisible);
+
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', refreshWhenVisible);
+      window.removeEventListener('focus', refreshWhenVisible);
+    };
   }, [isAuthenticated, fetchAdminData]);
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -941,8 +959,7 @@ export default function AdminDashboard() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-2 group">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo.png" alt="ORION 1.0" className="w-8 h-8 object-contain" />
+              <Image src="/orion-logo-v1.webp" alt="ORION 1.0" width={512} height={512} sizes="32px" className="w-8 h-8 object-contain" />
               <div>
                 <div className="flex items-center gap-1.5">
                   <span className="font-display font-black text-sm text-white">ORION 1.0</span>

@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "node scripts/check_private_data.mjs && vitest run",
+    "check:private-data": "node scripts/check_private_data.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.112.3",
@@ -14,25 +16,27 @@
     "gsap": "^3.15.0",
     "lucide-react": "^1.31.0",
     "motion": "^13.1.1",
-    "next": "16.3.1",
-    "nodemailer": "^9.0.6",
+    "next": "16.3.4",
+    "nodemailer": "10.0.1",
     "ogl": "^1.0.11",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "sharp": "0.35.4",
     "three": "^0.185.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/canvas-confetti": "^1.9.0",
-    "@types/node": "^20",
-    "@types/nodemailer": "^8.0.1",
+    "@types/node": "^24.13.3",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/three": "^0.185.4",
+    "dotenv": "^17.4.2",
     "eslint": "^9",
-    "eslint-config-next": "16.3.1",
+    "eslint-config-next": "16.3.4",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "xlsx": "^0.18.5"
+    "vitest": "^4.1.11",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   }
 }

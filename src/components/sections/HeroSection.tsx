@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { 
   Rocket, 
   Search, 
@@ -78,9 +79,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenStatus, onExplor
           
           {/* Grand Logo Container (Borderless) */}
           <div className="relative w-52 h-52 sm:w-64 sm:h-64 md:w-76 md:h-76 lg:w-88 lg:h-88 group animate-float flex items-center justify-center">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img 
-              src="/logo.png" 
+            <Image
+              src="/orion-logo-v1.webp"
+              width={512}
+              height={512}
+              sizes="(max-width: 640px) 208px, (max-width: 768px) 256px, (max-width: 1024px) 304px, 352px"
+              preload
               alt="ORION 1.0 — 24H National Level Hackathon Official Logo - Microsoft Club SIST, Sathyabama Institute of Science and Technology" 
               className="relative w-full h-full object-contain filter drop-shadow-[0_0_35px_rgba(0,188,242,0.75)] group-hover:scale-105 transition-transform duration-500" 
             />

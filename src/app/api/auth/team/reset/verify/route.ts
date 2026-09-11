@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { serverStore } from '@/lib/serverStore';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
+import { registrationApiGuard } from '@/lib/features';
 
 // ==============================================================================
 // POST /api/auth/team/reset/verify — is this reset link still good?
@@ -20,6 +21,9 @@ import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
 // well under an hour, and only its hash is ever stored.
 
 export async function POST(request: Request) {
+  const disabled = registrationApiGuard();
+  if (disabled) return disabled;
+
   try {
     const clientIp = getClientIp(request);
     const rate = checkRateLimit(`team-reset-peek-${clientIp}`, 30, 60 * 1000);

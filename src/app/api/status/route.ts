@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { serverStore } from '@/lib/serverStore';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
+import { registrationApiGuard } from '@/lib/features';
 
 /**
  * Public "check my registration status" lookup.
@@ -13,6 +14,9 @@ import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
  * out working credentials for every team.
  */
 export async function GET(request: Request) {
+  const disabled = registrationApiGuard();
+  if (disabled) return disabled;
+
   try {
     const clientIp = getClientIp(request);
     const rate = checkRateLimit(`status-${clientIp}`, 20, 60 * 1000);

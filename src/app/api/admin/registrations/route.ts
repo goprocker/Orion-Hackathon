@@ -19,7 +19,9 @@ import {
   verifySmtp
 } from '@/lib/email';
 import type { MailResult } from '@/lib/email';
+import { deletePrivateFile } from '@/lib/privateFiles';
 import { storePaymentScreenshot } from '@/lib/paymentProof';
+import { registrationApiGuard } from '@/lib/features';
 
 /**
  * Await a notification mail and say what actually happened. A fire-and-forget
@@ -46,6 +48,9 @@ async function describeMailOutcome(
 }
 
 export async function GET(request: Request) {
+  const disabled = registrationApiGuard();
+  if (disabled) return disabled;
+
   try {
     const clientIp = getClientIp(request);
     const rate = checkRateLimit(`admin-get-${clientIp}`, 60, 60 * 1000);
@@ -91,6 +96,9 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const disabled = registrationApiGuard();
+  if (disabled) return disabled;
+
   try {
     const clientIp = getClientIp(request);
 
@@ -158,6 +166,9 @@ export async function POST(request: Request) {
       // RECORD_PAYMENT = the WhatsApp workflow: the organiser cross-checked the
       // proof off-platform and records the evidence (UTR / payer / UPI /
       // screenshot) while verifying, so the payment ledger holds a real row.
+      let allocatedFile = '';
+      const targetTeam = await serverStore.getTeam(teamId);
+      if (!targetTeam) return NextResponse.json({ error: 'Team not found' }, { status: 404 });
       let details: { utrNumber?: string; payerName?: string; payerUpi?: string; screenshotUrl?: string; notes?: string } | undefined;
       if (action === 'RECORD_PAYMENT') {
         const b = body as { utrNumber?: string; payerName?: string; payerUpi?: string; notes?: string };
@@ -166,6 +177,7 @@ export async function POST(request: Request) {
           const stored = await storePaymentScreenshot(screenshotFile, teamId);
           if (stored.error) return NextResponse.json({ error: stored.error }, { status: 400 });
           screenshotUrl = stored.url;
+          allocatedFile = stored.url || '';
         }
         details = {
           utrNumber: b.utrNumber?.trim() || undefined,
@@ -176,8 +188,21 @@ export async function POST(request: Request) {
         };
       }
 
-      const res = await serverStore.updatePaymentVerification(teamId, 'VERIFY', actor, note, details);
+      const res = await serverStore.updatePaymentVerification(teamId, 'VERIFY', actor, note, details).catch(async error => {
+        // A thrown ancillary operation may follow a successful payment write.
+        // Do not remove evidence unless a read confirms it is unreferenced.
+        if (allocatedFile) {
+          const latest = await serverStore.getTeam(teamId).catch(() => null);
+          if (latest && latest.payment?.screenshot_url !== allocatedFile) {
+            await deletePrivateFile(allocatedFile).catch(cleanupError => console.error('[Admin] Cleanup failed', cleanupError));
+          }
+        }
+        throw error;
+      });
       if (!res.success) {
+        // A partial verification can already reference the receipt; retain it then.
+        const latest = await serverStore.getTeam(teamId);
+        if (allocatedFile && latest && latest.payment?.screenshot_url !== allocatedFile) await deletePrivateFile(allocatedFile).catch(error => console.error('[Admin] Cleanup failed', error));
         return NextResponse.json({ error: res.error || 'Payment verification did not persist — retry.' }, { status: 500 });
       }
 
@@ -189,8 +214,7 @@ export async function POST(request: Request) {
       return NextResponse.json({
         success: true,
         message: `Payment ${action === 'RECORD_PAYMENT' ? 'recorded and ' : ''}verified, Round 1 unlocked — confirmation ${mail.note}`,
-        mail,
-        data: res
+        mail
       });
     }
 
@@ -218,7 +242,7 @@ export async function POST(request: Request) {
       if (!res.success) {
         return NextResponse.json({ error: res.error || 'Rejection did not persist — retry.' }, { status: 500 });
       }
-      return NextResponse.json({ success: true, message: 'Payment marked as rejected', data: res });
+      return NextResponse.json({ success: true, message: 'Payment marked as rejected' });
     }
 
     if (action === 'REQUEST_PAYMENT_RESUBMISSION') {
@@ -236,7 +260,7 @@ export async function POST(request: Request) {
         );
       }
 
-      return NextResponse.json({ success: true, message: `Payment resubmission requested — notice ${mail.note}`, mail, data: res });
+      return NextResponse.json({ success: true, message: `Payment resubmission requested — notice ${mail.note}`, mail });
     }
 
     // 2a-bis. Lazy receipt fetch: the bulk roster replaces multi-MB data: URL
@@ -248,7 +272,7 @@ export async function POST(request: Request) {
       if (!team?.payment?.screenshot_url) {
         return NextResponse.json({ error: 'No screenshot on record for this team.' }, { status: 404 });
       }
-      return NextResponse.json({ success: true, url: team.payment.screenshot_url });
+      return NextResponse.json({ success: true, url: `/api/admin/payment-proof?teamId=${encodeURIComponent(team.id)}` });
     }
 
     // 2b. Manual registration-confirmation email (auto-dispatch on signup is off
@@ -303,8 +327,7 @@ export async function POST(request: Request) {
         message: `${isApprove
           ? 'Re-upload approved — the team may now upload one replacement deck.'
           : 'Re-upload request declined — the existing submission stands.'} Decision ${mail.note}`,
-        mail,
-        data: res
+        mail
       });
     }
 
@@ -312,15 +335,15 @@ export async function POST(request: Request) {
     if (action === 'EVALUATE_ROUND_1') {
       if (!teamId || !decision) return NextResponse.json({ error: 'teamId and decision are required' }, { status: 400 });
       const evaluationScores = (body as { evaluationScores?: Parameters<typeof serverStore.evaluateRound1>[5] }).evaluationScores;
-      const res = await serverStore.evaluateRound1(teamId, decision, actor, score, note, evaluationScores);
-      return NextResponse.json({ success: true, message: `Round 1 evaluation saved: ${decision}`, data: res });
+      await serverStore.evaluateRound1(teamId, decision, actor, score, note, evaluationScores);
+      return NextResponse.json({ success: true, message: `Round 1 evaluation saved: ${decision}` });
     }
 
     // 4. Admin Note
     if (action === 'ADD_NOTE') {
       if (!teamId || note === undefined) return NextResponse.json({ error: 'teamId and note are required' }, { status: 400 });
-      const team = await serverStore.addAdminNote(teamId, note, actor);
-      return NextResponse.json({ success: true, message: 'Admin note recorded', team });
+      await serverStore.addAdminNote(teamId, note, actor);
+      return NextResponse.json({ success: true, message: 'Admin note recorded' });
     }
 
     // 5. Permanent Delete Team Entry
@@ -330,7 +353,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ 
         success: true, 
         message: `Team ${res.deletedRegistrationId} permanently deleted from registry`, 
-        data: res 
       });
     }
 
@@ -340,7 +362,6 @@ export async function POST(request: Request) {
       return NextResponse.json({
         success: true,
         message: `Scanned ${result.checked} squads: Dispatched ${result.sent} payment reminder emails (${result.notifiedTeams.join(', ') || 'no squads pending >5m'})`,
-        data: result
       });
     }
 
@@ -355,7 +376,6 @@ export async function POST(request: Request) {
           : health.configured
             ? `SMTP configured but the connection failed: ${health.error}`
             : 'SMTP is not configured — set SMTP_USER and SMTP_PASS.',
-        data: health
       }, { status: health.ok ? 200 : 503 });
     }
 

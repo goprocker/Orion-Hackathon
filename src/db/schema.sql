@@ -198,18 +198,8 @@ alter table public.system_config enable row level security;
 -- standing account takeover. Only the service role touches it.
 alter table public.password_resets enable row level security;
 
--- Public read / write policies
-create policy "Allow public squad team inserts" on public.teams for insert with check (true);
-create policy "Allow public team member inserts" on public.team_members for insert with check (true);
-create policy "Allow public team read" on public.teams for select using (true);
-create policy "Allow public team members read" on public.team_members for select using (true);
-create policy "Allow public team updates" on public.teams for update using (true);
-create policy "Allow public payment read/write" on public.payments for all using (true);
-create policy "Allow public submission read/write" on public.submissions for all using (true);
-create policy "Allow public resubmission request read/write" on public.resubmission_requests for all using (true);
-create policy "Allow public audit log read/write" on public.audit_logs for all using (true);
-create policy "Allow public suspicion flags read/write" on public.suspicion_flags for all using (true);
-create policy "Allow public system config read" on public.system_config for select using (true);
+-- Policy-free by default: only the server service role may access these tables.
+-- Never add anonymous read/write access to participant, payment or audit records.
 
 -- 10. Readable Team Directory (see migrations/010_team_directory_view.sql)
 --     One row per team: identity, leader, roster and progress in one place,

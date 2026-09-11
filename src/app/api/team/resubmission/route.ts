@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { serverStore, safeEqualCI } from '@/lib/serverStore';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
+import { registrationApiGuard } from '@/lib/features';
 
 /**
  * Participant-side re-upload request.
@@ -10,6 +11,9 @@ import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
  * is worth exactly one re-upload.
  */
 export async function POST(request: Request) {
+  const disabled = registrationApiGuard();
+  if (disabled) return disabled;
+
   try {
     const clientIp = getClientIp(request);
     const rate = checkRateLimit(`team-resub-${clientIp}`, 6, 60 * 1000);

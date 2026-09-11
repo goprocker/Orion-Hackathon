@@ -1,9 +1,17 @@
 import { NextResponse } from 'next/server';
 import { serverStore, safeEqualCI } from '@/lib/serverStore';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
+import { deletePrivateFile } from '@/lib/privateFiles';
+import { resolveFileUrl } from '@/lib/storage';
 import { storePaymentScreenshot } from '@/lib/paymentProof';
+import { registrationApiGuard } from '@/lib/features';
 
 export async function POST(request: Request) {
+  const disabled = registrationApiGuard();
+  if (disabled) return disabled;
+
+  let allocatedFile = '';
+  let committed = false;
   try {
     const clientIp = getClientIp(request);
     const rate = checkRateLimit(`team-pay-${clientIp}`, 15, 60 * 1000);
@@ -18,7 +26,6 @@ export async function POST(request: Request) {
     let payerName = '';
     let payerUpi = '';
     let teamNameInNote = '';
-    let amount = 100;
     let screenshotFile: File | null = null;
     let screenshotUrl = '';
 
@@ -30,13 +37,12 @@ export async function POST(request: Request) {
       payerName = String(formData.get('payerName') || '');
       payerUpi = String(formData.get('payerUpi') || '');
       teamNameInNote = String(formData.get('teamNameInNote') || '');
-      amount = Number(formData.get('amount')) || 100;
-      
+
       const fileEntry = formData.get('screenshot');
       if (fileEntry && typeof fileEntry === 'object' && 'arrayBuffer' in fileEntry) {
         screenshotFile = fileEntry as File;
       }
-      screenshotUrl = String(formData.get('screenshotUrl') || '');
+
     } else {
       const body = await request.json();
       teamId = body.teamId || '';
@@ -45,8 +51,7 @@ export async function POST(request: Request) {
       payerName = body.payerName || '';
       payerUpi = body.payerUpi || '';
       teamNameInNote = String(body.teamNameInNote || '');
-      amount = Number(body.amount) || 100;
-      screenshotUrl = body.screenshotUrl || '';
+
     }
 
     if (!teamId?.trim()) {
@@ -79,21 +84,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid UTR / Transaction Reference format (6-30 alphanumeric characters)' }, { status: 400 });
     }
 
-    // Process & Validate Mandatory Payment Screenshot Upload
-    if (screenshotFile && screenshotFile.size > 0) {
-      const stored = await storePaymentScreenshot(screenshotFile, teamId);
-      if (stored.error) {
-        return NextResponse.json({ error: stored.error }, { status: 400 });
-      }
-      if (stored.url) screenshotUrl = stored.url;
-    }
-
-    if (!screenshotUrl) {
-      return NextResponse.json({ 
-        error: 'Payment Screenshot Proof is COMPULSORY. Please select and upload your payment transaction screenshot before submitting.' 
-      }, { status: 400 });
-    }
-
     const team = await serverStore.getTeam(teamId.trim());
     if (!team) {
       return NextResponse.json({ error: 'Team not found' }, { status: 404 });
@@ -113,6 +103,21 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Unauthorized. Invalid Team Passcode.' }, { status: 401 });
     }
 
+    // Process & Validate Mandatory Payment Screenshot Upload
+    if (screenshotFile && screenshotFile.size > 0) {
+      const stored = await storePaymentScreenshot(screenshotFile, teamId);
+      if (stored.error) {
+        return NextResponse.json({ error: stored.error }, { status: 400 });
+      }
+      if (stored.url) screenshotUrl = allocatedFile = stored.url;
+    }
+
+    if (!screenshotUrl) {
+      return NextResponse.json({
+        error: 'Payment Screenshot Proof is COMPULSORY. Please select and upload your payment transaction screenshot before submitting.'
+      }, { status: 400 });
+    }
+
     // The fee is set by the organisers, never by the caller. An unvalidated
     // client `amount` was being persisted verbatim into the payments ledger.
     const config = await serverStore.getConfig();
@@ -121,22 +126,29 @@ export async function POST(request: Request) {
       utrNumber: cleanUTR,
       payerName: payerName.trim(),
       payerUpi: cleanPayerUpi,
-      amount: config.round1FeeInr || amount || 100,
+      amount: config.round1FeeInr || 100,
       screenshotUrl
     });
 
+    committed = result.success || Boolean(result.fileCommitted);
     if (!result.success) {
       return NextResponse.json({ error: result.error || 'Failed to submit payment' }, { status: 400 });
     }
 
+    committed = true;
     return NextResponse.json({
       success: true,
       message: 'Payment reference and screenshot proof submitted successfully. Organizers will verify and unlock Round 1.',
-      payment: result.payment
+      payment: result.payment ? { ...result.payment, screenshot_url: await resolveFileUrl(result.payment.screenshot_url || '') } : result.payment
     });
 
   } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : 'Payment submission error';
+    console.error('[Payment] Submission failed', err);
+    const msg = 'Payment submission failed. Please retry.';
     return NextResponse.json({ error: msg }, { status: 500 });
+  } finally {
+    if (allocatedFile && !committed) {
+      await deletePrivateFile(allocatedFile).catch(error => console.error('[Payment] Upload cleanup failed', error));
+    }
   }
 }

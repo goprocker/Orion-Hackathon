@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { submissionEligibilityError } from './submissionPolicy';
 import { toUsername, claimUsername } from '@/lib/teamUsername';
 import path from 'path';
 import crypto from 'crypto';
@@ -1333,7 +1334,8 @@ export const serverStore = {
    *      file when the real database is configured is never the right answer in
    *      production — it turns a database error into a baffling one.
    */
-  async submitPayment(teamId: string, payload: { utrNumber: string; payerName: string; payerUpi: string; amount?: number; screenshotUrl?: string }): Promise<{ success: boolean; error?: string; payment?: PaymentRecord }> {
+  async submitPayment(teamId: string, payload: { utrNumber: string; payerName: string; payerUpi: string; amount?: number; screenshotUrl?: string }): Promise<{ success: boolean; error?: string; payment?: PaymentRecord; fileCommitted?: boolean }> {
+    let fileCommitted = false;
     const cleanUTR = payload.utrNumber.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
     const cleanPayer = payload.payerName.trim();
     const cleanPayerUpi = (payload.payerUpi || '').trim().toLowerCase();
@@ -1432,6 +1434,7 @@ export const serverStore = {
           return { success: false, error: WRITE_FAILED };
         }
 
+        fileCommitted = true;
         // Only now is it true that this team has a payment on record.
         const { error: teamErr } = await supabase
           .from('teams')
@@ -1472,7 +1475,7 @@ export const serverStore = {
         };
       } catch (sbErr) {
         console.error('[Payment] Supabase submitPayment threw:', sbErr);
-        return { success: false, error: WRITE_FAILED };
+        return { success: false, error: WRITE_FAILED, fileCommitted };
       }
       // Unreachable by design: every path above returns. Falling through to the
       // local store while Supabase is configured is what produced
@@ -1744,7 +1747,8 @@ export const serverStore = {
     projectUrl?: string | null;
     repoUrl?: string | null;
     demoUrl?: string | null;
-  }): Promise<{ success: boolean; error?: string; submission?: SubmissionRecord }> {
+  }): Promise<{ success: boolean; error?: string; submission?: SubmissionRecord; fileCommitted?: boolean }> {
+    let fileCommitted = false;
     const team = await this.getTeam(teamId);
     if (!team) return { success: false, error: 'Team record not found.' };
 
@@ -1755,6 +1759,8 @@ export const serverStore = {
     }
 
     const config = await this.getConfig();
+    const eligibilityError = submissionEligibilityError(team, config);
+    if (eligibilityError) return { success: false, error: eligibilityError };
     const deadline = new Date(config.round1SubmissionDeadline).getTime();
     if (Date.now() > deadline) {
       return { success: false, error: `Round 1 Submission Deadline has passed (${config.round1SubmissionDeadline}). Submissions are locked.` };
@@ -1844,6 +1850,7 @@ export const serverStore = {
           throw subErr || new Error('Submission insert returned no row');
         }
 
+        fileCommitted = true;
         // The accepted deck is real from here on — these are state-sync writes
         // whose failure must be loudly visible but must not undo the upload.
         if (supersededIds.length > 0) {
@@ -1909,6 +1916,7 @@ export const serverStore = {
         console.error('Supabase submitRound1File error:', sbErr);
         return {
           success: false,
+          fileCommitted,
           error: 'Could not record your submission just now — nothing was saved. Please submit again in a moment; contact the organisers if it keeps failing.'
         };
       }
@@ -2424,9 +2432,29 @@ export const serverStore = {
         // and columns its migrations promise (001, 004, 005, 006, 007...),
         // and a missing resubmission_requests table must not render the
         // console as zero teams. Only the teams fetch itself stays fatal.
-        const softFetch = async (table: string, order?: { column: string; ascending: boolean }) => {
+        const projectedFetch = async (
+          table: string,
+          select: string,
+          order?: { column: string; ascending: boolean }
+        ) => {
           try {
+            return await fetchAllRows(table, order, select);
+          } catch (projectionError) {
+            // Some long-lived installations intentionally lag optional schema
+            // migrations. Keep those deployments working while the current
+            // schema benefits from narrow projections.
+            console.warn(`[AdminOverview] ${table} projected select failed; retrying legacy wildcard.`, projectionError);
             return await fetchAllRows(table, order);
+          }
+        };
+
+        const softFetch = async (
+          table: string,
+          select: string,
+          order?: { column: string; ascending: boolean }
+        ) => {
+          try {
+            return await projectedFetch(table, select, order);
           } catch (err) {
             console.error(`[AdminOverview] ${table} unavailable — roster renders without it. Apply the missing migration.`, err);
             return [];
@@ -2434,13 +2462,17 @@ export const serverStore = {
         };
 
         const [teamsData, memData, payData, subData, resubData, flagData, logRes] = await Promise.all([
-          fetchAllRows('teams', { column: 'created_at', ascending: false }),
-          softFetch('team_members', { column: 'member_number', ascending: true }),
-          softFetch('payments'),
-          softFetch('submissions', { column: 'version', ascending: false }),
-          softFetch('resubmission_requests', { column: 'created_at', ascending: false }),
-          softFetch('suspicion_flags', { column: 'created_at', ascending: false }),
-          supabase.from('audit_logs').select('*').order('created_at', { ascending: false }).limit(50)
+          projectedFetch(
+            'teams',
+            'id, registration_id, team_name, username, leader_name, leader_phone, leader_email, institution, department, year, problem_statement, access_token, payment_status, amount, registration_status, round_1_status, round_2_status, round_1_score, evaluation_scores, admin_notes, created_at, updated_at',
+            { column: 'created_at', ascending: false }
+          ),
+          softFetch('team_members', 'id, team_id, member_number, member_name, member_email, member_phone, department, year', { column: 'member_number', ascending: true }),
+          softFetch('payments', 'id, team_id, utr_number, payer_name, payer_upi, amount, payment_status, screenshot_url, notes, rejection_reason, submitted_at, verified_at, verified_by'),
+          softFetch('submissions', 'id, team_id, round_number, file_url, original_filename, file_size, file_type, version, submission_status, submitted_at, review_notes, project_url, repo_url, demo_url', { column: 'version', ascending: false }),
+          softFetch('resubmission_requests', 'id, team_id, round_number, reason, status, review_notes, reviewed_by, reviewed_at, consumed_at, consumed_submission_id, created_at', { column: 'created_at', ascending: false }),
+          softFetch('suspicion_flags', 'id, team_id, flag_type, description, severity, matched_value, matched_team_id, created_at', { column: 'created_at', ascending: false }),
+          supabase.from('audit_logs').select('id, team_id, team_name, action, actor, details, created_at').order('created_at', { ascending: false }).limit(50)
         ]);
 
         if (teamsData) {

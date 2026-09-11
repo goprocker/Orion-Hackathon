@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { 
   Rocket, 
@@ -9,9 +10,10 @@ import {
   ChevronRight 
 } from 'lucide-react';
 import { GooeyNav } from './GooeyNav';
-import { GOOGLE_FORM_REGISTRATION_URL, PORTAL_ENABLED } from '@/data/orionData';
+import { GOOGLE_FORM_REGISTRATION_URL } from '@/data/orionData';
 
 interface NavbarProps {
+  registrationEnabled?: boolean;
   onOpenRegister?: () => void;
   onOpenStatus?: () => void;
 }
@@ -27,7 +29,7 @@ const NAV_ITEMS = [
   { label: "VENUE & PERKS", href: "#venue" },
 ];
 
-export const Navbar: React.FC<NavbarProps> = () => {
+export const Navbar: React.FC<NavbarProps> = ({ registrationEnabled = false }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
@@ -74,9 +76,12 @@ export const Navbar: React.FC<NavbarProps> = () => {
             className="flex items-center gap-3 group cursor-pointer shrink-0"
           >
             <div className="relative w-10 h-10 flex items-center justify-center shrink-0">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img 
-                src="/logo.png" 
+              <Image
+                src="/orion-logo-v1.webp"
+                width={512}
+                height={512}
+                sizes="40px"
+                loading="eager"
                 alt="ORION 1.0 — Microsoft Club SIST 24-Hour Hackathon" 
                 className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(0,188,242,0.5)] group-hover:scale-110 transition-transform duration-300"
               />
@@ -111,7 +116,7 @@ export const Navbar: React.FC<NavbarProps> = () => {
 
           {/* Desktop Action Controls */}
           <div className="hidden lg:flex items-center gap-3 shrink-0">
-            {PORTAL_ENABLED && (
+            {registrationEnabled && (
               <Link
                 href="/portal"
                 className="px-3.5 py-2 rounded-none font-mono-hud font-bold text-xs text-[#BAE6FD] hover:text-white bg-[#07193D] border border-[#38BDF8]/40 hover:border-[#38BDF8] transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
@@ -134,7 +139,7 @@ export const Navbar: React.FC<NavbarProps> = () => {
 
           {/* Mobile Navigation Toggle */}
           <div className="flex items-center gap-2 lg:hidden">
-            {PORTAL_ENABLED && (
+            {registrationEnabled && (
               <Link
                 href="/portal"
                 className="px-2.5 py-2 rounded-none font-mono-hud text-[11px] text-[#BAE6FD] bg-[#07193D] border border-[#38BDF8]/40"
@@ -186,16 +191,14 @@ export const Navbar: React.FC<NavbarProps> = () => {
                 );
               })}
             </div>
-            <div className={`grid ${PORTAL_ENABLED ? 'grid-cols-2' : 'grid-cols-1'} gap-2 pt-2 border-t border-white/10`}>
-              {PORTAL_ENABLED && (
-                <Link
-                  href="/portal"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-2.5 text-center text-xs font-mono-hud font-bold text-[#BAE6FD] bg-[#07193D] border border-[#38BDF8]/40"
-                >
-                  TEAM PORTAL
-                </Link>
-              )}
+            {registrationEnabled && <div className="grid grid-cols-2 gap-2 pt-2 border-t border-white/10">
+              <Link
+                href="/portal"
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-2.5 text-center text-xs font-mono-hud font-bold text-[#BAE6FD] bg-[#07193D] border border-[#38BDF8]/40"
+              >
+                TEAM PORTAL
+              </Link>
               <Link
                 href="/admin"
                 onClick={() => setMobileMenuOpen(false)}
@@ -203,13 +206,13 @@ export const Navbar: React.FC<NavbarProps> = () => {
               >
                 ADMIN
               </Link>
-            </div>
+            </div>}
           </div>
         )}
       </header>
 
       {/* Floating Bottom Quick Action Bar for Mobile */}
-      <nav 
+      <nav
         aria-label="Mobile quick actions"
         className="fixed bottom-3 inset-x-3 z-40 lg:hidden pointer-events-auto"
       >

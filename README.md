@@ -26,6 +26,10 @@ The platform includes a **6-step registration flow**, a **UPI-based payment veri
 * **Offline Finale**: **September 18, 2026** — Top 70 Finalist squads invited to the 24-hour offline hackathon at SIST Chennai.
 * **Venue**: Sathyabama Institute of Science and Technology, OMR, Chennai.
 
+### Schedule & Date Changes
+
+All event dates, deadlines, schedules, and timings are subject to change based on organizational requirements or unforeseen circumstances. Any revisions will be officially communicated through the designated ORION 1.0 communication channels. Participants are expected to regularly check for updates and comply with the revised schedule.
+
 ---
 
 ## 2. Full-Stack Architecture

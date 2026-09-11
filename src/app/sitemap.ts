@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next';
-import { PORTAL_ENABLED } from '@/data/orionData';
+import { features } from '@/lib/features';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://orion.sathyabama.ac.in';
@@ -14,7 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  if (PORTAL_ENABLED) {
+  if (features.registration) {
     entries.push({
       url: `${baseUrl}/portal`,
       lastModified: currentDate,

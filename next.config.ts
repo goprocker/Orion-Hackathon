@@ -54,14 +54,58 @@ const securityHeaders = [
   },
 ];
 
+const longLivedAssetHeaders = [
+  { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+];
+
+const revalidatingAssetHeaders = [
+  { key: "Cache-Control", value: "public, max-age=86400, s-maxage=604800, stale-while-revalidate=604800" },
+];
+
+const privateNoStoreHeaders = [
+  { key: "Cache-Control", value: "private, no-store, max-age=0" },
+];
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  images: {
+    formats: ["image/avif", "image/webp"],
+    qualities: [75],
+  },
+  async rewrites() {
+    return { beforeFiles: [{ source: '/uploads/:path*', destination: '/api/uploads-blocked' }] };
+  },
   async headers() {
     return [
       {
         source: "/:path*",
         headers: securityHeaders,
       },
+      {
+        source: "/orion-logo-v1.webp",
+        headers: longLivedAssetHeaders,
+      },
+      ...["/logo.png", "/icon.png", "/favicon.png", "/favicon.ico", "/favicon.svg", "/ORION_1.0_Template.pptx"].map(source => ({
+        source,
+        headers: revalidatingAssetHeaders,
+      })),
+      ...[
+        "/admin",
+        "/admin/:path*",
+        "/portal",
+        "/portal/:path*",
+        "/api/admin/:path*",
+        "/api/team/:path*",
+        "/api/auth/team",
+        "/api/auth/team/:path*",
+        "/api/private-files",
+        "/api/status",
+        "/api/registrations",
+        "/api/cron/:path*",
+      ].map(source => ({
+        source,
+        headers: privateNoStoreHeaders,
+      })),
       {
         // Uploaded participant decks are attacker-supplied bytes served from
         // our own origin. Force a download rather than inline rendering, and

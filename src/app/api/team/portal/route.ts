@@ -2,8 +2,12 @@ import { NextResponse } from 'next/server';
 import { serverStore, safeEqualCI, toTeamFacingRecord } from '@/lib/serverStore';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
 import { withSignedSubmissionUrls } from '@/lib/storage';
+import { registrationApiGuard } from '@/lib/features';
 
 export async function GET(request: Request) {
+  const disabled = registrationApiGuard();
+  if (disabled) return disabled;
+
   try {
     const clientIp = getClientIp(request);
     const rate = checkRateLimit(`team-portal-${clientIp}`, 60, 60 * 1000);

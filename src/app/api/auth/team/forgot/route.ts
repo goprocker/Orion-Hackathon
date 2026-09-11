@@ -3,6 +3,7 @@ import { serverStore } from '@/lib/serverStore';
 import { sendPasscodeResetEmail, SITE_URL } from '@/lib/email';
 import { RESET_TOKEN_TTL_MINUTES } from '@/lib/passcodePolicy';
 import { checkRateLimit, getClientIp } from '@/lib/rateLimit';
+import { registrationApiGuard } from '@/lib/features';
 
 // ==============================================================================
 // POST /api/auth/team/forgot — request a passcode reset link
@@ -47,6 +48,9 @@ async function settleAfter(startedAt: number): Promise<void> {
 }
 
 export async function POST(request: Request) {
+  const disabled = registrationApiGuard();
+  if (disabled) return disabled;
+
   const startedAt = Date.now();
 
   try {

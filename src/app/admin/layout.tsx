@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { features } from '@/lib/features';
 
 export const metadata: Metadata = {
   title: 'Mission Command Center | ORION 1.0 Admin',
@@ -15,5 +17,7 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
+  if (!features.registration) notFound();
+
   return <>{children}</>;
 }

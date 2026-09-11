@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { 
   Trophy, 
@@ -24,6 +24,29 @@ const Trophy3D = dynamic(
 
 export const PrizeSection: React.FC = () => {
   const bountyIcons = [Cpu, Layout, HardDrive, Presentation];
+  const trophyMountRef = useRef<HTMLDivElement>(null);
+  const [shouldLoadTrophy, setShouldLoadTrophy] = useState(false);
+
+  useEffect(() => {
+    const mount = trophyMountRef.current;
+    if (!mount || shouldLoadTrophy) return;
+    if (!('IntersectionObserver' in window)) {
+      const fallback = globalThis.setTimeout(() => setShouldLoadTrophy(true), 0);
+      return () => globalThis.clearTimeout(fallback);
+    }
+
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries.some(entry => entry.isIntersecting)) {
+          setShouldLoadTrophy(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '400px 0px' }
+    );
+    observer.observe(mount);
+    return () => observer.disconnect();
+  }, [shouldLoadTrophy]);
 
   return (
     <section id="prizes" className="py-24 px-4 relative z-10">
@@ -46,7 +69,9 @@ export const PrizeSection: React.FC = () => {
         {/* 3D Interactive Trophy Centerpiece */}
         <ScrollReveal direction="up" delay={100} duration={600} className="max-w-md mx-auto mb-10 h-48 sm:h-56 relative flex items-center justify-center">
           <div className="absolute inset-0 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
-          <Trophy3D className="relative z-10 cursor-grab active:cursor-grabbing" />
+          <div ref={trophyMountRef} className="relative z-10 w-full h-full">
+            {shouldLoadTrophy && <Trophy3D className="relative z-10 cursor-grab active:cursor-grabbing" />}
+          </div>
         </ScrollReveal>
 
         {/* 3 Podium Cards */}

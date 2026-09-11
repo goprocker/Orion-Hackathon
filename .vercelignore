@@ -1,0 +1,7 @@
+.data/
+.git/
+tests/
+scripts/
+src/db/
+SECURITY_REMEDIATION.md
+vitest.config.mts
