@@ -28,9 +28,11 @@ export const EVENT_METRICS = {
   onlineDeadlineDate: "September 21, 2026",
   onlineDeadlineIso: "2026-09-21T23:59:59+05:30",
   /** Grand Finale date — flip to true and update the values below once confirmed. */
-  finaleDateAnnounced: false,
-  offlineFinaleDate: "September 18, 2026",
-  offlineFinaleIso: "2026-09-18T09:00:00+05:30",
+  finaleDateAnnounced: true,
+  /** Finale date is a tentative hold, not yet locked — keep true until organisers confirm. */
+  finaleDateTentative: true,
+  offlineFinaleDate: "October 9–10, 2026 (Tentative)",
+  offlineFinaleIso: "2026-10-09T09:00:00+05:30",
   duration: "24-Hour Offline Sprint",
   venue: "Sathyabama Institute of Science and Technology, Chennai",
   organizer: "Microsoft Club SIST",
@@ -314,12 +316,12 @@ export const IMPORTANT_RULES = [
   {
     number: "04",
     title: "On-the-Spot Problem Statements",
-    summary: "All shortlisted teams receive their problem statements on the spot on 18 September 2026.",
+    summary: "All shortlisted teams receive their problem statements on the spot on 9 October 2026 (tentative).",
     detail: "Teams must develop their solutions based on the problem statement assigned during the event.",
     allowed: "Building on the assigned statement",
     notAllowed: "Bringing a pre-decided finale problem",
     icon: "CalendarClock",
-    appliesTo: "18 September 2026"
+    appliesTo: "9 October 2026 (Tentative)"
   },
   {
     number: "05",
@@ -435,7 +437,7 @@ export const TIMELINE_PHASES: TimelinePhase[] = [
     number: "05",
     title: "24H OFFLINE GRAND FINALE",
     subtitle: "The Final Frontier at SIST Chennai",
-    date: "Announcing Soon • SIST Chennai Campus",
+    date: "Oct 9–10, 2026 (Tentative) • SIST Chennai Campus",
     status: "upcoming",
     highlights: [
       "24-hour continuous coding sprint in dedicated mission arena",
@@ -681,7 +683,7 @@ export const FAQ_DATA: FAQItem[] = [
   {
     category: "Finale & Fees",
     question: "What are the important dates?",
-    answer: "• Registration closes: 21 September 2026\n• Round 1 (online idea submission): on or before 21 September 2026\n• Top 70 Shortlist Announcement: Announcing Soon\n• Grand Finale (offline): Announcing Soon, at Sathyabama Institute of Science and Technology, Chennai.\nPlease watch the official WhatsApp community and Instagram page for the Top 70 and Grand Finale date announcement."
+    answer: "• Registration closes: 21 September 2026\n• Round 1 (online idea submission): on or before 21 September 2026\n• Top 70 Shortlist Announcement: Announcing Soon\n• Grand Finale (offline): 9–10 October 2026 (tentative), at Sathyabama Institute of Science and Technology, Chennai.\nPlease watch the official WhatsApp community and Instagram page for the Top 70 shortlist and the final confirmation of the Grand Finale dates."
   },
   {
     category: "Finale & Fees",

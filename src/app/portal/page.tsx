@@ -798,7 +798,7 @@ export default function TeamPortalPage() {
                       <Calendar className="w-4 h-4" />
                       <span>FINALE DATES & SPRINT</span>
                     </div>
-                    <div className="text-white font-bold text-sm">{EVENT_METRICS.finaleDateAnnounced ? 'September 18–19, 2026' : EVENT_METRICS.datesTBA}</div>
+                    <div className="text-white font-bold text-sm">{EVENT_METRICS.finaleDateAnnounced ? `October 9–10, 2026${EVENT_METRICS.finaleDateTentative ? ' (Tentative)' : ''}` : EVENT_METRICS.datesTBA}</div>
                     <div className="text-slate-400 text-[11px]">24-Hour Non-stop Offline Sprint</div>
                   </div>
 
@@ -1148,7 +1148,7 @@ export default function TeamPortalPage() {
                           </div>
                           <div className="p-2.5 bg-[#040E24] border border-emerald-500/30 col-span-2 sm:col-span-1">
                             <div className="text-slate-400 text-[9px] font-mono-hud uppercase">Grand Finale</div>
-                            <div className="text-cyan-300 font-bold text-xs truncate">Sept 18–19 @ SIST</div>
+                            <div className="text-cyan-300 font-bold text-xs truncate">Oct 9–10 (Tent.) @ SIST</div>
                           </div>
                         </div>
                         <div className="p-2.5 bg-[#040E24]/80 border border-white/10 text-[11px] text-slate-300 font-sans leading-relaxed">

@@ -32,6 +32,29 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
   useEffect(() => {
     if (isVisible && once) return;
 
+    const currentTarget = domRef.current;
+    if (!currentTarget) return;
+
+    const checkVisibility = () => {
+      if (document.visibilityState === 'hidden') return false;
+      const viewportHeight = document.documentElement.clientHeight || window.innerHeight;
+      if (viewportHeight <= 0) return false;
+      const rect = currentTarget.getBoundingClientRect();
+      const visibleHeight = Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0);
+      const visibleRatio = rect.height > 0 ? visibleHeight / rect.height : 0;
+      return visibleRatio >= threshold;
+    };
+
+    // Elements already in the viewport on mount can miss the
+    // IntersectionObserver's first callback — notably when the tab starts
+    // out backgrounded/prerendered (its intersection root is then 0x0) — which
+    // left above-the-fold content stuck at opacity 0. Check synchronously here,
+    // and again once the tab actually becomes visible, as a fallback.
+    if (checkVisibility()) {
+      setIsVisible(true);
+      if (once) return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -46,15 +69,19 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
       { threshold }
     );
 
-    const currentTarget = domRef.current;
-    if (currentTarget) {
-      observer.observe(currentTarget);
-    }
+    observer.observe(currentTarget);
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && checkVisibility()) {
+        setIsVisible(true);
+        if (once) observer.unobserve(currentTarget);
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
-      if (currentTarget) {
-        observer.unobserve(currentTarget);
-      }
+      observer.unobserve(currentTarget);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, [threshold, once, isVisible]);
 
