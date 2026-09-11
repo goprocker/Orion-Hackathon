@@ -52,3 +52,6 @@ next-env.d.ts
 
 # uploaded participant submissions (local fallback storage)
 /public/uploads/
+
+# local dev-server preview config
+/.claude/

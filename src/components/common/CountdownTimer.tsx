@@ -66,7 +66,7 @@ export const CountdownTimer: React.FC = () => {
 
   const ONLINE_DEADLINE_SHORT = formatShortDate(EVENT_METRICS.onlineDeadlineIso);
   const OFFLINE_FINALE_SHORT = EVENT_METRICS.finaleDateAnnounced
-    ? formatShortDate(EVENT_METRICS.offlineFinaleIso)
+    ? `${formatShortDate(EVENT_METRICS.offlineFinaleIso)}${EVENT_METRICS.finaleDateTentative ? ' (TENTATIVE)' : ''}`
     : EVENT_METRICS.datesTBA;
 
   return (
