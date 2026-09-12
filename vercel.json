@@ -4,5 +4,17 @@
       "path": "/api/cron/payment-reminders",
       "schedule": "30 3 * * *"
     }
+  ],
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "https://orion-hackathon-frontend.gopinath2638.workers.dev/",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "destination": "https://orion-hackathon-frontend.gopinath2638.workers.dev/:path*",
+      "permanent": true
+    }
   ]
 }
