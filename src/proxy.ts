@@ -4,7 +4,7 @@ export function proxy() {
   return new Response(temporaryNotFoundPage, {
     status: 404,
     headers: {
-      "Cache-Control": "no-store",
+      "Cache-Control": "public, max-age=60",
       "Content-Type": "text/html; charset=utf-8",
       "X-Robots-Tag": "noindex, nofollow",
     },
