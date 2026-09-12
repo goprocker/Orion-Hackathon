@@ -55,3 +55,6 @@ next-env.d.ts
 
 # local dev-server preview config
 /.claude/
+/dist/
+.vinext/
+.wrangler/

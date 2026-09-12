@@ -14,28 +14,17 @@ const ipMap = new Map<string, RateLimitRecord>();
 
 // Hard cap so a flood of distinct keys cannot grow the heap without bound.
 const MAX_TRACKED_KEYS = 10_000;
+const CLEANUP_INTERVAL_MS = 5 * 60 * 1000;
+let nextCleanupTime = 0;
 
-// Clean up stale IP records every 5 minutes.
-//
-// unref() so this timer never by itself keeps the Node event loop alive. It is
-// a housekeeping sweep over an in-memory Map: there is nothing to finish and
-// nothing to lose by exiting mid-cycle. Without it, any process that imports a
-// route (a CLI check, a test script, a one-off migration) hangs forever after
-// its work is done, with buffered stdout never flushed.
-const cleanupTimer = typeof setInterval !== 'undefined'
-  ? setInterval(() => {
-      const now = Date.now();
-      for (const [key, record] of ipMap.entries()) {
-        if (record.resetTime <= now) {
-          ipMap.delete(key);
-        }
-      }
-    }, 5 * 60 * 1000)
-  : null;
+function cleanupExpiredRecords(now: number, force = false): void {
+  if (!force && now < nextCleanupTime) return;
 
-// Node exposes unref(); the browser/edge timer type does not.
-if (cleanupTimer && typeof (cleanupTimer as { unref?: () => void }).unref === 'function') {
-  (cleanupTimer as { unref: () => void }).unref();
+  for (const [key, record] of ipMap.entries()) {
+    if (record.resetTime <= now) ipMap.delete(key);
+  }
+
+  nextCleanupTime = now + CLEANUP_INTERVAL_MS;
 }
 
 export function checkRateLimit(
@@ -44,15 +33,14 @@ export function checkRateLimit(
   windowMs: number = 60 * 1000
 ): { allowed: boolean; remaining: number; resetInSec: number } {
   const now = Date.now();
+  cleanupExpiredRecords(now);
   const record = ipMap.get(identifier);
 
   if (!record || record.resetTime <= now) {
     // Evict expired entries before admitting a new key, and refuse to grow past
     // the cap rather than letting a spoofed-key flood exhaust memory.
     if (ipMap.size >= MAX_TRACKED_KEYS) {
-      for (const [key, rec] of ipMap.entries()) {
-        if (rec.resetTime <= now) ipMap.delete(key);
-      }
+      cleanupExpiredRecords(now, true);
       if (ipMap.size >= MAX_TRACKED_KEYS) {
         return { allowed: false, remaining: 0, resetInSec: Math.ceil(windowMs / 1000) };
       }
@@ -95,6 +83,10 @@ export function checkRateLimit(
  * fall back to the RIGHTMOST XFF entry (the hop appended by the closest proxy).
  */
 export function getClientIp(request: Request): string {
+  // Set by Cloudflare at the edge and not overridable by the visitor.
+  const cloudflareIp = request.headers.get('cf-connecting-ip');
+  if (cloudflareIp) return cloudflareIp.trim();
+
   // Set by Vercel's edge and not overridable by the client.
   const vercelIp = request.headers.get('x-vercel-forwarded-for');
   if (vercelIp) return vercelIp.split(',').pop()!.trim();
