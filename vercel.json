@@ -1,4 +1,10 @@
 {
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/404"
+    }
+  ],
   "crons": [
     {
       "path": "/api/cron/payment-reminders",
