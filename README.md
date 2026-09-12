@@ -562,7 +562,7 @@ The project includes a `vercel.json` configuring a daily cron job for payment re
 | **Email** | Nodemailer (SMTP) |
 | **Effects** | Canvas Confetti |
 | **Language** | TypeScript 5 |
-| **Deployment** | Vercel (with Cron) |
+| **Deployment** | Cloudflare Workers (`orion-hackathon`); Vercel retained for redirects |
 | **SEO** | JSON-LD, Open Graph, Twitter Cards, Sitemap, Robots, Geo tags |
 
 ---
